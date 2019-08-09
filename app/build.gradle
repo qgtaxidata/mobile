@@ -75,5 +75,7 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
     // add  greendao library
     implementation 'org.greenrobot:greendao:3.2.2'
+    implementation 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
+    implementation 'com.github.HanHuoBin:BaseDialog:1.2.0'
 
 }
