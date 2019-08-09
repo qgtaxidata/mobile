@@ -13,6 +13,7 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.WeightedLatLng;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.geocoder.GeocodeAddress;
 import com.amap.api.services.geocoder.GeocodeQuery;
@@ -21,9 +22,9 @@ import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.example.taxidata.R;
 import com.example.taxidata.base.BaseActivity;
-import com.example.taxidata.bean.hotSpotCallBackInfo;
-import com.example.taxidata.ui.hotspot.contract.hotspotContract;
-import com.example.taxidata.ui.hotspot.presenter.hotspotPresenter;
+import com.example.taxidata.bean.HotSpotCallBackInfo;
+import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
+import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
 import com.hb.dialog.myDialog.MyAlertInputDialog;
 import com.orhanobut.logger.Logger;
 
@@ -36,7 +37,7 @@ import butterknife.ButterKnife;
  * @author: ODM
  * @date: 2019/8/9
  */
-public class hotSpotActivity extends BaseActivity implements hotspotContract.View , GeocodeSearch.OnGeocodeSearchListener {
+public class HotSpotActivity extends BaseActivity implements HotSpotContract.HotSpotView, GeocodeSearch.OnGeocodeSearchListener {
 
     @BindView(R.id.map_hotspot)
     MapView mapHotspot;
@@ -47,7 +48,7 @@ public class hotSpotActivity extends BaseActivity implements hotspotContract.Vie
     double inputLatitude;
     double inputLongtitude;
     AMap aMap = null;
-    hotspotPresenter mPresenter = new hotspotPresenter();
+    HotSpotPresenter mPresenter = new HotSpotPresenter();
     private static final String TAG = "hotSpotActivity";
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,13 +124,13 @@ public class hotSpotActivity extends BaseActivity implements hotspotContract.Vie
     }
 
     @Override
-    public void showHotSpot(List<hotSpotCallBackInfo>  hotSpotCallBackInfoList) {
+    public void showHotSpot(List<HotSpotCallBackInfo.HotSpotBean>  hotSpotCallBackInfoList) {
         if (hotSpotCallBackInfoList.size() > 0) {
-            for (hotSpotCallBackInfo info : hotSpotCallBackInfoList) {
-                double longtitude = info.getLongitude();
-                double latitude = info.getLatitude();
-                LatLng latLng = new LatLng(longtitude  ,latitude);
-                Marker marker = aMap.addMarker(new MarkerOptions().position(latLng));
+            for (HotSpotCallBackInfo.HotSpotBean info : hotSpotCallBackInfoList) {
+//                double longtitude = info.getLongitude();
+//                double latitude = info.getLatitude();
+//                LatLng latLng = new LatLng(longtitude  ,latitude);
+//                Marker marker = aMap.addMarker(new MarkerOptions().position(latLng));
             }
 
         } else {
@@ -150,6 +151,7 @@ public class hotSpotActivity extends BaseActivity implements hotspotContract.Vie
 
     /**
      * 回调获取输入的地址对应的坐标
+     * 调用P层--发送坐标与时间请求热点数据
      *
      * @param geocodeResult
      * @param i
@@ -161,11 +163,7 @@ public class hotSpotActivity extends BaseActivity implements hotspotContract.Vie
         inputLatitude = point.getLatitude();
         inputLongtitude = point.getLongitude();
         Log.e(TAG,"转换坐标: 经度:  " + inputLongtitude + "   纬度:  " + inputLatitude);
-        mPresenter.getHotSpot(inputLongtitude,inputLatitude ,"");
+        mPresenter.getHotSpotData(inputLongtitude,inputLatitude ,"");
     }
 
-//    public void addressTransferPoint(String  address) {
-//        GeocodeQuery query = new GeocodeQuery(address, "广州");
-//        geocodeSearch.getFromLocationNameAsyn(query);
-//    }
 }

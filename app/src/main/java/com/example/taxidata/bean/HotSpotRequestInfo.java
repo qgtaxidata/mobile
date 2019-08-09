@@ -1,11 +1,11 @@
 package com.example.taxidata.bean;
 
 /**
- * 热点反馈信息--实体类
+ * 请求热点--实体类
  * @author: ODM
  * @date: 2019/8/9
  */
-public class hotSpotCallBackInfo {
+public class HotSpotRequestInfo {
 
 
 
@@ -13,15 +13,14 @@ public class hotSpotCallBackInfo {
     private double longitude;
     //纬度
     private double latitude;
-    //热度
-    private int  heat;
+    //时间
+    private String time;
 
-    public hotSpotCallBackInfo(double longitude ,double latitude ,int heat) {
-        this.longitude  =longitude;
+    public HotSpotRequestInfo(double longitude , double latitude , String time) {
+        this.longitude = longitude;
         this.latitude = latitude;
-        this.heat = heat ;
+        this.time = time;
     }
-
     public double getLongitude() {
         return longitude;
     }
@@ -38,11 +37,12 @@ public class hotSpotCallBackInfo {
         this.latitude = latitude;
     }
 
-    public int getHeat() {
-        return heat;
+    public String getTime() {
+        return time;
     }
 
-    public void setHeat(int heat) {
-        this.heat = heat;
+    public void setTime(String time) {
+        this.time = time;
     }
+
 }
