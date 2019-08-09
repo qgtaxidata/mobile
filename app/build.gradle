@@ -1,3 +1,6 @@
+ext {
+    var = '\\debug.keystore'
+}
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
@@ -23,6 +26,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
 
     compileOptions {
         sourceCompatibility 1.8
