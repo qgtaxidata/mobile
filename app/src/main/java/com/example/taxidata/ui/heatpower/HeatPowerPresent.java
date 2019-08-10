@@ -88,11 +88,20 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                                         public void onError(Throwable e) {
                                             Log.d(TAG,"异常");
                                             e.printStackTrace();
+                                            //轮询结束，清空热力图，并显示显示热力图的按钮
+                                            heatPowerView.hideHeatPower();
+                                            heatPowerView.showShowButton();
                                         }
 
                                         @Override
                                         public void onComplete() {
                                             Log.d(TAG,"onComplete");
+                                            //已暂停，清空热力图
+                                            if (isPaused){
+                                                //轮询结束，清空热力图，并显示显示热力图的按钮
+                                                heatPowerView.hideHeatPower();
+                                                heatPowerView.showShowButton();
+                                            }
                                         }
                                     });
                         }
