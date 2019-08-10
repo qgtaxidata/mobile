@@ -47,23 +47,23 @@ import butterknife.ButterKnife;
  */
 public class HotSpotResearchActivity extends BaseActivity implements HotSpotContract.HotSpotView {
 
-    //    @BindView(R.id.imagebutton_hotspot_search_back)
-//    ImageButton btnSearchBack;
-//    @BindView(R.id.et_hotspot_search)
-//    EditText etSearch;
-//    @BindView(R.id.btn_hotspot_search)
-//    Button btnSearch;
-//    @BindView(R.id.rv_hotspot_search_history)
-//    RecyclerView rvSearch;
+    @BindView(R.id.imagebutton_hotspot_search_back)
+    ImageButton btnSearchBack;
+    @BindView(R.id.et_hotspot_search)
+    EditText etSearch;
+    @BindView(R.id.btn_hotspot_search)
+    Button btnSearch;
+    @BindView(R.id.rv_hotspot_search_history)
+    RecyclerView rvSearch;
     private static final String TAG = "HotSpotResearchFragment";
-    @BindView(R.id.imagebutton_hotspot_search_back_test)
-    ImageButton imagebuttonHotspotSearchBackTest;
-    @BindView(R.id.et_hotspot_search_test)
-    EditText etHotspotSearchTest;
-    @BindView(R.id.btn_hotspot_search_test)
-    Button btnHotspotSearchTest;
-    @BindView(R.id.rv_hotspot_search_history_test)
-    RecyclerView rvHotspotSearchHistoryTest;
+//    @BindView(R.id.imagebutton_hotspot_search_back_test)
+//    ImageButton imagebuttonHotspotSearchBackTest;
+//    @BindView(R.id.et_hotspot_search_test)
+//    EditText etHotspotSearchTest;
+//    @BindView(R.id.btn_hotspot_search_test)
+//    Button btnHotspotSearchTest;
+//    @BindView(R.id.rv_hotspot_search_history_test)
+//    RecyclerView rvHotspotSearchHistoryTest;
     private HotSpotPresenter mPresenter = new HotSpotPresenter();
     private List<HotSpotHistorySearch> historyList;
     private List<HotSpotHint> hintList;
@@ -74,12 +74,12 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     private RecommandHotSpotAdapter recommandAdapter;
     private OriginHotSpotAdapter originAdapter;
     private GeocodeSearch geocodeSearch ;
-
+    private String intputString;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hotspot_search_test);
+        setContentView(R.layout.activity_hotspot_search);
         ButterKnife.bind(this);
         mPresenter.attachView(this);
         initData();
@@ -88,7 +88,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         initViews();
         geocodeSearch = new GeocodeSearch(this);
 
-        rvHotspotSearchHistoryTest.setAdapter(historyAdapter);
+        rvSearch.setAdapter(historyAdapter);
     }
 
     @Override
@@ -96,12 +96,12 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         super.onStart();
         if (StatusManager.hotSpotChosen) {
             //热点已经选定了
-            etHotspotSearchTest.setHint("请输入起点");
+            etSearch.setHint("请输入起点");
             showHistoryOriginList(mPresenter.getHistoryOriginList());
         } else {
             //热点尚未选定
             showHistorySearchList(mPresenter.getHistorySearchList());
-            etHotspotSearchTest.setHint("请输入地点");
+            etSearch.setHint("请输入地点");
         }
     }
 
@@ -119,7 +119,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     }
 
     public void initViews() {
-        etHotspotSearchTest.addTextChangedListener(new TextWatcher() {
+        etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -127,6 +127,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                intputString = s.toString();
                 mPresenter.getHintList(s.toString());
             }
 
@@ -146,24 +147,25 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         recommandAdapter = new RecommandHotSpotAdapter(R.layout.item_hotspot_recommand, hotSpotList);
         recommandAdapter.setEmptyView(new EmptyHotSpotView(this, null));
         originAdapter = new OriginHotSpotAdapter(R.layout.item_hotspot_origin_history, originList);
-        rvHotspotSearchHistoryTest.setLayoutManager(layoutManager);
+        rvSearch.setLayoutManager(layoutManager);
         //搜索页面默认出现搜索历史列表
+
     }
 
     public void initOnclickEvent() {
-        imagebuttonHotspotSearchBackTest.setOnClickListener(new View.OnClickListener() {
+        btnSearchBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Todo 搜索页面返回到地图页面？
                 finish();
             }
         });
-        btnHotspotSearchTest.setOnClickListener(new View.OnClickListener() {
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //Todo 将输入框的内容发送到P -》M ，请求获取热点数据
-                String inputAddress = etHotspotSearchTest.getText().toString();
+                String inputAddress = etSearch.getText().toString();
                 //将用户输入的地址转换为坐标
                 if (mPresenter != null && !"".equals(inputAddress)) {
                     mPresenter.convertToLocation(inputAddress ,geocodeSearch );
@@ -189,8 +191,11 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         hintAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                String address = hintAdapter.getData().get(position).getHotSpotLocation();
-                mPresenter.convertToLocation(address ,geocodeSearch );
+//                String address = hintAdapter.getData().get(position).getHotSpotLocation();
+//                mPresenter.convertToLocation(address ,geocodeSearch );
+                double longitute = hintAdapter.getData().get(position).getLongitude();
+                double latitute = hintAdapter.getData().get(position).getLatitute();
+                mPresenter.getHotSpotData(longitute ,latitute ,"");
             }
         });
         recommandAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -205,6 +210,13 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
                 //Todo：带着 选中的 热点 & 起点信息 ，去 地图页面画出来！
             }
         });
+//        提示列表上拉加载没有意义，因为API一个关键词只给10个
+//        hintAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+//            @Override
+//            public void onLoadMoreRequested() {
+//                mPresenter.getHintList(intputString);
+//            }
+//        });
 
     }
 
@@ -212,9 +224,9 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     @Override
     public void showHotSpot(List<HotSpotCallBackInfo.DataBean> hotSpotCallBackInfoList) {
 
-        if (recommandAdapter != null && rvHotspotSearchHistoryTest != null) {
+        if (recommandAdapter != null && rvSearch != null) {
             hotSpotList.clear();
-            rvHotspotSearchHistoryTest.setAdapter(recommandAdapter);
+            rvSearch.setAdapter(recommandAdapter);
             recommandAdapter.setNewData(hotSpotCallBackInfoList);
 
         }
@@ -222,8 +234,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
     @Override
     public void showHistorySearchList(List<HotSpotHistorySearch> hotSpotHistorySearchList) {
-        if (historyAdapter != null && rvHotspotSearchHistoryTest != null) {
-            rvHotspotSearchHistoryTest.setAdapter(historyAdapter);
+        if (historyAdapter != null && rvSearch != null) {
+            rvSearch.setAdapter(historyAdapter);
             historyAdapter.setNewData(hotSpotHistorySearchList);
 
         }
@@ -231,8 +243,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
     @Override
     public void showHintHotSpotList(List<HotSpotHint> hintList) {
-        if (hintAdapter != null && rvHotspotSearchHistoryTest != null) {
-            rvHotspotSearchHistoryTest.setAdapter(hintAdapter);
+        if (hintAdapter != null && rvSearch != null) {
+            rvSearch.setAdapter(hintAdapter);
             hintAdapter.setNewData(hintList);
         }
     }
@@ -240,8 +252,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
     @Override
     public void showHistoryOriginList(List<HotSpotOrigin> hotSpotOrigins) {
-        if (originAdapter != null && rvHotspotSearchHistoryTest != null) {
-            rvHotspotSearchHistoryTest.setAdapter(originAdapter);
+        if (originAdapter != null && rvSearch != null) {
+            rvSearch.setAdapter(originAdapter);
             originAdapter.setNewData(hotSpotOrigins);
         }
     }

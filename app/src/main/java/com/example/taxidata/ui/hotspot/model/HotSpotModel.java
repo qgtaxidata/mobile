@@ -85,11 +85,11 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
     @Override
     public void onGetInputtips(List<Tip> list, int i) {
         hintList.clear();
-        Log.e(TAG, "onGetInputtips: 获取 提示列表，大小为 ：" + list.size() );
         for(Tip tip : list) {
             if(! "".equals(tip.getPoiID()) && tip.getPoint() != null ) {
                 //真实存在的地点加入列表
-                HotSpotHint hint = new HotSpotHint(tip.getName(),tip.getAddress());
+                Logger.d("地方名：  " + tip.getName());
+                HotSpotHint hint = new HotSpotHint(tip.getName(),tip.getAddress(),tip.getPoint().getLongitude() ,tip.getPoint().getLatitude());
                 hintList.add(hint);
             }
         }

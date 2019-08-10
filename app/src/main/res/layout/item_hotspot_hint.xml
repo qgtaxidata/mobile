@@ -46,7 +46,7 @@
             android:layout_alignStart= "@id/tv_hotspothint_name"
             android:text="我是热度"
             android:textColor="#4d4d4d"
-            android:textSize="20sp"
+            android:textSize="15sp"
             />
 
     </RelativeLayout>
