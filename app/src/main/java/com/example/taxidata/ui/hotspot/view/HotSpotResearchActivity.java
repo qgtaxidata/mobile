@@ -214,15 +214,16 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
         if (recommandAdapter != null && rvHotspotSearchHistoryTest != null) {
             hotSpotList.clear();
+            rvHotspotSearchHistoryTest.setAdapter(recommandAdapter);
             recommandAdapter.setNewData(hotSpotCallBackInfoList);
-            rvHotspotSearchHistoryTest.swapAdapter(recommandAdapter, false);
+
         }
     }
 
     @Override
     public void showHistorySearchList(List<HotSpotHistorySearch> hotSpotHistorySearchList) {
         if (historyAdapter != null && rvHotspotSearchHistoryTest != null) {
-            rvHotspotSearchHistoryTest.swapAdapter(historyAdapter, false);
+            rvHotspotSearchHistoryTest.setAdapter(historyAdapter);
             historyAdapter.setNewData(hotSpotHistorySearchList);
 
         }
@@ -231,8 +232,6 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     @Override
     public void showHintHotSpotList(List<HotSpotHint> hintList) {
         if (hintAdapter != null && rvHotspotSearchHistoryTest != null) {
-            //hintAdapter = new HintHotSpotAdapter(R.layout.item_hotspot_hint, hintList);
-            //rvHotspotSearchHistoryTest.swapAdapter(hintAdapter, false);
             rvHotspotSearchHistoryTest.setAdapter(hintAdapter);
             hintAdapter.setNewData(hintList);
         }
@@ -242,7 +241,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     @Override
     public void showHistoryOriginList(List<HotSpotOrigin> hotSpotOrigins) {
         if (originAdapter != null && rvHotspotSearchHistoryTest != null) {
-            rvHotspotSearchHistoryTest.swapAdapter(originAdapter, false);
+            rvHotspotSearchHistoryTest.setAdapter(originAdapter);
             originAdapter.setNewData(hotSpotOrigins);
         }
     }

@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import android.graphics.Color;
 
+import android.graphics.drawable.ColorDrawable;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -46,6 +48,16 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     /*--------------------------------常量相关------------------------------------------------------*/
 
     private static final String TAG = "HomePageActivity";
+
+    /**
+     * 菜单蓝色字体颜色
+     */
+    private static final int CONST_MENU_TEXT_COLOR = 0x4C93FD;
+
+    /**
+     * 标签黄色背景
+     */
+    private static final int CONST_LABEL_BACKGROUND = 0xFFBB33;
 
     /*----------------------------------地图相关---------------------------------------------------*/
 
@@ -158,7 +170,16 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 初始化悬浮按钮
      */
     private void initFloatButton() {
-
+        //将悬浮按钮的Label背景设置为透明
+        heatPowerFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        abnormalAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        behaviorAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        passengerHotFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        requestAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        roadQualityFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        setUpFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        taxiIncomeFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        visualizationFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
     }
 
     /**
@@ -246,7 +267,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         //构造热力图以及权重，设置渐变
         heatpowerBuilder = new HeatmapTileProvider.Builder();
         heatpowerBuilder.weightedData(heatPointList)
-                .gradient(ColorGriant.ALT_HEATMAP_GRADIENT);
+                .gradient(ColorGriant.ALT_HEATMAP_GRADIENT)
+                .radius(12);
         heatpower = heatpowerBuilder.build();
         TileOverlayOptions tileOverlayOptions = new TileOverlayOptions();
         tileOverlayOptions.tileProvider(heatpower);
