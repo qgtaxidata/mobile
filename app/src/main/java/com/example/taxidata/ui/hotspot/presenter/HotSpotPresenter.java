@@ -11,6 +11,7 @@ import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
 import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotHistorySearch;
+import com.example.taxidata.bean.HotSpotOrigin;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.model.HotSpotModel;
 import com.example.taxidata.util.GsonUtil;
@@ -25,14 +26,18 @@ import io.reactivex.disposables.Disposable;
  * @author: ODM
  * @date: 2019/8/9
  */
-public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch.OnGeocodeSearchListener  {
+public class HotSpotPresenter implements HotSpotContract.Presenter  {
 
-    HotSpotModel mHotSpotModel = new HotSpotModel();
-    HotSpotContract.HotSpotView mHotSpotView;
-    List<HotSpotCallBackInfo.DataBean> hotSpotRecommandInfoList = new ArrayList<>();
+    private HotSpotModel mHotSpotModel ;
+    private HotSpotContract.HotSpotView mHotSpotView;
+    private List<HotSpotCallBackInfo.DataBean> hotSpotRecommandInfoList = new ArrayList<>();
     private static final String TAG = "HotSpotPresenter";
-    private GeocodeSearch geocodeSearch = new GeocodeSearch(TaxiApp.getContext());
+    private GeocodeSearch geocodeSearch ;
 
+    public HotSpotPresenter(){
+        super();
+        mHotSpotModel = new HotSpotModel(this);
+    }
     @Override
     public void attachView(HotSpotContract.HotSpotView view) {
         mHotSpotView = view;
@@ -41,21 +46,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     @Override
     public void detachView() {
         mHotSpotView = null;
-    }
-
-    @Override
-    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-
-    }
-
-    @Override
-    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-        GeocodeAddress geocodeAddress = geocodeResult.getGeocodeAddressList().get(0);
-        LatLonPoint point = geocodeAddress.getLatLonPoint();
-        double inputLatitude = point.getLatitude();
-        double inputLongitude = point.getLongitude();
-        Logger.d("longtitude : " + inputLongitude + "   latitude:  " +inputLatitude);
-        getHotSpotData(inputLongitude,inputLatitude ,"");
     }
 
     @Override
@@ -98,11 +88,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         }
     }
 
-    @Override
-    public void convertToLocation(String address) {
-        GeocodeQuery query = new GeocodeQuery(address, "广州");
-        geocodeSearch.getFromLocationNameAsyn(query);
-    }
 
     @Override
     public List<HotSpotHistorySearch> getHistorySearchList() {
@@ -127,5 +112,15 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     @Override
     public void saveHotSpotSearchHistory(String historyHotSpot) {
         mHotSpotModel.saveHotSpotSearchHistory(historyHotSpot);
+    }
+
+    @Override
+    public List<HotSpotOrigin> getHistoryOriginList() {
+        return mHotSpotModel.getHistoryOriginList();
+    }
+
+    @Override
+    public void saveOriginHotSpotHistory(String orignHistory) {
+        mHotSpotModel.saveHotSpotSearchHistory(orignHistory);
     }
 }

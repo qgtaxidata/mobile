@@ -1,11 +1,13 @@
 package com.example.taxidata.ui.hotspot.contract;
 
+import com.amap.api.services.geocoder.GeocodeSearch;
 import com.example.taxidata.base.BaseModel;
 import com.example.taxidata.base.BasePresent;
 import com.example.taxidata.base.BaseView;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
 import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotHistorySearch;
+import com.example.taxidata.bean.HotSpotOrigin;
 
 import java.util.List;
 
@@ -42,6 +44,9 @@ public interface HotSpotContract {
          */
         public List<HotSpotHistorySearch>  getHistorySearchList();
 
+
+        public List<HotSpotOrigin>  getHistoryOriginList();
+
         /**
          * 发送请求获取提示列表
          *
@@ -77,12 +82,21 @@ public interface HotSpotContract {
          */
         public void showHistorySearchList (List<HotSpotHistorySearch>  hotSpotHistorySearchList);
 
+        public void showHistoryOriginList(List<HotSpotOrigin> hotSpotOrigins);
+
         /**
          * 呈现 提示列表
          *
          * @param hintList the hint list
          */
         public void showHintHotSpotList (List<HotSpotHint> hintList) ;
+
+        /**
+         * 将地址转换成为地图的坐标
+         *
+         * @param address the address
+         */
+        public void convertToLocation(String address );
     }
 
     /**
@@ -101,12 +115,7 @@ public interface HotSpotContract {
         public void getHotSpotData(double longitude, double latitude, String time) ;
 
 
-        /**
-         * 将地址转换成为地图的坐标
-         *
-         * @param address the address
-         */
-        public void convertToLocation(String address);
+
 
 
         /**
@@ -114,8 +123,9 @@ public interface HotSpotContract {
          *
          * @return the history search list
          */
-        public List<HotSpotHistorySearch>  getHistorySearchList();
+        public  List<HotSpotHistorySearch>  getHistorySearchList();
 
+        public List<HotSpotOrigin> getHistoryOriginList();
 
         /**
          * 尝试获取 提示列表
@@ -131,14 +141,14 @@ public interface HotSpotContract {
          */
         public void getHintListSuccess(List<HotSpotHint> hintList);
 
-
-
         /**
          * Save hot spot search history.
          *
          * @param historyHotSpot the history hot spot
          */
         public void  saveHotSpotSearchHistory(String historyHotSpot) ;
+
+        public void saveOriginHotSpotHistory(String orignHistory);
     }
 
 

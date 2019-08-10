@@ -13,8 +13,10 @@ import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
 import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotHistorySearch;
+import com.example.taxidata.bean.HotSpotOrigin;
 import com.example.taxidata.bean.HotSpotRequestInfo;
 import com.example.taxidata.common.GreenDaoManager;
+import com.example.taxidata.common.StatusManager;
 import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
@@ -41,10 +43,10 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
     private static final String TAG = "HotSpotModel";
     private DaoSession  historyDaoSession;
     private List<HotSpotHint> hintList;
-    private HotSpotPresenter mPresnter;
-    public HotSpotModel() {
-        historyDaoSession = GreenDaoManager.getInstance().getHotSpotDaoSession();
-        mPresnter = new HotSpotPresenter();
+    private HotSpotPresenter  mPresnter ;
+    public HotSpotModel(HotSpotPresenter  mPresnter) {
+        historyDaoSession = GreenDaoManager.getInstance().getDaoSession();
+        this.mPresnter = mPresnter;
         hintList = new ArrayList<>();
     }
 
@@ -65,6 +67,7 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
 
     @Override
     public List<HotSpotHistorySearch> getHistorySearchList() {
+        Log.e(TAG, "getHistorySearchList: "+"打开数据库获取地点历史" );
         QueryBuilder<HotSpotHistorySearch> queryBuilder =  historyDaoSession.queryBuilder(HotSpotHistorySearch.class);
         return  queryBuilder.list();
     }
@@ -98,7 +101,16 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
     public void saveHotSpotSearchHistory(String historyHotSpot) {
         HotSpotHistorySearch history = new HotSpotHistorySearch();
         history.setHotSpotHistory(historyHotSpot);
-        historyDaoSession.insert(historyHotSpot);
+        if(! "".equals(historyHotSpot)) {
+            historyDaoSession.insertOrReplace(history);
+            Log.e(TAG, "存储了热点历史 ： " +  historyHotSpot );
 
+        }
+    }
+
+    @Override
+    public List<HotSpotOrigin> getHistoryOriginList() {
+        QueryBuilder<HotSpotOrigin> queryBuilder =  historyDaoSession.queryBuilder(HotSpotOrigin.class);
+        return  queryBuilder.list();
     }
 }

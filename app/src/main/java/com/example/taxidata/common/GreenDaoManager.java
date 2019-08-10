@@ -50,7 +50,7 @@ public class GreenDaoManager {
         }
     }
 
-    public DaoSession getHotSpotDaoSession() {
+    public DaoSession getDaoSession() {
         return daoSession;
     }
 

@@ -5,7 +5,7 @@
     android:layout_height="80dp">
 
     <ImageView
-        android:id = "@+id/iv_hotspot_history"
+        android:id = "@+id/iv_hotspot_origin_history"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="15dp"
         android:layout_width="26dp"
@@ -14,11 +14,11 @@
         android:src="@mipmap/ic_launcher"/>
 
     <TextView
-        android:id="@+id/tv_hotspot_history"
+        android:id="@+id/tv_hotspot_origin_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="22sp"
-        android:layout_toRightOf="@id/iv_hotspot_history"
-        android:text="我是一条热点历史记录"/>
+        android:layout_toRightOf="@id/iv_hotspot_origin_history"
+        android:text="我是一条起点历史记录"/>
 
 </RelativeLayout>
