@@ -65,5 +65,7 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
     // add  greendao library
     implementation 'org.greenrobot:greendao:3.2.2'
+    //数据图表库
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.1'
 
 }
