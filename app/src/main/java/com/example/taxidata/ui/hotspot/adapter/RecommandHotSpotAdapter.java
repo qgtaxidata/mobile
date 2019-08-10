@@ -6,7 +6,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.taxidata.R;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
-import com.example.taxidata.bean.HotSpotRecommandInfo;
 
 import java.util.List;
 

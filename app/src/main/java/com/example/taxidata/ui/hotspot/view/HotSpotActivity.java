@@ -13,7 +13,6 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.WeightedLatLng;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.geocoder.GeocodeAddress;
 import com.amap.api.services.geocoder.GeocodeQuery;
@@ -23,7 +22,6 @@ import com.amap.api.services.geocoder.RegeocodeResult;
 import com.example.taxidata.R;
 import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
-import com.example.taxidata.bean.HotSpotRecommandInfo;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
 import com.hb.dialog.myDialog.MyAlertInputDialog;
@@ -129,12 +127,12 @@ public class HotSpotActivity extends BaseActivity implements HotSpotContract.Hot
     @Override
     public void showHotSpot(List<HotSpotCallBackInfo.DataBean>  hotSpotCallBackInfoList) {
         if (hotSpotCallBackInfoList.size() > 0) {
-            for (HotSpotCallBackInfo.DataBean info : hotSpotCallBackInfoList) {
-                double longtitude = info.getLongitude();
-                double latitude = info.getLatitude();
-                LatLng latLng = new LatLng(latitude  ,longtitude);
-                Marker marker = aMap.addMarker(new MarkerOptions().position(latLng));
-            }
+//            for (HotSpotCallBackInfo.DataBean info : hotSpotCallBackInfoList) {
+//                double longtitude = info.getLongitude();
+//                double latitude = info.getLatitude();
+//                LatLng latLng = new LatLng(latitude  ,longtitude);
+//                Marker marker = aMap.addMarker(new MarkerOptions().position(latLng));
+//            }
         } else {
             Logger.d("热点推荐列表大小为0 !! ");
         }
