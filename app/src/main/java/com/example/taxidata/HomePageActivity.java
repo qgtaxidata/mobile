@@ -1,7 +1,9 @@
 package com.example.taxidata;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +19,7 @@ import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
+import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -135,6 +138,27 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     private void initFloatButton(){
 
     }
+
+    /**
+     * 悬浮按钮的点击事件监听
+     *
+     * @param v the v
+     */
+    @OnClick({R.id.fbtn_heat_power, R.id.fbtn_hot_spot})
+    void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fbtn_heat_power:
+                break;
+            case R.id.fbtn_hot_spot:
+                //跳转到热点搜索页面
+                Intent intent = new Intent(HomePageActivity.this , HotSpotResearchActivity.class);
+                startActivity(intent);
+                break;
+
+                default:break;
+        }
+    }
+
 
     /**
      * 获取屏幕中心位置

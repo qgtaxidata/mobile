@@ -7,14 +7,13 @@ import com.amap.api.services.geocoder.GeocodeQuery;
 import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
+import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
 import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotHistorySearch;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.model.HotSpotModel;
-import com.example.taxidata.ui.hotspot.view.HotSpotResearchFragment;
 import com.example.taxidata.util.GsonUtil;
-import com.example.taxidata.util.ToastUtil;
 import com.orhanobut.logger.Logger;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     HotSpotContract.HotSpotView mHotSpotView;
     List<HotSpotCallBackInfo.DataBean> hotSpotRecommandInfoList = new ArrayList<>();
     private static final String TAG = "HotSpotPresenter";
-    private GeocodeSearch geocodeSearch ;
+    private GeocodeSearch geocodeSearch = new GeocodeSearch(TaxiApp.getContext());
 
     @Override
     public void attachView(HotSpotContract.HotSpotView view) {
@@ -54,8 +53,9 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         GeocodeAddress geocodeAddress = geocodeResult.getGeocodeAddressList().get(0);
         LatLonPoint point = geocodeAddress.getLatLonPoint();
         double inputLatitude = point.getLatitude();
-        double inputLongtitude = point.getLongitude();
-        getHotSpotData(inputLongtitude,inputLatitude ,"");
+        double inputLongitude = point.getLongitude();
+        Logger.d("longtitude : " + inputLongitude + "   latitude:  " +inputLatitude);
+        getHotSpotData(inputLongitude,inputLatitude ,"");
     }
 
     @Override
@@ -122,5 +122,10 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
             Logger.d("提示列表未初始化！！！");
         }
 
+    }
+
+    @Override
+    public void saveHotSpotSearchHistory(String historyHotSpot) {
+        mHotSpotModel.saveHotSpotSearchHistory(historyHotSpot);
     }
 }

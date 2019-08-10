@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/bg_grey"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_hotspot_origin"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="5dp"
+        app:cardElevation = "10dp"
+        app:cardBackgroundColor="#FFFF"
+        app:cardCornerRadius="10dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/imagebutton_hotspot_origin_back"
+                android:layout_marginTop="20dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:background="@mipmap/ic_launcher"
+                />
+            <EditText
+                android:id="@+id/et_hotspot_origin"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/imagebutton_hotspot_origin_back"
+                android:layout_alignBottom="@id/imagebutton_hotspot_origin_back"
+                android:layout_toLeftOf="@id/btn_hotspot_origin"
+                android:textSize="20sp"
+                android:singleLine="true"
+                android:inputType="text"
+                android:background="@null"
+                android:hint="请输入起点"
+                />
+            <Button
+                android:id="@+id/btn_hotspot_origin"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:hint="搜索"
+                android:textColorHint="#FFFFFF"
+                android:textSize="20sp"
+                android:background="@drawable/shape_button_radius_search"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_hotspot_origin_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardElevation = "10dp"
+        app:cardCornerRadius="15dp"
+        app:cardBackgroundColor="#FFFF"
+        android:layout_marginBottom="15dp"
+        android:layout_below="@id/cv_hotspot_origin">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_hotspot_origin_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/cv_hotspot_origin"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>

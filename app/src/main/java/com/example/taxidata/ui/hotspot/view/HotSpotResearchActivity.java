@@ -21,10 +21,12 @@ import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.example.taxidata.R;
+import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.base.BaseFragment;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
 import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotHistorySearch;
+import com.example.taxidata.common.StatusManager;
 import com.example.taxidata.ui.hotspot.adapter.HintHotSpotAdapter;
 import com.example.taxidata.ui.hotspot.adapter.HistoryHotspotSearchAdapter;
 import com.example.taxidata.ui.hotspot.adapter.RecommandHotSpotAdapter;
@@ -42,7 +44,7 @@ import butterknife.Unbinder;
  * @author: ODM
  * @date: 2019/8/10
  */
-public class HotSpotResearchFragment extends BaseFragment implements HotSpotContract.HotSpotView {
+public class HotSpotResearchActivity extends BaseActivity implements HotSpotContract.HotSpotView {
 
     @BindView(R.id.imagebutton_hotspot_search_back)
     ImageButton btnSearchBack;
@@ -60,46 +62,55 @@ public class HotSpotResearchFragment extends BaseFragment implements HotSpotCont
     private HistoryHotspotSearchAdapter historyAdapter;
     private HintHotSpotAdapter hintAdapter;
     private RecommandHotSpotAdapter  recommandAdapter;
-    private Unbinder unbinder;
 
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPresenter.attachView(this);
         hintList = new ArrayList<>();
         historyList = new ArrayList<>();
         hotSpotList = new ArrayList<>();
+        initRecyclerView();
+        initOnclickEvent();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_hotspot_search, container, false);
-        mPresenter.attachView(this);
-        unbinder = ButterKnife.bind(this, view);
-        initViews();
-        return view;
+    protected void onStart() {
+        super.onStart();
+        if(StatusManager.hotSpotChosen) {
+            //热点已经选定了
+            etSearch.setHint("请输入起点");
+        } else {
 
+            etSearch.setHint("请输入地点");
+        }
     }
 
-    private void initViews() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+
+
+    private void initRecyclerView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         layoutManager.setReverseLayout(true);
         historyAdapter = new HistoryHotspotSearchAdapter(R.layout.item_hotspot_history ,historyList);
         hintAdapter = new HintHotSpotAdapter(R.layout.item_hotspot_hint ,hintList);
-        recommandAdapter.setEmptyView(new EmptyHotSpotView(getContext() ,null));
+        recommandAdapter.setEmptyView(new EmptyHotSpotView(this ,null));
         recommandAdapter = new RecommandHotSpotAdapter(R.layout.item_hotspot_recommand ,hotSpotList);
         rvSearch.setLayoutManager(layoutManager);
         //搜索页面默认出现搜索历史列表
         rvSearch.setAdapter(historyAdapter);
 
+
+    }
+
+    public void  initOnclickEvent() {
         btnSearchBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 //Todo 搜索页面返回到地图页面？
-
+                //Todo 搜索页面返回到地图页面？
+                finish();
             }
         });
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -142,4 +153,6 @@ public class HotSpotResearchFragment extends BaseFragment implements HotSpotCont
             rvSearch.swapAdapter(hintAdapter,true);
         }
     }
+
+
 }

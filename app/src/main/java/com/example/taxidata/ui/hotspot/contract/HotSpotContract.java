@@ -49,6 +49,13 @@ public interface HotSpotContract {
          */
         public void getHintList(String keyword) ;
 
+        /**
+         * Save hot spot search history.
+         *
+         * @param historyHotSpot the history hot spot
+         */
+        public void  saveHotSpotSearchHistory(String historyHotSpot) ;
+
     }
 
     /**
@@ -123,7 +130,17 @@ public interface HotSpotContract {
          * @param hintList the hint list
          */
         public void getHintListSuccess(List<HotSpotHint> hintList);
+
+
+
+        /**
+         * Save hot spot search history.
+         *
+         * @param historyHotSpot the history hot spot
+         */
+        public void  saveHotSpotSearchHistory(String historyHotSpot) ;
     }
+
 
 
 }

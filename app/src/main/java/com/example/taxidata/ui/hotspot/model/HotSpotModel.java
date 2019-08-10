@@ -93,4 +93,12 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
         }
 
     }
+
+    @Override
+    public void saveHotSpotSearchHistory(String historyHotSpot) {
+        HotSpotHistorySearch history = new HotSpotHistorySearch();
+        history.setHotSpotHistory(historyHotSpot);
+        historyDaoSession.insert(historyHotSpot);
+
+    }
 }
