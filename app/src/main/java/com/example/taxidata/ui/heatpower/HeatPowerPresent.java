@@ -21,14 +21,21 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     private HeatPowerContract.HeatPowerModel heatPowerModel;
     private HeatPowerContract.HeatPowerView heatPowerView;
     private static final String TAG = "HeatPowerPresent";
+    /**
+     * 是否暂停轮询，默认为false，即不暂停轮询
+     */
+    private boolean isPaused = false;
 
     public HeatPowerPresent(){
         heatPowerModel = new HeatPowerModel();
     }
 
     @Override
-    public void updataHeatPoint(String time) {
+    public void heatPoint(String time) {
         if (heatPowerModel != null){
+            //不暂停轮询
+            isPaused = false;
+            //每3秒轮询一次
             Observable.interval(3,TimeUnit.SECONDS)
                     .doOnNext(new Consumer<Long>() {
                         @Override
@@ -37,7 +44,10 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                                     .subscribe(new Observer<HeatPointInfo>() {
                                         @Override
                                         public void onSubscribe(Disposable d) {
-
+                                            //暂停轮询
+                                            if (isPaused){
+                                                d.dispose();
+                                            }
                                         }
 
                                         @Override
@@ -87,7 +97,9 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                     .subscribe(new Observer<Long>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-
+                                if (isPaused){
+                                    d.dispose();
+                                }
                         }
 
                         @Override
@@ -118,5 +130,12 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     public void detachView() {
         //防止内存泄漏
         heatPowerView = null;
+    }
+
+    /**
+     * 暂停轮询
+     */
+    public void pause(){
+        isPaused = true;
     }
 }

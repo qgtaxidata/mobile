@@ -20,25 +20,34 @@ public interface HeatPowerContract {
         LatLng getCentralLongitudeLatitude();
 
         /**
-         * 获取时间
-         * @return String
-         */
-        String getTime();
-
-        /**
          * 显示热力
          * @param heatPointList 热力坐标集合
          */
         void showHeatPower(List<WeightedLatLng> heatPointList);
+
+        /**
+         * 隐藏热力图
+         */
+        void hideHeatPower();
+
+        /**
+         * 显示隐藏按钮
+         */
+        void showHideButton();
+
+        /**
+         * 显示展示按钮
+         */
+        void showShowButton();
     }
 
     interface HeatPowerPresent extends BasePresent<HeatPowerView> {
 
         /**
-         * 每五秒更新热力数据
+         * 根据用户点击显示热力图或隐藏热力图
          * @param time 时间
          */
-        void updataHeatPoint(String time);
+        void heatPoint(String time);
     }
 
     interface HeatPowerModel extends BaseModel{
