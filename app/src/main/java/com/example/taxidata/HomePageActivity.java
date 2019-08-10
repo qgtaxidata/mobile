@@ -1,6 +1,10 @@
 package com.example.taxidata;
 
+
 import android.content.Intent;
+
+import android.graphics.Color;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +27,10 @@ import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 
+
+
+import com.example.taxidata.util.TimePickerUtil;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -33,7 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class HomePageActivity extends AppCompatActivity implements AMap.OnCameraChangeListener,HeatPowerContract.HeatPowerView{
+public class HomePageActivity extends AppCompatActivity implements AMap.OnCameraChangeListener, HeatPowerContract.HeatPowerView {
 
     /*--------------------------------常量相关------------------------------------------------------*/
 
@@ -54,20 +62,30 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     /**
      * 屏幕中心的位置,最初为广州市的经纬度
      */
-    private LatLng target =  new LatLng(23.209000,113.317390);
+    private LatLng target = new LatLng(23.209000, 113.317390);
 
     /*----------------------------------ui组件相关--------------------------------------------------*/
 
-    /**
-     * 显示或隐藏热力图按钮
-     */
+    @BindView(R.id.fbtn_passenger_hot)
+    FloatingActionButton passengerHotFbtn;
     @BindView(R.id.fbtn_heat_power)
     FloatingActionButton heatPowerFbtn;
-    /**
-     * 悬浮按钮
-     */
+    @BindView(R.id.fbtn_road_quality)
+    FloatingActionButton roadQualityFbtn;
+    @BindView(R.id.fbtn_request_analysis)
+    FloatingActionButton requestAnalysisFbtn;
+    @BindView(R.id.fbtn_taxi_income)
+    FloatingActionButton taxiIncomeFbtn;
+    @BindView(R.id.fbtn_behavior_analysis)
+    FloatingActionButton behaviorAnalysisFbtn;
+    @BindView(R.id.fbtn_abnormal_analysis)
+    FloatingActionButton abnormalAnalysisFbtn;
+    @BindView(R.id.fbtn_visualization)
+    FloatingActionButton visualizationFbtn;
+    @BindView(R.id.fbtn_set_up)
+    FloatingActionButton setUpFbtn;
     @BindView(R.id.fam_home_page_menu)
-    FloatingActionMenu homepageFam;
+    FloatingActionMenu homePageMenuFam;
 
     /*------------------------------------present相关-----------------------------------------------*/
 
@@ -123,23 +141,24 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     /**
      * 初始化地图
      */
-    private void initMap(){
+    private void initMap() {
         if (homepageAMap == null) {
             homepageAMap = homePageMv.getMap();
         }
         //广州市经纬度
-        LatLng latLng = new LatLng(23.209000,113.317390);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng,12,0,0));
+        LatLng latLng = new LatLng(23.209000, 113.317390);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 12, 0, 0));
         //将相机移动到广州市
         homepageAMap.moveCamera(cameraUpdate);
         //监听相机位置变化,以获得屏幕中心经纬度
-       homepageAMap.setOnCameraChangeListener(this);
+        homepageAMap.setOnCameraChangeListener(this);
     }
 
     /**
      * 初始化悬浮按钮
      */
-    private void initFloatButton(){
+    private void initFloatButton() {
+
     }
 
     /**
@@ -165,16 +184,18 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
     /**
      * 获取屏幕中心位置
+     *
      * @param cameraPosition 相机位置
      */
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
         this.target = cameraPosition.target;
-        Log.d(TAG,"屏幕中心位置 : " + target);
+        Log.d(TAG, "屏幕中心位置 : " + target);
     }
 
     /**
      * 获取屏幕中心位置
+     *
      * @param cameraPosition 相机位置
      */
     @Override
@@ -184,14 +205,13 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
     @OnClick(R.id.fbtn_heat_power)
     public void onViewClicked() {
-        controlHeatPower();
-        homepageFam.close(true);
+
     }
 
     /**
      * 统一初始化present
      */
-    private void initPresent(){
+    private void initPresent() {
         heatPowerPresent = new HeatPowerPresent();
         heatPowerPresent.attachView(this);
     }
@@ -199,15 +219,15 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     /**
      * 统一解绑present
      */
-    private void destroyPresent(){
+    private void destroyPresent() {
         heatPowerPresent.detachView();
     }
 
     /**
      * 清空地图所有状态
      */
-    public void clearMap(){
-        if (homepageAMap != null){
+    public void clearMap() {
+        if (homepageAMap != null) {
             homepageAMap.clear();
         }
     }
@@ -219,7 +239,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
     @Override
     public void showHeatPower(List<WeightedLatLng> heatPointList) {
-        if (homepageAMap != null){
+        if (homepageAMap != null) {
             //清空原来地图状态
             homepageAMap.clear();
         }
@@ -262,15 +282,51 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     /**
      * 控制热力图的显示或隐藏
      */
-    private void controlHeatPower(){
-        if (isHeatPowerHide){
+    private void controlHeatPower() {
+        if (isHeatPowerHide) {
             heatPowerPresent.heatPoint();
             //热力图不再隐藏
             isHeatPowerHide = false;
-        }else {
+        } else {
             heatPowerPresent.pause();
             isHeatPowerHide = true;
         }
 
+    }
+
+    @OnClick({R.id.fbtn_passenger_hot, R.id.fbtn_heat_power, R.id.fbtn_road_quality, R.id.fbtn_request_analysis, R.id.fbtn_taxi_income, R.id.fbtn_behavior_analysis, R.id.fbtn_abnormal_analysis, R.id.fbtn_visualization, R.id.fbtn_set_up})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.fbtn_passenger_hot:
+                //载客热点推荐
+                break;
+            case R.id.fbtn_heat_power:
+                controlHeatPower();
+                break;
+            case R.id.fbtn_road_quality:
+                //道路质量分析
+                break;
+            case R.id.fbtn_request_analysis:
+                //区域出租车需求分析
+                break;
+            case R.id.fbtn_taxi_income:
+                //出租车司机收入排行榜
+                break;
+            case R.id.fbtn_behavior_analysis:
+                //出租车行为分析与预测
+                break;
+            case R.id.fbtn_abnormal_analysis:
+                //出租车异常情况分析
+                break;
+            case R.id.fbtn_visualization:
+                //路径可视化
+                break;
+            case R.id.fbtn_set_up:
+                //设置
+                break;
+            default:
+        }
+        //收起菜单栏
+        homePageMenuFam.close(true);
     }
 }

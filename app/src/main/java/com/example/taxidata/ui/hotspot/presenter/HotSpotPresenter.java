@@ -26,7 +26,7 @@ import io.reactivex.disposables.Disposable;
  * @author: ODM
  * @date: 2019/8/9
  */
-public class HotSpotPresenter implements HotSpotContract.Presenter  {
+public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch.OnGeocodeSearchListener  {
 
     private HotSpotModel mHotSpotModel ;
     private HotSpotContract.HotSpotView mHotSpotView;
@@ -37,6 +37,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter  {
     public HotSpotPresenter(){
         super();
         mHotSpotModel = new HotSpotModel(this);
+
     }
     @Override
     public void attachView(HotSpotContract.HotSpotView view) {
@@ -122,5 +123,27 @@ public class HotSpotPresenter implements HotSpotContract.Presenter  {
     @Override
     public void saveOriginHotSpotHistory(String orignHistory) {
         mHotSpotModel.saveHotSpotSearchHistory(orignHistory);
+    }
+
+    @Override
+    public void convertToLocation(String address, GeocodeSearch geocodeSearch) {
+        GeocodeQuery query = new GeocodeQuery(address, "广州");
+        this.geocodeSearch = geocodeSearch;
+        this.geocodeSearch.setOnGeocodeSearchListener(this);
+        this.geocodeSearch.getFromLocationNameAsyn(query);
+    }
+
+    @Override
+    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+    }
+
+    @Override
+    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+        GeocodeAddress geocodeAddress = geocodeResult.getGeocodeAddressList().get(0);
+        LatLonPoint point = geocodeAddress.getLatLonPoint();
+        double inputLatitude = point.getLatitude();
+        double inputLongitude = point.getLongitude();
+        Log.e(TAG, "onGeocodeSearched: "+ "longtitude : " + inputLongitude + "   latitude:  " +inputLatitude );
+        getHotSpotData(inputLongitude,inputLatitude ,"");
     }
 }

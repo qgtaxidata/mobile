@@ -1,6 +1,8 @@
 package com.example.taxidata.ui.hotspot.view;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,7 +45,7 @@ import butterknife.ButterKnife;
  * @author: ODM
  * @date: 2019/8/10
  */
-public class HotSpotResearchActivity extends BaseActivity implements HotSpotContract.HotSpotView ,GeocodeSearch.OnGeocodeSearchListener {
+public class HotSpotResearchActivity extends BaseActivity implements HotSpotContract.HotSpotView {
 
     //    @BindView(R.id.imagebutton_hotspot_search_back)
 //    ImageButton btnSearchBack;
@@ -83,8 +85,9 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         initData();
         initRecyclerView();
         initOnclickEvent();
+        initViews();
         geocodeSearch = new GeocodeSearch(this);
-        geocodeSearch.setOnGeocodeSearchListener(this);
+
         rvHotspotSearchHistoryTest.setAdapter(historyAdapter);
     }
 
@@ -113,6 +116,25 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         historyList = new ArrayList<>();
         hotSpotList = new ArrayList<>();
         originList = new ArrayList<>();
+    }
+
+    public void initViews() {
+        etHotspotSearchTest.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mPresenter.getHintList(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.e(TAG, "afterTextChanged: " );
+            }
+        });
     }
 
 
@@ -144,7 +166,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
                 String inputAddress = etHotspotSearchTest.getText().toString();
                 //将用户输入的地址转换为坐标
                 if (mPresenter != null && !"".equals(inputAddress)) {
-                    convertToLocation(inputAddress );
+                    mPresenter.convertToLocation(inputAddress ,geocodeSearch );
                 }
                 if(mPresenter != null ) {
                     if ( StatusManager.hotSpotChosen) {
@@ -161,14 +183,14 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 String address = historyAdapter.getData().get(position).getHotSpotHistory();
-                convertToLocation(address);
+                mPresenter.convertToLocation(address ,geocodeSearch );
             }
         });
         hintAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 String address = hintAdapter.getData().get(position).getHotSpotLocation();
-                convertToLocation(address );
+                mPresenter.convertToLocation(address ,geocodeSearch );
             }
         });
         recommandAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -184,7 +206,6 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             }
         });
 
-
     }
 
 
@@ -194,23 +215,26 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         if (recommandAdapter != null && rvHotspotSearchHistoryTest != null) {
             hotSpotList.clear();
             recommandAdapter.setNewData(hotSpotCallBackInfoList);
-            rvHotspotSearchHistoryTest.swapAdapter(recommandAdapter, true);
+            rvHotspotSearchHistoryTest.swapAdapter(recommandAdapter, false);
         }
     }
 
     @Override
     public void showHistorySearchList(List<HotSpotHistorySearch> hotSpotHistorySearchList) {
         if (historyAdapter != null && rvHotspotSearchHistoryTest != null) {
+            rvHotspotSearchHistoryTest.swapAdapter(historyAdapter, false);
             historyAdapter.setNewData(hotSpotHistorySearchList);
-            rvHotspotSearchHistoryTest.swapAdapter(historyAdapter, true);
+
         }
     }
 
     @Override
     public void showHintHotSpotList(List<HotSpotHint> hintList) {
         if (hintAdapter != null && rvHotspotSearchHistoryTest != null) {
+            //hintAdapter = new HintHotSpotAdapter(R.layout.item_hotspot_hint, hintList);
+            //rvHotspotSearchHistoryTest.swapAdapter(hintAdapter, false);
+            rvHotspotSearchHistoryTest.setAdapter(hintAdapter);
             hintAdapter.setNewData(hintList);
-            rvHotspotSearchHistoryTest.swapAdapter(hintAdapter, true);
         }
     }
 
@@ -218,28 +242,9 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     @Override
     public void showHistoryOriginList(List<HotSpotOrigin> hotSpotOrigins) {
         if (originAdapter != null && rvHotspotSearchHistoryTest != null) {
+            rvHotspotSearchHistoryTest.swapAdapter(originAdapter, false);
             originAdapter.setNewData(hotSpotOrigins);
-            rvHotspotSearchHistoryTest.swapAdapter(originAdapter, true);
         }
     }
 
-    @Override
-    public void convertToLocation(String address) {
-        GeocodeQuery query = new GeocodeQuery(address, "广州");
-        geocodeSearch.getFromLocationNameAsyn(query);
-        Log.e(TAG, "convertToLocation: 准备中文转换坐标" );
-    }
-
-    @Override
-    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-    }
-    @Override
-    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-        GeocodeAddress geocodeAddress = geocodeResult.getGeocodeAddressList().get(0);
-        LatLonPoint point = geocodeAddress.getLatLonPoint();
-        double inputLatitude = point.getLatitude();
-        double inputLongitude = point.getLongitude();
-        Log.e(TAG, "onGeocodeSearched: "+ "longtitude : " + inputLongitude + "   latitude:  " +inputLatitude );
-        mPresenter.getHotSpotData(inputLongitude,inputLatitude ,"");
-    }
 }

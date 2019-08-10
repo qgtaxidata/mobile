@@ -74,6 +74,7 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
 
     @Override
     public void getHintList(String keyword) {
+        Log.e(TAG, "getHintList: 准备查询 提示列表" );
         InputtipsQuery inputquery = new InputtipsQuery(keyword,"广州");
         inputquery.setCityLimit(true);
         Inputtips inputTips = new Inputtips(TaxiApp.getContext(), inputquery);
@@ -84,6 +85,7 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
     @Override
     public void onGetInputtips(List<Tip> list, int i) {
         hintList.clear();
+        Log.e(TAG, "onGetInputtips: 获取 提示列表，大小为 ：" + list.size() );
         for(Tip tip : list) {
             if(! "".equals(tip.getPoiID()) && tip.getPoint() != null ) {
                 //真实存在的地点加入列表

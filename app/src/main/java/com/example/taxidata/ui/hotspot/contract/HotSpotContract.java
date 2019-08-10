@@ -73,14 +73,14 @@ public interface HotSpotContract {
          *
          * @param hotSpotCallBackInfoList the hot spot call back info list
          */
-        public void showHotSpot(List<HotSpotCallBackInfo.DataBean>  hotSpotCallBackInfoList);
+        public void showHotSpot(List<HotSpotCallBackInfo.DataBean> hotSpotCallBackInfoList);
 
         /**
          * 呈现 历史搜索列表
          *
          * @param hotSpotHistorySearchList the hot spot history search list
          */
-        public void showHistorySearchList (List<HotSpotHistorySearch>  hotSpotHistorySearchList);
+        public void showHistorySearchList(List<HotSpotHistorySearch> hotSpotHistorySearchList);
 
         public void showHistoryOriginList(List<HotSpotOrigin> hotSpotOrigins);
 
@@ -89,15 +89,9 @@ public interface HotSpotContract {
          *
          * @param hintList the hint list
          */
-        public void showHintHotSpotList (List<HotSpotHint> hintList) ;
-
-        /**
-         * 将地址转换成为地图的坐标
-         *
-         * @param address the address
-         */
-        public void convertToLocation(String address );
+        public void showHintHotSpotList(List<HotSpotHint> hintList);
     }
+
 
     /**
      * The interface Presenter.
@@ -113,10 +107,6 @@ public interface HotSpotContract {
          * @param time      the time
          */
         public void getHotSpotData(double longitude, double latitude, String time) ;
-
-
-
-
 
         /**
          * 获取历史搜索的列表
@@ -149,8 +139,14 @@ public interface HotSpotContract {
         public void  saveHotSpotSearchHistory(String historyHotSpot) ;
 
         public void saveOriginHotSpotHistory(String orignHistory);
-    }
 
+        /**
+         * 将地址转换成为地图的坐标
+         *
+         * @param address the address
+         */
+        public void convertToLocation(String address ,GeocodeSearch geocodeSearch );
+     }
 
 
 }
