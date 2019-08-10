@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_image_recommand"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:id = "@+id/iv_hotspot_recommand"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="15dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginBottom="22dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_launcher"/>
+    </RelativeLayout>
+
+<RelativeLayout
+    android:id="@+id/rl_text_recommand"
+    android:layout_toEndOf="@id/rl_image_recommand"
+    android:visibility="visible"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+
+    <TextView
+        android:id="@+id/tv_hotspot_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="我是经度，我是维度"
+        android:textColor="#4c93fd"
+        android:textSize="23sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_hotspot_heat"
+        android:layout_below="@id/tv_hotspot_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart= "@id/tv_hotspot_location"
+        android:text="我是热度"
+        android:textColor="#4d4d4d"
+        android:textSize="20sp"
+        />
+
+</RelativeLayout>
+
+
+</RelativeLayout>

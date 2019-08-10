@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id = "@+id/iv_hotspot_history"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="15dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginBottom="22dp"
+        android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/tv_hotspot_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_toRightOf="@id/iv_hotspot_history"
+        android:text="我是一条热点历史记录"/>
+
+</RelativeLayout>
