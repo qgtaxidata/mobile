@@ -1,3 +1,6 @@
+ext {
+    var = '\\debug.keystore'
+}
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
@@ -12,12 +15,18 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        debug {
+            storeFile file("/debug.keystore")
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
 
     compileOptions {
         sourceCompatibility 1.8
@@ -26,7 +35,7 @@ android {
 
 
     greendao {
-        schemaVersion 1 //数据库版本号
+        schemaVersion 2 //数据库版本号
         daoPackage 'com.aserbao.aserbaosandroid.functions.database.greenDao.db'
         targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
         generateTests false //设置为true以自动生成单元测试。
@@ -41,7 +50,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
+    implementation 'androidx.cardview:cardview:+'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -67,5 +76,11 @@ dependencies {
     implementation 'org.greenrobot:greendao:3.2.2'
     //数据图表库
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.1'
+    implementation 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
+    implementation 'com.github.HanHuoBin:BaseDialog:1.2.0'
+
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
+
 
 }
