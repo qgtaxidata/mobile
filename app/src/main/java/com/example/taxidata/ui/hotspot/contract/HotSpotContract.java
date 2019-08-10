@@ -4,6 +4,7 @@ import com.example.taxidata.base.BaseModel;
 import com.example.taxidata.base.BasePresent;
 import com.example.taxidata.base.BaseView;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
+import com.example.taxidata.bean.HotSpotRecommandInfo;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public interface HotSpotContract {
          *
          * @param hotSpotCallBackInfoList the hot spot call back info list
          */
-        public void showHotSpot(List<HotSpotCallBackInfo.HotSpotBean>  hotSpotCallBackInfoList);
+        public void showHotSpot(List<HotSpotCallBackInfo.DataBean>  hotSpotCallBackInfoList);
     }
 
     /**
@@ -64,7 +65,6 @@ public interface HotSpotContract {
          * @param time      the time
          */
         public void getHotSpotData(double longitude , double latitude , String time) ;
-
 
     }
 }

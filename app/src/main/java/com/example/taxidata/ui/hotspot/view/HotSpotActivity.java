@@ -23,6 +23,7 @@ import com.amap.api.services.geocoder.RegeocodeResult;
 import com.example.taxidata.R;
 import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
+import com.example.taxidata.bean.HotSpotRecommandInfo;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
 import com.hb.dialog.myDialog.MyAlertInputDialog;
@@ -56,6 +57,7 @@ public class HotSpotActivity extends BaseActivity implements HotSpotContract.Hot
         setContentView(R.layout.activity_hotspot);
         ButterKnife.bind(this);
         mapHotspot.onCreate(savedInstanceState);
+        mPresenter.attachView(this);
         initViews();
     }
 
@@ -100,6 +102,7 @@ public class HotSpotActivity extends BaseActivity implements HotSpotContract.Hot
         btn_showDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 showInputDialog();
             }
         });
@@ -124,15 +127,14 @@ public class HotSpotActivity extends BaseActivity implements HotSpotContract.Hot
     }
 
     @Override
-    public void showHotSpot(List<HotSpotCallBackInfo.HotSpotBean>  hotSpotCallBackInfoList) {
+    public void showHotSpot(List<HotSpotCallBackInfo.DataBean>  hotSpotCallBackInfoList) {
         if (hotSpotCallBackInfoList.size() > 0) {
-            for (HotSpotCallBackInfo.HotSpotBean info : hotSpotCallBackInfoList) {
-//                double longtitude = info.getLongitude();
-//                double latitude = info.getLatitude();
-//                LatLng latLng = new LatLng(longtitude  ,latitude);
-//                Marker marker = aMap.addMarker(new MarkerOptions().position(latLng));
+            for (HotSpotCallBackInfo.DataBean info : hotSpotCallBackInfoList) {
+                double longtitude = info.getLongitude();
+                double latitude = info.getLatitude();
+                LatLng latLng = new LatLng(latitude  ,longtitude);
+                Marker marker = aMap.addMarker(new MarkerOptions().position(latLng));
             }
-
         } else {
             Logger.d("热点推荐列表大小为0 !! ");
         }

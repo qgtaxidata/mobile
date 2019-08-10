@@ -1,8 +1,10 @@
 package com.example.taxidata.ui.hotspot.presenter;
 import android.util.Log;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
+import com.example.taxidata.bean.HotSpotRecommandInfo;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.model.HotSpotModel;
+import com.example.taxidata.util.GsonUtil;
 import com.orhanobut.logger.Logger;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter {
 
     HotSpotModel mHotSpotModel = new HotSpotModel();
     HotSpotContract.HotSpotView mHotSpotView;
-    List<HotSpotCallBackInfo.HotSpotBean> hotSpotCallBackInfoList = new ArrayList<>();
+    List<HotSpotCallBackInfo.DataBean> hotSpotRecommandInfoList = new ArrayList<>();
     private static final String TAG = "HotSpotPresenter";
 
     @Override
@@ -32,12 +34,13 @@ public class HotSpotPresenter implements HotSpotContract.Presenter {
                         }
                         @Override
                         public void onNext(HotSpotCallBackInfo hotSpotCallBackInfo) {
-                            Log.e(TAG, "onNext: hotSpotCallBackInfo.toString()" );
+                            Logger.d(hotSpotCallBackInfo.getMsg());
                             //Todo 获取了返回的callback对象后,解析获取列表
-                            if (hotSpotCallBackInfo.getCode() == 1) {
-                                hotSpotCallBackInfoList.addAll(hotSpotCallBackInfo.getHot_spot());
-                                if (hotSpotCallBackInfoList.size() > 0) {
-                                    mHotSpotView.showHotSpot(hotSpotCallBackInfoList);
+                            if (hotSpotCallBackInfo.getCode() == 1 && hotSpotCallBackInfo.getData().size() > 0 ) {
+                                Logger.d(GsonUtil.GsonString(hotSpotCallBackInfo));
+                                hotSpotRecommandInfoList.addAll(hotSpotCallBackInfo.getData());
+                                if (hotSpotRecommandInfoList.size() > 0 ) {
+                                    mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
                                 } else {
                                     Logger.d("获取了返回的热点数据,但是列表大小为0 ");
                                 }
@@ -50,6 +53,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            e.printStackTrace();
                             Log.e(TAG, "onError: 热点请求P层请求回调发生错误" );
                         }
 

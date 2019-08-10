@@ -13,12 +13,12 @@ public class HotSpotCallBackInfo {
     /**
      * msg : success
      * code : 1
-     * hot_spot : [{"longitude":113.439721,"latitude":23.190191,"heat":10},{"longitude":113.460731,"latitude":23.172837,"heat":6},{"longitude":113.447561,"latitude":23.169458,"heat":6},{"longitude":113.444407,"latitude":23.180245,"heat":6}]
+     * data : [{"longitude":113.28778860505719,"latitude":23.141783998654773,"heat":10}]
      */
 
     private String msg;
     private int code;
-    private List<HotSpotBean> hot_spot;
+    private List<DataBean> data;
 
     public String getMsg() {
         return msg;
@@ -36,18 +36,18 @@ public class HotSpotCallBackInfo {
         this.code = code;
     }
 
-    public List<HotSpotBean> getHot_spot() {
-        return hot_spot;
+    public List<DataBean> getData() {
+        return data;
     }
 
-    public void setHot_spot(List<HotSpotBean> hot_spot) {
-        this.hot_spot = hot_spot;
+    public void setData(List<DataBean> data) {
+        this.data = data;
     }
 
-    public static class HotSpotBean {
+    public static class DataBean {
         /**
-         * longitude : 113.439721
-         * latitude : 23.190191
+         * longitude : 113.28778860505719
+         * latitude : 23.141783998654773
          * heat : 10
          */
 
