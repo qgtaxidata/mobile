@@ -17,8 +17,9 @@ import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.example.taxidata.ui.heatpower.HeatPowerPresent;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 悬浮按钮
      */
     @BindView(R.id.fam_home_page_menu)
-    FloatingActionsMenu homepageFam;
+    FloatingActionMenu homepageFam;
 
     /*------------------------------------present相关-----------------------------------------------*/
 
@@ -133,7 +134,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 初始化悬浮按钮
      */
     private void initFloatButton(){
-
     }
 
     /**
@@ -157,13 +157,15 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
     @OnClick(R.id.fbtn_heat_power)
     public void onViewClicked() {
-
+        controlHeatPower();
+        homepageFam.close(true);
     }
 
     /**
      * 统一初始化present
      */
     private void initPresent(){
+        heatPowerPresent = new HeatPowerPresent();
         heatPowerPresent.attachView(this);
     }
 
@@ -212,11 +214,36 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
     @Override
     public void showHideButton() {
-        heatPowerFbtn.setTitle(MyCharacter.CONST_HIDE_BUTTON);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                heatPowerFbtn.setLabelText(MyCharacter.CONST_HIDE_BUTTON);
+            }
+        });
     }
 
     @Override
     public void showShowButton() {
-        heatPowerFbtn.setTitle(MyCharacter.CONST_SHOW_BUTTON);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                heatPowerFbtn.setLabelText(MyCharacter.CONST_SHOW_BUTTON);
+            }
+        });
+    }
+
+    /**
+     * 控制热力图的显示或隐藏
+     */
+    private void controlHeatPower(){
+        if (isHeatPowerHide){
+            heatPowerPresent.heatPoint();
+            //热力图不再隐藏
+            isHeatPowerHide = false;
+        }else {
+            heatPowerPresent.pause();
+            isHeatPowerHide = true;
+        }
+
     }
 }

@@ -11,20 +11,24 @@
         android:layout_width="match_parent"
         />
 
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
+    <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fam_home_page_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/dp_20"
+        app:menu_backgroundColor="@android:color/transparent"
         >
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fbtn_heat_power"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:src="@mipmap/ic_heat_power"
+            app:fab_size="mini"
+            app:fab_label="热力图"
             />
 
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+    </com.github.clans.fab.FloatingActionMenu>
 
 </FrameLayout>

@@ -45,9 +45,13 @@ public interface HeatPowerContract {
 
         /**
          * 根据用户点击显示热力图或隐藏热力图
-         * @param time 时间
          */
-        void heatPoint(String time);
+        void heatPoint();
+
+        /**
+         * 暂停轮询
+         */
+        void pause();
     }
 
     interface HeatPowerModel extends BaseModel{

@@ -31,11 +31,13 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     }
 
     @Override
-    public void heatPoint(String time) {
+    public void heatPoint() {
+        String time = null;
         if (heatPowerModel != null){
             //不暂停轮询
             isPaused = false;
             //每3秒轮询一次
+            heatPowerView.showHideButton();
             Observable.interval(3,TimeUnit.SECONDS)
                     .doOnNext(new Consumer<Long>() {
                         @Override
@@ -44,10 +46,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                                     .subscribe(new Observer<HeatPointInfo>() {
                                         @Override
                                         public void onSubscribe(Disposable d) {
-                                            //暂停轮询
-                                            if (isPaused){
-                                                d.dispose();
-                                            }
+
                                         }
 
                                         @Override
@@ -70,14 +69,18 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                                                     //构造具有权重的经纬度对象数组
                                                     longitudeLaitudeList.add(wLongitudeLaitude);
                                                 }
+                                                //调试数据
                                                 for (int i = 0; i < longitudeLaitudeList.size(); i++){
                                                     Log.d("HeatPowerPresent",i +" : " + longitudeLaitudeList.get(i).latLng);
                                                 }
                                                 Log.d("HeatPowerPresent", "------------------------------------------------------------------------------------------");
                                                 heatPowerView.showHeatPower(longitudeLaitudeList);
                                             } else {
+                                                //显示错误信息
                                                 String errorMessage = heatPointInfo.getMsg();
                                                 ToastUtil.showShortToastBottom(errorMessage);
+                                                //暂停轮询
+                                                pause();
                                             }
                                         }
 
@@ -94,12 +97,11 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                                     });
                         }
                     })
+                    .takeUntil(stopPredicat -> isPaused)
                     .subscribe(new Observer<Long>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-                                if (isPaused){
-                                    d.dispose();
-                                }
+
                         }
 
                         @Override
@@ -111,11 +113,17 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                         public void onError(Throwable e) {
                             Log.d(TAG, "对Error事件作出响应");
                             e.printStackTrace();
+                            //出现异常，清空热力图，并显示显示热力图按钮
+                            heatPowerView.hideHeatPower();
+                            heatPowerView.showShowButton();
                         }
 
                         @Override
                         public void onComplete() {
                             Log.d(TAG, "对Complete事件作出响应");
+                            //轮询结束，清空热力图，并显示显示热力图的按钮
+                            heatPowerView.hideHeatPower();
+                            heatPowerView.showShowButton();
                         }
                     });
         }
@@ -135,6 +143,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     /**
      * 暂停轮询
      */
+    @Override
     public void pause(){
         isPaused = true;
     }
