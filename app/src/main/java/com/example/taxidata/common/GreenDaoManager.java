@@ -13,7 +13,7 @@ public class GreenDaoManager {
 
     private static final String TAG = "GreenDaoManager";
 
-    public static final  String HOTSPOT_DATABASE_NAME = "hotspot.db";
+    public static final  String HOTSPOT_DATABASE_NAME = "taxi_data.db";
 
     /**
      * DaoSession 类型 ： 热点历史

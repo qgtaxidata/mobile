@@ -30,6 +30,6 @@ public class TaxiApp extends Application {
      * 全局初始化GreenDao.
      */
     public void  initGreenDao(){
-        GreenDaoManager.getInstance().init(getApplicationContext());
+        GreenDaoManager.getInstance().init(getContext());
     }
 }

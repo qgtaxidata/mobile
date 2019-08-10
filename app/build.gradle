@@ -73,6 +73,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.47-androidx'
     implementation 'com.orhanobut:logger:2.2.0'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
     // add  greendao library
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
