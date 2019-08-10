@@ -1,6 +1,7 @@
 package com.example.taxidata.ui.heatpower;
 
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.base.BaseModel;
 import com.example.taxidata.base.BasePresent;
 import com.example.taxidata.base.BaseView;
@@ -28,17 +29,16 @@ public interface HeatPowerContract {
          * 显示热力
          * @param heatPointList 热力坐标集合
          */
-        void showHeatPower(List<LatLng> heatPointList);
+        void showHeatPower(List<WeightedLatLng> heatPointList);
     }
 
     interface HeatPowerPresent extends BasePresent<HeatPowerView> {
 
         /**
-         * 更新热力数据
-         * @param LongitudeLatitude 经纬度
+         * 每五秒更新热力数据
          * @param time 时间
          */
-        void updataHeatPoint(LatLng LongitudeLatitude,String time);
+        void updataHeatPoint(String time);
     }
 
     interface HeatPowerModel extends BaseModel{
