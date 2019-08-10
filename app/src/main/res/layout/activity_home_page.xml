@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/mv_home_page"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        />
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fam_home_page_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="@dimen/dp_20"
+        android:src="@mipmap/ic_receive"
+
+        >
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbtn_passenger_hot"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_passenger_hot"
+            app:fab_size="mini"
+            app:fab_label="载客热点推荐"
+            app:fab_colorNormal="@android:color/background_light"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbtn_heat_power"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_heat_power"
+            app:fab_size="mini"
+            app:fab_label="热力图"
+            app:fab_colorNormal="@android:color/background_light"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbtn_road_quality"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_road_quality"
+            app:fab_size="mini"
+            app:fab_label="道路质量分析"
+            app:fab_colorNormal="@android:color/background_light"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbtn_request_analysis"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_request_analysis"
+            app:fab_size="mini"
+            app:fab_label="区域出租车需求量分析"
+            app:fab_colorNormal="@android:color/background_light"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbtn_taxi_income"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_income"
+            app:fab_size="mini"
+            app:fab_label="出租车司机收入排行榜"
+            app:fab_colorNormal="@android:color/background_light"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbtn_behavior_analysis"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_behavior_analysis"
+            app:fab_size="mini"
+            app:fab_label="出租车行为分析与预测"
+            app:fab_colorNormal="@android:color/background_light"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbtn_abnormal_analysis"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_abnormal_analysis"
+            app:fab_size="mini"
+            app:fab_label="出租车异常情况分析"
+            app:fab_colorNormal="@android:color/background_light"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbtn_visualization"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_visualization"
+            app:fab_size="mini"
+            app:fab_label="路径可视化"
+            app:fab_colorNormal="@android:color/background_light"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbtn_set_up"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_set_up"
+            app:fab_size="mini"
+            app:fab_label="设置"
+            app:fab_colorNormal="@android:color/background_light"
+            />
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+</FrameLayout>
