@@ -1,5 +1,6 @@
 package com.example.taxidata;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
+import com.example.taxidata.util.TimePickerUtil;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -145,6 +147,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 初始化悬浮按钮
      */
     private void initFloatButton() {
+
     }
 
     /**
