@@ -235,7 +235,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         heatpowerBuilder = new HeatmapTileProvider.Builder();
         heatpowerBuilder.weightedData(heatPointList)
                 .gradient(ColorGriant.ALT_HEATMAP_GRADIENT)
-                .radius(12);
+                .radius(25);
         heatpower = heatpowerBuilder.build();
         TileOverlayOptions tileOverlayOptions = new TileOverlayOptions();
         tileOverlayOptions.tileProvider(heatpower);
