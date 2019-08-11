@@ -5,6 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/ll_heat_power_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="@dimen/dp_15"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_show_hide_heat_power"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_24"
+                android:textStyle="normal"
+                android:textSize="12sp"
+                android:text="隐藏"
+                android:background="@drawable/shape_small_button"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="@dimen/dp_15"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
     <com.amap.api.maps.MapView
         android:id="@+id/mv_home_page"
         android:layout_height="match_parent"
@@ -148,6 +179,10 @@
             app:fab_shadowColor="@android:color/transparent"
             app:fab_shadowRadius="4dp"
             />
+<<<<<<< HEAD
+=======
+
+>>>>>>> dd4f0e43559d9c85386f8cdcfc37c17d49cb553a
 
     </com.github.clans.fab.FloatingActionMenu>
 

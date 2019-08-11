@@ -1,8 +1,24 @@
 package com.example.taxidata;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dd4f0e43559d9c85386f8cdcfc37c17d49cb553a
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.graphics.Color;
+=======
+
+
+import android.content.Intent;
+
+import android.graphics.Color;
+
+import android.graphics.drawable.ColorDrawable;
+
+
+>>>>>>> dd4f0e43559d9c85386f8cdcfc37c17d49cb553a
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
@@ -169,6 +185,12 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         visualizationFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
     }
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> dd4f0e43559d9c85386f8cdcfc37c17d49cb553a
     /**
      * 获取屏幕中心位置
      *
@@ -228,7 +250,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         heatpowerBuilder = new HeatmapTileProvider.Builder();
         heatpowerBuilder.weightedData(heatPointList)
                 .gradient(ColorGriant.ALT_HEATMAP_GRADIENT)
-                .radius(12);
+                .radius(25);
         heatpower = heatpowerBuilder.build();
         TileOverlayOptions tileOverlayOptions = new TileOverlayOptions();
         tileOverlayOptions.tileProvider(heatpower);
@@ -281,6 +303,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         switch (view.getId()) {
             case R.id.fbtn_passenger_hot:
                 //载客热点推荐
+                Intent hotSpotIntent = new Intent(HomePageActivity.this ,HotSpotResearchActivity.class);
+                startActivity(hotSpotIntent);
                 break;
             case R.id.fbtn_heat_power:
                 controlHeatPower();

@@ -24,11 +24,11 @@
 
             <ImageButton
                 android:id="@+id/imagebutton_hotspot_search_back"
-                android:layout_marginTop="20dp"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_marginTop="27dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:background="@mipmap/ic_launcher"
+                android:background="@mipmap/ui_hotspot_search_return"
                 />
             <EditText
                 android:id="@+id/et_hotspot_search"
@@ -43,6 +43,8 @@
                 android:inputType="text"
                 android:background="@null"
                 android:hint="请输入地点"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
                 />
             <Button
                 android:id="@+id/btn_hotspot_search"

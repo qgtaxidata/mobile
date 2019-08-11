@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.TaxiDriverIncome.IncomeActivity"></activity>
+        <activity android:name=".test.MainActivity">
+        </activity>
+        <activity android:name=".ui.hotspot.view.HotSpotResearchActivity"></activity>
         <activity android:name=".HomePageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,13 +35,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.TaxiPath.TaxiInfoListActivity" />
-        <activity android:name=".ui.hotspot.view.HotSpotResearchActivity" />
         <activity android:name=".ui.TaxiPath.TaxiPathActivity" />
         <activity android:name=".ChartText.PieChartActivity" />
         <activity android:name=".ChartText.BarChartActivity" />
         <activity android:name=".ChartText.LineChartActivity" />
 
-        <meta-data
+       <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="2002b6e6cb4527690f56dab4374fc825" />
     </application>

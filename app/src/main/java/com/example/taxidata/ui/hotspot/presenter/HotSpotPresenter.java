@@ -15,6 +15,7 @@ import com.example.taxidata.bean.HotSpotOrigin;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.model.HotSpotModel;
 import com.example.taxidata.util.GsonUtil;
+import com.example.taxidata.util.ToastUtil;
 import com.orhanobut.logger.Logger;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                                 Logger.d(GsonUtil.GsonString(hotSpotCallBackInfo));
                                 hotSpotRecommandInfoList.addAll(hotSpotCallBackInfo.getData());
                                 if (hotSpotRecommandInfoList.size() > 0 ) {
+                                    Logger.d("热点推荐列表大小"+hotSpotRecommandInfoList.size() );
                                     mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
                                 } else {
                                     Logger.d("获取了返回的热点数据,但是列表大小为0 ");
@@ -78,7 +80,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
-                            Log.e(TAG, "onError: 热点请求P层请求回调发生错误" );
+                            ToastUtil.showShortToastCenter("抱歉，网络似乎出现了异常 :(");
                         }
 
                         @Override
@@ -122,7 +124,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
 
     @Override
     public void saveOriginHotSpotHistory(String orignHistory) {
-        mHotSpotModel.saveHotSpotSearchHistory(orignHistory);
+        mHotSpotModel.saveHotSpoyOriginHistory(orignHistory);
     }
 
     @Override
@@ -139,11 +141,15 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
 
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-        GeocodeAddress geocodeAddress = geocodeResult.getGeocodeAddressList().get(0);
-        LatLonPoint point = geocodeAddress.getLatLonPoint();
-        double inputLatitude = point.getLatitude();
-        double inputLongitude = point.getLongitude();
-        Log.e(TAG, "onGeocodeSearched: "+ "longtitude : " + inputLongitude + "   latitude:  " +inputLatitude );
-        getHotSpotData(inputLongitude,inputLatitude ,"");
+        if(geocodeResult.getGeocodeAddressList().size() > 0) {
+            GeocodeAddress geocodeAddress = geocodeResult.getGeocodeAddressList().get(0);
+            LatLonPoint point = geocodeAddress.getLatLonPoint();
+            double inputLatitude = point.getLatitude();
+            double inputLongitude = point.getLongitude();
+            Log.e(TAG, "onGeocodeSearched: "+ "longtitude : " + inputLongitude + "   latitude:  " +inputLatitude );
+            getHotSpotData(inputLongitude,inputLatitude ,"");
+        } else {
+            ToastUtil.showShortToastBottom("您输入的地址有误,系统无法识别,请重新输入");
+        }
     }
 }
