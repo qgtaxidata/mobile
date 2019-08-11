@@ -1,50 +1,46 @@
 package com.example.taxidata;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.content.Intent;
-
-
-import android.content.Intent;
-
 import android.graphics.Color;
-
-import android.graphics.drawable.ColorDrawable;
-
-
 import android.os.Bundle;
 import android.view.View;
-import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.LatLng;
-
-import java.util.List;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
+import com.example.taxidata.bean.HotSpotInfo;
+import com.example.taxidata.common.StatusManager;
+import com.example.taxidata.common.eventbus.BaseEvent;
+import com.example.taxidata.common.eventbus.EventFactory;
 import com.example.taxidata.constant.ColorGriant;
+import com.example.taxidata.constant.EventBusType;
 import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
-
-import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
-
-
-
-import com.example.taxidata.util.TimePickerUtil;
-
+import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
+import com.example.taxidata.ui.hotspot.view.OriginHotSpotLayout;
+import com.example.taxidata.util.EventBusUtils;
+import com.example.taxidata.util.ToastUtil;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -67,6 +63,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 标签黄色背景
      */
     private static final int CONST_LABEL_BACKGROUND = 0xFFBB33;
+
 
     /*----------------------------------地图相关---------------------------------------------------*/
 
@@ -108,6 +105,13 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     @BindView(R.id.fam_home_page_menu)
     FloatingActionMenu homePageMenuFam;
 
+    ImageView searchBack;
+
+    TextView searchOrigin;
+    TextView searchEndPoint;
+    @BindView(R.id.layout_originhotspot)
+    OriginHotSpotLayout layoutOriginhotspot;
+
     /*------------------------------------present相关-----------------------------------------------*/
 
     /**
@@ -131,15 +135,22 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         ButterKnife.bind(this);
         homePageMv = findViewById(R.id.mv_home_page);
         homePageMv.onCreate(savedInstanceState);
-        if (homepageAMap == null){
+        if (homepageAMap == null) {
             homepageAMap = homePageMv.getMap();
         }
+
         //初始化present
         initPresent();
         //初始化悬浮按钮
         initFloatButton();
         //初始化地图
         initMap();
+        //初始化控件
+        initViews();
+        //初始化注册EventBus
+        if (isRegisterEventBus()) {
+            EventBusUtils.register(this);
+        }
     }
 
     @Override
@@ -147,6 +158,11 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         super.onDestroy();
         homePageMv.onDestroy();
         destroyPresent();
+        //解绑EventBus
+        if (isRegisterEventBus()) {
+            EventBusUtils.unregister(this);
+        }
+        Logger.d("onDestory");
     }
 
     @Override
@@ -160,6 +176,12 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         super.onResume();
         homePageMv.onResume();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
     /**
      * 初始化地图
      */
@@ -181,19 +203,16 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      */
     private void initFloatButton() {
         //将悬浮按钮的Label背景设置为透明
-        heatPowerFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        abnormalAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        behaviorAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        passengerHotFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        requestAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        roadQualityFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        setUpFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        taxiIncomeFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        visualizationFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        heatPowerFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        abnormalAnalysisFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        behaviorAnalysisFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        passengerHotFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        requestAnalysisFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        roadQualityFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        setUpFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        taxiIncomeFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        visualizationFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
     }
-
-
-
 
     /**
      * 获取屏幕中心位置
@@ -203,11 +222,12 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
         this.target = cameraPosition.target;
-        Log.d(TAG, "屏幕中心位置 : " + target);
+
     }
 
     /**
      * 获取屏幕中心位置
+     *
      * @param cameraPosition 相机位置
      */
     @Override
@@ -304,15 +324,63 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             heatPowerPresent.pause();
             isHeatPowerHide = true;
         }
+    }
+
+    /**
+     * 展示热点
+     * @param hotSpotInfo 热点信息对象
+     */
+    private void showHotSpot(HotSpotInfo hotSpotInfo) {
+        double longititue = hotSpotInfo.getLongitude();
+        double latitute = hotSpotInfo.getLatitude();
+        Logger.d("打标记：经度: " + longititue + "： 纬度" + latitute);
+        LatLng latLngHot = new LatLng(latitute, longititue);
+        final Marker markerHot = homepageAMap.addMarker(new MarkerOptions().position(latLngHot).title(hotSpotInfo.getAddress()).snippet("热度" + hotSpotInfo.getHeat()));
 
     }
 
-    @OnClick({R.id.fbtn_passenger_hot, R.id.fbtn_heat_power, R.id.fbtn_road_quality, R.id.fbtn_request_analysis, R.id.fbtn_taxi_income, R.id.fbtn_behavior_analysis, R.id.fbtn_abnormal_analysis, R.id.fbtn_visualization, R.id.fbtn_set_up})
+    public void initViews() {
+        searchEndPoint = layoutOriginhotspot.findViewById(R.id.search_end_point);
+        searchOrigin = layoutOriginhotspot.findViewById(R.id.search_origin);
+        searchOrigin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //选择输入起点，跳转输入界面
+                    StatusManager.hotSpotChosen = true;
+                    Intent intentHotSearch = new Intent(HomePageActivity.this, HotSpotResearchActivity.class);
+                    startActivity(intentHotSearch);
+                    BaseEvent baseEventOrigin = EventFactory.getInstance();
+                    baseEventOrigin.type = EventBusType.ORIGIN_HOTSPOT_TO_CHOOSE;
+                    EventBusUtils.postSticky(baseEventOrigin);
+
+                }
+            });
+            searchBack = layoutOriginhotspot.findViewById(R.id.search_back);
+            searchBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BaseEvent baseEventBack = EventFactory.getInstance();
+                    baseEventBack.type = EventBusType.HOTSPOT_CHOSE_AGAIN;
+                    EventBusUtils.postSticky(baseEventBack);
+                    Intent intentHotChooseAgain = new Intent(HomePageActivity.this, HotSpotResearchActivity.class);
+                    startActivity(intentHotChooseAgain);
+                }
+            });
+        }
+
+
+    /**
+     * 悬浮按钮点击事件
+     *
+     * @param view
+     */
+    @OnClick({R.id.fbtn_passenger_hot, R.id.fbtn_heat_power, R.id.fbtn_road_quality, R.id.fbtn_request_analysis, R.id.fbtn_taxi_income
+            , R.id.fbtn_behavior_analysis, R.id.fbtn_abnormal_analysis, R.id.fbtn_visualization, R.id.fbtn_set_up})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.fbtn_passenger_hot:
                 //载客热点推荐
-                Intent hotSpotIntent = new Intent(HomePageActivity.this ,HotSpotResearchActivity.class);
+                Intent hotSpotIntent = new Intent(HomePageActivity.this, HotSpotResearchActivity.class);
                 startActivity(hotSpotIntent);
                 break;
             case R.id.fbtn_heat_power:
@@ -345,5 +413,30 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         }
         //收起菜单栏
         homePageMenuFam.close(true);
+    }
+
+    //注册绑定EventBus
+    protected boolean isRegisterEventBus() {
+        return true;
+    }
+
+    /**
+     * 处理eventbus发过来的事件
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEvent(BaseEvent baseEvent) {
+        if (baseEvent.type.equals(EventBusType.HOTSPOT_CHOSEN)) {
+            Logger.d("接收事件 热点已经选择，显示状态框");
+            HotSpotInfo hotSpotInfo = (HotSpotInfo) baseEvent.object;
+            layoutOriginhotspot.setVisibility(View.VISIBLE);
+            showHotSpot(hotSpotInfo);
+            //如果热点文本框Visible则赋值用户选定的热点信息
+            if (searchEndPoint.getVisibility() == View.VISIBLE) {
+                searchEndPoint.setText(hotSpotInfo.getAddress());
+            }
+        }
+        if(baseEvent.type.equals(EventBusType.ORIGIN_HOTSPOT_BOTH_CHOSEN)) {
+            Logger.d("接收事件 ： 热点和地点都已经选择");
+        }
     }
 }

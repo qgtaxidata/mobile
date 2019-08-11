@@ -22,16 +22,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomePageActivity">
+        <activity android:name=".HomePageActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".ui.TaxiPath.TaxiInfoListActivity"></activity>
-        <activity android:name=".ui.hotspot.view.HotSpotResearchActivity"></activity>
+        <activity
+            android:name=".ui.hotspot.view.HotSpotResearchActivity"
+            android:launchMode="singleTask">
+        </activity>
         <activity android:name=".ui.TaxiPath.TaxiPathActivity" />
         <activity android:name=".ChartText.PieChartActivity" />
         <activity android:name=".ChartText.BarChartActivity" />

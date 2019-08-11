@@ -1,6 +1,7 @@
 package com.example.taxidata.ui.hotspot.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,6 +28,7 @@ import com.amap.api.services.geocoder.RegeocodeResult;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
+import com.example.taxidata.HomePageActivity;
 import com.example.taxidata.R;
 import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
@@ -34,14 +36,21 @@ import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotHistorySearch;
 import com.example.taxidata.bean.HotSpotOrigin;
 import com.example.taxidata.common.StatusManager;
+import com.example.taxidata.common.eventbus.BaseEvent;
+import com.example.taxidata.common.eventbus.EventFactory;
+import com.example.taxidata.constant.EventBusType;
 import com.example.taxidata.ui.hotspot.adapter.HintHotSpotAdapter;
 import com.example.taxidata.ui.hotspot.adapter.HistoryHotspotSearchAdapter;
 import com.example.taxidata.ui.hotspot.adapter.OriginHotSpotAdapter;
 import com.example.taxidata.ui.hotspot.adapter.RecommandHotSpotAdapter;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
+import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.ToastUtil;
 import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,14 +75,6 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     @BindView(R.id.rv_hotspot_search_history)
     RecyclerView rvSearch;
     private static final String TAG = "HotSpotResearchFragment";
-//    @BindView(R.id.imagebutton_hotspot_search_back_test)
-//    ImageButton imagebuttonHotspotSearchBackTest;
-//    @BindView(R.id.et_hotspot_search_test)
-//    EditText etHotspotSearchTest;
-//    @BindView(R.id.btn_hotspot_search_test)
-//    Button btnHotspotSearchTest;
-//    @BindView(R.id.rv_hotspot_search_history_test)
-//    RecyclerView rvHotspotSearchHistoryTest;
     private HotSpotPresenter mPresenter = new HotSpotPresenter();
     private List<HotSpotHistorySearch> historyList;
     private List<HotSpotHint> hintList;
@@ -97,25 +98,45 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         initRecyclerView();
         initOnclickEvent();
         initViews();
+        //初始化注册EventBus
+        if (isRegisterEventBus()) {
+            EventBusUtils.register(this);
+        }
+        Logger.d("onCreate");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (StatusManager.hotSpotChosen) {
-            //热点已经选定了
-            etSearch.setHint("请输入起点");
+        if(StatusManager.hotSpotChosen) {
             showHistoryOriginList(mPresenter.getHistoryOriginList());
+            etSearch.setHint("请输入起点");
         } else {
-            //热点尚未选定
             showHistorySearchList(mPresenter.getHistorySearchList());
             etSearch.setHint("请输入地点");
         }
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        //解绑EventBus
+        if (isRegisterEventBus()) {
+            EventBusUtils.unregister(this);
+        }
+        //销毁页面时将 热点选中状态 更新为 false
         StatusManager.hotSpotChosen = false;
     }
 
@@ -137,28 +158,16 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             }
             @Override
             public void afterTextChanged(Editable s) {
-                intputString = s.toString();
-                if( ! "".equals(intputString) && etSearch.isFocused()) {
-                    //当前输入框有内容,将输入的内容发送请求获取提示列表
-                    mPresenter.getHintList(s.toString());
-                } else {
-                    //当前输入框没有内容,则显示历史消息记录
-                    showHistorySearchList(mPresenter.getHistorySearchList());
+                    intputString = s.toString();
+                    if( ! "".equals(intputString) && etSearch.isFocused()) {
+                        //当前输入框有内容,将输入的内容发送请求获取提示列表
+                        mPresenter.getHintList(s.toString());
+                    } else {
+                        //当前输入框没有内容,则显示历史消息记录
+                        showHistorySearchList(mPresenter.getHistorySearchList());
+                    }
                 }
-            }
         });
-//        etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean hasFocus) {
-//                if(!hasFocus) {
-//                    InputMethodManager manager = ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE));
-//                    if (manager != null) {
-//
-//                        manager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-//                    }
-//                }
-//            }
-//        });
     }
 
 
@@ -176,6 +185,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(historyAdapter);
         itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
         historyAdapter.enableSwipeItem();
+        originAdapter.enableSwipeItem();
         historyAdapter.openLoadAnimation();
         hintAdapter.openLoadAnimation();
         recommandAdapter.openLoadAnimation();
@@ -187,12 +197,29 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             }
             @Override
             public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
-                Log.e(TAG, "clearView: 正在删除" );
             }
             @Override
             public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
-                Log.e(TAG, "onItemSwiped: 已经删除 " );
+                mPresenter.removeHistory(historyAdapter.getItem(pos));
             }
+            @Override
+            public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
+            }
+        });
+        originAdapter.setOnItemSwipeListener(new OnItemSwipeListener() {
+            @Override
+            public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
+            }
+
+            @Override
+            public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
+            }
+
+            @Override
+            public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
+                mPresenter.removeOriginHistory(originAdapter.getItem(pos));
+            }
+
             @Override
             public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
             }
@@ -205,7 +232,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             @Override
             public void onClick(View v) {
                 //Todo 搜索页面返回到地图页面？
-                finish();
+                Intent intent = new Intent(HotSpotResearchActivity.this , HomePageActivity.class);
+                startActivity(intent);
             }
         });
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -240,7 +268,11 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         hintAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                mPresenter.saveHotSpotSearchHistory(hintAdapter.getData().get(position).getHotSpotName());
+                if(StatusManager.hotSpotChosen) {
+                    mPresenter.saveOriginHotSpotHistory(hintAdapter.getData().get(position).getHotSpotName());
+                } else {
+                    mPresenter.saveHotSpotSearchHistory(hintAdapter.getData().get(position).getHotSpotName());
+                }
                 etSearch.setText(hintAdapter.getData().get(position).getHotSpotName());
                 double longitute = hintAdapter.getData().get(position).getLongitude();
                 double latitute = hintAdapter.getData().get(position).getLatitute();
@@ -251,34 +283,31 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //Todo：带着 选中的 热点的信息，去到 中间页面
+                mPresenter.convertToAddressName(recommandAdapter.getItem(position) ,geocodeSearch);
             }
         });
         originAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //Todo：带着 选中的 热点 & 起点信息 ，去 地图页面画出来！
+                BaseEvent baseEventBothChosen = EventFactory.getInstance();
+                baseEventBothChosen.type =EventBusType.ORIGIN_HOTSPOT_BOTH_CHOSEN ;
+                EventBusUtils.postSticky(baseEventBothChosen);
+                Intent intentBothChosen = new Intent(HotSpotResearchActivity.this ,HotSpotResearchActivity.class);
+                startActivity(intentBothChosen);
             }
         });
-//        提示列表上拉加载没有意义，因为提示 API一个关键词只给10个
-//        hintAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-//            @Override
-//            public void onLoadMoreRequested() {
-//                mPresenter.getHintList(intputString);
-//            }
-//        });
-
     }
 
 
     @Override
     public void showHotSpot(List<HotSpotCallBackInfo.DataBean> hotSpotCallBackInfoList) {
 
-        if (recommandAdapter != null && rvSearch != null) {
+        if (recommandAdapter != null && rvSearch != null && ! StatusManager.hotSpotChosen) {
             hotSpotList.clear();
             recommandAdapter.setNewData(hotSpotList);
             rvSearch.setAdapter(recommandAdapter);
             itemTouchHelper.attachToRecyclerView(null);
-            Logger.d(TAG+hotSpotCallBackInfoList.size());
             recommandAdapter.setNewData(hotSpotCallBackInfoList);
         }
     }
@@ -315,4 +344,33 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return super.dispatchTouchEvent(ev);
     }
+
+
+    @Override
+    public void  hotSpotChsenSuccess() {
+        Intent intent = new Intent(this , HomePageActivity.class);
+        startActivity(intent);
+    }
+
+    //注册绑定EventBus
+    protected boolean isRegisterEventBus() {
+        return true;
+    }
+
+    /**
+     * 处理eventbus发过来的事件
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
+    public void handleEvent(BaseEvent baseEvent) {
+        if(baseEvent.type.equals(EventBusType.HOTSPOT_CHOSE_AGAIN) ) {
+            Logger.d("接收事件： 再次选择热点地点");
+            rvSearch.setAdapter(recommandAdapter);
+        }
+        if(baseEvent.type.equals(EventBusType.ORIGIN_HOTSPOT_TO_CHOOSE)) {
+            Logger.d("接收事件： 准备选择起点");
+            //热点已经选定了,从中转界面跳转回来选择起点
+            showHistoryOriginList(mPresenter.getHistoryOriginList());
+        }
+    }
+
 }
