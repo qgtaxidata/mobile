@@ -18,7 +18,7 @@ public class GreenDaoManager {
     /**
      * DaoSession 类型 ： 热点历史
      */
-    private DaoSession hotspotDaoSession;
+    private DaoSession daoSession;
 
     //判断是否初始化
     private boolean isInited;
@@ -45,12 +45,14 @@ public class GreenDaoManager {
             DaoMaster.OpenHelper openHelperHotspot = new DaoMaster.DevOpenHelper(
                     context.getApplicationContext(), HOTSPOT_DATABASE_NAME, null);
             DaoMaster daoMaster = new DaoMaster(openHelperHotspot.getWritableDatabase());
-            hotspotDaoSession = daoMaster.newSession();
+            daoSession = daoMaster.newSession();
             isInited = true;
         }
     }
 
     public DaoSession getDaoSession() {
-        return hotspotDaoSession;
+        return daoSession;
     }
+
 }
+

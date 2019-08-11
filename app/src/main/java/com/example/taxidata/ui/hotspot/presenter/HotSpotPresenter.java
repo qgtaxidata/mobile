@@ -1,7 +1,17 @@
 package com.example.taxidata.ui.hotspot.presenter;
 import android.util.Log;
+
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeAddress;
+import com.amap.api.services.geocoder.GeocodeQuery;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeResult;
+import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
-import com.example.taxidata.bean.HotSpotRecommandInfo;
+import com.example.taxidata.bean.HotSpotHint;
+import com.example.taxidata.bean.HotSpotHistorySearch;
+import com.example.taxidata.bean.HotSpotOrigin;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.model.HotSpotModel;
 import com.example.taxidata.util.GsonUtil;
@@ -16,12 +26,28 @@ import io.reactivex.disposables.Disposable;
  * @author: ODM
  * @date: 2019/8/9
  */
-public class HotSpotPresenter implements HotSpotContract.Presenter {
+public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch.OnGeocodeSearchListener  {
 
-    HotSpotModel mHotSpotModel = new HotSpotModel();
-    HotSpotContract.HotSpotView mHotSpotView;
-    List<HotSpotCallBackInfo.DataBean> hotSpotRecommandInfoList = new ArrayList<>();
+    private HotSpotModel mHotSpotModel ;
+    private HotSpotContract.HotSpotView mHotSpotView;
+    private List<HotSpotCallBackInfo.DataBean> hotSpotRecommandInfoList = new ArrayList<>();
     private static final String TAG = "HotSpotPresenter";
+    private GeocodeSearch geocodeSearch ;
+
+    public HotSpotPresenter(){
+        super();
+        mHotSpotModel = new HotSpotModel(this);
+
+    }
+    @Override
+    public void attachView(HotSpotContract.HotSpotView view) {
+        mHotSpotView = view;
+    }
+
+    @Override
+    public void detachView() {
+        mHotSpotView = null;
+    }
 
     @Override
     public void getHotSpotData(double longitude, double latitude, String time) {
@@ -48,9 +74,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter {
                                 String errorMsg = hotSpotCallBackInfo.getMsg();
                                 Log.e(TAG, "onNext: 热点 P层,获取热点数据出现异常: " +errorMsg );
                             }
-
                         }
-
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
@@ -65,13 +89,61 @@ public class HotSpotPresenter implements HotSpotContract.Presenter {
         }
     }
 
+
     @Override
-    public void attachView(HotSpotContract.HotSpotView view) {
-        mHotSpotView = view;
+    public List<HotSpotHistorySearch> getHistorySearchList() {
+        return mHotSpotModel.getHistorySearchList();
     }
 
     @Override
-    public void detachView() {
-        mHotSpotView = null;
+    public void getHintList(String keyword) {
+        mHotSpotModel.getHintList(keyword);
+    }
+
+    @Override
+    public void getHintListSuccess(List<HotSpotHint> hintList) {
+        if (hintList != null) {
+            mHotSpotView.showHintHotSpotList(hintList);
+        } else {
+            Logger.d("提示列表未初始化！！！");
+        }
+
+    }
+
+    @Override
+    public void saveHotSpotSearchHistory(String historyHotSpot) {
+        mHotSpotModel.saveHotSpotSearchHistory(historyHotSpot);
+    }
+
+    @Override
+    public List<HotSpotOrigin> getHistoryOriginList() {
+        return mHotSpotModel.getHistoryOriginList();
+    }
+
+    @Override
+    public void saveOriginHotSpotHistory(String orignHistory) {
+        mHotSpotModel.saveHotSpotSearchHistory(orignHistory);
+    }
+
+    @Override
+    public void convertToLocation(String address, GeocodeSearch geocodeSearch) {
+        GeocodeQuery query = new GeocodeQuery(address, "广州");
+        this.geocodeSearch = geocodeSearch;
+        this.geocodeSearch.setOnGeocodeSearchListener(this);
+        this.geocodeSearch.getFromLocationNameAsyn(query);
+    }
+
+    @Override
+    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+    }
+
+    @Override
+    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+        GeocodeAddress geocodeAddress = geocodeResult.getGeocodeAddressList().get(0);
+        LatLonPoint point = geocodeAddress.getLatLonPoint();
+        double inputLatitude = point.getLatitude();
+        double inputLongitude = point.getLongitude();
+        Log.e(TAG, "onGeocodeSearched: "+ "longtitude : " + inputLongitude + "   latitude:  " +inputLatitude );
+        getHotSpotData(inputLongitude,inputLatitude ,"");
     }
 }

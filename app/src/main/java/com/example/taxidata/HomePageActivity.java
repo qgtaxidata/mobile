@@ -1,9 +1,19 @@
 package com.example.taxidata;
 
+<<<<<<< HEAD
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.Intent;
+=======
+
+import android.content.Intent;
+
+import android.graphics.Color;
+
+import android.graphics.drawable.ColorDrawable;
+
+>>>>>>> e73b07a49297fb6237929dec3b7c9b49e0ad7856
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
@@ -24,8 +34,14 @@ import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
+
+import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
+
+
+
 import com.example.taxidata.util.TimePickerUtil;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -41,6 +57,16 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     /*--------------------------------常量相关------------------------------------------------------*/
 
     private static final String TAG = "HomePageActivity";
+
+    /**
+     * 菜单蓝色字体颜色
+     */
+    private static final int CONST_MENU_TEXT_COLOR = 0x4C93FD;
+
+    /**
+     * 标签黄色背景
+     */
+    private static final int CONST_LABEL_BACKGROUND = 0xFFBB33;
 
     /*----------------------------------地图相关---------------------------------------------------*/
 
@@ -154,8 +180,38 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 初始化悬浮按钮
      */
     private void initFloatButton() {
-
+        //将悬浮按钮的Label背景设置为透明
+        heatPowerFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        abnormalAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        behaviorAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        passengerHotFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        requestAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        roadQualityFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        setUpFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        taxiIncomeFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        visualizationFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
     }
+
+    /**
+     * 悬浮按钮的点击事件监听
+     *
+     * @param v the v
+     */
+    @OnClick({R.id.fbtn_heat_power, R.id.fbtn_hot_spot})
+    void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fbtn_heat_power:
+                break;
+            case R.id.fbtn_hot_spot:
+                //跳转到热点搜索页面
+                Intent intent = new Intent(HomePageActivity.this , HotSpotResearchActivity.class);
+                startActivity(intent);
+                break;
+
+                default:break;
+        }
+    }
+
 
     /**
      * 获取屏幕中心位置
@@ -220,7 +276,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         //构造热力图以及权重，设置渐变
         heatpowerBuilder = new HeatmapTileProvider.Builder();
         heatpowerBuilder.weightedData(heatPointList)
-                .gradient(ColorGriant.ALT_HEATMAP_GRADIENT);
+                .gradient(ColorGriant.ALT_HEATMAP_GRADIENT)
+                .radius(12);
         heatpower = heatpowerBuilder.build();
         TileOverlayOptions tileOverlayOptions = new TileOverlayOptions();
         tileOverlayOptions.tileProvider(heatpower);

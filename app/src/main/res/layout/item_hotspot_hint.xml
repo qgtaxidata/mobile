@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="85dp">
 
     <RelativeLayout
         android:id="@+id/rl_hint_image"
@@ -29,7 +29,7 @@
         android:layout_height="70dp">
 
         <TextView
-            android:id="@+id/tv_hotspot_hint_name"
+            android:id="@+id/tv_hotspothint_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -39,14 +39,14 @@
             />
 
         <TextView
-            android:id="@+id/tv_hotspot_hint_location"
-            android:layout_below="@id/tv_hotspot_hint_name"
+            android:id="@+id/tv_hotspothint_location"
+            android:layout_below="@id/tv_hotspothint_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignStart= "@id/tv_hotspot_hint_name"
+            android:layout_alignStart= "@id/tv_hotspothint_name"
             android:text="我是热度"
             android:textColor="#4d4d4d"
-            android:textSize="20sp"
+            android:textSize="15sp"
             />
 
     </RelativeLayout>

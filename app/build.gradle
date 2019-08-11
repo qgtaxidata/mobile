@@ -35,7 +35,7 @@ android {
 
 
     greendao {
-        schemaVersion 2 //数据库版本号
+        schemaVersion 4 //数据库版本号
         daoPackage 'com.aserbao.aserbaosandroid.functions.database.greenDao.db'
         targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
         generateTests false //设置为true以自动生成单元测试。
@@ -50,7 +50,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'androidx.cardview:cardview:+'
+    implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -82,6 +82,6 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha07'
-
+    implementation 'com.github.clans:fab:1.6.4'
 
 }
