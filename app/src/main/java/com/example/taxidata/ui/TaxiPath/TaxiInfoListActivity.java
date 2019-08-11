@@ -51,9 +51,8 @@ public class TaxiInfoListActivity extends BaseActivity implements TaxiPathContra
         super.onDestroy();
         taxiPathPresent.detachView();
     }
-
     @Override
-    public void showPath() {
+    public void showPath(List<TaxiInfo.DataBean> listInfo) {
 
     }
 }

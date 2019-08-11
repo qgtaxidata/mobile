@@ -1,53 +1,30 @@
 package com.example.taxidata;
 
-<<<<<<< HEAD
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.content.Intent;
-=======
-
-import android.content.Intent;
-
 import android.graphics.Color;
-
-import android.graphics.drawable.ColorDrawable;
-
->>>>>>> e73b07a49297fb6237929dec3b7c9b49e0ad7856
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
-
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
-
 import java.util.List;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
-import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
+import com.example.taxidata.ui.TaxiDriverIncome.IncomeActivity;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
-
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
-
-
-
-import com.example.taxidata.util.TimePickerUtil;
-
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-
-
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -193,27 +170,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     }
 
     /**
-     * 悬浮按钮的点击事件监听
-     *
-     * @param v the v
-     */
-    @OnClick({R.id.fbtn_heat_power, R.id.fbtn_hot_spot})
-    void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fbtn_heat_power:
-                break;
-            case R.id.fbtn_hot_spot:
-                //跳转到热点搜索页面
-                Intent intent = new Intent(HomePageActivity.this , HotSpotResearchActivity.class);
-                startActivity(intent);
-                break;
-
-                default:break;
-        }
-    }
-
-
-    /**
      * 获取屏幕中心位置
      *
      * @param cameraPosition 相机位置
@@ -230,11 +186,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      */
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
-
-    }
-
-    @OnClick(R.id.fbtn_heat_power)
-    public void onViewClicked() {
 
     }
 
@@ -342,6 +293,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 break;
             case R.id.fbtn_taxi_income:
                 //出租车司机收入排行榜
+                Intent incomeIntent = new Intent(HomePageActivity.this, IncomeActivity.class);
+                startActivity(incomeIntent);
                 break;
             case R.id.fbtn_behavior_analysis:
                 //出租车行为分析与预测
@@ -362,4 +315,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         //收起菜单栏
         homePageMenuFam.close(true);
     }
+
+
 }
