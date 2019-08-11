@@ -1,5 +1,11 @@
 package com.example.taxidata;
 
+<<<<<<< HEAD
+import androidx.appcompat.app.AppCompatActivity;
+
+
+import android.content.Intent;
+=======
 
 import android.content.Intent;
 
@@ -7,16 +13,18 @@ import android.graphics.Color;
 
 import android.graphics.drawable.ColorDrawable;
 
+>>>>>>> e73b07a49297fb6237929dec3b7c9b49e0ad7856
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-
-import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.LatLng;
+
+import java.util.List;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.LatLng;
@@ -24,6 +32,7 @@ import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
+import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
@@ -120,9 +129,11 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         ButterKnife.bind(this);
-        //获取地图实例
         homePageMv = findViewById(R.id.mv_home_page);
         homePageMv.onCreate(savedInstanceState);
+        if (homepageAMap == null){
+            homepageAMap = homePageMv.getMap();
+        }
         //初始化present
         initPresent();
         //初始化悬浮按钮
@@ -149,7 +160,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         super.onResume();
         homePageMv.onResume();
     }
-
     /**
      * 初始化地图
      */
@@ -216,7 +226,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
     /**
      * 获取屏幕中心位置
-     *
      * @param cameraPosition 相机位置
      */
     @Override
@@ -342,6 +351,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 break;
             case R.id.fbtn_visualization:
                 //路径可视化
+                Intent intent = new Intent(HomePageActivity.this, TaxiPathActivity.class);
+                startActivity(intent);
                 break;
             case R.id.fbtn_set_up:
                 //设置
