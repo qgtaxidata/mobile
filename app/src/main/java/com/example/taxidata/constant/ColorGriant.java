@@ -17,18 +17,18 @@ public class ColorGriant {
      * 颜色渐变
      */
     private static final int[] ALT_HEATMAP_GRADIENT_COLORS = {
-            Color.rgb( 0, 0, 255),
-            Color.rgb( 117, 211, 248),
-            Color.rgb(0, 255, 0),
-            Color.rgb(255, 234, 0),
+            Color.argb(0, 0, 255, 255),
+            Color.argb(255 / 3 * 2, 0, 255, 0),
+            Color.rgb(125, 191, 0),
+            Color.rgb(185, 71, 0),
             Color.rgb(255, 0, 0)
     };
 
     /**
      * 颜色渐变
      */
-    private static final float[] ALT_HEATMAP_GRADIENT_START_POINTS = { 0.5f,
-            0.65f, 0.7f, 0.9f, 1.0f };
+    private static final float[] ALT_HEATMAP_GRADIENT_START_POINTS = { 0.0f,
+            0.10f, 0.20f, 0.60f, 1.0f};
 
     /**
      * 渐变

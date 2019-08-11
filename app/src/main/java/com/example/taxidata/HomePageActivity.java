@@ -1,15 +1,18 @@
 package com.example.taxidata;
-
-
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.view.View;
+import android.util.Log;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -19,6 +22,10 @@ import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.LatLng;
+import java.util.List;
+import com.amap.api.maps.model.CameraPosition;
+import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.bean.HotSpotInfo;
@@ -28,6 +35,7 @@ import com.example.taxidata.common.eventbus.EventFactory;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.EventBusType;
 import com.example.taxidata.constant.MyCharacter;
+import com.example.taxidata.ui.TaxiDriverIncome.IncomeActivity;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
@@ -38,12 +46,13 @@ import com.example.taxidata.util.ToastUtil;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.orhanobut.logger.Logger;
-
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.List;
-
+import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
+import com.example.taxidata.ui.heatpower.HeatPowerPresent;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -214,6 +223,10 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         visualizationFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
     }
 
+
+
+
+
     /**
      * 获取屏幕中心位置
      *
@@ -232,11 +245,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      */
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
-
-    }
-
-    @OnClick(R.id.fbtn_heat_power)
-    public void onViewClicked() {
 
     }
 
@@ -279,7 +287,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         heatpowerBuilder = new HeatmapTileProvider.Builder();
         heatpowerBuilder.weightedData(heatPointList)
                 .gradient(ColorGriant.ALT_HEATMAP_GRADIENT)
-                .radius(12);
+                .radius(25);
         heatpower = heatpowerBuilder.build();
         TileOverlayOptions tileOverlayOptions = new TileOverlayOptions();
         tileOverlayOptions.tileProvider(heatpower);
@@ -394,6 +402,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 break;
             case R.id.fbtn_taxi_income:
                 //出租车司机收入排行榜
+                Intent incomeIntent = new Intent(HomePageActivity.this, IncomeActivity.class);
+                startActivity(incomeIntent);
                 break;
             case R.id.fbtn_behavior_analysis:
                 //出租车行为分析与预测
@@ -414,6 +424,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         //收起菜单栏
         homePageMenuFam.close(true);
     }
+
 
     //注册绑定EventBus
     protected boolean isRegisterEventBus() {
@@ -439,4 +450,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             Logger.d("接收事件 ： 热点和地点都已经选择");
         }
     }
+
+
 }
