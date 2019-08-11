@@ -1,11 +1,11 @@
 package com.example.taxidata;
 
-<<<<<<< HEAD
+
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.Intent;
-=======
+
 
 import android.content.Intent;
 
@@ -13,7 +13,7 @@ import android.graphics.Color;
 
 import android.graphics.drawable.ColorDrawable;
 
->>>>>>> e73b07a49297fb6237929dec3b7c9b49e0ad7856
+
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;

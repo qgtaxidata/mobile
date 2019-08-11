@@ -89,7 +89,6 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
         for(Tip tip : list) {
             if(! "".equals(tip.getPoiID()) && tip.getPoint() != null ) {
                 //真实存在的地点加入列表
-                Logger.d("地方名：  " + tip.getName());
                 HotSpotHint hint = new HotSpotHint(tip.getName(),tip.getAddress(),tip.getPoint().getLongitude() ,tip.getPoint().getLatitude());
                 hintList.add(hint);
             }
