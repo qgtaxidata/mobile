@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/bg_grey"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_test"
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+            <ImageButton
+                android:id="@+id/imagebutton_hotspot_search_back_test"
+                android:layout_marginTop="20dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:background="@mipmap/ic_launcher"
+                />
+            <EditText
+                android:id="@+id/et_hotspot_search_test"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/imagebutton_hotspot_search_back_test"
+                android:layout_alignBottom="@id/imagebutton_hotspot_search_back_test"
+                android:layout_toLeftOf="@id/btn_hotspot_search_test"
+                android:textSize="20sp"
+                android:singleLine="true"
+                android:inputType="text"
+                android:background="@null"
+                android:hint="请输入地点"
+                />
+            <Button
+                android:id="@+id/btn_hotspot_search_test"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:hint="搜索"
+                android:textColorHint="#FFFFFF"
+                android:textSize="20sp"
+                android:background="@drawable/shape_button_radius_search"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_test">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_hotspot_search_history_test"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                >
+            </androidx.recyclerview.widget.RecyclerView>
+        </RelativeLayout>
+
+
+
+
+
+</RelativeLayout>

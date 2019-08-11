@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.taxidata.R;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
-import com.example.taxidata.bean.HotSpotRecommandInfo;
+import com.example.taxidata.util.LatLangConvertUtil;
 
 import java.util.List;
 
@@ -24,7 +24,11 @@ public class RecommandHotSpotAdapter extends BaseQuickAdapter<HotSpotCallBackInf
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, HotSpotCallBackInfo.DataBean item) {
-        helper.setText(R.id.tv_hotspot_location ,"北纬"+item.getLatitude()+"  东经" + item.getLongitude());
+        double longitute = item.getLongitude();
+        double latitute = item.getLatitude();
+        String  longituteConvert = LatLangConvertUtil.doubleToLatLang(longitute);
+        String latituteConvert = LatLangConvertUtil.doubleToLatLang(latitute);
+        helper.setText(R.id.tv_hotspot_location ,"北纬 "+latituteConvert+"  东经" + longituteConvert);
         helper.setText(R.id.tv_hotspot_heat ,"热度值: " +item.getHeat());
     }
 }

@@ -1,10 +1,13 @@
 package com.example.taxidata.ui.hotspot.contract;
 
+import com.amap.api.services.geocoder.GeocodeSearch;
 import com.example.taxidata.base.BaseModel;
 import com.example.taxidata.base.BasePresent;
 import com.example.taxidata.base.BaseView;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
-import com.example.taxidata.bean.HotSpotRecommandInfo;
+import com.example.taxidata.bean.HotSpotHint;
+import com.example.taxidata.bean.HotSpotHistorySearch;
+import com.example.taxidata.bean.HotSpotOrigin;
 
 import java.util.List;
 
@@ -24,8 +27,6 @@ public interface HotSpotContract {
     interface Model extends BaseModel {
 
 
-
-
         /**
          * 向服务器请求获取热点推荐坐标
          *
@@ -36,6 +37,33 @@ public interface HotSpotContract {
          */
         public Observable<HotSpotCallBackInfo> requestHotSpotInfo(double longitude, double latitude, String time);
 
+        /**
+         * 打开数据库获取历史搜索列表
+         *
+         * @return the history search list
+         */
+        public List<HotSpotHistorySearch>  getHistorySearchList();
+
+
+        public List<HotSpotOrigin>  getHistoryOriginList();
+
+        /**
+         * 发送请求获取提示列表
+         *
+         * @param keyword the keyword
+         */
+        public void getHintList(String keyword) ;
+
+        /**
+         * Save hot spot search history.
+         *
+         * @param historyHotSpot the history hot spot
+         */
+        public void  saveHotSpotSearchHistory(String historyHotSpot) ;
+
+
+        public void  saveHotSpoyOriginHistory(String historyOrigin);
+
     }
 
     /**
@@ -44,12 +72,29 @@ public interface HotSpotContract {
     interface HotSpotView extends BaseView {
 
         /**
-         * 在V层页面上展示获取到的推荐热点
+         * 在V层页面上展示获取到的推荐热点列表
          *
          * @param hotSpotCallBackInfoList the hot spot call back info list
          */
-        public void showHotSpot(List<HotSpotCallBackInfo.DataBean>  hotSpotCallBackInfoList);
+        public void showHotSpot(List<HotSpotCallBackInfo.DataBean> hotSpotCallBackInfoList);
+
+        /**
+         * 呈现 历史搜索列表
+         *
+         * @param hotSpotHistorySearchList the hot spot history search list
+         */
+        public void showHistorySearchList(List<HotSpotHistorySearch> hotSpotHistorySearchList);
+
+        public void showHistoryOriginList(List<HotSpotOrigin> hotSpotOrigins);
+
+        /**
+         * 呈现 提示列表
+         *
+         * @param hintList the hint list
+         */
+        public void showHintHotSpotList(List<HotSpotHint> hintList);
     }
+
 
     /**
      * The interface Presenter.
@@ -64,7 +109,47 @@ public interface HotSpotContract {
          * @param latitude  the latitude
          * @param time      the time
          */
-        public void getHotSpotData(double longitude , double latitude , String time) ;
+        public void getHotSpotData(double longitude, double latitude, String time) ;
 
-    }
+        /**
+         * 获取历史搜索的列表
+         *
+         * @return the history search list
+         */
+        public  List<HotSpotHistorySearch>  getHistorySearchList();
+
+        public List<HotSpotOrigin> getHistoryOriginList();
+
+        /**
+         * 尝试获取 提示列表
+         *
+         * @param keyword the keyword
+         */
+        public void getHintList(String keyword) ;
+
+        /**
+         * 成功获取到了 提示的列表
+         *
+         * @param hintList the hint list
+         */
+        public void getHintListSuccess(List<HotSpotHint> hintList);
+
+        /**
+         * Save hot spot search history.
+         *
+         * @param historyHotSpot the history hot spot
+         */
+        public void  saveHotSpotSearchHistory(String historyHotSpot) ;
+
+        public void saveOriginHotSpotHistory(String orignHistory);
+
+        /**
+         * 将地址转换成为地图的坐标
+         *
+         * @param address the address
+         */
+        public void convertToLocation(String address ,GeocodeSearch geocodeSearch );
+     }
+
+
 }
