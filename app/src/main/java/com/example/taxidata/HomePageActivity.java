@@ -2,6 +2,8 @@ package com.example.taxidata;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
@@ -20,8 +22,10 @@ import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
+import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
+import com.example.taxidata.util.TimePickerUtil;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -104,11 +108,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         if (homepageAMap == null){
             homepageAMap = homePageMv.getMap();
         }
-        setContentView(R.layout.activity_home_page);
-
-        //获取地图实例
-        homePageMv = findViewById(R.id.mv_home_page);
-        homePageMv.onCreate(savedInstanceState);
         //初始化present
         initPresent();
         //初始化悬浮按钮
@@ -155,6 +154,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 初始化悬浮按钮
      */
     private void initFloatButton() {
+
     }
 
     /**
@@ -170,7 +170,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
     /**
      * 获取屏幕中心位置
-     *
      * @param cameraPosition 相机位置
      */
     @Override
@@ -295,6 +294,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 break;
             case R.id.fbtn_visualization:
                 //路径可视化
+                Intent intent = new Intent(HomePageActivity.this, TaxiPathActivity.class);
+                startActivity(intent);
                 break;
             case R.id.fbtn_set_up:
                 //设置

@@ -13,12 +13,12 @@
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fam_home_page_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="bottom|right"
-        android:layout_margin="@dimen/dp_20"
-        android:src="@mipmap/ic_receive"
-
+        android:padding="@dimen/dp_30"
+        app:menu_backgroundColor="#cce6e6e6"
+        app:menu_icon="@mipmap/ic_receive"
         >
 
         <com.github.clans.fab.FloatingActionButton
@@ -28,7 +28,11 @@
             android:src="@mipmap/ic_passenger_hot"
             app:fab_size="mini"
             app:fab_label="载客热点推荐"
-            app:fab_colorNormal="@android:color/background_light"
+            app:fab_colorPressed="@android:color/holo_orange_light"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_showShadow="true"
+            app:fab_shadowColor="@android:color/transparent"
+            app:fab_shadowRadius="4dp"
             />
 
         <com.github.clans.fab.FloatingActionButton
@@ -38,7 +42,10 @@
             android:src="@mipmap/ic_heat_power"
             app:fab_size="mini"
             app:fab_label="热力图"
-            app:fab_colorNormal="@android:color/background_light"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_showShadow="true"
+            app:fab_shadowColor="@android:color/transparent"
+            app:fab_shadowRadius="4dp"
             />
 
         <com.github.clans.fab.FloatingActionButton
@@ -48,7 +55,10 @@
             android:src="@mipmap/ic_road_quality"
             app:fab_size="mini"
             app:fab_label="道路质量分析"
-            app:fab_colorNormal="@android:color/background_light"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_showShadow="true"
+            app:fab_shadowColor="@android:color/transparent"
+            app:fab_shadowRadius="4dp"
             />
 
         <com.github.clans.fab.FloatingActionButton
@@ -58,7 +68,10 @@
             android:src="@mipmap/ic_request_analysis"
             app:fab_size="mini"
             app:fab_label="区域出租车需求量分析"
-            app:fab_colorNormal="@android:color/background_light"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_showShadow="true"
+            app:fab_shadowColor="@android:color/transparent"
+            app:fab_shadowRadius="4dp"
             />
 
         <com.github.clans.fab.FloatingActionButton
@@ -68,7 +81,10 @@
             android:src="@mipmap/ic_income"
             app:fab_size="mini"
             app:fab_label="出租车司机收入排行榜"
-            app:fab_colorNormal="@android:color/background_light"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_showShadow="true"
+            app:fab_shadowColor="@android:color/transparent"
+            app:fab_shadowRadius="4dp"
             />
 
         <com.github.clans.fab.FloatingActionButton
@@ -78,7 +94,10 @@
             android:src="@mipmap/ic_behavior_analysis"
             app:fab_size="mini"
             app:fab_label="出租车行为分析与预测"
-            app:fab_colorNormal="@android:color/background_light"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_showShadow="true"
+            app:fab_shadowColor="@android:color/transparent"
+            app:fab_shadowRadius="4dp"
             />
 
         <com.github.clans.fab.FloatingActionButton
@@ -88,7 +107,10 @@
             android:src="@mipmap/ic_abnormal_analysis"
             app:fab_size="mini"
             app:fab_label="出租车异常情况分析"
-            app:fab_colorNormal="@android:color/background_light"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_showShadow="true"
+            app:fab_shadowColor="@android:color/transparent"
+            app:fab_shadowRadius="4dp"
             />
 
         <com.github.clans.fab.FloatingActionButton
@@ -98,7 +120,10 @@
             android:src="@mipmap/ic_visualization"
             app:fab_size="mini"
             app:fab_label="路径可视化"
-            app:fab_colorNormal="@android:color/background_light"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_showShadow="true"
+            app:fab_shadowColor="@android:color/transparent"
+            app:fab_shadowRadius="4dp"
             />
 
         <com.github.clans.fab.FloatingActionButton
@@ -108,7 +133,11 @@
             android:src="@mipmap/ic_set_up"
             app:fab_size="mini"
             app:fab_label="设置"
-            app:fab_colorNormal="@android:color/background_light"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_colorPressed="@android:color/transparent"
+            app:fab_showShadow="true"
+            app:fab_shadowColor="@android:color/transparent"
+            app:fab_shadowRadius="4dp"
             />
 
     </com.github.clans.fab.FloatingActionMenu>

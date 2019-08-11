@@ -1,24 +1,20 @@
 package com.example.taxidata.ui.TaxiPath;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import com.example.taxidata.R;
+import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.bean.TaxiInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
-
-public class TaxiInfoFragment extends Fragment implements TaxiPathContract.TaxiPathView {
+public class TaxiInfoListActivity extends BaseActivity implements TaxiPathContract.TaxiPathView {
 
     private TaxiPathContract.TaxiPathPresent taxiPathPresent;
     private RecyclerView taxiInfoRecyclerV;
@@ -26,14 +22,16 @@ public class TaxiInfoFragment extends Fragment implements TaxiPathContract.TaxiP
     private List<TaxiInfo.DataBean> taxiInfoList = new ArrayList<>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.taxi_info_fragment, container, false);
-        taxiInfoRecyclerV = view.findViewById(R.id.taxi_info_recycle_view);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_taxi_info_list);
+        taxiInfoRecyclerV = findViewById(R.id.taxi_info_recycle_view);
+        taxiPathPresent = new TaxiPathPresent();
         taxiPathPresent.attachView(this);
-        Intent intent = getActivity().getIntent();
+        Intent intent =getIntent();
         List<TaxiInfo.DataBean> info = (List<TaxiInfo.DataBean>) intent.getSerializableExtra("taxiInfo");
         taxiInfoList.addAll(info);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         taxiInfoRecyclerV.setLayoutManager(layoutManager);
         adapter = new TaxiInfoAdapter(taxiInfoList);
         taxiInfoRecyclerV.setAdapter(adapter);
@@ -41,8 +39,22 @@ public class TaxiInfoFragment extends Fragment implements TaxiPathContract.TaxiP
             @Override
             public void onItemClick(int position) {
                 String licenseplateno = taxiInfoList.get(position).getLicenseplateno();
+                String time = taxiInfoList.get(position).getTime();
+                taxiPathPresent.getTaxiPathInfo(time, licenseplateno);
+                finish();
             }
         });
-        return view;
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        taxiPathPresent.detachView();
+    }
+
+    @Override
+    public void showPath() {
+
     }
 }
+
