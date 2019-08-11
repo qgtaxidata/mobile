@@ -18,7 +18,7 @@
             android:layout_height="26dp"
             android:layout_marginBottom="22dp"
             android:layout_centerInParent="true"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@drawable/ui_hotspot_placeholder"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="我是经度，我是维度"
+            android:text="我是名字"
             android:textColor="#4c93fd"
             android:textSize="23sp"
             />
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart= "@id/tv_hotspothint_name"
-            android:text="我是热度"
+            android:text="我是地址"
             android:textColor="#4d4d4d"
             android:textSize="15sp"
             />

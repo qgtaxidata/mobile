@@ -1,15 +1,20 @@
 package com.example.taxidata.ui.hotspot.view;
 
+import android.content.Context;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +25,8 @@ import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
+import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.example.taxidata.R;
 import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
@@ -34,12 +41,15 @@ import com.example.taxidata.ui.hotspot.adapter.RecommandHotSpotAdapter;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
 import com.example.taxidata.util.ToastUtil;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.taxidata.application.TaxiApp.getContext;
 
 /**
  * @author: ODM
@@ -75,6 +85,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     private OriginHotSpotAdapter originAdapter;
     private GeocodeSearch geocodeSearch ;
     private String intputString;
+    private ItemTouchHelper itemTouchHelper;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,9 +97,6 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         initRecyclerView();
         initOnclickEvent();
         initViews();
-        geocodeSearch = new GeocodeSearch(this);
-
-        rvSearch.setAdapter(historyAdapter);
     }
 
     @Override
@@ -119,23 +127,38 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     }
 
     public void initViews() {
+        geocodeSearch = new GeocodeSearch(this);
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                intputString = s.toString();
-                mPresenter.getHintList(s.toString());
             }
-
             @Override
             public void afterTextChanged(Editable s) {
-                Log.e(TAG, "afterTextChanged: " );
+                intputString = s.toString();
+                if( ! "".equals(intputString) && etSearch.isFocused()) {
+                    //当前输入框有内容,将输入的内容发送请求获取提示列表
+                    mPresenter.getHintList(s.toString());
+                } else {
+                    //当前输入框没有内容,则显示历史消息记录
+                    showHistorySearchList(mPresenter.getHistorySearchList());
+                }
             }
         });
+//        etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean hasFocus) {
+//                if(!hasFocus) {
+//                    InputMethodManager manager = ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE));
+//                    if (manager != null) {
+//
+//                        manager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//                    }
+//                }
+//            }
+//        });
     }
 
 
@@ -148,11 +171,36 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         recommandAdapter.setEmptyView(new EmptyHotSpotView(this, null));
         originAdapter = new OriginHotSpotAdapter(R.layout.item_hotspot_origin_history, originList);
         rvSearch.setLayoutManager(layoutManager);
-        //搜索页面默认出现搜索历史列表
-
+        rvSearch.setAdapter(historyAdapter);
+        //初始化列表拖拽和滑动删除
+        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(historyAdapter);
+        itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        historyAdapter.enableSwipeItem();
+        historyAdapter.openLoadAnimation();
+        hintAdapter.openLoadAnimation();
+        recommandAdapter.openLoadAnimation();
+        originAdapter.openLoadAnimation();
+        //历史列表 滑动删除的 回调函数
+        historyAdapter.setOnItemSwipeListener(new OnItemSwipeListener() {
+            @Override
+            public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
+            }
+            @Override
+            public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
+                Log.e(TAG, "clearView: 正在删除" );
+            }
+            @Override
+            public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
+                Log.e(TAG, "onItemSwiped: 已经删除 " );
+            }
+            @Override
+            public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
+            }
+        });
     }
 
     public void initOnclickEvent() {
+        //返回按钮点击事件
         btnSearchBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,14 +233,15 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 String address = historyAdapter.getData().get(position).getHotSpotHistory();
+                etSearch.setText(address);
                 mPresenter.convertToLocation(address ,geocodeSearch );
             }
         });
         hintAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                String address = hintAdapter.getData().get(position).getHotSpotLocation();
-//                mPresenter.convertToLocation(address ,geocodeSearch );
+                mPresenter.saveHotSpotSearchHistory(hintAdapter.getData().get(position).getHotSpotName());
+                etSearch.setText(hintAdapter.getData().get(position).getHotSpotName());
                 double longitute = hintAdapter.getData().get(position).getLongitude();
                 double latitute = hintAdapter.getData().get(position).getLatitute();
                 mPresenter.getHotSpotData(longitute ,latitute ,"");
@@ -210,7 +259,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
                 //Todo：带着 选中的 热点 & 起点信息 ，去 地图页面画出来！
             }
         });
-//        提示列表上拉加载没有意义，因为API一个关键词只给10个
+//        提示列表上拉加载没有意义，因为提示 API一个关键词只给10个
 //        hintAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
 //            @Override
 //            public void onLoadMoreRequested() {
@@ -226,24 +275,28 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
         if (recommandAdapter != null && rvSearch != null) {
             hotSpotList.clear();
+            recommandAdapter.setNewData(hotSpotList);
             rvSearch.setAdapter(recommandAdapter);
+            itemTouchHelper.attachToRecyclerView(null);
+            Logger.d(TAG+hotSpotCallBackInfoList.size());
             recommandAdapter.setNewData(hotSpotCallBackInfoList);
-
         }
     }
 
     @Override
     public void showHistorySearchList(List<HotSpotHistorySearch> hotSpotHistorySearchList) {
         if (historyAdapter != null && rvSearch != null) {
+            //开启可滑动删除列表item
+            itemTouchHelper.attachToRecyclerView(rvSearch);
             rvSearch.setAdapter(historyAdapter);
             historyAdapter.setNewData(hotSpotHistorySearchList);
-
         }
     }
 
     @Override
     public void showHintHotSpotList(List<HotSpotHint> hintList) {
         if (hintAdapter != null && rvSearch != null) {
+            itemTouchHelper.attachToRecyclerView(null);
             rvSearch.setAdapter(hintAdapter);
             hintAdapter.setNewData(hintList);
         }
@@ -258,4 +311,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
+    }
 }

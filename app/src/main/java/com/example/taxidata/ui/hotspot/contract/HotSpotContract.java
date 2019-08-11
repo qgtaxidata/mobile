@@ -61,6 +61,9 @@ public interface HotSpotContract {
          */
         public void  saveHotSpotSearchHistory(String historyHotSpot) ;
 
+
+        public void  saveHotSpoyOriginHistory(String historyOrigin);
+
     }
 
     /**

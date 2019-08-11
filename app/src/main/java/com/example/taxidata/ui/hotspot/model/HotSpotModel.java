@@ -9,6 +9,7 @@ import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.aserbao.aserbaosandroid.functions.database.greenDao.db.DaoSession;
+import com.aserbao.aserbaosandroid.functions.database.greenDao.db.HotSpotHistorySearchDao;
 import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
 import com.example.taxidata.bean.HotSpotHint;
@@ -100,13 +101,24 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
     }
 
     @Override
-    public void saveHotSpotSearchHistory(String historyHotSpot) {
-        HotSpotHistorySearch history = new HotSpotHistorySearch();
-        history.setHotSpotHistory(historyHotSpot);
-        if(! "".equals(historyHotSpot)) {
+    public void saveHotSpotSearchHistory(String historySearch) {
+        if(! "".equals(historySearch)) {
+            removeDuplicatedHistoryByAddress(historySearch);
+            HotSpotHistorySearch history = new HotSpotHistorySearch();
+            history.setHotSpotHistory(historySearch);
             historyDaoSession.insertOrReplace(history);
-            Log.e(TAG, "存储了热点历史 ： " +  historyHotSpot );
+            Log.e(TAG, "存储了热点历史 ： " +  historySearch );
+        }
+    }
 
+    @Override
+    public void saveHotSpoyOriginHistory(String historyOrigin) {
+        if (! "".equals(historyOrigin)) {
+            removeDuplicatedHistoryOriginByAddress(historyOrigin);
+            HotSpotOrigin origin = new HotSpotOrigin();
+            origin.setHotSpotOriginHistory(historyOrigin);
+            historyDaoSession.insert(historyOrigin);
+            Log.e(TAG, "saveHotSpoyOriginHistory: 存储了热点--起点历史" + historyOrigin );
         }
     }
 
@@ -115,4 +127,33 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
         QueryBuilder<HotSpotOrigin> queryBuilder =  historyDaoSession.queryBuilder(HotSpotOrigin.class);
         return  queryBuilder.list();
     }
+
+    public void removeDuplicatedHistoryByAddress(String  address) {
+        QueryBuilder<HotSpotHistorySearch> queryBuilder =  historyDaoSession.queryBuilder(HotSpotHistorySearch.class);
+        QueryBuilder<HotSpotHistorySearch> addressQueryBuilder = queryBuilder.where(HotSpotHistorySearchDao.Properties
+                                                                        .HotSpotHistory.eq(address)).orderAsc(HotSpotHistorySearchDao.Properties.HotSpotHistory);
+        List<HotSpotHistorySearch> list = addressQueryBuilder.list();
+        //数据库中有重复地址的历史，就将它删除
+        if (list.size() != 0) {
+            for (HotSpotHistorySearch  item : list) {
+                historyDaoSession.delete(item);
+            }
+        }
+    }
+
+    //去掉重复的历史记录
+    public void removeDuplicatedHistoryOriginByAddress(String  address) {
+        QueryBuilder<HotSpotOrigin> queryBuilder =  historyDaoSession.queryBuilder(HotSpotOrigin.class);
+        QueryBuilder<HotSpotOrigin> addressQueryBuilder = queryBuilder.where(HotSpotHistorySearchDao.Properties
+                .HotSpotHistory.eq(address)).orderAsc(HotSpotHistorySearchDao.Properties.HotSpotHistory);
+        List<HotSpotOrigin> list = addressQueryBuilder.list();
+        //数据库中有重复地址的历史，就将它删除
+        if (list.size() != 0) {
+            for (HotSpotOrigin  item : list) {
+                historyDaoSession.delete(item);
+            }
+        }
+    }
+
+
 }
