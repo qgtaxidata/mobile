@@ -148,11 +148,7 @@
             app:fab_shadowColor="@android:color/transparent"
             app:fab_shadowRadius="4dp"
             />
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fbtn_hot_spot"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            />
+
 
     </com.github.clans.fab.FloatingActionMenu>
 

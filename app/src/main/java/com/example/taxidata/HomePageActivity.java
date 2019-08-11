@@ -192,25 +192,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         visualizationFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
     }
 
-    /**
-     * 悬浮按钮的点击事件监听
-     *
-     * @param v the v
-     */
-    @OnClick({R.id.fbtn_heat_power, R.id.fbtn_hot_spot})
-    void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fbtn_heat_power:
-                break;
-            case R.id.fbtn_hot_spot:
-                //跳转到热点搜索页面
-                Intent intent = new Intent(HomePageActivity.this , HotSpotResearchActivity.class);
-                startActivity(intent);
-                break;
 
-                default:break;
-        }
-    }
 
 
     /**
@@ -330,6 +312,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         switch (view.getId()) {
             case R.id.fbtn_passenger_hot:
                 //载客热点推荐
+                Intent hotSpotIntent = new Intent(HomePageActivity.this ,HotSpotResearchActivity.class);
+                startActivity(hotSpotIntent);
                 break;
             case R.id.fbtn_heat_power:
                 controlHeatPower();
