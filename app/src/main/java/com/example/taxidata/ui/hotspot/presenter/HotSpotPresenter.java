@@ -1,19 +1,28 @@
 package com.example.taxidata.ui.hotspot.presenter;
+import android.content.Intent;
 import android.util.Log;
 
+import com.amap.api.maps.model.LatLng;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.geocoder.GeocodeAddress;
 import com.amap.api.services.geocoder.GeocodeQuery;
 import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
+import com.example.taxidata.HomePageActivity;
 import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
 import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotHistorySearch;
+import com.example.taxidata.bean.HotSpotInfo;
 import com.example.taxidata.bean.HotSpotOrigin;
+import com.example.taxidata.common.eventbus.BaseEvent;
+import com.example.taxidata.common.eventbus.EventFactory;
+import com.example.taxidata.constant.EventBusType;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.model.HotSpotModel;
+import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.GsonUtil;
 import com.example.taxidata.util.ToastUtil;
 import com.orhanobut.logger.Logger;
@@ -34,7 +43,8 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     private List<HotSpotCallBackInfo.DataBean> hotSpotRecommandInfoList = new ArrayList<>();
     private static final String TAG = "HotSpotPresenter";
     private GeocodeSearch geocodeSearch ;
-
+    private LatLonPoint latLng;
+    private HotSpotCallBackInfo.DataBean  callbackHotSpotInfo;
     public HotSpotPresenter(){
         super();
         mHotSpotModel = new HotSpotModel(this);
@@ -57,17 +67,17 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                     .subscribe(new Observer<HotSpotCallBackInfo>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-                            Logger.d("热点数据订阅√");
+//                            Logger.d("热点数据订阅√");
                         }
                         @Override
                         public void onNext(HotSpotCallBackInfo hotSpotCallBackInfo) {
-                            Logger.d(hotSpotCallBackInfo.getMsg());
+//                            Logger.d(hotSpotCallBackInfo.getMsg());
                             //Todo 获取了返回的callback对象后,解析获取列表
                             if (hotSpotCallBackInfo.getCode() == 1 && hotSpotCallBackInfo.getData().size() > 0 ) {
-                                Logger.d(GsonUtil.GsonString(hotSpotCallBackInfo));
+//                                Logger.d(GsonUtil.GsonString(hotSpotCallBackInfo));
                                 hotSpotRecommandInfoList.addAll(hotSpotCallBackInfo.getData());
                                 if (hotSpotRecommandInfoList.size() > 0 ) {
-                                    Logger.d("热点推荐列表大小"+hotSpotRecommandInfoList.size() );
+//                                    Logger.d("热点推荐列表大小"+hotSpotRecommandInfoList.size() );
                                     mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
                                 } else {
                                     Logger.d("获取了返回的热点数据,但是列表大小为0 ");
@@ -136,7 +146,32 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     }
 
     @Override
+    public void convertToAddressName(HotSpotCallBackInfo.DataBean dataBean, GeocodeSearch geocodeSearch) {
+        latLng = new LatLonPoint(dataBean.getLatitude(),dataBean.getLongitude());
+        callbackHotSpotInfo = dataBean;
+        RegeocodeQuery regeocodeQuery = new RegeocodeQuery(latLng ,100 ,GeocodeSearch.AMAP);
+        geocodeSearch.getFromLocationAsyn(regeocodeQuery);
+    }
+
+    /**
+     * 将坐标解析成地址名后，让首页地图可以显示出来
+     * @param regeocodeResult
+     * @param i
+     */
+    @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+        String addressName = regeocodeResult.getRegeocodeAddress().getFormatAddress();
+        Log.e(TAG, "onRegeocodeSearched: " + addressName );
+        BaseEvent baseEvent = EventFactory.getInstance();
+        baseEvent.type = EventBusType.HOTSPOT_CHOSEN;
+        HotSpotInfo hotSpotInfo = new HotSpotInfo();
+        hotSpotInfo.setAddress(addressName);
+        hotSpotInfo.setLatitude(callbackHotSpotInfo.getLatitude());
+        hotSpotInfo.setLongitude(callbackHotSpotInfo.getLongitude());
+        hotSpotInfo.setHeat(callbackHotSpotInfo.getHeat());
+        baseEvent.object = hotSpotInfo;
+        mHotSpotView.hotSpotChsenSuccess();
+        EventBusUtils.postSticky(baseEvent);
     }
 
     @Override
@@ -151,5 +186,15 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         } else {
             ToastUtil.showShortToastBottom("您输入的地址有误,系统无法识别,请重新输入");
         }
+    }
+
+    @Override
+    public void removeHistory(HotSpotHistorySearch historySearch) {
+        mHotSpotModel.removeHistory(historySearch);
+    }
+
+    @Override
+    public void removeOriginHistory(HotSpotOrigin hotSpotOrigin) {
+        mHotSpotModel.removeOriginHistory(hotSpotOrigin);
     }
 }

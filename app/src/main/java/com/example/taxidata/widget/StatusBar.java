@@ -1,15 +1,18 @@
 package com.example.taxidata.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.example.taxidata.R;
+import com.example.taxidata.application.TaxiApp;
 
 public class StatusBar extends LinearLayout {
 
@@ -133,18 +136,18 @@ public class StatusBar extends LinearLayout {
      * 清除历史状态栏被选中状态,下同
      */
     private void clearHistoryStatus(){
-        historyTv.setTextColor(0x4c93fd);
+        historyTv.setTextColor(Color.parseColor("#4c93fd"));
         historyTv.setBackgroundColor(0xffffff);
     }
 
     private void clearRealTimeStatus(){
-        realTimeTv.setTextColor(0x4c93fd);
+        realTimeTv.setTextColor(Color.parseColor("#4c93fd"));
         realTimeTv.setBackgroundColor(0xffffff);
     }
 
     private void clearFeatureStatus(){
-        featureTv.setTextColor(0x4c93fd);
         featureTv.setBackgroundColor(0xffffff);
+        featureTv.setTextColor(Color.parseColor("#4c93fd"));
     }
 
     /**
@@ -152,17 +155,17 @@ public class StatusBar extends LinearLayout {
      */
     private void setHistoryStatus(){
         historyTv.setBackgroundResource(R.drawable.shape_small_button);
-        historyTv.setTextColor(0xffffff);
+        historyTv.setTextColor(Color.parseColor("#ffffff"));
     }
 
     private void setRealTimeStatus(){
         realTimeTv.setBackgroundResource(R.drawable.shape_small_button);
-        realTimeTv.setTextColor(0xffffff);
+        realTimeTv.setTextColor(Color.parseColor("#ffffff"));
     }
 
     private void setFeatureStatus(){
         featureTv.setBackgroundResource(R.drawable.shape_small_button);
-        featureTv.setTextColor(0xffffff);
+        featureTv.setTextColor(Color.parseColor("#ffffff"));
     }
 
     /**

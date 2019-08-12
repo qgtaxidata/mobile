@@ -1,5 +1,7 @@
 package com.example.taxidata.ui.heatpower;
 
+import android.util.Log;
+
 import com.amap.api.maps.model.LatLng;
 import com.example.taxidata.bean.HeatPointInfo;
 import com.example.taxidata.bean.HeatPointRequestBody;
@@ -16,15 +18,11 @@ public class HeatPowerModel implements HeatPowerContract.HeatPowerModel {
 
     @Override
     public Observable<HeatPointInfo> requestHeatPoint(int area, String time) {
-        HeatPointRequestBody info = new HeatPointRequestBody();
-        info.setArea(area);
-        // FIXME 时间写死
-        info.setTime("2017-02-01 17:00:00");
-        String latLngJson = GsonUtil.GsonString(info);
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),latLngJson);
+        Log.d("HeatPowerModel",area + "");
+        Log.d("HeatPowerModel",time);
         return RetrofitManager.getInstance()
                 .getHttpService()
-                .getHeatPoint(body)
+                .getHeatPoint(area,time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

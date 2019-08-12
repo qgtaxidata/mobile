@@ -45,6 +45,11 @@ public interface HotSpotContract {
         public List<HotSpotHistorySearch>  getHistorySearchList();
 
 
+        /**
+         * Gets history origin list.
+         *
+         * @return the history origin list
+         */
         public List<HotSpotOrigin>  getHistoryOriginList();
 
         /**
@@ -62,8 +67,17 @@ public interface HotSpotContract {
         public void  saveHotSpotSearchHistory(String historyHotSpot) ;
 
 
+        /**
+         * Save hot spoy origin history.
+         *
+         * @param historyOrigin the history origin
+         */
         public void  saveHotSpoyOriginHistory(String historyOrigin);
 
+
+        public void  removeHistory(HotSpotHistorySearch historySearch);
+
+        public void removeOriginHistory(HotSpotOrigin hotSpotOrigin) ;
     }
 
     /**
@@ -85,6 +99,11 @@ public interface HotSpotContract {
          */
         public void showHistorySearchList(List<HotSpotHistorySearch> hotSpotHistorySearchList);
 
+        /**
+         * Show history origin list.
+         *
+         * @param hotSpotOrigins the hot spot origins
+         */
         public void showHistoryOriginList(List<HotSpotOrigin> hotSpotOrigins);
 
         /**
@@ -93,6 +112,11 @@ public interface HotSpotContract {
          * @param hintList the hint list
          */
         public void showHintHotSpotList(List<HotSpotHint> hintList);
+
+        /**
+         * Hot spot chsen success.
+         */
+        public void  hotSpotChsenSuccess();
     }
 
 
@@ -118,6 +142,11 @@ public interface HotSpotContract {
          */
         public  List<HotSpotHistorySearch>  getHistorySearchList();
 
+        /**
+         * Gets history origin list.
+         *
+         * @return the history origin list
+         */
         public List<HotSpotOrigin> getHistoryOriginList();
 
         /**
@@ -141,14 +170,34 @@ public interface HotSpotContract {
          */
         public void  saveHotSpotSearchHistory(String historyHotSpot) ;
 
+        /**
+         * Save origin hot spot history.
+         *
+         * @param orignHistory the orign history
+         */
         public void saveOriginHotSpotHistory(String orignHistory);
 
         /**
          * 将地址转换成为地图的坐标
          *
-         * @param address the address
+         * @param address       the address
+         * @param geocodeSearch the geocode search
          */
         public void convertToLocation(String address ,GeocodeSearch geocodeSearch );
+
+
+        /**
+         * Convert to address name.
+         *
+         * @param dataBean      the data bean
+         * @param geocodeSearch the geocode search
+         */
+        public void convertToAddressName(HotSpotCallBackInfo.DataBean dataBean , GeocodeSearch geocodeSearch) ;
+
+
+        public void  removeHistory(HotSpotHistorySearch historySearch);
+
+        public void removeOriginHistory(HotSpotOrigin hotSpotOrigin) ;
      }
 
 

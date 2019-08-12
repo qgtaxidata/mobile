@@ -52,7 +52,6 @@ public class TaxiInfoListActivity extends BaseActivity implements TaxiPathContra
         taxiPathPresent.detachView();
     }
 
-
     @Override
     public void showPath(List<TaxiInfo.DataBean> listInfo) {
 

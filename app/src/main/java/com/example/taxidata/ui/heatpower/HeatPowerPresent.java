@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.WeightedLatLng;
+import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HeatPointInfo;
 import com.example.taxidata.util.ToastUtil;
 
@@ -32,7 +33,6 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
 
     @Override
     public void showRealTimeHeatPower(int area) {
-        String time = null;
         if (heatPowerModel != null){
             //不暂停轮询
             isPaused = false;
@@ -42,7 +42,8 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                     .doOnNext(new Consumer<Long>() {
                         @Override
                         public void accept(Long aLong)throws Exception{
-                            heatPowerModel.requestHeatPoint(1,time)
+                            //TaxiApp.getAppNowTime()获得当前时间
+                            heatPowerModel.requestHeatPoint(area, TaxiApp.getAppNowTime())
                                     .subscribe(new Observer<HeatPointInfo>() {
                                         @Override
                                         public void onSubscribe(Disposable d) {
