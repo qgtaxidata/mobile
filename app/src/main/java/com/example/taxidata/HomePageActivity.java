@@ -40,6 +40,7 @@ import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
+import com.example.taxidata.ui.hotspot.view.OriginHotSpotActivity;
 import com.example.taxidata.ui.hotspot.view.OriginHotSpotLayout;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.ToastUtil;
@@ -335,7 +336,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     }
 
     /**
-     * 展示热点
+     * 用 Marker 形式展示热点
      * @param hotSpotInfo 热点信息对象
      */
     private void showHotSpot(HotSpotInfo hotSpotInfo) {
@@ -344,7 +345,9 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         Logger.d("打标记：经度: " + longititue + "： 纬度" + latitute);
         LatLng latLngHot = new LatLng(latitute, longititue);
         final Marker markerHot = homepageAMap.addMarker(new MarkerOptions().position(latLngHot).title(hotSpotInfo.getAddress()).snippet("热度" + hotSpotInfo.getHeat()));
-
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLngHot, 15, 0, 0));
+        //将相机移动到标记所在位置
+        homepageAMap.moveCamera(cameraUpdate);
     }
 
     public void initViews() {
@@ -354,13 +357,11 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 @Override
                 public void onClick(View v) {
                     //选择输入起点，跳转输入界面
-                    StatusManager.hotSpotChosen = true;
-                    Intent intentHotSearch = new Intent(HomePageActivity.this, HotSpotResearchActivity.class);
-                    startActivity(intentHotSearch);
                     BaseEvent baseEventOrigin = EventFactory.getInstance();
                     baseEventOrigin.type = EventBusType.ORIGIN_HOTSPOT_TO_CHOOSE;
                     EventBusUtils.postSticky(baseEventOrigin);
-
+                    Intent intentHotSearch = new Intent(HomePageActivity.this, OriginHotSpotActivity.class);
+                    startActivity(intentHotSearch);
                 }
             });
             searchBack = layoutOriginhotspot.findViewById(R.id.search_back);
