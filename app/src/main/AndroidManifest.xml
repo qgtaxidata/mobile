@@ -22,9 +22,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-
         <activity
             android:name=".ui.TaxiDriverIncome.IncomeActivity">
         </activity>
@@ -34,9 +31,12 @@
         <activity
             android:name=".ui.hotspot.view.HotSpotResearchActivity">
         </activity>
+        <activity android:name=".ui.hotspot.view.OriginHotSpotActivity">
+
+        </activity>
         <activity
             android:name=".HomePageActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

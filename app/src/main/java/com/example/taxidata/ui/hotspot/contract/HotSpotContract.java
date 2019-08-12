@@ -7,7 +7,7 @@ import com.example.taxidata.base.BaseView;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
 import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotHistorySearch;
-import com.example.taxidata.bean.HotSpotOrigin;
+
 
 import java.util.List;
 
@@ -45,12 +45,7 @@ public interface HotSpotContract {
         public List<HotSpotHistorySearch>  getHistorySearchList();
 
 
-        /**
-         * Gets history origin list.
-         *
-         * @return the history origin list
-         */
-        public List<HotSpotOrigin>  getHistoryOriginList();
+
 
         /**
          * 发送请求获取提示列表
@@ -67,17 +62,12 @@ public interface HotSpotContract {
         public void  saveHotSpotSearchHistory(String historyHotSpot) ;
 
 
-        /**
-         * Save hot spoy origin history.
-         *
-         * @param historyOrigin the history origin
-         */
-        public void  saveHotSpoyOriginHistory(String historyOrigin);
+
 
 
         public void  removeHistory(HotSpotHistorySearch historySearch);
 
-        public void removeOriginHistory(HotSpotOrigin hotSpotOrigin) ;
+
     }
 
     /**
@@ -99,12 +89,7 @@ public interface HotSpotContract {
          */
         public void showHistorySearchList(List<HotSpotHistorySearch> hotSpotHistorySearchList);
 
-        /**
-         * Show history origin list.
-         *
-         * @param hotSpotOrigins the hot spot origins
-         */
-        public void showHistoryOriginList(List<HotSpotOrigin> hotSpotOrigins);
+
 
         /**
          * 呈现 提示列表
@@ -118,6 +103,8 @@ public interface HotSpotContract {
          */
         public void  hotSpotChsenSuccess();
     }
+
+
 
 
     /**
@@ -142,12 +129,7 @@ public interface HotSpotContract {
          */
         public  List<HotSpotHistorySearch>  getHistorySearchList();
 
-        /**
-         * Gets history origin list.
-         *
-         * @return the history origin list
-         */
-        public List<HotSpotOrigin> getHistoryOriginList();
+
 
         /**
          * 尝试获取 提示列表
@@ -170,12 +152,7 @@ public interface HotSpotContract {
          */
         public void  saveHotSpotSearchHistory(String historyHotSpot) ;
 
-        /**
-         * Save origin hot spot history.
-         *
-         * @param orignHistory the orign history
-         */
-        public void saveOriginHotSpotHistory(String orignHistory);
+
 
         /**
          * 将地址转换成为地图的坐标
@@ -197,7 +174,7 @@ public interface HotSpotContract {
 
         public void  removeHistory(HotSpotHistorySearch historySearch);
 
-        public void removeOriginHistory(HotSpotOrigin hotSpotOrigin) ;
+
      }
 
 

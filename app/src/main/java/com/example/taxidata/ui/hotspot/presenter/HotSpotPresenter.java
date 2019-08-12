@@ -1,6 +1,7 @@
 package com.example.taxidata.ui.hotspot.presenter;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.services.core.LatLonPoint;
@@ -12,6 +13,7 @@ import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.example.taxidata.HomePageActivity;
 import com.example.taxidata.application.TaxiApp;
+import com.example.taxidata.base.BaseView;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
 import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotHistorySearch;
@@ -54,6 +56,8 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     public void attachView(HotSpotContract.HotSpotView view) {
         mHotSpotView = view;
     }
+
+
 
     @Override
     public void detachView() {
@@ -119,7 +123,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         } else {
             Logger.d("提示列表未初始化！！！");
         }
-
     }
 
     @Override
@@ -127,15 +130,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         mHotSpotModel.saveHotSpotSearchHistory(historyHotSpot);
     }
 
-    @Override
-    public List<HotSpotOrigin> getHistoryOriginList() {
-        return mHotSpotModel.getHistoryOriginList();
-    }
-
-    @Override
-    public void saveOriginHotSpotHistory(String orignHistory) {
-        mHotSpotModel.saveHotSpoyOriginHistory(orignHistory);
-    }
 
     @Override
     public void convertToLocation(String address, GeocodeSearch geocodeSearch) {
@@ -193,8 +187,5 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         mHotSpotModel.removeHistory(historySearch);
     }
 
-    @Override
-    public void removeOriginHistory(HotSpotOrigin hotSpotOrigin) {
-        mHotSpotModel.removeOriginHistory(hotSpotOrigin);
-    }
+
 }

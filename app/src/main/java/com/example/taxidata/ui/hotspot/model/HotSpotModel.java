@@ -97,7 +97,6 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
         if(hintList.size() > 0) {
             mPresnter.getHintListSuccess(hintList);
         }
-
     }
 
     @Override
@@ -111,22 +110,9 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
         }
     }
 
-    @Override
-    public void saveHotSpoyOriginHistory(String historyOriginString) {
-        if (! "".equals(historyOriginString)) {
-            removeDuplicatedHistoryOriginByAddress(historyOriginString);
-            HotSpotOrigin origin = new HotSpotOrigin();
-            origin.setHotSpotOriginHistory(historyOriginString);
-            historyDaoSession.insert(origin);
-            Log.e(TAG, "saveHotSpoyOriginHistory: 存储了热点--起点历史" + historyOriginString );
-        }
-    }
 
-    @Override
-    public List<HotSpotOrigin> getHistoryOriginList() {
-        QueryBuilder<HotSpotOrigin> queryBuilder =  historyDaoSession.queryBuilder(HotSpotOrigin.class);
-        return  queryBuilder.list();
-    }
+
+
 
     public void removeDuplicatedHistoryByAddress(String  address) {
         QueryBuilder<HotSpotHistorySearch> queryBuilder =  historyDaoSession.queryBuilder(HotSpotHistorySearch.class);
@@ -141,27 +127,11 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
         }
     }
 
-    //去掉重复的历史记录
-    public void removeDuplicatedHistoryOriginByAddress(String  address) {
-        QueryBuilder<HotSpotOrigin> queryBuilder =  historyDaoSession.queryBuilder(HotSpotOrigin.class);
-        QueryBuilder<HotSpotOrigin> addressQueryBuilder = queryBuilder.where(HotSpotOriginDao.Properties
-                .HotSpotOriginHistory.eq(address)).orderAsc(HotSpotOriginDao.Properties.HotSpotOriginHistory);
-        List<HotSpotOrigin> list = addressQueryBuilder.list();
-        //数据库中有重复地址的历史，就将它删除
-        if (list.size() != 0) {
-            for (HotSpotOrigin  item : list) {
-                historyDaoSession.delete(item);
-            }
-        }
-    }
+
 
     @Override
     public void removeHistory(HotSpotHistorySearch historySearch) {
         historyDaoSession.delete(historySearch);
     }
 
-    @Override
-    public void removeOriginHistory(HotSpotOrigin hotSpotOrigin) {
-        historyDaoSession.delete(hotSpotOrigin);
-    }
 }
