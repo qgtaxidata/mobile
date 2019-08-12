@@ -9,6 +9,6 @@
         android:color="@color/search_out_bg"/>
 
     <corners
-        android:radius="5dp"
+        android:radius="10dp"
         />
 </shape>

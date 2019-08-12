@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
     android:background="@drawable/search_out_bg">
 
     <ImageView
@@ -15,7 +16,7 @@
         android:layout_marginTop="20dp"/>
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="310dp"
         android:layout_height="100dp"
         android:background="@drawable/shape_layout__radius_search"
         android:layout_gravity="center_vertical"
@@ -53,7 +54,7 @@
             </LinearLayout>
 
             <View
-                android:layout_below="@id/ll_origin"
+
                 android:layout_width="220dp"
                 android:layout_height="2dp"
                 android:layout_marginTop="10dp"

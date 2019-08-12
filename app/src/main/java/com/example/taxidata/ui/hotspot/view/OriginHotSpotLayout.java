@@ -3,14 +3,11 @@ package com.example.taxidata.ui.hotspot.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.taxidata.R;
-import com.example.taxidata.util.ToastUtil;
-import com.orhanobut.logger.Logger;
 
 import butterknife.BindView;
 
@@ -33,12 +30,7 @@ public class OriginHotSpotLayout extends LinearLayout {
 
     public OriginHotSpotLayout(Context context, AttributeSet arrs) {
         super(context, arrs);
-        LayoutInflater.from(context).inflate(R.layout.search_view_widget, this);
-//        searchOrigin.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Logger.d("点击了起点框");
-//            }
-//        });
+        LayoutInflater.from(context).inflate(R.layout.view_search_widget, this);
+
     }
 }

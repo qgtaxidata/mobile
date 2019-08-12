@@ -79,6 +79,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                             //Todo 获取了返回的callback对象后,解析获取列表
                             if (hotSpotCallBackInfo.getCode() == 1 && hotSpotCallBackInfo.getData().size() > 0 ) {
 //                                Logger.d(GsonUtil.GsonString(hotSpotCallBackInfo));
+                                hotSpotRecommandInfoList.clear();
                                 hotSpotRecommandInfoList.addAll(hotSpotCallBackInfo.getData());
                                 if (hotSpotRecommandInfoList.size() > 0 ) {
 //                                    Logger.d("热点推荐列表大小"+hotSpotRecommandInfoList.size() );
@@ -95,6 +96,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                         public void onError(Throwable e) {
                             e.printStackTrace();
                             ToastUtil.showShortToastCenter("抱歉，网络似乎出现了异常 :(");
+
                         }
 
                         @Override

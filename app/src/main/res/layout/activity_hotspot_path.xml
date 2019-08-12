@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/mv_hotspot_path"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.amap.api.maps.MapView>
+
+    <com.example.taxidata.ui.hotspot.view.OriginHotSpotLayout
+        android:id="@+id/layout_originhotspot"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:visibility="visible">
+    </com.example.taxidata.ui.hotspot.view.OriginHotSpotLayout>
+
+    <com.example.taxidata.widget.PlanInfoCard
+        android:id="@+id/layout_plancard"
+        android:layout_width="385dp"
+        android:layout_height="130dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentBottom="true">
+
+    </com.example.taxidata.widget.PlanInfoCard>
+</RelativeLayout>

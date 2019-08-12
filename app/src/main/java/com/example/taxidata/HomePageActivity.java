@@ -1,5 +1,10 @@
 package com.example.taxidata;
 
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +21,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.LatLng;
@@ -128,13 +134,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     Button showHideHeatPowerBtn;
     @BindView(R.id.dsv_area_heat_power)
     DropDownSelectView heatpowerAreaDsv;
-
-    ImageView searchBack;
-
-    TextView searchOrigin;
-    TextView searchEndPoint;
-    @BindView(R.id.layout_originhotspot)
-    OriginHotSpotLayout layoutOriginhotspot;
     @BindView(R.id.dsv_algorithm)
     DropDownSelectView algorithmDsv;
 
@@ -387,47 +386,11 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         }
     }
 
-    /**
-     * 用 Marker 形式展示热点
-     * @param hotSpotInfo 热点信息对象
-     */
-    private void showHotSpot(HotSpotInfo hotSpotInfo) {
-        double longititue = hotSpotInfo.getLongitude();
-        double latitute = hotSpotInfo.getLatitude();
-        Logger.d("打标记：经度: " + longititue + "： 纬度" + latitute);
-        LatLng latLngHot = new LatLng(latitute, longititue);
-        final Marker markerHot = homepageAMap.addMarker(new MarkerOptions().position(latLngHot).title(hotSpotInfo.getAddress()).snippet("热度" + hotSpotInfo.getHeat()));
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLngHot, 15, 0, 0));
-        //将相机移动到标记所在位置
-        homepageAMap.moveCamera(cameraUpdate);
-    }
 
     public void initViews() {
-        searchEndPoint = layoutOriginhotspot.findViewById(R.id.search_end_point);
-        searchOrigin = layoutOriginhotspot.findViewById(R.id.search_origin);
-        searchOrigin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //选择输入起点，跳转输入界面
-                BaseEvent baseEventOrigin = EventFactory.getInstance();
-                baseEventOrigin.type = EventBusType.ORIGIN_HOTSPOT_TO_CHOOSE;
-                EventBusUtils.postSticky(baseEventOrigin);
-                Intent intentHotSearch = new Intent(HomePageActivity.this, OriginHotSpotActivity.class);
-                startActivity(intentHotSearch);
-            }
-        });
-        searchBack = layoutOriginhotspot.findViewById(R.id.search_back);
-        searchBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BaseEvent baseEventBack = EventFactory.getInstance();
-                baseEventBack.type = EventBusType.HOTSPOT_CHOSE_AGAIN;
-                EventBusUtils.postSticky(baseEventBack);
-                Intent intentHotChooseAgain = new Intent(HomePageActivity.this, HotSpotResearchActivity.class);
-                startActivity(intentHotChooseAgain);
-            }
-        });
+
     }
+
 
     /**
      * 悬浮按钮点击事件
@@ -625,19 +588,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleEvent(BaseEvent baseEvent) {
-        if (baseEvent.type.equals(EventBusType.HOTSPOT_CHOSEN)) {
-            Logger.d("接收事件 热点已经选择，显示状态框");
-            HotSpotInfo hotSpotInfo = (HotSpotInfo) baseEvent.object;
-            layoutOriginhotspot.setVisibility(View.VISIBLE);
-            showHotSpot(hotSpotInfo);
-            //如果热点文本框Visible则赋值用户选定的热点信息
-            if (searchEndPoint.getVisibility() == View.VISIBLE) {
-                searchEndPoint.setText(hotSpotInfo.getAddress());
-            }
-        }
-        if (baseEvent.type.equals(EventBusType.ORIGIN_HOTSPOT_BOTH_CHOSEN)) {
-            Logger.d("接收事件 ： 热点和地点都已经选择");
-        }
+
     }
 
     /**
