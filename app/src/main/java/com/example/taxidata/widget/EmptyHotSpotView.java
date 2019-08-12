@@ -1,4 +1,4 @@
-package com.example.taxidata.ui.hotspot.view;
+package com.example.taxidata.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

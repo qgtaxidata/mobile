@@ -2,6 +2,7 @@ package com.example.taxidata.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,6 @@ public class DropDownSelectView extends LinearLayout {
     private ArrayList<String> mList = new ArrayList<>();
     private View mView;
     private int kind;
-
 
     public DropDownSelectView(Context context) {
         this(context,null);
@@ -109,9 +109,18 @@ public class DropDownSelectView extends LinearLayout {
     public void setItemsData(ArrayList<String> list, int id){
         mList = list;
         kind = id;
+        switch (kind){
+            case 1:
+                resultTv.setText("番禺区");
+                break;
+            case 2:
+                resultTv.setText("2007年02月04日");
+                break;
+            default:
+        }
     }
 
-    class AreaChooseListAdapter extends BaseAdapter {
+    public class AreaChooseListAdapter extends BaseAdapter {
 
         Context mContext;
         ArrayList<String> areaList;
@@ -157,7 +166,9 @@ public class DropDownSelectView extends LinearLayout {
                     resultTv.setText(text);
                     closePopWindow();
                     //获得选择的时间和区域
-
+                    if (onItemClickListener != null){
+                        onItemClickListener.onItemClick(position);
+                    }
                 }
             });
             return convertView;
@@ -171,5 +182,17 @@ public class DropDownSelectView extends LinearLayout {
 
     public void seOnItemClickListener(OnItemClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;
+    }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    /**
+     * 获取下拉选中的区域(如选中番禺区，则返回字符串"番禺区")
+     * @return String
+     */
+    public String getSlectedArea(){
+        Log.d("DropDownSelectView",resultTv.getText().toString());
+        return resultTv.getText().toString();
     }
 }

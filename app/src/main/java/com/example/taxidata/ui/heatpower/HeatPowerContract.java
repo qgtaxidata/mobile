@@ -44,9 +44,25 @@ public interface HeatPowerContract {
     interface HeatPowerPresent extends BasePresent<HeatPowerView> {
 
         /**
-         * 根据用户点击显示热力图或隐藏热力图
+         * 实时热力图
+         * @param area 区域
          */
-        void heatPoint();
+        void showRealTimeHeatPower(int area);
+
+        /**
+         * 历史热力图
+         * @param area
+         * @param time
+         */
+        void showHistoryHeatPower(int area,String time);
+
+        /**
+         * 未来热力图
+         * @param area 区域
+         * @param featureTime 未来时间
+         * @param algorithm 算法
+         */
+        void showFeatureHeatPower(int area,String featureTime,int algorithm);
 
         /**
          * 暂停轮询
@@ -58,10 +74,20 @@ public interface HeatPowerContract {
 
         /**
          * 请求热点数据
-         * @param point 热点
+         * @param area 区域
          * @param time 时间
          * @return Observable<HeatPointInfo>
          */
-        Observable<HeatPointInfo> requestHeatPoint(LatLng point, String time);
+        Observable<HeatPointInfo> requestHeatPoint(int area, String time);
+
+        /**
+         * 请求未来热点
+         * @param area 地区
+         * @param nowTime 现在时间
+         * @param futureTime 未来时间
+         * @param algorithm 算法(0~2)
+         * @return
+         */
+        Observable<HeatPointInfo> requestFeatureHeatPoint(int area,String nowTime, String futureTime,int algorithm);
     }
 }

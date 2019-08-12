@@ -7,7 +7,7 @@ import com.example.taxidata.base.BaseView;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
 import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotHistorySearch;
-import com.example.taxidata.bean.HotSpotOrigin;
+
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public interface HotSpotContract {
         public List<HotSpotHistorySearch>  getHistorySearchList();
 
 
-        public List<HotSpotOrigin>  getHistoryOriginList();
+
 
         /**
          * 发送请求获取提示列表
@@ -62,7 +62,11 @@ public interface HotSpotContract {
         public void  saveHotSpotSearchHistory(String historyHotSpot) ;
 
 
-        public void  saveHotSpoyOriginHistory(String historyOrigin);
+
+
+
+        public void  removeHistory(HotSpotHistorySearch historySearch);
+
 
     }
 
@@ -85,7 +89,7 @@ public interface HotSpotContract {
          */
         public void showHistorySearchList(List<HotSpotHistorySearch> hotSpotHistorySearchList);
 
-        public void showHistoryOriginList(List<HotSpotOrigin> hotSpotOrigins);
+
 
         /**
          * 呈现 提示列表
@@ -93,7 +97,14 @@ public interface HotSpotContract {
          * @param hintList the hint list
          */
         public void showHintHotSpotList(List<HotSpotHint> hintList);
+
+        /**
+         * Hot spot chsen success.
+         */
+        public void  hotSpotChsenSuccess();
     }
+
+
 
 
     /**
@@ -118,7 +129,7 @@ public interface HotSpotContract {
          */
         public  List<HotSpotHistorySearch>  getHistorySearchList();
 
-        public List<HotSpotOrigin> getHistoryOriginList();
+
 
         /**
          * 尝试获取 提示列表
@@ -141,14 +152,29 @@ public interface HotSpotContract {
          */
         public void  saveHotSpotSearchHistory(String historyHotSpot) ;
 
-        public void saveOriginHotSpotHistory(String orignHistory);
+
 
         /**
          * 将地址转换成为地图的坐标
          *
-         * @param address the address
+         * @param address       the address
+         * @param geocodeSearch the geocode search
          */
         public void convertToLocation(String address ,GeocodeSearch geocodeSearch );
+
+
+        /**
+         * Convert to address name.
+         *
+         * @param dataBean      the data bean
+         * @param geocodeSearch the geocode search
+         */
+        public void convertToAddressName(HotSpotCallBackInfo.DataBean dataBean , GeocodeSearch geocodeSearch) ;
+
+
+        public void  removeHistory(HotSpotHistorySearch historySearch);
+
+
      }
 
 

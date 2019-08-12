@@ -12,13 +12,16 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface HttpService {
 
-    @Headers({"Content-Type: application/json","Accept: application/json"})
-    @POST("thermoDiagram/getMap")
-    Observable<HeatPointInfo> getHeatPoint(@Body RequestBody info);
+    @POST("thermoDiagram//getAreaMap")
+    Observable<HeatPointInfo> getHeatPoint(@Query("area")int area,@Query("time")String time);
 
+    @POST("thermoDiagram//getFutureMap")
+    Observable<HeatPointInfo> getFeatureHeatPoint(@Query("area")int area,@Query("nowTime")String nowTime,
+                                           @Query("futureTime")String futureTime,@Query("algorithm")int algorithm);
 
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("hotspot/findHotspot")

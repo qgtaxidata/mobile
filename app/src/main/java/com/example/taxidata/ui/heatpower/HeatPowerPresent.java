@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.WeightedLatLng;
+import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HeatPointInfo;
 import com.example.taxidata.util.ToastUtil;
 
@@ -31,8 +32,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     }
 
     @Override
-    public void heatPoint() {
-        String time = null;
+    public void showRealTimeHeatPower(int area) {
         if (heatPowerModel != null){
             //不暂停轮询
             isPaused = false;
@@ -41,8 +41,9 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
             Observable.interval(3,TimeUnit.SECONDS)
                     .doOnNext(new Consumer<Long>() {
                         @Override
-                        public void accept(Long aLong) throws Exception {
-                            heatPowerModel.requestHeatPoint(heatPowerView.getCentralLongitudeLatitude(),time)
+                        public void accept(Long aLong)throws Exception{
+                            //TaxiApp.getAppNowTime()获得当前时间
+                            heatPowerModel.requestHeatPoint(area, TaxiApp.getAppNowTime())
                                     .subscribe(new Observer<HeatPointInfo>() {
                                         @Override
                                         public void onSubscribe(Disposable d) {
@@ -52,29 +53,8 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                                         @Override
                                         public void onNext(HeatPointInfo heatPointInfo) {
                                             if (heatPointInfo.getCode() == 1){
-                                                Log.d(TAG,"onNext");
-                                                //获取热点数据集
-                                                List<HeatPointInfo.DataBean> heatPointList = heatPointInfo.getData();
-                                                //构建热点数据集
-                                                List<WeightedLatLng> longitudeLaitudeList = new ArrayList<>();
-                                                for (HeatPointInfo.DataBean temp : heatPointList){
-                                                    double longitude = temp.getLng();
-                                                    double laitude = temp.getLat();
-                                                    //权重
-                                                    int count = temp.getCount();
-                                                    //构建热点经纬度
-                                                    LatLng longitudeLaitude = new LatLng(laitude,longitude);
-                                                    //构造具有权重的经纬度对象
-                                                    WeightedLatLng wLongitudeLaitude = new WeightedLatLng(longitudeLaitude,count);
-                                                    //构造具有权重的经纬度对象数组
-                                                    longitudeLaitudeList.add(wLongitudeLaitude);
-                                                }
-                                                //调试数据
-                                                for (int i = 0; i < longitudeLaitudeList.size(); i++){
-                                                    Log.d("HeatPowerPresent",i +" : " + longitudeLaitudeList.get(i).latLng);
-                                                }
-                                                Log.d("HeatPowerPresent", "------------------------------------------------------------------------------------------");
-                                                heatPowerView.showHeatPower(longitudeLaitudeList);
+                                                List<WeightedLatLng> weightedLatLngs = getWeightedLatLng(heatPointInfo);
+                                                heatPowerView.showHeatPower(weightedLatLngs);
                                             } else {
                                                 //显示错误信息
                                                 String errorMessage = heatPointInfo.getMsg();
@@ -90,7 +70,6 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                                             e.printStackTrace();
                                             //轮询结束，清空热力图，并显示显示热力图的按钮
                                             heatPowerView.hideHeatPower();
-                                            heatPowerView.showShowButton();
                                         }
 
                                         @Override
@@ -100,7 +79,6 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                                             if (isPaused){
                                                 //轮询结束，清空热力图，并显示显示热力图的按钮
                                                 heatPowerView.hideHeatPower();
-                                                heatPowerView.showShowButton();
                                             }
                                         }
                                     });
@@ -124,7 +102,6 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                             e.printStackTrace();
                             //出现异常，清空热力图，并显示显示热力图按钮
                             heatPowerView.hideHeatPower();
-                            heatPowerView.showShowButton();
                         }
 
                         @Override
@@ -132,10 +109,78 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                             Log.d(TAG, "对Complete事件作出响应");
                             //轮询结束，清空热力图，并显示显示热力图的按钮
                             heatPowerView.hideHeatPower();
-                            heatPowerView.showShowButton();
                         }
                     });
         }
+    }
+
+    @Override
+    public void showHistoryHeatPower(int area, String time) {
+        heatPowerModel.requestHeatPoint(area,time)
+                .subscribe(new Observer<HeatPointInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(HeatPointInfo heatPointInfo) {
+                        if (heatPointInfo.getCode() == 1){
+                            List<WeightedLatLng> weightedLatLngList = getWeightedLatLng(heatPointInfo);
+                            heatPowerView.showHeatPower(weightedLatLngList);
+                        }else {
+                            // TODO 将改为MyToast
+                            ToastUtil.showShortToastBottom(heatPointInfo.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // TODO 将改为
+                        ToastUtil.showShortToastBottom("网络访问失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void showFeatureHeatPower(int area, String featureTime, int algorithm) {
+        heatPowerModel.requestFeatureHeatPoint(area,TaxiApp.getAppNowTime(),featureTime,algorithm)
+                .subscribe(new Observer<HeatPointInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(HeatPointInfo info) {
+                        if (info.getCode() == 1){
+                            List<WeightedLatLng> weightedLatLngList = getWeightedLatLng(info);
+                            heatPowerView.showHeatPower(weightedLatLngList);
+                        }else {
+                            // TODO 将改为MyToast
+                            ToastUtil.showShortToastBottom(info.getMsg());
+                            heatPowerView.hideHeatPower();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        //异常则清除热力图
+                        heatPowerView.hideHeatPower();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
     }
 
     @Override
@@ -155,5 +200,25 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     @Override
     public void pause(){
         isPaused = true;
+    }
+
+    private List<WeightedLatLng> getWeightedLatLng(HeatPointInfo heatPointInfo){
+        //获取热点数据集
+        List<HeatPointInfo.DataBean> heatPointList = heatPointInfo.getData();
+        //构建热点数据集
+        List<WeightedLatLng> longitudeLaitudeList = new ArrayList<>();
+        for (HeatPointInfo.DataBean temp : heatPointList) {
+            double longitude = temp.getLng();
+            double laitude = temp.getLat();
+            //权重
+            int count = temp.getCount();
+            //构建热点经纬度
+            LatLng longitudeLaitude = new LatLng(laitude, longitude);
+            //构造具有权重的经纬度对象
+            WeightedLatLng wLongitudeLaitude = new WeightedLatLng(longitudeLaitude, count);
+            //构造具有权重的经纬度对象数组
+            longitudeLaitudeList.add(wLongitudeLaitude);
+        }
+        return longitudeLaitudeList;
     }
 }

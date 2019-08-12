@@ -2,6 +2,8 @@ package com.example.taxidata.widget;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,11 +21,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.taxidata.R;
 import com.example.taxidata.adapter.CustomOnclick;
 import com.example.taxidata.adapter.TimeAdapter;
+import com.example.taxidata.application.TaxiApp;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class MyTimerPicker extends FrameLayout {
+
+    private static final String CONST_NO_SELECTED_TIME = "请选择你要查询的时间";
 
     /**
      * 2月的日数
@@ -210,6 +219,49 @@ public class MyTimerPicker extends FrameLayout {
      */
     private CustomOnclick cancelClick;
 
+    /**
+     * 绑定状态栏
+     */
+    private StatusBar statusBar;
+
+    /**
+     * 历史状态栏按钮
+     */
+    private CustomOnclick historyStatusClick;
+
+    /**
+     * 实时状态栏按钮
+     */
+    private CustomOnclick realTimeClick;
+
+    /**
+     * 未来状态栏按钮
+     */
+    private CustomOnclick featureClick;
+
+    /**
+     * 定时器
+     */
+    private Timer timer;
+
+    /**
+     * 定时器处理实时时间
+     */
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String time = (String) msg.obj;
+            if (statusBar != null){
+                if (statusBar.getStatus() == 1){
+                    //实时状态下更新时间
+                    calendarTv.setText(time);
+                }
+            }
+        }
+    };
+
+
     public MyTimerPicker(Context context) {
         this(context,null);
     }
@@ -285,25 +337,45 @@ public class MyTimerPicker extends FrameLayout {
         timeLl.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (timeStatusBarClick != null) {
-                    timeStatusBarClick.onClick(MyTimerPicker.this);
+                if (statusBar != null){
+                    int status = statusBar.getStatus();
+                    switch (status){
+                        case 0:
+                            //历史状态栏可以点击
+                            showDetailTimePicker();
+                            break;
+                        case 1:
+                            //实时状态栏不可以点击
+                            break;
+                        case 2:
+                            //未来状态栏可以点击
+                            showDetailTimePicker();
+                            break;
+                        default:
+                            //不存在的
+                    }
+                }else {
+                    //如果没有绑定状态栏，则有外界设置点击事件
+                    if (timeStatusBarClick != null) {
+                        timeStatusBarClick.onClick(MyTimerPicker.this);
+                    }
                 }
             }
         });
+        //取消按钮
         cancelTv.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (cancelClick != null) {
-                    cancelClick.onClick(MyTimerPicker.this);
-                }
+                hideDetailTimePicker();
             }
         });
+        //确认按钮点击事件
         configTv.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (configClick != null) {
-                    configClick.onClick(MyTimerPicker.this);
-                }
+                //确认按钮以后，将标题栏数据设置为选择的事件
+                setTimeStausTime(getChineseTime());
+                hideDetailTimePicker();
             }
         });
     }
@@ -333,23 +405,26 @@ public class MyTimerPicker extends FrameLayout {
     }
 
     /**
-     * 获取时间选择器上选择的时间
+     * 获取时间状态栏上选择的时间
      * @return String
      */
     public String getTime(){
-        //获取viewHolder
+       /* //获取viewHolder
         View dayView = mDayRv.getChildAt(CONST_CENTER);
         TimeAdapter.ViewHolder dayHolder = (TimeAdapter.ViewHolder) mDayRv.getChildViewHolder(dayView);
         View hourView = mHourRv.getChildAt(CONST_CENTER);
         TimeAdapter.ViewHolder hourHolder = (TimeAdapter.ViewHolder) mHourRv.getChildViewHolder(hourView);
         View minuteView = mMinuteRv.getChildAt(CONST_CENTER);
-        TimeAdapter.ViewHolder minuteHolder = (TimeAdapter.ViewHolder) mMinuteRv.getChildViewHolder(minuteView);
+        TimeAdapter.ViewHolder minuteHolder = (TimeAdapter.ViewHolder) mMinuteRv.getChildViewHolder(minuteView);*/
         //获取字符串
-        StringBuffer timeBuffer = new StringBuffer();
-        timeBuffer.append("2017-02-").append(dayHolder.timeTv.getText().toString()).append(" ")
-                .append(hourHolder.timeTv.getText().toString()).append(":").append(minuteHolder.timeTv.getText().toString());
-        Log.d("MyTimerPicker",timeBuffer.toString());
-        return timeBuffer.toString();
+        String chineseTime = calendarTv.getText().toString();
+        StringBuffer timeBuilder = new StringBuffer(chineseTime);
+        timeBuilder.setCharAt(timeBuilder.indexOf("年"),'-');
+        timeBuilder.setCharAt(timeBuilder.indexOf("月"),'-');
+        timeBuilder.deleteCharAt(timeBuilder.indexOf("日"));
+
+        Log.d("MyTimerPicker",timeBuilder.toString());
+        return timeBuilder.toString();
     }
 
     /**
@@ -382,5 +457,119 @@ public class MyTimerPicker extends FrameLayout {
 
     public void setCancelClick(CustomOnclick cancelClick) {
         this.cancelClick = cancelClick;
+    }
+
+    /**
+     * 如果绑定状态栏，则开启定时器，不绑定状态栏，不开启定时器
+     * @param statusBar 状态栏
+     */
+    public void setStatusBar(StatusBar statusBar) {
+        this.statusBar = statusBar;
+        //绑定status同时开启定时器
+        timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                while (true){
+                    if (statusBar.getStatus() == 1){
+                        //如果是实时状态，每次更新标题栏
+                        Message message = new Message();
+                        message.obj = TaxiApp.getAppNowChineseTime();
+                        mHandler.sendMessage(message);
+                    }
+                }
+            }
+        };
+        try {
+            timer.schedule(timerTask,1000);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        //顺手绑定点击事件
+        statusBar.setHistoryOnClick(new StatusOnClick() {
+            @Override
+            public void onClick() {
+                if (historyStatusClick != null){
+                    calendarTv.setText(CONST_NO_SELECTED_TIME);
+                    historyStatusClick.onClick(MyTimerPicker.this);
+                }
+            }
+        });
+        statusBar.setRealTimeOnClick(new StatusOnClick() {
+            @Override
+            public void onClick() {
+                if (realTimeClick != null){
+                    realTimeClick.onClick(MyTimerPicker.this);
+                }
+            }
+        });
+        statusBar.setFeatureOnClick(new StatusOnClick() {
+            @Override
+            public void onClick() {
+                if (featureClick != null){
+                    calendarTv.setText(CONST_NO_SELECTED_TIME);
+                    featureClick.onClick(MyTimerPicker.this);
+                }
+            }
+        });
+    }
+
+    public void setHistoryStatusClick(CustomOnclick historyStatusClick) {
+        this.historyStatusClick = historyStatusClick;
+    }
+
+    public void setRealTimeClick(CustomOnclick realTimeClick) {
+        this.realTimeClick = realTimeClick;
+    }
+
+    public void setFeatureClick(CustomOnclick featureClick) {
+        this.featureClick = featureClick;
+    }
+
+    /**
+     * 用户是否有选择时间
+     * @return boolean
+     */
+    public boolean isNoSelectedTime(){
+        return calendarTv.getText().toString().equals(CONST_NO_SELECTED_TIME);
+    }
+
+    /**
+     * 用户选择的时间是否是历史时间
+     * @return boolean
+     */
+    public boolean isHistory(){
+        //设置时间格式
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+        long selectedTime = 99999999;
+        try {
+            selectedTime = format.parse(getTime() + ":00").getTime();
+        }catch (Exception e){
+            // TODO 失败处理
+            e.printStackTrace();
+        }
+        //获取app当前时间
+        long appNowTime = TaxiApp.getMillionTime();
+        return appNowTime >= selectedTime;
+    }
+
+    /**
+     * 用户选择的时间是否是未来时间
+     * @return boolean
+     */
+    public boolean isFeature(){
+        //设置时间格式
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-SS");
+        long selectedTime = 0;
+        try {
+            selectedTime = format.parse(getTime()).getTime();
+        }catch (Exception e){
+            // TODO 失败处理
+            e.printStackTrace();
+        }
+        //获取app当前时间
+        long appNowTime = TaxiApp.getMillionTime();
+        return appNowTime <= selectedTime;
     }
 }
