@@ -226,7 +226,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
     /**
      * 处理Eventbus发过来的事件
      */
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
     public void handleEvent(BaseEvent baseEvent) {
         if (baseEvent.type.equals(EventBusType.ORIGIN_HOTSPOT_TO_CHOOSE)) {
             Logger.d("接收事件 ，准备选择 起点");

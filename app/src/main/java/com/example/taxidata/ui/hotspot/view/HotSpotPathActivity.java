@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +21,7 @@ import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.example.taxidata.HomePageActivity;
 import com.example.taxidata.R;
@@ -43,6 +46,7 @@ import butterknife.ButterKnife;
 
 public class HotSpotPathActivity extends BaseActivity {
 
+    private static final String TAG = "HotSpotPathActivity";
     @BindView(R.id.mv_hotspot_path)
     MapView mvHotspotPath;
     @BindView(R.id.layout_originhotspot)
@@ -69,6 +73,8 @@ public class HotSpotPathActivity extends BaseActivity {
     TextView searchOrigin;
     TextView searchEndPoint;
     UiSettings uiSettings;
+    String hotSpotChosen = "";
+    String originChosen = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +88,7 @@ public class HotSpotPathActivity extends BaseActivity {
         if (isRegisterEventBus()) {
             EventBusUtils.register(this);
         }
+        Log.e(TAG,"onCreate!!");
     }
     @Override
     protected void onPause() {
@@ -167,6 +174,8 @@ public class HotSpotPathActivity extends BaseActivity {
 
     }
 
+
+
     public void initMap(){
         if (mvHotspotPath != null) {
             pathMap = mvHotspotPath.getMap();
@@ -201,8 +210,8 @@ public class HotSpotPathActivity extends BaseActivity {
         Logger.d("打标记：经度: " + longititue + "： 纬度" + latitute);
         LatLng latLngHot = new LatLng(latitute, longititue);
         MarkerOptions markerOptions = new MarkerOptions().position(latLngHot).title(hotSpotInfo.getAddress()).snippet("热度" + hotSpotInfo.getHeat())
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources() ,R.drawable.ui_hotspot_endpoint)));
-        //final Marker markerHot = homepageAMap.addMarker(new MarkerOptions().position(latLngHot).title(hotSpotInfo.getAddress()).snippet("热度" + hotSpotInfo.getHeat()));
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources() ,R.mipmap.ui_hotspot_endpoint)));
+        final Marker markerHot =pathMap .addMarker(markerOptions);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLngHot, 15, 0, 0));
         //将相机移动到标记所在位置
         pathMap.moveCamera(cameraUpdate);
@@ -216,17 +225,21 @@ public class HotSpotPathActivity extends BaseActivity {
     /**
      * 处理eventbus发过来的事件
      */
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
     public void handleEvent(BaseEvent baseEvent) {
         if (baseEvent.type.equals(EventBusType.HOTSPOT_CHOSEN)) {
-            Logger.d("接收事件 热点已经选择，显示状态框");
+            Log.e(TAG,"接收事件 热点已经选择，显示状态框");
+            layoutPlanCard.setVisibility(View.GONE);
+            layoutOriginHotSpot.setVisibility(View.VISIBLE);
             HotSpotInfo hotSpotInfo = (HotSpotInfo) baseEvent.object;
             showHotSpot(hotSpotInfo);
+            hotSpotChosen = hotSpotInfo.getAddress();
             //如果热点文本框Visible则赋值用户选定的热点信息
             if (searchEndPoint.getVisibility() == View.VISIBLE) {
                 searchEndPoint.setText(hotSpotInfo.getAddress());
             }
         }
+
         if(baseEvent.type.equals(EventBusType.ORIGIN_HOTSPOT_BOTH_CHOSEN)) {
             Logger.d("接收事件 ： 热点和地点都已经选择");
         }

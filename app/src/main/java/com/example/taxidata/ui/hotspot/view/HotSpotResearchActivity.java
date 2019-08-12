@@ -91,7 +91,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         if (isRegisterEventBus()) {
             EventBusUtils.register(this);
         }
-        Logger.d("onCreate");
+
     }
 
     @Override
@@ -272,7 +272,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
     @Override
     public void  hotSpotChsenSuccess() {
-        Intent intent = new Intent(this , HomePageActivity.class);
+        Intent intent = new Intent(this , HotSpotPathActivity.class);
         startActivity(intent);
     }
 

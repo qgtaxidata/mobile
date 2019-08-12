@@ -94,8 +94,13 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                         }
                         @Override
                         public void onError(Throwable e) {
+                            //假数据--度过服务器关掉的时光
+                            hotSpotRecommandInfoList.clear();
+                            hotSpotRecommandInfoList.add(new HotSpotCallBackInfo.DataBean(113.23,23.16,3));
+                            mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
                             e.printStackTrace();
                             ToastUtil.showShortToastCenter("抱歉，网络似乎出现了异常 :(");
+
 
                         }
 
@@ -166,8 +171,8 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         hotSpotInfo.setLongitude(callbackHotSpotInfo.getLongitude());
         hotSpotInfo.setHeat(callbackHotSpotInfo.getHeat());
         baseEvent.object = hotSpotInfo;
-        mHotSpotView.hotSpotChsenSuccess();
         EventBusUtils.postSticky(baseEvent);
+        mHotSpotView.hotSpotChsenSuccess();
     }
 
     @Override
