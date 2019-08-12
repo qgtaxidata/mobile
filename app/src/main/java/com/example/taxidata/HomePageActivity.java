@@ -1,50 +1,36 @@
 package com.example.taxidata;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.content.Intent;
-
-
-import android.content.Intent;
-
 import android.graphics.Color;
-
-import android.graphics.drawable.ColorDrawable;
-
-
 import android.os.Bundle;
-import android.view.View;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.LatLng;
-
-import java.util.List;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
+import com.example.taxidata.adapter.CustomOnclick;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
-
-import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
-
-
-
-import com.example.taxidata.util.TimePickerUtil;
-
+import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
+import com.example.taxidata.widget.MyTimerPicker;
+import com.example.taxidata.widget.StatusBar;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-
 
 import java.util.List;
 
@@ -107,6 +93,14 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     FloatingActionButton setUpFbtn;
     @BindView(R.id.fam_home_page_menu)
     FloatingActionMenu homePageMenuFam;
+    @BindView(R.id.stb_heat_power)
+    StatusBar heatPowerStb;
+    @BindView(R.id.tp_home_page_time_picker)
+    MyTimerPicker chooseTimeTp;
+    @BindView(R.id.rl_heat_power_switch)
+    RelativeLayout heatpowerRl;
+    @BindView(R.id.btn_show_hide_heat_power)
+    Button showHideHeatPowerBtn;
 
     /*------------------------------------present相关-----------------------------------------------*/
 
@@ -118,9 +112,9 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     /*------------------------------------状态相关--------------------------------------------------*/
 
     /**
-     * 是否隐藏热力图，默认为true，即隐藏热力图
+     * 是否为热力图模式，默认为false，即不是热力图模式
      */
-    private boolean isHeatPowerHide = true;
+    private boolean isHeatPowerMode = false;
 
     /*----------------------------------------------------------------------------------------------*/
 
@@ -131,7 +125,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         ButterKnife.bind(this);
         homePageMv = findViewById(R.id.mv_home_page);
         homePageMv.onCreate(savedInstanceState);
-        if (homepageAMap == null){
+        if (homepageAMap == null) {
             homepageAMap = homePageMv.getMap();
         }
         //初始化present
@@ -140,6 +134,10 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         initFloatButton();
         //初始化地图
         initMap();
+        //初始化时间选择器
+        initTimePicker();
+        //初始化显示隐藏按钮
+        initHideShowButton();
     }
 
     @Override
@@ -160,6 +158,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         super.onResume();
         homePageMv.onResume();
     }
+
     /**
      * 初始化地图
      */
@@ -181,23 +180,20 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      */
     private void initFloatButton() {
         //将悬浮按钮的Label背景设置为透明
-        heatPowerFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        abnormalAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        behaviorAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        passengerHotFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        requestAnalysisFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        roadQualityFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        setUpFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        taxiIncomeFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
-        visualizationFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
+        heatPowerFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        abnormalAnalysisFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        behaviorAnalysisFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        passengerHotFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        requestAnalysisFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        roadQualityFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        setUpFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        taxiIncomeFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        visualizationFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
     }
-
-
 
 
     /**
      * 获取屏幕中心位置
-     *
      * @param cameraPosition 相机位置
      */
     @Override
@@ -212,11 +208,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      */
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
-
-    }
-
-    @OnClick(R.id.fbtn_heat_power)
-    public void onViewClicked() {
 
     }
 
@@ -296,13 +287,20 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 控制热力图的显示或隐藏
      */
     private void controlHeatPower() {
-        if (isHeatPowerHide) {
-            heatPowerPresent.heatPoint();
-            //热力图不再隐藏
-            isHeatPowerHide = false;
-        } else {
+        if (isHeatPowerMode) {
+            //退出热力图模式
             heatPowerPresent.pause();
-            isHeatPowerHide = true;
+            //隐藏状态栏
+            heatpowerRl.setVisibility(View.GONE);
+            //退出热力图模式
+            isHeatPowerMode = false;
+            heatPowerFbtn.setLabelText(MyCharacter.CONST_SHOW_BUTTON);
+        } else {
+            //热力图模式
+            heatPowerPresent.showRealTimeHeatPower(1);
+            heatpowerRl.setVisibility(View.VISIBLE);
+            isHeatPowerMode = true;
+            heatPowerFbtn.setLabelText(MyCharacter.CONST_HIDE_BUTTON);
         }
 
     }
@@ -312,7 +310,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         switch (view.getId()) {
             case R.id.fbtn_passenger_hot:
                 //载客热点推荐
-                Intent hotSpotIntent = new Intent(HomePageActivity.this ,HotSpotResearchActivity.class);
+                Intent hotSpotIntent = new Intent(HomePageActivity.this, HotSpotResearchActivity.class);
                 startActivity(hotSpotIntent);
                 break;
             case R.id.fbtn_heat_power:
@@ -345,5 +343,80 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         }
         //收起菜单栏
         homePageMenuFam.close(true);
+    }
+
+    /**
+     * 初始化时间选择器
+     */
+    private void initTimePicker() {
+        chooseTimeTp.setTimeStatusBarClick(new CustomOnclick() {
+            @Override
+            public void onClick(MyTimerPicker v) {
+                //点击显示时间选择器
+                chooseTimeTp.showDetailTimePicker();
+            }
+        });
+    }
+
+    /**
+     * 初始化隐藏热力图按钮
+     */
+    private void initHideShowButton(){
+        showHideHeatPowerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (heatPowerPresent != null){
+                    if (showHideHeatPowerBtn.getText().toString().equals("隐藏")){
+                        //获取当前的状态(历史，实时，未来)
+                        int status = heatPowerStb.getStatus();
+                        //根据不同状态进行不同的操作
+                        switch (status){
+                            case 0:
+                                //切换至历史状态时，无轮询状态，直接清空地图
+                                clearMap();
+                                break;
+                            case 1:
+                                //切换至实时状态时，有轮询状态，先停止轮询，再清空地图
+                                heatPowerPresent.pause();
+                                break;
+                            case 2:
+                                //未来状态，无轮询，直接清空地图
+                                clearMap();
+                                break;
+                            default:
+                        }
+                        //将隐藏按钮改变为显示按钮
+                        showHideHeatPowerBtn.setText("显示");
+                    }else {
+                        int status = heatPowerStb.getStatus();
+                        switch (status){
+                            case 0:
+                                // TODO 历史热力图
+                                /*
+                                1. 获取用户选择的时间和地点
+                                2. 发送网络请求
+                                    P.showHeatPoint
+                                 */
+                                break;
+                            case 1:
+                                // TODO 实时热力图
+                                /*
+                                1. 获取用户选择的时间和地点
+                                2.发送网络请求
+                                 */
+                                break;
+                            case 2:
+                                //TODO 未来热力图
+                                /*
+                                1.获取用户选择的时间和地点
+                                2.发送网络请求
+                                 */
+                                break;
+                            default:
+                        }
+                    }
+                }
+            }
+        });
     }
 }

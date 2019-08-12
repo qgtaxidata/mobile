@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/ll_heat_power_switch"
+    <com.amap.api.maps.MapView
+        android:id="@+id/mv_home_page"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl_heat_power_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
-        <LinearLayout
+        <com.example.taxidata.widget.StatusBar
+            android:id="@+id/stb_heat_power"
+            android:layout_width="@dimen/dp_150"
+            android:layout_height="@dimen/dp_24"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginTop="50dp"
+            />
+
+        <RelativeLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:background="@android:color/transparent"
@@ -32,15 +47,17 @@
                 android:layout_marginLeft="@dimen/dp_15"
                 />
 
-        </LinearLayout>
+            <com.example.taxidata.widget.MyTimerPicker
+                android:id="@+id/tp_home_page_time_picker"
+                android:layout_marginRight="@dimen/dp_20"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
 
-    </LinearLayout>
+        </RelativeLayout>
 
-    <com.amap.api.maps.MapView
-        android:id="@+id/mv_home_page"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        />
+    </RelativeLayout>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fam_home_page_menu"
@@ -74,7 +91,7 @@
             android:layout_width="wrap_content"
             android:src="@mipmap/ic_heat_power"
             app:fab_size="mini"
-            app:fab_label="热力图"
+            app:fab_label="热力图模式"
             app:fab_colorNormal="@android:color/transparent"
             app:fab_colorPressed="@android:color/holo_orange_light"
             app:fab_showShadow="true"
@@ -103,7 +120,7 @@
             android:src="@mipmap/ic_request_analysis"
             app:fab_colorPressed="@android:color/holo_orange_light"
             app:fab_size="mini"
-            app:fab_label="区域出租车需求量分析"
+            app:fab_label="出租车需求量分析预测"
             app:fab_colorNormal="@android:color/transparent"
             app:fab_showShadow="true"
             app:fab_shadowColor="@android:color/transparent"
@@ -131,7 +148,7 @@
             android:src="@mipmap/ic_behavior_analysis"
             app:fab_colorPressed="@android:color/holo_orange_light"
             app:fab_size="mini"
-            app:fab_label="出租车行为分析与预测"
+            app:fab_label="出租车输入分析与预测"
             app:fab_colorNormal="@android:color/transparent"
             app:fab_showShadow="true"
             app:fab_shadowColor="@android:color/transparent"
@@ -180,7 +197,6 @@
             app:fab_shadowRadius="4dp"
             />
 
-
     </com.github.clans.fab.FloatingActionMenu>
 
-</FrameLayout>
+</RelativeLayout>

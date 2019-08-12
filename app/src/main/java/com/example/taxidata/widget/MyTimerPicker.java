@@ -293,9 +293,7 @@ public class MyTimerPicker extends FrameLayout {
         cancelTv.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (cancelClick != null) {
-                    cancelClick.onClick(MyTimerPicker.this);
-                }
+                hideDetailTimePicker();
             }
         });
         configTv.setOnClickListener(new View.OnClickListener(){
@@ -304,6 +302,7 @@ public class MyTimerPicker extends FrameLayout {
                 if (configClick != null) {
                     configClick.onClick(MyTimerPicker.this);
                 }
+                hideDetailTimePicker();
             }
         });
     }

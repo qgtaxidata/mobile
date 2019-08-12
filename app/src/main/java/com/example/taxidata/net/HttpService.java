@@ -14,7 +14,7 @@ import retrofit2.http.POST;
 public interface HttpService {
 
     @Headers({"Content-Type: application/json","Accept: application/json"})
-    @POST("thermoDiagram/getMap")
+    @POST("thermoDiagram//getAreaMap")
     Observable<HeatPointInfo> getHeatPoint(@Body RequestBody info);
 
 
