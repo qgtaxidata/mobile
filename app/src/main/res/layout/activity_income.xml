@@ -78,7 +78,7 @@
                    android:layout_alignParentTop="true"
                    android:layout_centerInParent="true"
                    android:gravity="center"
-                   android:text="车牌号"
+                   android:text="司机编号"
                    android:textSize="16sp"
                    android:textStyle="normal"
                    android:textColor="@color/blue_color"/>

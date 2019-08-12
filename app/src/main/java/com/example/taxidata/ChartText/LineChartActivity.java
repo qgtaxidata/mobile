@@ -26,7 +26,7 @@ public class LineChartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.line_chart_activity);
+        setContentView(R.layout._ctivity_line_chart);
         chart = findViewById(R.id.chart);
 //        chart.setOnChartGestureListener(this);           //设置手势滑动事件
 //        chart.setOnChartValueSelectedListener(this);     //设置数值选择监听

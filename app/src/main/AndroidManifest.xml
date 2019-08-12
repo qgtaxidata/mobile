@@ -34,7 +34,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.TaxiPath.TaxiInfoListActivity" />
         <activity android:name=".ui.TaxiPath.TaxiPathActivity" />
         <activity android:name=".ChartText.PieChartActivity" />
         <activity android:name=".ChartText.BarChartActivity" />

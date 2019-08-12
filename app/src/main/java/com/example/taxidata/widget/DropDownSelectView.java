@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.taxidata.R;
+import com.example.taxidata.adapter.OnItemClickListener;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class DropDownSelectView extends LinearLayout {
     private TextView resultTv;
     private ImageView upOrDown;
     private PopupWindow areaPopupWindow = null;
+    protected OnItemClickListener onItemClickListener;
     private ArrayList<String> mList = new ArrayList<>();
     private View mView;
     private int kind;
@@ -43,7 +45,7 @@ public class DropDownSelectView extends LinearLayout {
 
     public void initView(){
         LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.drop_down_select_view,this,true);
+        View view = layoutInflater.inflate(R.layout.view_drop_down_select,this,true);
         resultTv = view.findViewById(R.id.drop_down_select_tv);
         upOrDown = view.findViewById(R.id.drop_down_select_iv);
         switch (kind){
@@ -53,6 +55,8 @@ public class DropDownSelectView extends LinearLayout {
             case 2:
                 resultTv.setText("2007年02月04日");
                 break;
+                default:
+                    break;
         }
         view.setOnClickListener(new OnClickListener() {
             @Override
@@ -65,6 +69,8 @@ public class DropDownSelectView extends LinearLayout {
                         case 2:
                             showTimePopWindow();
                             break;
+                            default:
+                                break;
                     }
                 }else {
                     closePopWindow();
@@ -76,7 +82,7 @@ public class DropDownSelectView extends LinearLayout {
     //弹出区域选择列表
     private void showAreaPopWindow(){
         LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = layoutInflater.inflate(R.layout.drop_down_select_area_list_popupwindow,this,false);
+        View contentView = layoutInflater.inflate(R.layout.popupwindow_drop_down_select_area_list,this,false);
         ListView listView = contentView.findViewById(R.id.drop_down_select_area_lv);
         listView.setAdapter(new AreaChooseListAdapter(getContext(), mList));
         areaPopupWindow = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -87,7 +93,7 @@ public class DropDownSelectView extends LinearLayout {
     //弹出时间选择列表
     private void showTimePopWindow(){
         LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = layoutInflater.inflate(R.layout.drop_down_select_time_list_popupwindow,this,false);
+        View contentView = layoutInflater.inflate(R.layout.popupwindow_drop_down_select_time_list,this,false);
         ListView listView = contentView.findViewById(R.id.drop_down_select_time_lv);
         listView.setAdapter(new AreaChooseListAdapter(getContext(), mList));
         areaPopupWindow = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -136,7 +142,7 @@ public class DropDownSelectView extends LinearLayout {
         public View getView(int position, View convertView, ViewGroup parent) {
             ListItemView listItemView = null;
             if(convertView == null){
-                convertView = inflater.inflate(R.layout.drop_down_select_list_item, null);
+                convertView = inflater.inflate(R.layout.item_drop_down_select_list, null);
                 listItemView = new ListItemView();
                 listItemView.textView = convertView.findViewById(R.id.drop_down_select_list_item_tv);
                 convertView.setTag(listItemView);
@@ -161,5 +167,9 @@ public class DropDownSelectView extends LinearLayout {
 
     private static class ListItemView{
         TextView textView;
+    }
+
+    public void seOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener;
     }
 }

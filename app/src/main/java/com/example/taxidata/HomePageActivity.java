@@ -1,24 +1,8 @@
 package com.example.taxidata;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dd4f0e43559d9c85386f8cdcfc37c17d49cb553a
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-<<<<<<< HEAD
 import android.graphics.Color;
-=======
-
-
-import android.content.Intent;
-
-import android.graphics.Color;
-
-import android.graphics.drawable.ColorDrawable;
-
-
->>>>>>> dd4f0e43559d9c85386f8cdcfc37c17d49cb553a
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
@@ -185,12 +169,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         visualizationFbtn.setLabelColors(Color.TRANSPARENT,CONST_LABEL_BACKGROUND,Color.TRANSPARENT);
     }
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> dd4f0e43559d9c85386f8cdcfc37c17d49cb553a
     /**
      * 获取屏幕中心位置
      *

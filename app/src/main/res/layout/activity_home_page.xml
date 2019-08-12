@@ -131,7 +131,7 @@
             android:src="@mipmap/ic_behavior_analysis"
             app:fab_colorPressed="@android:color/holo_orange_light"
             app:fab_size="mini"
-            app:fab_label="出租车行为分析与预测"
+            app:fab_label="出租车司机收入行为分析与预测"
             app:fab_colorNormal="@android:color/transparent"
             app:fab_showShadow="true"
             app:fab_shadowColor="@android:color/transparent"
@@ -179,11 +179,6 @@
             app:fab_shadowColor="@android:color/transparent"
             app:fab_shadowRadius="4dp"
             />
-<<<<<<< HEAD
-=======
-
->>>>>>> dd4f0e43559d9c85386f8cdcfc37c17d49cb553a
-
     </com.github.clans.fab.FloatingActionMenu>
 
 </RelativeLayout>
