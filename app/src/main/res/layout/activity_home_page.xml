@@ -14,10 +14,19 @@
     <RelativeLayout
         android:id="@+id/rl_heat_power_switch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_160"
         android:background="@android:color/transparent"
         android:visibility="gone"
         >
+
+        <com.example.taxidata.widget.DropDownSelectView
+            android:id="@+id/dsv_algorithm"
+            android:layout_height="@dimen/dp_24"
+            android:layout_width="77dp"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"/>
 
         <com.example.taxidata.widget.StatusBar
             android:id="@+id/stb_heat_power"

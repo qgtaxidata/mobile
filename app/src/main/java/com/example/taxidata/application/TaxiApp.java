@@ -48,6 +48,14 @@ public class TaxiApp extends Application {
     }
 
     /**
+     * 获取app当前时间(毫秒)
+     * @return long
+     */
+    public static long getMillionTime(){
+        return System.currentTimeMillis() - standardTime;
+    }
+
+    /**
      * 获取app当前时间
      * @return String
      */
@@ -63,12 +71,15 @@ public class TaxiApp extends Application {
         return time;
     }
 
+    /**
+     * 获取当前时间的中文版
+     * @return String
+     */
     public static String getAppNowChineseTime(){
         StringBuffer timeBuilder = new StringBuffer(getAppNowTime());
         timeBuilder.setCharAt(timeBuilder.indexOf("-"),'年');
         timeBuilder.setCharAt(timeBuilder.indexOf("-"),'月');
         timeBuilder.insert(timeBuilder.indexOf(" "),"日");
-
         return timeBuilder.toString();
     }
 

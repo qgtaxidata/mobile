@@ -129,12 +129,14 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                             List<WeightedLatLng> weightedLatLngList = getWeightedLatLng(heatPointInfo);
                             heatPowerView.showHeatPower(weightedLatLngList);
                         }else {
+                            // TODO 将改为MyToast
                             ToastUtil.showShortToastBottom(heatPointInfo.getMsg());
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        // TODO 将改为
                         ToastUtil.showShortToastBottom("网络访问失败");
                     }
 
@@ -146,8 +148,39 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     }
 
     @Override
-    public void showFeatureHeatPower(int area, String time) {
-        // TODO 未来热力图的P层
+    public void showFeatureHeatPower(int area, String featureTime, int algorithm) {
+        heatPowerModel.requestFeatureHeatPoint(area,TaxiApp.getAppNowTime(),featureTime,algorithm)
+                .subscribe(new Observer<HeatPointInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(HeatPointInfo info) {
+                        if (info.getCode() == 1){
+                            List<WeightedLatLng> weightedLatLngList = getWeightedLatLng(info);
+                            heatPowerView.showHeatPower(weightedLatLngList);
+                        }else {
+                            // TODO 将改为MyToast
+                            ToastUtil.showShortToastBottom(info.getMsg());
+                            heatPowerView.hideHeatPower();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        //异常则清除热力图
+                        heatPowerView.hideHeatPower();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
     }
 
     @Override

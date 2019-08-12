@@ -4,15 +4,11 @@ import android.util.Log;
 
 import com.amap.api.maps.model.LatLng;
 import com.example.taxidata.bean.HeatPointInfo;
-import com.example.taxidata.bean.HeatPointRequestBody;
 import com.example.taxidata.net.RetrofitManager;
-import com.example.taxidata.util.GsonUtil;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 public class HeatPowerModel implements HeatPowerContract.HeatPowerModel {
 
@@ -23,6 +19,15 @@ public class HeatPowerModel implements HeatPowerContract.HeatPowerModel {
         return RetrofitManager.getInstance()
                 .getHttpService()
                 .getHeatPoint(area,time)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<HeatPointInfo> requestFeatureHeatPoint(int area, String nowTime, String futureTime, int algorithm) {
+        return RetrofitManager.getInstance()
+                .getHttpService()
+                .getFeatureHeatPoint(area,nowTime,futureTime,algorithm)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

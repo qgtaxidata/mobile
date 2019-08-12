@@ -175,4 +175,16 @@ public class StatusBar extends LinearLayout {
     public int getStatus(){
         return status;
     }
+
+    /**
+     * 切换至实时状态
+     */
+    public void switchToRealTime(){
+        //清除上一次状态
+        clearLastStatus();
+        //状态改变为实时
+        status = REALTIME;
+        //按钮切换
+        setRealTimeStatus();
+    }
 }

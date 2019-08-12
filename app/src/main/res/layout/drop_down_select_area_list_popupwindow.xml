@@ -7,7 +7,7 @@
         android:id="@+id/drop_down_select_area_lv"
         android:divider="@color/search_out_bg"
         android:layout_width="76dp"
-        android:layout_height="360dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/shape_blue_frame">
 
     </ListView>

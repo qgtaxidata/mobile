@@ -15,7 +15,7 @@ public class Area {
 
     static {
         area.put("全广州",0);
-        area.put("花都市",1);
+        area.put("花都区",1);
         area.put("南沙区",2);
         area.put("增城区",3);
         area.put("从化区",4);
@@ -47,4 +47,17 @@ public class Area {
         area_latlng.put(10,new LatLng(23.17422639,113.35974371));
         area_latlng.put(11,new LatLng(23.1443424,113.27409338 ));
     }
+
+    public static final String GUANG_ZHOU = "全广州";
+    public static final String HUA_DU = "花都区";
+    public static final String NAN_SHA = "南沙区";
+    public static final String ZEENG_CHENG = "增城区";
+    public static final String CONG_HUA = "从化区";
+    public static final String PAN_YU = "番禺区";
+    public static final String BAI_YUN = "白云区";
+    public static final String HUANG_PU = "黄埔区";
+    public static final String LI_WAN = "荔湾区";
+    public static final String HAI_ZHU = "海珠区";
+    public static final String TIAN_HE = "天河区";
+    public static final String YUE_XIU = "越秀区";
 }
