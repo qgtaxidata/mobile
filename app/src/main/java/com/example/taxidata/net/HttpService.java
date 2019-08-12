@@ -3,6 +3,7 @@ package com.example.taxidata.net;
 
 import com.example.taxidata.bean.HeatPointInfo;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
+import com.example.taxidata.bean.HotSpotRouteRequest;
 import com.example.taxidata.bean.TaxiInfo;
 
 import io.reactivex.Observable;
@@ -29,6 +30,10 @@ public interface HttpService {
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("/findTaxi/findRoute")
     Observable<TaxiInfo> getTaxiPathInfo(@Body RequestBody info);
+
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("/")
+    Observable<HotSpotRouteRequest>  getHotSpotRoute(@Body RequestBody info);
 
 }
 

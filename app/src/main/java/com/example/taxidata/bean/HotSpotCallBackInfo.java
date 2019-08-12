@@ -51,6 +51,12 @@ public class HotSpotCallBackInfo {
          * heat : 10
          */
 
+        public DataBean(double longitude ,double latitude ,int heat){
+            this.latitude  = latitude;
+            this.longitude =longitude;
+            this.heat = heat;
+        }
+
         private double longitude;
         private double latitude;
         private int heat;
