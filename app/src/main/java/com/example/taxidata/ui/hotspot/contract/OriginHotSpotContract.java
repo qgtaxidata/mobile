@@ -1,5 +1,6 @@
 package com.example.taxidata.ui.hotspot.contract;
 
+import com.amap.api.maps.model.LatLng;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.example.taxidata.base.BaseModel;
 import com.example.taxidata.base.BasePresent;
@@ -39,6 +40,8 @@ public interface OriginHotSpotContract {
         public void  saveHotSpoyOriginHistory(String historyOrigin);
 
         public void removeOriginHistory(HotSpotOrigin hotSpotOrigin) ;
+
+
     }
 
     interface OriginHotSpotView  extends BaseView {

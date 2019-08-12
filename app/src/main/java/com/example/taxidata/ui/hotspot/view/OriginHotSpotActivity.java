@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -114,6 +115,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
                 }
             }
         });
+
     }
 
     private void  initData(){
@@ -156,7 +158,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             @Override
             public void onClick(View v) {
                 //Todo 搜索页面返回到地图页面？
-                Intent intent = new Intent(OriginHotSpotActivity.this , HomePageActivity.class);
+                Intent intent = new Intent(OriginHotSpotActivity.this , HotSpotPathActivity.class);
                 startActivity(intent);
             }
         });

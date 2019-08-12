@@ -194,16 +194,8 @@
 
     <include
         android:id="@+id/search_chosen"
-        layout="@layout/search_view_widget"
+        layout="@layout/view_search_widget"
         android:visibility="gone"/>
-
-    <com.example.taxidata.ui.hotspot.view.OriginHotSpotLayout
-        android:id="@+id/layout_originhotspot"
-        android:layout_centerHorizontal="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-    </com.example.taxidata.ui.hotspot.view.OriginHotSpotLayout>
 
 
 </RelativeLayout>
