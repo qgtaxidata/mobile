@@ -541,10 +541,10 @@ public class MyTimerPicker extends FrameLayout {
      */
     public boolean isHistory(){
         //设置时间格式
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-SS");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
         long selectedTime = 99999999;
         try {
-            selectedTime = format.parse(getTime()).getTime();
+            selectedTime = format.parse(getTime() + ":00").getTime();
         }catch (Exception e){
             // TODO 失败处理
             e.printStackTrace();

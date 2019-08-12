@@ -80,7 +80,6 @@ public class TaxiApp extends Application {
         timeBuilder.setCharAt(timeBuilder.indexOf("-"),'年');
         timeBuilder.setCharAt(timeBuilder.indexOf("-"),'月');
         timeBuilder.insert(timeBuilder.indexOf(" "),"日");
-        Log.d(TAG,timeBuilder.toString());
         return timeBuilder.toString();
     }
 

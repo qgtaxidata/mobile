@@ -59,9 +59,10 @@ public interface HeatPowerContract {
         /**
          * 未来热力图
          * @param area 区域
-         * @param time 时间
+         * @param featureTime 未来时间
+         * @param algorithm 算法
          */
-        void showFeatureHeatPower(int area,String time);
+        void showFeatureHeatPower(int area,String featureTime,int algorithm);
 
         /**
          * 暂停轮询
@@ -78,5 +79,15 @@ public interface HeatPowerContract {
          * @return Observable<HeatPointInfo>
          */
         Observable<HeatPointInfo> requestHeatPoint(int area, String time);
+
+        /**
+         * 请求未来热点
+         * @param area 地区
+         * @param nowTime 现在时间
+         * @param futureTime 未来时间
+         * @param algorithm 算法(0~2)
+         * @return
+         */
+        Observable<HeatPointInfo> requestFeatureHeatPoint(int area,String nowTime, String futureTime,int algorithm);
     }
 }

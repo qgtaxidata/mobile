@@ -17,6 +17,9 @@ public interface HttpService {
     @POST("thermoDiagram//getAreaMap")
     Observable<HeatPointInfo> getHeatPoint(@Query("area")int area,@Query("time")String time);
 
+    @POST("thermoDiagram//getFutureMap")
+    Observable<HeatPointInfo> getFeatureHeatPoint(@Query("area")int area,@Query("nowTime")String nowTime,
+                                           @Query("futureTime")String futureTime,@Query("algorithm")int algorithm);
 
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("hotspot/findHotspot")

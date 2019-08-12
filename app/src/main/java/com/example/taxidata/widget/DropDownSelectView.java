@@ -59,6 +59,7 @@ public class DropDownSelectView extends LinearLayout {
                         case 2:
                             showTimePopWindow();
                             break;
+                        default:
                     }
                 }else {
                     closePopWindow();
@@ -108,7 +109,7 @@ public class DropDownSelectView extends LinearLayout {
         }
     }
 
-    class AreaChooseListAdapter extends BaseAdapter {
+    public class AreaChooseListAdapter extends BaseAdapter {
 
         Context mContext;
         ArrayList<String> areaList;
@@ -154,7 +155,9 @@ public class DropDownSelectView extends LinearLayout {
                     resultTv.setText(text);
                     closePopWindow();
                     //获得选择的时间和区域
-
+                    if (onItemClickListener != null){
+                        onItemClickListener.onItemClick(position);
+                    }
                 }
             });
             return convertView;
@@ -166,13 +169,13 @@ public class DropDownSelectView extends LinearLayout {
         TextView textView;
     }
 
-    public void seOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;
     }
 
     /**
      * 获取下拉选中的区域(如选中番禺区，则返回字符串"番禺区")
-     * @return
+     * @return String
      */
     public String getSlectedArea(){
         Log.d("DropDownSelectView",resultTv.getText().toString());
