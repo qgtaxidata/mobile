@@ -23,6 +23,7 @@ import com.example.taxidata.adapter.CustomOnclick;
 import com.example.taxidata.adapter.TimeAdapter;
 import com.example.taxidata.application.TaxiApp;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -526,7 +527,49 @@ public class MyTimerPicker extends FrameLayout {
         this.featureClick = featureClick;
     }
 
+    /**
+     * 用户是否有选择时间
+     * @return boolean
+     */
     public boolean isNoSelectedTime(){
         return calendarTv.getText().toString().equals(CONST_NO_SELECTED_TIME);
+    }
+
+    /**
+     * 用户选择的时间是否是历史时间
+     * @return boolean
+     */
+    public boolean isHistory(){
+        //设置时间格式
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-SS");
+        long selectedTime = 99999999;
+        try {
+            selectedTime = format.parse(getTime()).getTime();
+        }catch (Exception e){
+            // TODO 失败处理
+            e.printStackTrace();
+        }
+        //获取app当前时间
+        long appNowTime = TaxiApp.getMillionTime();
+        return appNowTime >= selectedTime;
+    }
+
+    /**
+     * 用户选择的时间是否是未来时间
+     * @return boolean
+     */
+    public boolean isFeature(){
+        //设置时间格式
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-SS");
+        long selectedTime = 0;
+        try {
+            selectedTime = format.parse(getTime()).getTime();
+        }catch (Exception e){
+            // TODO 失败处理
+            e.printStackTrace();
+        }
+        //获取app当前时间
+        long appNowTime = TaxiApp.getMillionTime();
+        return appNowTime <= selectedTime;
     }
 }

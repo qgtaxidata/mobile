@@ -25,7 +25,6 @@ import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.adapter.CustomOnclick;
 import com.example.taxidata.bean.HotSpotInfo;
-import com.example.taxidata.common.StatusManager;
 import com.example.taxidata.common.eventbus.BaseEvent;
 import com.example.taxidata.common.eventbus.EventFactory;
 import com.example.taxidata.constant.Area;
@@ -508,6 +507,11 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                                     ToastUtil.showShortToastBottom("请选择时间");
                                     return;
                                 }
+                                if (!chooseTimeTp.isHistory()){
+                                    // FIXME 修改为MyToast
+                                    ToastUtil.showShortToastBottom("这不是历史时间");
+                                    return;
+                                }
                                 heatPowerPresent.showHistoryHeatPower(Area.area.get(heatpowerAreaDsv.getSlectedArea()),chooseTimeTp.getTime() + ":00");
                                 break;
                             case 1:
@@ -526,6 +530,11 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                                     // FIXME 修改为MyToast
                                     ToastUtil.showShortToastBottom("请选择时间");
                                     return;
+                                }
+                                if (!chooseTimeTp.isFeature()){
+                                    // FIXME 修改为MyToast
+                                    ToastUtil.showShortToastBottom("这不是未来时间");
+                                    break;
                                 }
                                 break;
                             default:
@@ -590,18 +599,18 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 初始化列表
      */
     private void initAreaList() {
-        areaList.add("荔湾区");
-        areaList.add("越秀区");
-        areaList.add("天河区");
-        areaList.add("海珠区");
-        areaList.add("黄埔区");
-        areaList.add("萝岗区");
-        areaList.add("花都区");
-        areaList.add("白云区");
-        areaList.add("番禺区");
-        areaList.add("南沙区");
-        areaList.add("从化市");
-        areaList.add("增城区");
+        areaList.add(Area.GUANG_ZHOU);
+        areaList.add(Area.LI_WAN);
+        areaList.add(Area.YUE_XIU);
+        areaList.add(Area.TIAN_HE);
+        areaList.add(Area.HAI_ZHU);
+        areaList.add(Area.HUANG_PU);
+        areaList.add(Area.HUA_DU);
+        areaList.add(Area.BAI_YUN);
+        areaList.add(Area.PAN_YU);
+        areaList.add(Area.NAN_SHA);
+        areaList.add(Area.CONG_HUA);
+        areaList.add(Area.ZEENG_CHENG);
         heatpowerAreaDsv.setItemsData(areaList, 1);
     }
 }
