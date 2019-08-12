@@ -1,6 +1,5 @@
 package com.example.taxidata.ui.TaxiPath;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,10 +50,6 @@ public class TaxiInfoListActivity extends BaseActivity implements TaxiPathContra
         super.onDestroy();
         taxiPathPresent.detachView();
     }
-
-
-
-
 
     @Override
     public void showPath(List<TaxiInfo.DataBean> listInfo) {

@@ -30,19 +30,19 @@ public class IncomeActivity extends AppCompatActivity {
 
     //初始化区域popupWindow
     private void initAreaList(){
-        areaList.add("荔湾区");
-        areaList.add("越秀区");
-        areaList.add("天河区");
-        areaList.add("海珠区");
-        areaList.add("黄埔区");
-        areaList.add("萝岗区");
-        areaList.add("花都区");
-        areaList.add("白云区");
-        areaList.add("番禺区");
-        areaList.add("南沙区");
-        areaList.add("从化市");
-        areaList.add("增城区");
-        areaDropDownSelectView.setItemsData(areaList, 1);
+            areaList.add("荔湾区");
+            areaList.add("越秀区");
+            areaList.add("天河区");
+            areaList.add("海珠区");
+            areaList.add("黄埔区");
+            areaList.add("萝岗区");
+            areaList.add("花都区");
+            areaList.add("白云区");
+            areaList.add("番禺区");
+            areaList.add("南沙区");
+            areaList.add("从化市");
+            areaList.add("增城区");
+            areaDropDownSelectView.setItemsData(areaList, 1);
     }
 
     //初始化时间popupWindow
@@ -61,6 +61,4 @@ public class IncomeActivity extends AppCompatActivity {
         timeList.add("2007年02月15日");
         timeDropDownSelectView.setItemsData(timeList, 2);
     }
-
-
 }

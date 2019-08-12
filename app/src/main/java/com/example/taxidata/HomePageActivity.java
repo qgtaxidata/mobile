@@ -1,19 +1,22 @@
 package com.example.taxidata;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.view.View;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -24,16 +27,14 @@ import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.LatLng;
-import java.util.List;
-import com.amap.api.maps.model.CameraPosition;
-import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
+import com.example.taxidata.adapter.CustomOnclick;
 import com.example.taxidata.bean.HotSpotInfo;
 import com.example.taxidata.common.StatusManager;
 import com.example.taxidata.common.eventbus.BaseEvent;
 import com.example.taxidata.common.eventbus.EventFactory;
+import com.example.taxidata.constant.Area;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.EventBusType;
 import com.example.taxidata.constant.MyCharacter;
@@ -46,16 +47,19 @@ import com.example.taxidata.ui.hotspot.view.OriginHotSpotActivity;
 import com.example.taxidata.ui.hotspot.view.OriginHotSpotLayout;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.ToastUtil;
+import com.example.taxidata.widget.DropDownSelectView;
+import com.example.taxidata.widget.MyTimerPicker;
+import com.example.taxidata.widget.StatusBar;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.orhanobut.logger.Logger;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
 import java.util.List;
-import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
-import com.example.taxidata.ui.heatpower.HeatPowerPresent;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -75,7 +79,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 标签黄色背景
      */
     private static final int CONST_LABEL_BACKGROUND = 0xFFBB33;
-
 
     /*----------------------------------地图相关---------------------------------------------------*/
 
@@ -116,6 +119,16 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     FloatingActionButton setUpFbtn;
     @BindView(R.id.fam_home_page_menu)
     FloatingActionMenu homePageMenuFam;
+    @BindView(R.id.stb_heat_power)
+    StatusBar heatPowerStb;
+    @BindView(R.id.tp_home_page_time_picker)
+    MyTimerPicker chooseTimeTp;
+    @BindView(R.id.rl_heat_power_switch)
+    RelativeLayout heatpowerRl;
+    @BindView(R.id.btn_show_hide_heat_power)
+    Button showHideHeatPowerBtn;
+    @BindView(R.id.dsv_area_heat_power)
+    DropDownSelectView heatpowerAreaDsv;
 
 
     /*------------------------------------present相关-----------------------------------------------*/
@@ -128,9 +141,13 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     /*------------------------------------状态相关--------------------------------------------------*/
 
     /**
-     * 是否隐藏热力图，默认为true，即隐藏热力图
+     * 是否为热力图模式，默认为false，即不是热力图模式
      */
-    private boolean isHeatPowerHide = true;
+    private boolean isHeatPowerMode = false;
+
+    /*------------------------------------容器相关--------------------------------------------------*/
+
+    private ArrayList<String> areaList = new ArrayList<>();
 
     /*----------------------------------------------------------------------------------------------*/
 
@@ -151,12 +168,18 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         initFloatButton();
         //初始化地图
         initMap();
+        //初始化时间选择器
+        initTimePicker();
+        //初始化显示隐藏按钮
+        initHideShowButton();
         //初始化控件
         initViews();
         //初始化注册EventBus
         if (isRegisterEventBus()) {
             EventBusUtils.register(this);
         }
+        //初始化区域列表
+        initAreaList();
     }
 
     @Override
@@ -195,10 +218,10 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         if (homepageAMap == null) {
             homepageAMap = homePageMv.getMap();
         }
-        //广州市经纬度
-        LatLng latLng = new LatLng(23.209000, 113.317390);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 12, 0, 0));
-        //将相机移动到广州市
+        //番禺市经纬度
+        LatLng latLng = Area.area_latlng.get(5);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 14, 0, 0));
+        //将相机移动到番禺区
         homepageAMap.moveCamera(cameraUpdate);
         //监听相机位置变化,以获得屏幕中心经纬度
         homepageAMap.setOnCameraChangeListener(this);
@@ -219,10 +242,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         taxiIncomeFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
         visualizationFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
     }
-
-
-
-
 
     /**
      * 获取屏幕中心位置
@@ -321,13 +340,21 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 控制热力图的显示或隐藏
      */
     private void controlHeatPower() {
-        if (isHeatPowerHide) {
-            heatPowerPresent.heatPoint();
-            //热力图不再隐藏
-            isHeatPowerHide = false;
+        if (isHeatPowerMode) {
+            //退出热力图模式
+            dropOutHeatPower();
+            //按钮变回默认状态
+            showHideHeatPowerBtn.setText("显示");
+            //隐藏状态栏
+            heatpowerRl.setVisibility(View.GONE);
+            //退出热力图模式
+            isHeatPowerMode = false;
+            heatPowerFbtn.setLabelText(MyCharacter.CONST_SHOW_BUTTON);
         } else {
-            heatPowerPresent.pause();
-            isHeatPowerHide = true;
+            //热力图模式
+            heatpowerRl.setVisibility(View.VISIBLE);
+            isHeatPowerMode = true;
+            heatPowerFbtn.setLabelText(MyCharacter.CONST_HIDE_BUTTON);
         }
     }
 
@@ -339,7 +366,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
     /**
      * 悬浮按钮点击事件
-     *
      * @param view
      */
     @OnClick({R.id.fbtn_passenger_hot, R.id.fbtn_heat_power, R.id.fbtn_road_quality, R.id.fbtn_request_analysis, R.id.fbtn_taxi_income
@@ -352,6 +378,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 startActivity(hotSpotIntent);
                 break;
             case R.id.fbtn_heat_power:
+                //热力图模式
                 controlHeatPower();
                 break;
             case R.id.fbtn_road_quality:
@@ -385,6 +412,118 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         homePageMenuFam.close(true);
     }
 
+    /**
+     * 初始化时间选择器,即状态栏
+     */
+    private void initTimePicker() {
+        //绑定状态栏
+        chooseTimeTp.setStatusBar(heatPowerStb);
+        //绑定状态栏事件
+        chooseTimeTp.setHistoryStatusClick(new CustomOnclick() {
+            @Override
+            public void onClick(MyTimerPicker v) {
+                //不管有没有,暂停就是了
+                heatPowerPresent.pause();
+                clearMap();
+                //恢复至初始状态
+                showHideHeatPowerBtn.setText("显示");
+            }
+        });
+        chooseTimeTp.setRealTimeClick(new CustomOnclick() {
+            @Override
+            public void onClick(MyTimerPicker v) {
+                clearMap();
+                //恢复至初始状态
+                showHideHeatPowerBtn.setText("显示");
+            }
+        });
+        chooseTimeTp.setFeatureClick(new CustomOnclick() {
+            @Override
+            public void onClick(MyTimerPicker v) {
+                heatPowerPresent.pause();
+                clearMap();
+                showHideHeatPowerBtn.setText("显示");
+            }
+        });
+    }
+
+    /**
+     * 初始化隐藏热力图按钮
+     */
+    private void initHideShowButton() {
+        showHideHeatPowerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (heatPowerPresent != null) {
+                    if (showHideHeatPowerBtn.getText().toString().equals("隐藏")) {
+                        //退出热力图模式
+                        dropOutHeatPower();
+                        //将隐藏按钮改变为显示按钮
+                        showHideHeatPowerBtn.setText("显示");
+                    } else {
+                        int status = heatPowerStb.getStatus();
+                        switch (status) {
+                            case 0:
+                                // FIXME 测试
+                                Log.d(TAG,Area.area.get(heatpowerAreaDsv.getSlectedArea()) + "");
+                                Log.d(TAG,heatpowerAreaDsv.getSlectedArea());
+                                if (chooseTimeTp.isNoSelectedTime()){
+                                    // FIXME 修改为MyToast
+                                    ToastUtil.showShortToastBottom("请选择时间");
+                                    return;
+                                }
+                                heatPowerPresent.showHistoryHeatPower(Area.area.get(heatpowerAreaDsv.getSlectedArea()),chooseTimeTp.getTime() + ":00");
+                                break;
+                            case 1:
+                                //显示选中的区域
+                                Log.d(TAG,Area.area.get(heatpowerAreaDsv.getSlectedArea()) + "");
+                                Log.d(TAG,heatpowerAreaDsv.getSlectedArea());
+                                heatPowerPresent.showRealTimeHeatPower(Area.area.get(heatpowerAreaDsv.getSlectedArea()));
+                                break;
+                            case 2:
+                                //TODO 未来热力图
+                                /*
+                                1.获取用户选择的时间和地点
+                                2.发送网络请求
+                                 */
+                                if (chooseTimeTp.isNoSelectedTime()){
+                                    // FIXME 修改为MyToast
+                                    ToastUtil.showShortToastBottom("请选择时间");
+                                    return;
+                                }
+                                break;
+                            default:
+                        }
+                        showHideHeatPowerBtn.setText("隐藏");
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 退出热力图模式
+     */
+    private void dropOutHeatPower() {
+        //获取当前的状态(历史，实时，未来)
+        int status = heatPowerStb.getStatus();
+        //根据不同状态进行不同的操作
+        switch (status) {
+            case 0:
+                //切换至历史状态时，无轮询状态，直接清空地图
+                clearMap();
+                break;
+            case 1:
+                //切换至实时状态时，有轮询状态，先停止轮询，再清空地图
+                heatPowerPresent.pause();
+                break;
+            case 2:
+                //未来状态，无轮询，直接清空地图
+                clearMap();
+                break;
+            default:
+        }
+    }
 
     //注册绑定EventBus
     protected boolean isRegisterEventBus() {
@@ -399,5 +538,22 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
     }
 
-
+    /**
+     * 初始化列表
+     */
+    private void initAreaList() {
+        areaList.add("荔湾区");
+        areaList.add("越秀区");
+        areaList.add("天河区");
+        areaList.add("海珠区");
+        areaList.add("黄埔区");
+        areaList.add("萝岗区");
+        areaList.add("花都区");
+        areaList.add("白云区");
+        areaList.add("番禺区");
+        areaList.add("南沙区");
+        areaList.add("从化市");
+        areaList.add("增城区");
+        heatpowerAreaDsv.setItemsData(areaList, 1);
+    }
 }

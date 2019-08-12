@@ -2,6 +2,7 @@ package com.example.taxidata.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.taxidata.R;
+import com.example.taxidata.ui.TaxiPath.OnItemClickListener;
 
 import java.util.ArrayList;
 
@@ -23,10 +25,10 @@ public class DropDownSelectView extends LinearLayout {
     private TextView resultTv;
     private ImageView upOrDown;
     private PopupWindow areaPopupWindow = null;
+    protected OnItemClickListener onItemClickListener;
     private ArrayList<String> mList = new ArrayList<>();
     private View mView;
     private int kind;
-
 
     public DropDownSelectView(Context context) {
         this(context,null);
@@ -46,14 +48,6 @@ public class DropDownSelectView extends LinearLayout {
         View view = layoutInflater.inflate(R.layout.drop_down_select_view,this,true);
         resultTv = view.findViewById(R.id.drop_down_select_tv);
         upOrDown = view.findViewById(R.id.drop_down_select_iv);
-        switch (kind){
-            case 1:
-                resultTv.setText("番禺区");
-                break;
-            case 2:
-                resultTv.setText("2007年02月04日");
-                break;
-        }
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +97,15 @@ public class DropDownSelectView extends LinearLayout {
     public void setItemsData(ArrayList<String> list, int id){
         mList = list;
         kind = id;
+        switch (kind){
+            case 1:
+                resultTv.setText("番禺区");
+                break;
+            case 2:
+                resultTv.setText("2007年02月04日");
+                break;
+            default:
+        }
     }
 
     class AreaChooseListAdapter extends BaseAdapter {
@@ -161,5 +164,18 @@ public class DropDownSelectView extends LinearLayout {
 
     private static class ListItemView{
         TextView textView;
+    }
+
+    public void seOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    /**
+     * 获取下拉选中的区域(如选中番禺区，则返回字符串"番禺区")
+     * @return
+     */
+    public String getSlectedArea(){
+        Log.d("DropDownSelectView",resultTv.getText().toString());
+        return resultTv.getText().toString();
     }
 }

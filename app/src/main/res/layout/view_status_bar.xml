@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 状态栏 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="150dp"
+    android:layout_height="24dp"
+    android:background="@drawable/shape_status_bar">
+
+    <TextView
+        android:id="@+id/tv_history"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textColor="#4c93fd"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        android:gravity="center"
+        android:background="@drawable/shape_status_bar"
+        android:text="历史" />
+
+    <TextView
+        android:id="@+id/tv_real_time"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textColor="#ffffff"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        android:gravity="center"
+        android:background="@drawable/shape_small_button"
+        android:text="实时" />
+
+    <TextView
+        android:id="@+id/tv_future"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textColor="#4c93fd"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        android:gravity="center"
+        android:background="@drawable/shape_status_bar"
+        android:text="未来" />
+
+</LinearLayout>
