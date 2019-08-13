@@ -101,7 +101,7 @@ public interface HotSpotContract {
         /**
          * Hot spot chsen success.
          */
-        public void  hotSpotChsenSuccess();
+        public void  hotSpotChosenSuccess();
     }
 
 

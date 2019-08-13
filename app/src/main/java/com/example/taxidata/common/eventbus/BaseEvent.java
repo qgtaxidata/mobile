@@ -8,4 +8,5 @@ public class BaseEvent {
     public String type;
     public String content;
     public Object object;
+    public  String addition;
 }

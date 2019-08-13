@@ -24,11 +24,11 @@
 
             <ImageButton
                 android:id="@+id/imagebutton_hotspot_origin_back"
-                android:layout_marginTop="20dp"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_marginTop="27dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:background="@mipmap/ic_launcher"
+                android:background="@mipmap/ui_hotspot_search_return"
                 />
             <EditText
                 android:id="@+id/et_hotspot_origin"
@@ -72,7 +72,7 @@
         app:cardElevation = "10dp"
         app:cardCornerRadius="15dp"
         app:cardBackgroundColor="#FFFF"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:layout_below="@id/cv_hotspot_origin">
 
         <androidx.recyclerview.widget.RecyclerView

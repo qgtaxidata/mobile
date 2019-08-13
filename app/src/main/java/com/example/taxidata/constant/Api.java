@@ -5,8 +5,8 @@ public interface Api {
     /**
      * Retrofit的baseUrl
      */
-    String CONST_BASE_URL = "http://192.168.1.101:8080/";
 
+    String CONST_BASE_URL = "http://192.168.31.179:9090";
 
 
 }

@@ -19,4 +19,9 @@
         <item name="listPreferredItemPaddingRight">0dip</item>
 
     </style>
+
+    <style name="LoadingDialog" parent="@android:style/Theme.Holo.Dialog.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 </resources>
