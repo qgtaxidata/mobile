@@ -52,7 +52,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HotSpotPathActivity extends BaseActivity implements GeocodeSearch.OnGeocodeSearchListener{
+public class HotSpotPathActivity extends BaseActivity {
 
     private static final String TAG = "HotSpotPathActivity";
     @BindView(R.id.mv_hotspot_path)
@@ -81,11 +81,8 @@ public class HotSpotPathActivity extends BaseActivity implements GeocodeSearch.O
     TextView searchOrigin;
     TextView searchEndPoint;
     UiSettings uiSettings;
-    String hotSpotChosen = "";
-    String originChosen = "";
     HotSpotRouteInfo routeInfo;
     List<LatLng> latLngs ;
-    private GeocodeSearch geocodeSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +116,15 @@ public class HotSpotPathActivity extends BaseActivity implements GeocodeSearch.O
         if (isRegisterEventBus()) {
             EventBusUtils.unregister(this);
         }
+    }
+
+    /**
+     * 初始化地图MapView必须重写方法
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mvHotspotPath.onSaveInstanceState(outState);
     }
 
     public void initViews(){
@@ -185,8 +191,6 @@ public class HotSpotPathActivity extends BaseActivity implements GeocodeSearch.O
 
     }
 
-
-
     public void initMap(){
         if (mvHotspotPath != null) {
             pathMap = mvHotspotPath.getMap();
@@ -213,7 +217,7 @@ public class HotSpotPathActivity extends BaseActivity implements GeocodeSearch.O
 
 
     /**
-     * Show hot spot.
+     * 将用户选择的起点 画出来
      *
      * @param lng the lng
      * @param lat the lat
@@ -230,6 +234,14 @@ public class HotSpotPathActivity extends BaseActivity implements GeocodeSearch.O
         pathMap.moveCamera(cameraUpdate);
     }
 
+    /**
+     * 将用户选择的起点和热点(终点)分别画出来
+     *
+     * @param hotSpotLng the hot spot lng
+     * @param hotSpotLat the hot spot lat
+     * @param originLng  the origin lng
+     * @param originLat  the origin lat
+     */
     public void showHotSpotAndOrigin(double hotSpotLng ,double hotSpotLat ,double originLng ,double originLat) {
 
         LatLng latLngHotSpot = new LatLng(hotSpotLat,hotSpotLng);
@@ -273,6 +285,7 @@ public class HotSpotPathActivity extends BaseActivity implements GeocodeSearch.O
         if(baseEvent.type.equals(EventBusType.ORIGIN_HOTSPOT_BOTH_CHOSEN)) {
             Logger.d("接收事件 ： 热点和地点都已经选择");
             routeInfo = (HotSpotRouteInfo) baseEvent.object;
+            //将 方案卡片 显示出来
             layoutPlanCard .setVisibility(View.VISIBLE);
             initPlanCard(routeInfo);
             setOriginHotSpotText(StatusManager.originChosen ,StatusManager.hotSpotChosen);
@@ -305,6 +318,11 @@ public class HotSpotPathActivity extends BaseActivity implements GeocodeSearch.O
                 addAll(latLngs).width(15).color(getResources().getColor(R.color.end_point_bg)));
     }
 
+    /**
+     * 初始化方案卡片的基本数据
+     *
+     * @param info the info
+     */
     public void  initPlanCard(HotSpotRouteInfo info) {
         tvTimeOne .setText(info.getData().get(0).getTime());
         tvTimeTwo.setText(info.getData().get(1).getTime());
@@ -333,14 +351,5 @@ public class HotSpotPathActivity extends BaseActivity implements GeocodeSearch.O
         searchEndPoint.setText(hotspot);
     }
 
-    @Override
-    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-
-    }
-
-    @Override
-    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-
-    }
 }
 
