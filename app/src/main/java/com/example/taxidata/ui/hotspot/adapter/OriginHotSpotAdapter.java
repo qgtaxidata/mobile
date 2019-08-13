@@ -23,6 +23,6 @@ public class OriginHotSpotAdapter extends BaseItemDraggableAdapter<HotSpotOrigin
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, HotSpotOrigin item) {
-        helper.setText(R.id.tv_hotspot_history ,item.getHotSpotOriginHistory());
+        helper.setText(R.id.tv_hotspot_origin_history,item.getHotSpotOriginHistory());
     }
 }

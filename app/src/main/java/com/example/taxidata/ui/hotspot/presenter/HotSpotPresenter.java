@@ -19,6 +19,7 @@ import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotHistorySearch;
 import com.example.taxidata.bean.HotSpotInfo;
 import com.example.taxidata.bean.HotSpotOrigin;
+import com.example.taxidata.common.StatusManager;
 import com.example.taxidata.common.eventbus.BaseEvent;
 import com.example.taxidata.common.eventbus.EventFactory;
 import com.example.taxidata.constant.EventBusType;
@@ -47,6 +48,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     private GeocodeSearch geocodeSearch ;
     private LatLonPoint latLng;
     private HotSpotCallBackInfo.DataBean  callbackHotSpotInfo;
+
     public HotSpotPresenter(){
         super();
         mHotSpotModel = new HotSpotModel(this);
@@ -75,14 +77,11 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                         }
                         @Override
                         public void onNext(HotSpotCallBackInfo hotSpotCallBackInfo) {
-//                            Logger.d(hotSpotCallBackInfo.getMsg());
                             //Todo 获取了返回的callback对象后,解析获取列表
                             if (hotSpotCallBackInfo.getCode() == 1 && hotSpotCallBackInfo.getData().size() > 0 ) {
-//                                Logger.d(GsonUtil.GsonString(hotSpotCallBackInfo));
                                 hotSpotRecommandInfoList.clear();
                                 hotSpotRecommandInfoList.addAll(hotSpotCallBackInfo.getData());
                                 if (hotSpotRecommandInfoList.size() > 0 ) {
-//                                    Logger.d("热点推荐列表大小"+hotSpotRecommandInfoList.size() );
                                     mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
                                 } else {
                                     Logger.d("获取了返回的热点数据,但是列表大小为0 ");
@@ -139,8 +138,11 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
 
 
     @Override
-    public void convertToLocation(String address, GeocodeSearch geocodeSearch) {
-        GeocodeQuery query = new GeocodeQuery(address, "广州");
+    public void convertToLocation(String hotSpotAdress, GeocodeSearch geocodeSearch) {
+        if(! "".equals(hotSpotAdress)) {
+            StatusManager.hotSpotChosen = hotSpotAdress;
+        }
+        GeocodeQuery query = new GeocodeQuery(hotSpotAdress, "广州");
         this.geocodeSearch = geocodeSearch;
         this.geocodeSearch.setOnGeocodeSearchListener(this);
         this.geocodeSearch.getFromLocationNameAsyn(query);
@@ -150,18 +152,21 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     public void convertToAddressName(HotSpotCallBackInfo.DataBean dataBean, GeocodeSearch geocodeSearch) {
         latLng = new LatLonPoint(dataBean.getLatitude(),dataBean.getLongitude());
         callbackHotSpotInfo = dataBean;
+
         RegeocodeQuery regeocodeQuery = new RegeocodeQuery(latLng ,100 ,GeocodeSearch.AMAP);
         geocodeSearch.getFromLocationAsyn(regeocodeQuery);
     }
 
     /**
-     * 将坐标解析成地址名后，让首页地图可以显示出来
+     * 回调函数：将坐标解析成地址名后，让展示页可以显示出来
      * @param regeocodeResult
      * @param i
      */
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-        String addressName = regeocodeResult.getRegeocodeAddress().getFormatAddress();
+        String addressName = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
+        StatusManager.hotSpotChosen = addressName;
+        Logger.d("转换后的热点的name： "+ addressName);
         Log.e(TAG, "onRegeocodeSearched: " + addressName );
         BaseEvent baseEvent = EventFactory.getInstance();
         baseEvent.type = EventBusType.HOTSPOT_CHOSEN;
@@ -172,9 +177,14 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         hotSpotInfo.setHeat(callbackHotSpotInfo.getHeat());
         baseEvent.object = hotSpotInfo;
         EventBusUtils.postSticky(baseEvent);
-        mHotSpotView.hotSpotChsenSuccess();
+        mHotSpotView.hotSpotChosenSuccess();
     }
 
+    /**
+     * 回调函数：将地址名 解析成 坐标 ，发送给服务器
+     * @param geocodeResult
+     * @param i
+     */
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
         if(geocodeResult.getGeocodeAddressList().size() > 0) {

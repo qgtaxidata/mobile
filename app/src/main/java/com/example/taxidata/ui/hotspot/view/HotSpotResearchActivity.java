@@ -108,8 +108,6 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         if (isRegisterEventBus()) {
             EventBusUtils.unregister(this);
         }
-        //销毁页面时将 热点选中状态 更新为 false
-        StatusManager.hotSpotChosen = false;
     }
 
     public void initData() {
@@ -236,7 +234,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     @Override
     public void showHotSpot(List<HotSpotCallBackInfo.DataBean> hotSpotCallBackInfoList) {
 
-        if (recommandAdapter != null && rvSearch != null && ! StatusManager.hotSpotChosen) {
+        if (recommandAdapter != null && rvSearch != null ) {
             hotSpotList.clear();
             recommandAdapter.setNewData(hotSpotList);
             rvSearch.setAdapter(recommandAdapter);
@@ -271,7 +269,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
 
     @Override
-    public void  hotSpotChsenSuccess() {
+    public void  hotSpotChosenSuccess() {
         Intent intent = new Intent(this , HotSpotPathActivity.class);
         startActivity(intent);
     }

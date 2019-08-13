@@ -72,7 +72,7 @@
         app:cardElevation = "10dp"
         app:cardCornerRadius="15dp"
         app:cardBackgroundColor="#FFFF"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:layout_below="@id/cv_hotspot_origin">
 
         <androidx.recyclerview.widget.RecyclerView

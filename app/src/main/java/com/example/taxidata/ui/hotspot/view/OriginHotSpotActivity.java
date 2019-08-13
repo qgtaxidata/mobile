@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amap.api.maps.model.LatLng;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
@@ -25,6 +27,9 @@ import com.example.taxidata.R;
 import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.bean.HotSpotHint;
 import com.example.taxidata.bean.HotSpotOrigin;
+import com.example.taxidata.bean.HotSpotRequestInfo;
+import com.example.taxidata.bean.HotSpotRouteInfo;
+import com.example.taxidata.bean.HotSpotRouteRequest;
 import com.example.taxidata.common.StatusManager;
 import com.example.taxidata.common.eventbus.BaseEvent;
 import com.example.taxidata.common.eventbus.EventFactory;
@@ -66,7 +71,8 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
     private GeocodeSearch geocodeSearch;
     private String intputString;
     private OriginHotSpotPresenter mPresenter = new OriginHotSpotPresenter();
-
+    private HotSpotRouteRequest routeRequest;
+    private String originAddressChosen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +83,17 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
         initRecyclerView();
         initOnclickEvent();
         initViews();
-        showHistoryOriginList(mPresenter.getHistoryOriginList());
         mPresenter.attachView(this);
         //初始化注册EventBus
         if (isRegisterEventBus()) {
             EventBusUtils.register(this);
         }
+        showHistoryOriginList(mPresenter.getHistoryOriginList());
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -119,6 +129,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
     }
 
     private void  initData(){
+        routeRequest = new HotSpotRouteRequest();
         originList = new ArrayList<>();
         hintList = new ArrayList<>();
     }
@@ -167,30 +178,33 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             public void onClick(View v) {
                 //Todo: 将 热点 和 地点 打包 发送给 服务器 请求返回数据
                 Logger.d("点击了热点--起点--搜索键");
+                if("".equals(etHotspotOrigin.getText().toString())) {
+                    originAddressChosen  = etHotspotOrigin.getText().toString();
+                    StatusManager.originChosen = originAddressChosen;
+                    mPresenter.saveOriginHotSpotHistory(originAddressChosen);
+                    mPresenter.convertToLocation(originAddressChosen,routeRequest ,geocodeSearch);
+                }
             }
         });
         originAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //Todo：带着 选中的 热点 & 起点信息 ，去 地图页面画出来！
-                Logger.d("点击了热点：起点 的 历史记录Item");
-                mPresenter.saveOriginHotSpotHistory(originAdapter.getData().get(position).getHotSpotOriginHistory());
-                BaseEvent baseEventBothChosen = EventFactory.getInstance();
-                baseEventBothChosen.type = EventBusType.ORIGIN_HOTSPOT_BOTH_CHOSEN ;
-                EventBusUtils.postSticky(baseEventBothChosen);
-                Intent intentBothChosen = new Intent(OriginHotSpotActivity.this ,HotSpotResearchActivity.class);
-                startActivity(intentBothChosen);
+                originAddressChosen = originAdapter.getData().get(position).getHotSpotOriginHistory();
+                StatusManager.originChosen = originAddressChosen;
+                mPresenter.saveOriginHotSpotHistory(originAddressChosen);
+                mPresenter.convertToLocation(originAddressChosen,routeRequest ,geocodeSearch);
             }
         });
         hintAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //Todo：带着 选中的 热点 & 起点信息 ，去 地图页面画出来！
-                mPresenter.saveOriginHotSpotHistory(hintAdapter.getData().get(position).getHotSpotName());
-//                etHotspotOrigin.setText(hintAdapter.getData().get(position).getHotSpotName());
-                double longitute = hintAdapter.getData().get(position).getLongitude();
-                double latitute = hintAdapter.getData().get(position).getLatitute();
-                Logger.d("点击了热点：起点 提示 列表 item");
+                originAddressChosen =hintAdapter.getData().get(position).getHotSpotName();
+                StatusManager.originChosen = originAddressChosen;
+                mPresenter.saveOriginHotSpotHistory(originAddressChosen);
+                mPresenter.convertToLocation(originAddressChosen,routeRequest ,geocodeSearch);
+
             }
         });
     }
@@ -226,11 +240,24 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
     /**
      * 处理Eventbus发过来的事件
      */
-    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN_ORDERED)
     public void handleEvent(BaseEvent baseEvent) {
         if (baseEvent.type.equals(EventBusType.ORIGIN_HOTSPOT_TO_CHOOSE)) {
-            Logger.d("接收事件 ，准备选择 起点");
+            LatLng latLng = (LatLng) baseEvent.object;
+            routeRequest.getEnd().setLongitute(latLng.longitude);
+            routeRequest.getEnd().setLatitute(latLng.latitude);
+            Log.e(TAG,"接收用户选择的热点（"+latLng.longitude+","+latLng.latitude+") ,准备选择 起点");
         }
     }
 
+    @Override
+    public void requestSuccess(HotSpotRouteInfo info) {
+        BaseEvent baseEventBothChosen = EventFactory.getInstance();
+        baseEventBothChosen.type = EventBusType.ORIGIN_HOTSPOT_BOTH_CHOSEN ;
+        baseEventBothChosen.object = info;
+        baseEventBothChosen.content = originAddressChosen;
+        EventBusUtils.postSticky(baseEventBothChosen);
+        Intent intentBothChosen = new Intent(OriginHotSpotActivity.this ,HotSpotPathActivity.class);
+        startActivity(intentBothChosen);
+    }
 }

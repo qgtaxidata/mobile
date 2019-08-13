@@ -6,6 +6,7 @@ package com.example.taxidata.common;
  */
 public class StatusManager {
 
-    public static  boolean  hotSpotChosen = false;
+    public static String originChosen = "";
 
+    public  static  String  hotSpotChosen = "";
 }
