@@ -48,16 +48,6 @@ public class DropDownSelectView extends LinearLayout {
         View view = layoutInflater.inflate(R.layout.view_drop_down_select,this,true);
         resultTv = view.findViewById(R.id.drop_down_select_tv);
         upOrDown = view.findViewById(R.id.drop_down_select_iv);
-        switch (kind){
-            case 1:
-                resultTv.setText("番禺区");
-                break;
-            case 2:
-                resultTv.setText("2007年02月04日");
-                break;
-                default:
-                    break;
-        }
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

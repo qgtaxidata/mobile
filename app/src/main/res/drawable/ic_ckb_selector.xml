@@ -8,5 +8,5 @@
         android:state_checked="false"
         android:drawable="@drawable/bg_uncheck"
         />
-q
+
 </selector>

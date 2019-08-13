@@ -51,7 +51,7 @@ public class Area {
     public static final String GUANG_ZHOU = "全广州";
     public static final String HUA_DU = "花都区";
     public static final String NAN_SHA = "南沙区";
-    public static final String ZEENG_CHENG = "增城区";
+    public static final String ZENG_CHENG = "增城区";
     public static final String CONG_HUA = "从化区";
     public static final String PAN_YU = "番禺区";
     public static final String BAI_YUN = "白云区";

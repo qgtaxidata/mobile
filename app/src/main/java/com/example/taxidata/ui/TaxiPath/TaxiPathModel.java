@@ -19,10 +19,9 @@ import okhttp3.ResponseBody;
 
 public class TaxiPathModel implements TaxiPathContract.TaxiPathModel {
     @Override
-    public Observable<TaxiInfo> getTaxiInfo(double longitude, double latitude, String time) {
+    public Observable<TaxiInfo> getTaxiInfo(int area, String time) {
         GetTaxiInfo getTaxiInfo = new GetTaxiInfo();
-        getTaxiInfo.setLatitude(latitude);
-        getTaxiInfo.setLongitude(longitude);
+        getTaxiInfo.setArea(area);
         getTaxiInfo.setTime(time);
         String json = GsonUtil.GsonString(getTaxiInfo);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);

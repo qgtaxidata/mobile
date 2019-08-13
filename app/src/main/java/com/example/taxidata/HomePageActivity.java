@@ -25,6 +25,7 @@ import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.ui.TaxiDriverIncome.IncomeActivity;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
+import com.example.taxidata.ui.areaanalyze.AreaAnalyzeActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
@@ -394,6 +395,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 //道路质量分析
                 break;
             case R.id.fbtn_request_analysis:
+                Intent areaIntent = new Intent(HomePageActivity.this, AreaAnalyzeActivity.class);
+                startActivity(areaIntent);
                 //区域出租车需求分析
                 break;
             case R.id.fbtn_taxi_income:
@@ -586,7 +589,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         areaList.add(Area.PAN_YU);
         areaList.add(Area.NAN_SHA);
         areaList.add(Area.CONG_HUA);
-        areaList.add(Area.ZEENG_CHENG);
+        areaList.add(Area.ZENG_CHENG);
         heatpowerAreaDsv.setItemsData(areaList, 1);
     }
 
