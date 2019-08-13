@@ -260,7 +260,7 @@ public class HotSpotPathActivity extends BaseActivity implements GeocodeSearch.O
             //将选择好的热点坐标发送给 起点选择Activity
             BaseEvent baseEventOrigin = EventFactory.getInstance();
             baseEventOrigin.type = EventBusType.ORIGIN_HOTSPOT_TO_CHOOSE;
-            LatLng latLng = new LatLng(hotSpotInfo.getLongitude() ,hotSpotInfo.getLatitude());
+            LatLng latLng = new LatLng( hotSpotInfo.getLatitude() ,hotSpotInfo.getLongitude());
             baseEventOrigin.object = latLng;
             EventBusUtils.postSticky(baseEventOrigin);
             showHotSpot(hotSpotInfo.getLongitude() ,hotSpotInfo.getLatitude());

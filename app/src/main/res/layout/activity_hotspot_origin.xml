@@ -24,11 +24,11 @@
 
             <ImageButton
                 android:id="@+id/imagebutton_hotspot_origin_back"
-                android:layout_marginTop="20dp"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_marginTop="27dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:background="@mipmap/ic_launcher"
+                android:background="@mipmap/ui_hotspot_search_return"
                 />
             <EditText
                 android:id="@+id/et_hotspot_origin"

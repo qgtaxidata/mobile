@@ -166,8 +166,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
         String addressName = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
         StatusManager.hotSpotChosen = addressName;
-        Logger.d("转换后的热点的name： "+ addressName);
-        Log.e(TAG, "onRegeocodeSearched: " + addressName );
         BaseEvent baseEvent = EventFactory.getInstance();
         baseEvent.type = EventBusType.HOTSPOT_CHOSEN;
         HotSpotInfo hotSpotInfo = new HotSpotInfo();

@@ -38,6 +38,8 @@ import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.widget.EmptyHotSpotView;
+import com.example.taxidata.widget.SimpleLoadingDialog;
+import com.hb.dialog.dialog.LoadingDialog;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -76,7 +78,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     private GeocodeSearch geocodeSearch ;
     private String intputString;
     private ItemTouchHelper itemTouchHelper;
-
+    private SimpleLoadingDialog loadingDialog;
+    private boolean isHintIng;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +120,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     }
 
     public void initViews() {
+        loadingDialog = new SimpleLoadingDialog(this ,"正在加载服务器数据",R.drawable.dialog_image_loading);
         geocodeSearch = new GeocodeSearch(this);
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -128,7 +132,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             @Override
             public void afterTextChanged(Editable s) {
                     intputString = s.toString();
-                    if( ! "".equals(intputString) && etSearch.isFocused()) {
+                    if( ! "".equals(intputString) && etSearch.isFocused() && ! isHintIng) {
                         //当前输入框有内容,将输入的内容发送请求获取提示列表
                         mPresenter.getHintList(s.toString());
                     } else {
@@ -196,6 +200,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
                 String inputAddress = etSearch.getText().toString();
                 //将用户输入的地址转换为坐标
                 if (mPresenter != null && !"".equals(inputAddress)) {
+                    showLoadingDialog();
                     mPresenter.convertToLocation(inputAddress ,geocodeSearch );
                     mPresenter.saveHotSpotSearchHistory(inputAddress);
                 }
@@ -207,6 +212,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 String address = historyAdapter.getData().get(position).getHotSpotHistory();
                 etSearch.setText(address);
+                showLoadingDialog();
                 mPresenter.saveHotSpotSearchHistory(address);
                 mPresenter.convertToLocation(address ,geocodeSearch );
             }
@@ -214,10 +220,12 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         hintAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                isHintIng = true;
                 mPresenter.saveHotSpotSearchHistory(hintAdapter.getData().get(position).getHotSpotName());
                 etSearch.setText(hintAdapter.getData().get(position).getHotSpotName());
                 double longitute = hintAdapter.getData().get(position).getLongitude();
                 double latitute = hintAdapter.getData().get(position).getLatitute();
+                showLoadingDialog();
                 mPresenter.getHotSpotData(longitute ,latitute ,"");
             }
         });
@@ -225,6 +233,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //Todo：带着 选中的 热点的信息，去到 中间页面
+                Logger.d("你点击了热点列表的第"+position+"项");
                 mPresenter.convertToAddressName(recommandAdapter.getItem(position) ,geocodeSearch);
             }
         });
@@ -240,6 +249,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             rvSearch.setAdapter(recommandAdapter);
             itemTouchHelper.attachToRecyclerView(null);
             recommandAdapter.setNewData(hotSpotCallBackInfoList);
+            cancelLoadingDialong();
         }
     }
 
@@ -250,6 +260,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             itemTouchHelper.attachToRecyclerView(rvSearch);
             rvSearch.setAdapter(historyAdapter);
             historyAdapter.setNewData(hotSpotHistorySearchList);
+
         }
     }
 
@@ -259,6 +270,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             itemTouchHelper.attachToRecyclerView(null);
             rvSearch.setAdapter(hintAdapter);
             hintAdapter.setNewData(hintList);
+
         }
     }
 
@@ -288,6 +300,16 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             Logger.d("接收事件： 再次选择热点地点");
             rvSearch.setAdapter(recommandAdapter);
         }
+    }
+
+    public void showLoadingDialog() {
+
+        loadingDialog.show();
+    }
+
+    public void cancelLoadingDialong() {
+
+        loadingDialog.cancel();
     }
 
 }
