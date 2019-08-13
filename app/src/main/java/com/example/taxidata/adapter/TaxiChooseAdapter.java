@@ -1,10 +1,9 @@
-package com.example.taxidata.ui.TaxiPath;
+package com.example.taxidata.adapter;
 
-import android.content.Intent;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,32 +14,34 @@ import com.example.taxidata.bean.TaxiInfo;
 
 import java.util.List;
 
-public class TaxiInfoAdapter extends RecyclerView.Adapter<TaxiInfoAdapter.ViewHolder> {
+public class TaxiChooseAdapter extends RecyclerView.Adapter<TaxiChooseAdapter.ViewHolder> {
 
     private List<TaxiInfo.DataBean> taxiInfoList;
     protected OnItemClickListener onItemClickListener;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View taxiInfoView;
+        CheckBox licenseplatenoCkb;
         TextView licenseplatenoTv;
 
         public ViewHolder(View view) {
             super(view);
             taxiInfoView = view;
-            licenseplatenoTv = view.findViewById(R.id.tv_licenseplateno);
+            licenseplatenoCkb = view.findViewById(R.id.ckb_item_choose_taxi_licenseplateno);
+            licenseplatenoTv = view.findViewById(R.id.tv_item_choose_taxi_licenseplateno);
         }
     }
 
-    public TaxiInfoAdapter(List<TaxiInfo.DataBean> taxiInfoList){
+    public TaxiChooseAdapter(List<TaxiInfo.DataBean> taxiInfoList){
         this.taxiInfoList = taxiInfoList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.taxi_info_recycleview_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_choose_taxi, parent, false);
         ViewHolder holder = new ViewHolder(view);
-        holder.taxiInfoView.setOnClickListener(new View.OnClickListener() {
+        holder.licenseplatenoCkb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
@@ -53,7 +54,7 @@ public class TaxiInfoAdapter extends RecyclerView.Adapter<TaxiInfoAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TaxiChooseAdapter.ViewHolder holder, int position) {
         if (position < taxiInfoList.size()){
             TaxiInfo.DataBean taxiInfo = taxiInfoList.get(position);
             ViewHolder viewHolder = (ViewHolder) holder;
@@ -70,4 +71,8 @@ public class TaxiInfoAdapter extends RecyclerView.Adapter<TaxiInfoAdapter.ViewHo
         this.onItemClickListener = onItemClickListener;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

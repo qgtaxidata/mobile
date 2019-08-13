@@ -3,33 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/income_bg"
+    android:background="@color/gray_color"
     >
 
    <LinearLayout
-       android:layout_width="match_parent"
+       android:layout_width="wrap_content"
        android:layout_height="wrap_content"
+       android:layout_gravity="center"
        android:layout_marginTop="16dp"
        android:orientation="horizontal">
 
       <com.example.taxidata.widget.DropDownSelectView
-          android:id="@+id/area_select_view"
+          android:id="@+id/income_ranking_area_select_view"
           android:layout_width="77dp"
           android:layout_height="30dp"
-          android:layout_marginStart="16dp"
           android:layout_gravity="center"
           android:text="番禺区"
           />
 
       <com.example.taxidata.widget.DropDownSelectView
-          android:id="@+id/time_select_view"
-          android:layout_width="180dp"
+          android:id="@+id/income_ranking_time_select_view"
+          android:layout_width="165dp"
           android:layout_height="30dp"
           android:layout_marginStart="10dp"
           android:layout_gravity="center"/>
 
       <Button
-          android:id="@+id/btn_refresh_list"
+          android:id="@+id/income_ranking_btn_refresh_list"
           android:layout_width="60dp"
           android:layout_height="30dp"
           android:layout_gravity="center"
@@ -78,7 +78,7 @@
                    android:layout_alignParentTop="true"
                    android:layout_centerInParent="true"
                    android:gravity="center"
-                   android:text="车牌号"
+                   android:text="司机编号"
                    android:textSize="16sp"
                    android:textStyle="normal"
                    android:textColor="@color/blue_color"/>
@@ -99,7 +99,7 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/taxi_income_recycle_view"
+                android:id="@+id/income_ranking_recycle_view"
                 android:layout_width="match_parent"
                 android:layout_height="450dp"
                 android:layout_gravity="center"

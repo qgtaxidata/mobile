@@ -17,14 +17,14 @@
         android:textColor="@color/black_color"/>
 
     <TextView
-        android:id="@+id/tv_item_licenseplateno"
+        android:id="@+id/tv_item_driver_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="粤A111111"
+        android:text="A111111"
         android:textSize="16sp"
         android:textStyle="normal"
         android:textColor="@color/black_color"/>

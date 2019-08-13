@@ -24,6 +24,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.setup.SetUpActivity">
         </activity>
+        <activity android:name=".ui.areaanalyze.AreaAnalyzeActivity"></activity>
         <activity android:name=".ui.hotspot.view.HotSpotPathActivity"></activity>
         <activity android:name=".ui.TaxiDriverIncome.IncomeActivity" />
         <activity android:name=".test.MainActivity" />
@@ -38,9 +39,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".ui.TaxiPath.TaxiInfoListActivity" />
         <activity android:name=".ui.TaxiPath.TaxiPathActivity" />
         <activity android:name=".ChartText.PieChartActivity" />
         <activity android:name=".ChartText.BarChartActivity" />

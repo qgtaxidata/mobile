@@ -24,16 +24,19 @@ import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.adapter.CustomOnclick;
 import com.example.taxidata.common.eventbus.BaseEvent;
 import com.example.taxidata.constant.Algorithm;
+
+import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.ui.TaxiDriverIncome.IncomeActivity;
-import com.example.taxidata.ui.TaxiPath.OnItemClickListener;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
+import com.example.taxidata.ui.areaanalyze.AreaAnalyzeActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
 import com.example.taxidata.ui.setup.SetUpActivity;
+
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.DropDownSelectView;
@@ -42,13 +45,10 @@ import com.example.taxidata.widget.StatusBar;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.orhanobut.logger.Logger;
-
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -406,6 +406,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 //道路质量分析
                 break;
             case R.id.fbtn_request_analysis:
+                Intent areaIntent = new Intent(HomePageActivity.this, AreaAnalyzeActivity.class);
+                startActivity(areaIntent);
                 //区域出租车需求分析
                 break;
             case R.id.fbtn_taxi_income:
@@ -600,7 +602,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         areaList.add(Area.PAN_YU);
         areaList.add(Area.NAN_SHA);
         areaList.add(Area.CONG_HUA);
-        areaList.add(Area.ZEENG_CHENG);
+        areaList.add(Area.ZENG_CHENG);
         heatpowerAreaDsv.setItemsData(areaList, 1);
     }
 

@@ -1,4 +1,4 @@
-package com.example.taxidata.ui.TaxiDriverIncome;
+package com.example.taxidata.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.taxidata.R;
 import com.example.taxidata.bean.TaxiInfo;
-import com.example.taxidata.ui.TaxiPath.OnItemClickListener;
-import com.example.taxidata.ui.TaxiPath.TaxiInfoAdapter;
 
 import java.util.List;
 
@@ -23,14 +21,14 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ViewHolder
     static class ViewHolder extends RecyclerView.ViewHolder {
         View incomeView;
         TextView rankingTv;
-        TextView licenseplatenoTv;
+        TextView numberTv;
         TextView incomeTv;
 
         public ViewHolder(View view) {
             super(view);
             incomeView = view;
             rankingTv = view.findViewById(R.id.tv_item_ranking);
-            licenseplatenoTv = view.findViewById(R.id.tv_item_licenseplateno);
+            numberTv = view.findViewById(R.id.tv_item_driver_number);
             incomeTv = view.findViewById(R.id.tv_item_income);
         }
     }
@@ -42,7 +40,7 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ViewHolder
     @NonNull
     @Override
     public IncomeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.taxi_info_recycleview_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_taxi_income, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }

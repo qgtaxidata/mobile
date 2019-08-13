@@ -9,15 +9,27 @@ import com.aserbao.aserbaosandroid.functions.database.greenDao.db.DaoSession;
 import com.aserbao.aserbaosandroid.functions.database.greenDao.db.HotSpotOriginDao;
 import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HotSpotHint;
+import com.example.taxidata.bean.HotSpotHistorySearch;
 import com.example.taxidata.bean.HotSpotOrigin;
+import com.example.taxidata.bean.HotSpotRouteInfo;
+import com.example.taxidata.bean.HotSpotRouteRequest;
 import com.example.taxidata.common.GreenDaoManager;
+import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.ui.hotspot.contract.OriginHotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.OriginHotSpotPresenter;
+import com.example.taxidata.util.GsonUtil;
+import com.google.gson.Gson;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * @author: ODM
@@ -29,17 +41,25 @@ public class OriginHotSpotModel implements OriginHotSpotContract.OriginHotSpotMo
     private DaoSession originDaoSession;
     private List<HotSpotHint> hintList;
     private OriginHotSpotPresenter mPresenter;
+    private List<HotSpotOrigin> originHistoryList;
 
     public OriginHotSpotModel(OriginHotSpotPresenter mPresenter) {
         originDaoSession = GreenDaoManager.getInstance().getDaoSession();
         this.mPresenter = mPresenter;
         hintList =new ArrayList<>();
+        originHistoryList = new ArrayList<>();
     }
 
 
     @Override
     public List<HotSpotOrigin> getHistoryOriginList() {
-        return null;
+        QueryBuilder<HotSpotOrigin> queryBuilder =  originDaoSession.queryBuilder(HotSpotOrigin.class);
+        originHistoryList.clear();
+        List<HotSpotOrigin> tempList = queryBuilder.list();
+        for (int index = tempList.size() - 1 ; index >=  0 ; index--) {
+            originHistoryList.add(tempList.get(index));
+        }
+        return originHistoryList;
     }
 
     @Override
@@ -50,6 +70,17 @@ public class OriginHotSpotModel implements OriginHotSpotContract.OriginHotSpotMo
         Inputtips inputTips = new Inputtips(TaxiApp.getContext(), inputquery);
         inputTips.setInputtipsListener(this);
         inputTips.requestInputtipsAsyn();
+    }
+
+    @Override
+    public Observable<HotSpotRouteInfo> requestRouteData(HotSpotRouteRequest request) {
+        String requestJsonString = GsonUtil.GsonString(request);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),requestJsonString) ;
+        return RetrofitManager.getInstance()
+                .getHttpService()
+                .getHotSpotRoute(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override

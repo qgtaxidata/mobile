@@ -45,11 +45,13 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
     private static final String TAG = "HotSpotModel";
     private DaoSession  historyDaoSession;
     private List<HotSpotHint> hintList;
+    private List<HotSpotHistorySearch>  historySearchList;
     private HotSpotPresenter  mPresnter ;
     public HotSpotModel(HotSpotPresenter  mPresnter) {
         historyDaoSession = GreenDaoManager.getInstance().getDaoSession();
         this.mPresnter = mPresnter;
         hintList = new ArrayList<>();
+        historySearchList = new ArrayList<>();
     }
 
 
@@ -69,9 +71,13 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
 
     @Override
     public List<HotSpotHistorySearch> getHistorySearchList() {
-        Log.e(TAG, "getHistorySearchList: "+"打开数据库获取地点历史" );
+        historySearchList.clear();
         QueryBuilder<HotSpotHistorySearch> queryBuilder =  historyDaoSession.queryBuilder(HotSpotHistorySearch.class);
-        return  queryBuilder.list();
+        List<HotSpotHistorySearch> tempList = queryBuilder.list();
+        for(int index = tempList.size() - 1 ; index >= 0 ; index --){
+            historySearchList.add(tempList.get(index));
+        }
+        return  historySearchList;
     }
 
     @Override
@@ -109,9 +115,6 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
             Log.e(TAG, "存储了热点历史 ： " +  historySearch );
         }
     }
-
-
-
 
 
     public void removeDuplicatedHistoryByAddress(String  address) {

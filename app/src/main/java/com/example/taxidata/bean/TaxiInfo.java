@@ -54,6 +54,7 @@ public class TaxiInfo {
         private double latitude;
         private String time;
         private String licenseplateno;
+        private boolean isSelected;
 
         public double getLongitude() {
             return longitude;
@@ -85,6 +86,14 @@ public class TaxiInfo {
 
         public void setLicenseplateno(String licenseplateno) {
             this.licenseplateno = licenseplateno;
+        }
+
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
         }
     }
 }
