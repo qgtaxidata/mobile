@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.taxidata.R;
+import com.example.taxidata.constant.Algorithm;
 import com.example.taxidata.ui.TaxiPath.OnItemClickListener;
 
 import java.util.ArrayList;
@@ -59,6 +60,8 @@ public class DropDownSelectView extends LinearLayout {
                         case 2:
                             showTimePopWindow();
                             break;
+                        case 3:
+                            showAreaPopWindow();
                         default:
                     }
                 }else {
@@ -104,6 +107,9 @@ public class DropDownSelectView extends LinearLayout {
                 break;
             case 2:
                 resultTv.setText("2007年02月04日");
+                break;
+            case 3:
+                resultTv.setText(Algorithm.WANG_ALGORITHM);
                 break;
             default:
         }
@@ -158,6 +164,7 @@ public class DropDownSelectView extends LinearLayout {
                     if (onItemClickListener != null){
                         onItemClickListener.onItemClick(position);
                     }
+                    Log.d("DropDownSelectView",text);
                 }
             });
             return convertView;

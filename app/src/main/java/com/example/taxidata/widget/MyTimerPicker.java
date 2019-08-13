@@ -22,6 +22,7 @@ import com.example.taxidata.R;
 import com.example.taxidata.adapter.CustomOnclick;
 import com.example.taxidata.adapter.TimeAdapter;
 import com.example.taxidata.application.TaxiApp;
+import com.example.taxidata.util.StringUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,22 +53,22 @@ public class MyTimerPicker extends FrameLayout {
     /**
      * 只显示4 ~  20日
      */
-    private static final int CONST_DAY_COUNT = 18;
+    public static final int CONST_DAY_COUNT = 18;
 
     /**
      * 一天24小时
      */
-    private static final int CONST_HOUR_COUNT = 25;
+    public static final int CONST_HOUR_COUNT = 25;
 
     /**
      * 一小时60分钟
      */
-    private static final int CONST_MINUTE_COUNT = 61;
+    public static final int CONST_MINUTE_COUNT = 61;
 
     /**
      * 时间选择的中心index
      */
-    private static final int CONST_CENTER = 1;
+    public static final int CONST_CENTER = 1;
 
     /**
      * 初始化数据源
@@ -417,14 +418,16 @@ public class MyTimerPicker extends FrameLayout {
         View minuteView = mMinuteRv.getChildAt(CONST_CENTER);
         TimeAdapter.ViewHolder minuteHolder = (TimeAdapter.ViewHolder) mMinuteRv.getChildViewHolder(minuteView);*/
         //获取字符串
-        String chineseTime = calendarTv.getText().toString();
-        StringBuffer timeBuilder = new StringBuffer(chineseTime);
+/*        StringBuffer timeBuilder = new StringBuffer(chineseTime);
         timeBuilder.setCharAt(timeBuilder.indexOf("年"),'-');
         timeBuilder.setCharAt(timeBuilder.indexOf("月"),'-');
         timeBuilder.deleteCharAt(timeBuilder.indexOf("日"));
 
         Log.d("MyTimerPicker",timeBuilder.toString());
-        return timeBuilder.toString();
+        return timeBuilder.toString();*/
+        String chineseTime = calendarTv.getText().toString();
+
+        return StringUtil.ChineseToStandardFormat(chineseTime);
     }
 
     /**
@@ -560,10 +563,10 @@ public class MyTimerPicker extends FrameLayout {
      */
     public boolean isFeature(){
         //设置时间格式
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-SS");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
         long selectedTime = 0;
         try {
-            selectedTime = format.parse(getTime()).getTime();
+            selectedTime = format.parse(getTime() + ":00").getTime();
         }catch (Exception e){
             // TODO 失败处理
             e.printStackTrace();

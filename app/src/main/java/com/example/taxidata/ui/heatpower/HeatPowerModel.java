@@ -2,7 +2,6 @@ package com.example.taxidata.ui.heatpower;
 
 import android.util.Log;
 
-import com.amap.api.maps.model.LatLng;
 import com.example.taxidata.bean.HeatPointInfo;
 import com.example.taxidata.net.RetrofitManager;
 

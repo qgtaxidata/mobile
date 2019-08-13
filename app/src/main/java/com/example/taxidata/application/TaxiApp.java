@@ -15,11 +15,12 @@ import java.util.Date;
 public class TaxiApp extends Application {
 
     private static Context context;
+    private static TaxiApp taxiApp;
     private static final String TAG = "TaxiApp";
     /**
      * app默认时间为2017-02-06
      */
-    private static final String defaultTime = "2017-02-06 10:00:00";
+    private static String defaultTime = "2017-02-06 10:00:00";
     /**
      * 手机系统与app默认时间校准时间
      */
@@ -30,6 +31,8 @@ public class TaxiApp extends Application {
         super.onCreate();
 
         context = getApplicationContext();
+        //初始化TaxiApp
+        taxiApp = this;
         //Logger框架初始化
         Logger.addLogAdapter(new AndroidLogAdapter());
         initGreenDao();
@@ -99,5 +102,23 @@ public class TaxiApp extends Application {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 设置app当前时间
+     * @param defaultTime  设置时间
+     */
+    public void setDefaultTime(String defaultTime) {
+        TaxiApp.defaultTime = defaultTime;
+        //重新初始化当前时间
+        initAppTime();
+    }
+
+    /**
+     * 获取taxiApp实例
+     * @return TaxiApp
+     */
+    public static TaxiApp getTaxiApp(){
+        return taxiApp;
     }
 }

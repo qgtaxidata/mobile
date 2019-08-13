@@ -2,40 +2,30 @@ package com.example.taxidata;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
+
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
+
 import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.adapter.CustomOnclick;
-import com.example.taxidata.bean.HotSpotInfo;
 import com.example.taxidata.common.eventbus.BaseEvent;
-import com.example.taxidata.common.eventbus.EventFactory;
+import com.example.taxidata.constant.Algorithm;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.constant.ColorGriant;
-import com.example.taxidata.constant.EventBusType;
 import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.ui.TaxiDriverIncome.IncomeActivity;
 import com.example.taxidata.ui.TaxiPath.OnItemClickListener;
@@ -43,8 +33,7 @@ import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
-import com.example.taxidata.ui.hotspot.view.OriginHotSpotActivity;
-import com.example.taxidata.ui.hotspot.view.OriginHotSpotLayout;
+import com.example.taxidata.ui.setup.SetUpActivity;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.DropDownSelectView;
@@ -154,7 +143,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     /*------------------------------------容器相关--------------------------------------------------*/
 
     private ArrayList<String> areaList = new ArrayList<>();
-    private ArrayList<Integer> algorithmList = new ArrayList<>();
+    private ArrayList<String> algorithmList = new ArrayList<>();
 
     /*----------------------------------------------------------------------------------------------*/
 
@@ -288,7 +277,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 统一初始化present
      */
     private void initPresent() {
-        heatPowerPresent = new HeatPowerPresent();
+        heatPowerPresent = new HeatPowerPresent(heatPowerStb,showHideHeatPowerBtn);
         heatPowerPresent.attachView(this);
     }
 
@@ -369,6 +358,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             if (heatPowerStb.getStatus() == 2){
                 algorithmDsv.setVisibility(View.GONE);
             }
+            //隐藏时间选择器
+            chooseTimeTp.hideDetailTimePicker();
             //隐藏状态栏
             heatpowerRl.setVisibility(View.GONE);
             //退出热力图模式
@@ -400,6 +391,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     @OnClick({R.id.fbtn_passenger_hot, R.id.fbtn_heat_power, R.id.fbtn_road_quality, R.id.fbtn_request_analysis, R.id.fbtn_taxi_income
             , R.id.fbtn_behavior_analysis, R.id.fbtn_abnormal_analysis, R.id.fbtn_visualization, R.id.fbtn_set_up})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.fbtn_passenger_hot:
                 //载客热点推荐
@@ -429,11 +421,13 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 break;
             case R.id.fbtn_visualization:
                 //路径可视化
-                Intent intent = new Intent(HomePageActivity.this, TaxiPathActivity.class);
+                intent = new Intent(HomePageActivity.this, TaxiPathActivity.class);
                 startActivity(intent);
                 break;
             case R.id.fbtn_set_up:
                 //设置
+                intent = new Intent(HomePageActivity.this, SetUpActivity.class);
+                startActivity(intent);
                 break;
             default:
         }
@@ -547,7 +541,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                     return;
                 }
                 heatPowerPresent.showFeatureHeatPower(Area.area.get(heatpowerAreaDsv.getSlectedArea()),
-                        chooseTimeTp.getTime() + ":00",Integer.valueOf(algorithmDsv.getSlectedArea()));
+                        chooseTimeTp.getTime() + ":00",Algorithm.algorithm.get(algorithmDsv.getSlectedArea()));
                 break;
             default:
         }
@@ -614,14 +608,10 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 初始化算法列表
      */
     private void initAlgorithm(){
-        algorithmList.add(0);
-        algorithmList.add(1);
-        algorithmList.add(2);
-        ArrayList<String> alogorithmStringList = new ArrayList<>();
-        for (int temp : algorithmList){
-            alogorithmStringList.add(temp + "");
-        }
-        algorithmDsv.setItemsData(alogorithmStringList,1);
+        algorithmList.add(Algorithm.WANG_ALGORITHM);
+        algorithmList.add(Algorithm.GU_ALGORITHM);
+        algorithmList.add(Algorithm.LI_ALGORITHM);
+        algorithmDsv.setItemsData(algorithmList,3);
     }
 
     /**
@@ -638,7 +628,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      */
     private void initDropDownSelectClick() {
         // TODO 设置点击事件
-        //设置点击事件
+        //设置热力图区域下拉框点击事件
         heatpowerAreaDsv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -648,13 +638,29 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 int area = Area.area.get(adress);
                 //获取地区经纬度
                 LatLng latLng = Area.area_latlng.get(area);
-                //清除当前屏幕上的热点图
+                //清除当前屏幕上的热力图
                 dropOutHeatPower();
                 //移动到该地区
                 moveToAnyWhere(latLng);
                 //按钮显示为隐藏
                 showHideHeatPowerBtn.setText("隐藏");
                 //重新发起网络请求显示热力图
+                happenHeatPower();
+            }
+        });
+        //设置算法下拉框点击事件
+        algorithmDsv.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                //取出算法名称
+                String algorithmName = algorithmList.get(position);
+                //取出算法代号
+                int algorithmNumber = Algorithm.algorithm.get(algorithmName);
+                //清除当前屏幕上的热力图
+                dropOutHeatPower();
+                //按钮显示为隐藏
+                showHideHeatPowerBtn.setText("隐藏");
+                //重新发送网络请求
                 happenHeatPower();
             }
         });

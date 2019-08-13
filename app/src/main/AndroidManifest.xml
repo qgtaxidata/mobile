@@ -22,25 +22,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.hotspot.view.HotSpotPathActivity">
-
+        <activity android:name=".ui.setup.SetUpActivity">
         </activity>
-        <activity android:name=".ui.TaxiDriverIncome.IncomeActivity"></activity>
-        <activity android:name=".test.MainActivity"></activity>
-        <activity android:name=".ui.hotspot.view.HotSpotResearchActivity"></activity>
-        <activity android:name=".ui.hotspot.view.OriginHotSpotActivity"></activity>
-
+        <activity android:name=".ui.hotspot.view.HotSpotPathActivity"></activity>
+        <activity android:name=".ui.TaxiDriverIncome.IncomeActivity" />
+        <activity android:name=".test.MainActivity" />
+        <activity android:name=".ui.hotspot.view.HotSpotResearchActivity" />
+        <activity android:name=".ui.hotspot.view.OriginHotSpotActivity" />
         <activity
             android:name=".HomePageActivity"
-            android:launchMode="singleInstance">
+            android:launchMode="standard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
-        <activity android:name=".ui.TaxiPath.TaxiInfoListActivity"></activity>
+        </activity>
+        <activity android:name=".ui.TaxiPath.TaxiInfoListActivity" />
         <activity android:name=".ui.TaxiPath.TaxiPathActivity" />
         <activity android:name=".ChartText.PieChartActivity" />
         <activity android:name=".ChartText.BarChartActivity" />
