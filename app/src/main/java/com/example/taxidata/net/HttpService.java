@@ -7,9 +7,11 @@ import com.example.taxidata.bean.HotSpotRequestInfo;
 import com.example.taxidata.bean.HotSpotRouteInfo;
 import com.example.taxidata.bean.HotSpotRouteRequest;
 import com.example.taxidata.bean.TaxiInfo;
+import com.example.taxidata.bean.TaxiPathInfo;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -33,8 +35,8 @@ public interface HttpService {
     Observable<TaxiInfo> getTaxiInfo(@Body RequestBody info);
 
     @Headers({"Content-Type: application/json","Accept: application/json"})
-    @POST("/findTaxi/findRoute")
-    Observable<TaxiInfo> getTaxiPathInfo(@Body RequestBody info);
+    @POST("taxiRoute/findRoute")
+    Observable<TaxiPathInfo> getTaxiPathInfo(@Body RequestBody info);
 
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("/")

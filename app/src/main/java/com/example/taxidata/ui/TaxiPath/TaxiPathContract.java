@@ -6,25 +6,28 @@ import com.example.taxidata.base.BaseModel;
 import com.example.taxidata.base.BasePresent;
 import com.example.taxidata.base.BaseView;
 import com.example.taxidata.bean.TaxiInfo;
+import com.example.taxidata.bean.TaxiPathInfo;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 public interface TaxiPathContract {
 
 
     interface TaxiPathView extends BaseView{
-        void showPath(List<TaxiInfo.DataBean> listInfo);
+        void showPath(List<TaxiPathInfo.DataBean> listInfo);
+        void initList(List<TaxiInfo.DataBean> taxiInfoList);
     }
 
     interface TaxiPathModel extends BaseModel{
         Observable<TaxiInfo> getTaxiInfo(double longitude, double latitude, String time);
-        Observable<TaxiInfo> getTaxiPathInfo(String time, String licenseplateno);
+        Observable<TaxiPathInfo> getTaxiPathInfo(String time, String licenseplateno);
     }
 
     interface TaxiPathPresent extends BasePresent<TaxiPathView>{
         void getTaxiInfo(Context context, double longitude, double latitude, String time);
-        void getTaxiPathInfo(String time, String licenseplateno);
+        void getTaxiPathInfo(Context context,String time, String licenseplateno);
     }
 }

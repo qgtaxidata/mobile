@@ -10,5 +10,7 @@
     <color name="end_point_bg">#5cff8a</color>
     <color name="blue_color">#4c93fd</color>
     <color name="black_color">#4d4d4d</color>
+    <color name="colorToast">#cc222222</color>
+    <color name="colorTextGray">#666666</color>
 
 </resources>

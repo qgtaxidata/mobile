@@ -1,11 +1,9 @@
 package com.example.taxidata.net;
 
-
 import com.example.taxidata.constant.Api;
 
 import org.greenrobot.greendao.annotation.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,24 +12,19 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * 线程安全的单例类,用于请求网络
- */
-public class RetrofitManager {
-    private static RetrofitManager retrofitManager;
+public class PathRetrofitManager {
+
+    private static PathRetrofitManager pathRetrofitManager;
     private Retrofit retrofit;
     private HttpService service;
     public final static HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
 
-    private RetrofitManager(){
+    private PathRetrofitManager(){
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .cookieJar(new CookieJar() {
                     @Override
@@ -46,9 +39,9 @@ public class RetrofitManager {
                     }
                 })
                 .retryOnConnectionFailure(true)
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30,TimeUnit.SECONDS)
-                .readTimeout(30,TimeUnit.SECONDS);
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60,TimeUnit.SECONDS)
+                .readTimeout(60,TimeUnit.SECONDS);
 
         //创建Retrofit
         retrofit = new Retrofit.Builder()
@@ -64,15 +57,15 @@ public class RetrofitManager {
      * 获取网络管理的manager
      * @return 该单例类
      */
-    public static RetrofitManager getInstance(){
-        if(retrofitManager == null){
+    public static PathRetrofitManager getInstance(){
+        if(pathRetrofitManager == null){
             synchronized (Object.class){
-                if(retrofitManager == null){
-                    retrofitManager = new RetrofitManager();
+                if(pathRetrofitManager == null){
+                    pathRetrofitManager = new PathRetrofitManager();
                 }
             }
         }
-        return retrofitManager;
+        return pathRetrofitManager;
     }
 
     /**

@@ -86,5 +86,6 @@ public class TaxiInfo {
         public void setLicenseplateno(String licenseplateno) {
             this.licenseplateno = licenseplateno;
         }
+
     }
 }

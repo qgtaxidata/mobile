@@ -1,0 +1,22 @@
+package com.example.taxidata.util;
+
+import android.view.View;
+
+public abstract class OnMultiClickListenerUtil implements View.OnClickListener {
+
+    //两次按钮点击间隔不小于1000毫秒
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private static long lastClickTime;
+
+    public abstract void onMultiClick(View v);
+
+    @Override
+    public void onClick(View v){
+        long curClickTime = System.currentTimeMillis();  //当前点击时间
+        if((curClickTime - lastClickTime)>= MIN_CLICK_DELAY_TIME){
+            //超过间隔时间后再将lastClickTime设置为当前点击时间
+            lastClickTime = curClickTime;
+            onMultiClick(v);
+        }
+    }
+}

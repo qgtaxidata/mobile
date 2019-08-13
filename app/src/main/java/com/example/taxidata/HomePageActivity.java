@@ -2,49 +2,32 @@ package com.example.taxidata;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.adapter.CustomOnclick;
-import com.example.taxidata.bean.HotSpotInfo;
+import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.common.eventbus.BaseEvent;
-import com.example.taxidata.common.eventbus.EventFactory;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.constant.ColorGriant;
-import com.example.taxidata.constant.EventBusType;
 import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.ui.TaxiDriverIncome.IncomeActivity;
-import com.example.taxidata.ui.TaxiPath.OnItemClickListener;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
-import com.example.taxidata.ui.hotspot.view.OriginHotSpotActivity;
-import com.example.taxidata.ui.hotspot.view.OriginHotSpotLayout;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.DropDownSelectView;
@@ -53,13 +36,10 @@ import com.example.taxidata.widget.StatusBar;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.orhanobut.logger.Logger;
-
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

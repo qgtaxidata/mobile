@@ -4,17 +4,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.taxidata.R;
+import com.example.taxidata.adapter.TaxiOnClickListener;
 import com.example.taxidata.bean.TaxiInfo;
+import com.example.taxidata.bean.TaxiPathInfo;
+import com.example.taxidata.widget.ChooseTaxiDialog;
+import com.example.taxidata.widget.StatusToast;
+import com.orhanobut.logger.Logger;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.ResourceObserver;
+import okhttp3.ResponseBody;
 
 public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
     private TaxiPathContract.TaxiPathModel model;
     private TaxiPathContract.TaxiPathView view;
+
 
     @Override
     public void getTaxiInfo(Context context,double longitude, double latitude, String time) {
@@ -27,21 +38,20 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
                 @Override
                 public void onNext(TaxiInfo taxiInfo) {
-                    Log.d("wxP4", time);
-                    Intent intent = new Intent(context, TaxiInfoListActivity.class);
-                    intent.putExtra("taxiInfo", (Serializable)taxiInfo.getData());
-                    context.startActivity(intent);
+                    //初始化dialog并弹出
+                    Log.d("wxP2", time);
+                    final ChooseTaxiDialog chooseTaxiDialog = new ChooseTaxiDialog(context, R.style.dialog,taxiInfo.getData());
+                    chooseTaxiDialog.show();
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.d("wxP5", time);
                     e.printStackTrace();
                 }
 
                 @Override
                 public void onComplete() {
-                    Log.d("wxP6", time);
+
                 }
             });
         }
@@ -49,27 +59,34 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
 
     @Override
-    public void getTaxiPathInfo(String time, String licenseplateno) {
+    public void getTaxiPathInfo(Context context,String time, String licenseplateno) {
+        Log.d("wxP1", time);
         if(model != null){
-            model.getTaxiPathInfo(time, licenseplateno).subscribe(new Observer<TaxiInfo>() {
+            model.getTaxiPathInfo(time, licenseplateno).subscribe(new Observer<TaxiPathInfo>() {
                 @Override
                 public void onSubscribe(Disposable d) {
-
+                    Log.d("wxP2", time);
                 }
 
                 @Override
-                public void onNext(TaxiInfo taxiPathInfo) {
+                public void onNext(TaxiPathInfo taxiPathInfo) {
+                    Log.d("wxP3", time);
                     view.showPath(taxiPathInfo.getData());
+                    Log.d("wxP4", time);
                 }
 
                 @Override
                 public void onError(Throwable e) {
+                    Log.d("wxP5", time);
                     e.printStackTrace();
+                    Logger.d(e.getMessage());
+                    StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "网络连接超时！请重试。");
+
                 }
 
                 @Override
                 public void onComplete() {
-
+                    Log.d("wxP6", time);
                 }
             });
         }

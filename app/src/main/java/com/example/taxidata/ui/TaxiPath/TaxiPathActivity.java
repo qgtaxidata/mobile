@@ -2,6 +2,10 @@ package com.example.taxidata.ui.TaxiPath;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
@@ -9,7 +13,14 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.PolylineOptions;
 import com.example.taxidata.R;
 import com.example.taxidata.base.BaseActivity;
+import com.example.taxidata.bean.GetTaxiPathInfo;
 import com.example.taxidata.bean.TaxiInfo;
+import com.example.taxidata.bean.TaxiPathInfo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +31,9 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     private AMap taxiPathAMap;
     private double longitude;    //经度
     private double latitude;     //纬度
+    private List<TaxiInfo.DataBean> taxiList = new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +41,7 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         setContentView(R.layout.activity_taxi_path);
         taxiPathPresent = new TaxiPathPresent();
         taxiPathPresent.attachView(this);
+        EventBus.getDefault().register(this);
         taxiPathMapView = findViewById(R.id.taxi_path_map);
         if(taxiPathAMap == null){
             taxiPathAMap = taxiPathMapView.getMap();
@@ -49,17 +64,38 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     protected void onDestroy(){
         super.onDestroy();
         taxiPathPresent.detachView();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Override
+    public void initList(List<TaxiInfo.DataBean> taxiInfoList) {
+        taxiList.addAll(taxiInfoList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
     }
 
     @Override
-    public void showPath(List<TaxiInfo.DataBean> listInfo) {
+    public void showPath(List<TaxiPathInfo.DataBean> listInfo) {
+        Log.d("wxV1", "show");
         List<LatLng> latLngs = new ArrayList<LatLng>();
-        for(TaxiInfo.DataBean info:listInfo){
+        Log.d("wxV2", "show");
+        for(TaxiPathInfo.DataBean info:listInfo){
             latLngs.add(new LatLng(info.getLatitude(), info.getLongitude()));
         }
+        Log.d("wxV3", "show");
         taxiPathAMap.addPolyline(new PolylineOptions()
                 .addAll(latLngs)
                 .width(10)
                 .color(Color.BLACK));
+        Log.d("wxV4", "show");
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void getPathInfo(GetTaxiPathInfo getTaxiPathInfo){
+        Log.d("wxV1", getTaxiPathInfo.getLicenseplateno());
+        taxiPathPresent.getTaxiPathInfo(this,getTaxiPathInfo.getTime(), getTaxiPathInfo.getLicenseplateno());
+        Log.d("wxV2", getTaxiPathInfo.getLicenseplateno());
     }
 }
