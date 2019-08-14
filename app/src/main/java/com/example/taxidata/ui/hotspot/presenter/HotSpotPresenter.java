@@ -202,5 +202,13 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         mHotSpotModel.removeHistory(historySearch);
     }
 
+    @Override
+    public void  getHotSpotListAgain() {
+        if(hotSpotRecommandInfoList != null && hotSpotRecommandInfoList.size() > 0) {
+            Logger.d("再次展示热点列表！");
+            mHotSpotView.showHotSpot( hotSpotRecommandInfoList);
+        }
+    }
+
 
 }

@@ -59,7 +59,6 @@ public class SimpleLoadingDialog extends Dialog {
         attributes.height = screenWidth/3;
         getWindow().setAttributes(attributes);
         setCancelable(mCancelable);
-
         TextView tv_loading = findViewById(R.id.tv_loading);
         ImageView iv_loading = findViewById(R.id.iv_loading);
         tv_loading.setText(mMessage);

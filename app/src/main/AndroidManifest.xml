@@ -26,7 +26,6 @@
         </activity>
         <activity android:name=".ui.areaanalyze.AreaAnalyzeActivity"></activity>
         <activity android:name=".ui.hotspot.view.HotSpotPathActivity"></activity>
-        <activity android:name=".ui.TaxiDriverIncome.IncomeActivity" />
         <activity android:name=".test.MainActivity" />
         <activity android:name=".ui.hotspot.view.HotSpotResearchActivity" />
         <activity android:name=".ui.hotspot.view.OriginHotSpotActivity" />

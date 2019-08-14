@@ -169,8 +169,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             @Override
             public void onClick(View v) {
                 //Todo 搜索页面返回到地图页面？
-                Intent intent = new Intent(OriginHotSpotActivity.this , HotSpotPathActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
         btnHotspotOrigin.setOnClickListener(new View.OnClickListener() {
