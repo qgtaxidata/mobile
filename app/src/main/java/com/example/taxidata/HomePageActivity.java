@@ -38,6 +38,7 @@ import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
+import com.example.taxidata.ui.IncomeRanking.IncomeRankingActivity;
 import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.areaanalyze.AreaAnalyzeActivity;
@@ -425,12 +426,12 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 //道路质量分析
                 break;
             case R.id.fbtn_request_analysis:
-                Intent areaIntent = new Intent(HomePageActivity.this, AreaAnalyzeActivity.class);
-                startActivity(areaIntent);
                 //区域出租车需求分析
                 break;
             case R.id.fbtn_taxi_income:
                 //出租车司机收入排行榜
+                Intent incomeIntent = new Intent(HomePageActivity.this, IncomeRankingActivity.class);
+                startActivity(incomeIntent);
 
                 break;
             case R.id.fbtn_behavior_analysis:

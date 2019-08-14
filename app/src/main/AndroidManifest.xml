@@ -22,6 +22,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.IncomeRanking.IncomeRankingActivity"></activity>
+        <activity android:name=".ui.areaanalyze.AreaAnalyzeActivity" />
+        <activity android:name=".ui.hotspot.view.HotSpotPathActivity" />
         <activity android:name=".ui.setup.SetUpActivity">
         </activity>
         <activity android:name=".ui.areaanalyze.AreaAnalyzeActivity"></activity>
