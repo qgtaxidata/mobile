@@ -25,12 +25,16 @@
         <activity android:name=".ui.IncomeRanking.IncomeRankingActivity"></activity>
         <activity android:name=".ui.areaanalyze.AreaAnalyzeActivity" />
         <activity android:name=".ui.hotspot.view.HotSpotPathActivity" />
+        <activity android:name=".ui.setup.SetUpActivity">
+        </activity>
+        <activity android:name=".ui.areaanalyze.AreaAnalyzeActivity"></activity>
+        <activity android:name=".ui.hotspot.view.HotSpotPathActivity"></activity>
         <activity android:name=".test.MainActivity" />
         <activity android:name=".ui.hotspot.view.HotSpotResearchActivity" />
         <activity android:name=".ui.hotspot.view.OriginHotSpotActivity" />
         <activity
             android:name=".HomePageActivity"
-            android:launchMode="singleInstance">
+            android:launchMode="standard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

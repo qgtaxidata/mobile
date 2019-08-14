@@ -1,12 +1,15 @@
 package com.example.taxidata.ui.heatpower;
 
 import android.util.Log;
+import android.widget.Button;
 
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HeatPointInfo;
+import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.util.ToastUtil;
+import com.example.taxidata.widget.StatusBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +25,22 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     private HeatPowerContract.HeatPowerModel heatPowerModel;
     private HeatPowerContract.HeatPowerView heatPowerView;
     private static final String TAG = "HeatPowerPresent";
+    private static final int DEFAULT_POLLING_TIME = 3;
+    /**
+     * 轮询间隔时间
+     */
+    private static int pollingTime = SharedPreferencesManager.getManager().getInt(SharedPreferencesManager.CONST_POLLING,DEFAULT_POLLING_TIME);
+    private StatusBar statusBar;
+    private Button hideButton;
     /**
      * 是否暂停轮询，默认为false，即不暂停轮询
      */
     private boolean isPaused = false;
 
-    public HeatPowerPresent(){
+    public HeatPowerPresent(StatusBar statusBar,Button hideButton){
         heatPowerModel = new HeatPowerModel();
+        this.statusBar = statusBar;
+        this.hideButton = hideButton;
     }
 
     @Override
@@ -38,11 +50,12 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
             isPaused = false;
             //每3秒轮询一次
             heatPowerView.showHideButton();
-            Observable.interval(3,TimeUnit.SECONDS)
+            Observable.interval(pollingTime,TimeUnit.SECONDS)
                     .doOnNext(new Consumer<Long>() {
                         @Override
                         public void accept(Long aLong)throws Exception{
                             //TaxiApp.getAppNowTime()获得当前时间
+                            Log.d(TAG,"appNowTime" + TaxiApp.getAppNowTime());
                             heatPowerModel.requestHeatPoint(area, TaxiApp.getAppNowTime())
                                     .subscribe(new Observer<HeatPointInfo>() {
                                         @Override
@@ -66,10 +79,12 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
 
                                         @Override
                                         public void onError(Throwable e) {
-                                            Log.d(TAG,"异常");
+                                            Log.d(TAG,"异常:" + e.getMessage());
                                             e.printStackTrace();
                                             //轮询结束，清空热力图，并显示显示热力图的按钮
                                             heatPowerView.hideHeatPower();
+                                            //停止轮询
+                                            pause();
                                         }
 
                                         @Override
@@ -138,11 +153,18 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                     public void onError(Throwable e) {
                         // TODO 将改为
                         ToastUtil.showShortToastBottom("网络访问失败");
+                        heatPowerView.hideHeatPower();
                     }
 
                     @Override
                     public void onComplete() {
-
+                        //已切换状态,清空地图
+                        if (statusBar.getStatus() != StatusBar.HISTORY){
+                            heatPowerView.hideHeatPower();
+                        }
+                        if (hideButton.getText().toString().equals("显示")){
+                            heatPowerView.hideHeatPower();
+                        }
                     }
                 });
     }
@@ -177,7 +199,12 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
 
                     @Override
                     public void onComplete() {
-
+                        if (statusBar.getStatus() != StatusBar.FEATURE){
+                            heatPowerView.hideHeatPower();
+                        }
+                        if (hideButton.getText().toString().equals("显示")){
+                            heatPowerView.hideHeatPower();
+                        }
                     }
                 });
 
@@ -220,5 +247,21 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
             longitudeLaitudeList.add(wLongitudeLaitude);
         }
         return longitudeLaitudeList;
+    }
+
+    /**
+     * 设置轮询时间
+     * @param pollingTime 轮询时间
+     */
+    public static void setPollingTime(int pollingTime){
+        HeatPowerPresent.pollingTime = pollingTime;
+    }
+
+    /**
+     * 获得轮询时间
+     * @return int
+     */
+    public static int getPollingTime(){
+        return pollingTime;
     }
 }

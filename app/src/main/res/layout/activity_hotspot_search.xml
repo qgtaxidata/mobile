@@ -6,6 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout_hotspot"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@android:color/white"
+        android:visibility="gone"
+        app:srlPrimaryColor="@color/colorPrimaryDark"
+        app:srlAccentColor="@android:color/white"
+        app:srlTextRefreshing="@string/srl_header_refreshing"
+        app:srlEnableLoadMore="false">
+        <com.scwang.smartrefresh.header.FunGameHitBlockHeader
+            android:id="@+id/header"
+            app:fghTextLoading="正在加载服务器数据"
+            app:fghTextLoadingFinished=""
+            app:fghTextLoadingFailed="服务器加载数据失败"
+            app:fghTextGameOver="小游戏结束了呜呜"
+            app:fghMaskTextSizeTop="13sp"
+            app:fghMaskTextSizeBottom="13sp"
+            app:fghMaskTextTopRelease=""
+            android:layout_width="match_parent"
+            android:layout_height="100dp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="抱歉,服务器仍在努力奔跑,请耐心等候"
+                android:textSize="21sp"/>
+        </RelativeLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_hotspot_search"
         android:layout_width="match_parent"
@@ -14,13 +48,15 @@
         android:layout_marginStart="5dp"
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="5dp"
+        android:layout_below="@id/refreshLayout_hotspot"
         app:cardElevation = "10dp"
         app:cardBackgroundColor="#FFFF"
         app:cardCornerRadius="10dp"
         >
         <RelativeLayout
+            android:id="@+id/rl_intput_hotspot"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ImageButton
                 android:id="@+id/imagebutton_hotspot_search_back"
@@ -74,10 +110,12 @@
         app:cardCornerRadius="15dp"
         app:cardBackgroundColor="#FFFF"
         android:layout_marginBottom="10dp"
-        android:layout_below="@id/cv_hotspot_search">
+        android:layout_below="@id/cv_hotspot_search"
+        >
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_hotspot_search_history"
                 android:layout_width="match_parent"
@@ -86,7 +124,6 @@
                 >
             </androidx.recyclerview.widget.RecyclerView>
         </RelativeLayout>
-
     </androidx.cardview.widget.CardView>
 
 

@@ -145,8 +145,9 @@ public class HotSpotPathActivity extends BaseActivity {
                 BaseEvent baseEventBack = EventFactory.getInstance();
                 baseEventBack.type = EventBusType.HOTSPOT_CHOSE_AGAIN;
                 EventBusUtils.postSticky(baseEventBack);
-                Intent intentHotChooseAgain = new Intent(HotSpotPathActivity.this, HotSpotResearchActivity.class);
-                startActivity(intentHotChooseAgain);
+//                Intent intentHotChooseAgain = new Intent(HotSpotPathActivity.this, HotSpotResearchActivity.class);
+//                startActivity(intentHotChooseAgain);
+                finish();
             }
         });
         linearLayoutOne = layoutPlanCard.findViewById(R.id.ll_plan_one);

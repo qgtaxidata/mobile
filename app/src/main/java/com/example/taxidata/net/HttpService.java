@@ -23,10 +23,10 @@ import retrofit2.http.Query;
 
 public interface HttpService {
 
-    @POST("thermoDiagram//getAreaMap")
+    @POST("thermoDiagram/getAreaMap")
     Observable<HeatPointInfo> getHeatPoint(@Query("area")int area,@Query("time")String time);
 
-    @POST("thermoDiagram//getFutureMap")
+    @POST("thermoDiagram/getFutureMap")
     Observable<HeatPointInfo> getFeatureHeatPoint(@Query("area")int area,@Query("nowTime")String nowTime,
                                            @Query("futureTime")String futureTime,@Query("algorithm")int algorithm);
 
