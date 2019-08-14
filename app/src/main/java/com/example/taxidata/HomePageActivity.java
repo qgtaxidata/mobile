@@ -1,9 +1,7 @@
 package com.example.taxidata;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -11,24 +9,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.LatLng;
-
 import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.adapter.CustomOnclick;
+import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.common.eventbus.BaseEvent;
 import com.example.taxidata.constant.Algorithm;
-
-import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
@@ -40,7 +37,6 @@ import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
 import com.example.taxidata.ui.setup.SetUpActivity;
-
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.DropDownSelectView;
@@ -54,8 +50,10 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -132,6 +130,10 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     DropDownSelectView heatpowerAreaDsv;
     @BindView(R.id.dsv_algorithm)
     DropDownSelectView algorithmDsv;
+    @BindView(R.id.fbtn_passenger_path)
+    FloatingActionButton passengerPathFbtn;
+    @BindView(R.id.fbtn_regional_analysis)
+    FloatingActionButton regionalAnalysisFbtn;
 
     /*------------------------------------present相关-----------------------------------------------*/
 
@@ -187,6 +189,22 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         initDropDownSelectClick();
         //初始化下拉框算法列表
         initAlgorithm();
+
+        passengerPathFbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO 路线
+            }
+        });
+
+        regionalAnalysisFbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO 区域分析
+                Intent intent = new Intent(HomePageActivity.this,AreaAnalyzeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -210,7 +228,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             //此时只会执行退出热力图
             controlHeatPower();
             //处于未来状态
-            if (heatPowerStb.getStatus() == 2){
+            if (heatPowerStb.getStatus() == 2) {
                 algorithmDsv.setVisibility(View.GONE);
             }
         }
@@ -257,6 +275,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         setUpFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
         taxiIncomeFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
         visualizationFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        passengerPathFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
+        regionalAnalysisFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
     }
 
     /**
@@ -284,7 +304,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 统一初始化present
      */
     private void initPresent() {
-        heatPowerPresent = new HeatPowerPresent(heatPowerStb,showHideHeatPowerBtn);
+        heatPowerPresent = new HeatPowerPresent(heatPowerStb, showHideHeatPowerBtn);
         heatPowerPresent.attachView(this);
     }
 
@@ -362,7 +382,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             dropOutHeatPower();
             //按钮变回默认状态
             showHideHeatPowerBtn.setText("显示");
-            if (heatPowerStb.getStatus() == 2){
+            if (heatPowerStb.getStatus() == 2) {
                 algorithmDsv.setVisibility(View.GONE);
             }
             //隐藏时间选择器
@@ -413,8 +433,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 //道路质量分析
                 break;
             case R.id.fbtn_request_analysis:
-                Intent areaIntent = new Intent(HomePageActivity.this, AreaAnalyzeActivity.class);
-                startActivity(areaIntent);
                 //区域出租车需求分析
                 break;
             case R.id.fbtn_taxi_income:
@@ -550,7 +568,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                     return;
                 }
                 heatPowerPresent.showFeatureHeatPower(Area.area.get(heatpowerAreaDsv.getSlectedArea()),
-                        chooseTimeTp.getTime() + ":00",Algorithm.algorithm.get(algorithmDsv.getSlectedArea()));
+                        chooseTimeTp.getTime() + ":00", Algorithm.algorithm.get(algorithmDsv.getSlectedArea()));
                 break;
             default:
         }
@@ -616,15 +634,16 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     /**
      * 初始化算法列表
      */
-    private void initAlgorithm(){
+    private void initAlgorithm() {
         algorithmList.add(Algorithm.WANG_ALGORITHM);
         algorithmList.add(Algorithm.GU_ALGORITHM);
         algorithmList.add(Algorithm.LI_ALGORITHM);
-        algorithmDsv.setItemsData(algorithmList,3);
+        algorithmDsv.setItemsData(algorithmList, 3);
     }
 
     /**
      * 相机移动到地图上的某一地点
+     *
      * @param latLng 该地点的经纬度
      */
     private void moveToAnyWhere(LatLng latLng) {
@@ -699,13 +718,13 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                                     .save(SharedPreferencesManager.CONST_TIME_OUT, RetrofitManager.getTimeoutTime());
                             //退出时存储轮询间隔时间
                             SharedPreferencesManager.getManager()
-                                    .save(SharedPreferencesManager.CONST_POLLING,HeatPowerPresent.getPollingTime());
+                                    .save(SharedPreferencesManager.CONST_POLLING, HeatPowerPresent.getPollingTime());
                             finish();
                         }
                     })
                     .show();
         }
-        Log.d(TAG,"按下返回键");
-        return super.onKeyDown(keyCode,event);
+        Log.d(TAG, "按下返回键");
+        return super.onKeyDown(keyCode, event);
     }
 }

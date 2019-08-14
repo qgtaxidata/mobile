@@ -94,6 +94,20 @@
         >
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbtn_passenger_path"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_path"
+            app:fab_size="mini"
+            app:fab_label="路线"
+            app:fab_colorPressed="@android:color/holo_orange_light"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_showShadow="true"
+            app:fab_shadowColor="@android:color/transparent"
+            app:fab_shadowRadius="4dp"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fbtn_passenger_hot"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -136,13 +150,27 @@
             />
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fbtn_regional_analysis"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_regional_analysis"
+            app:fab_size="mini"
+            app:fab_colorPressed="@android:color/holo_orange_light"
+            app:fab_label="区域分析"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_showShadow="true"
+            app:fab_shadowColor="@android:color/transparent"
+            app:fab_shadowRadius="4dp"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fbtn_request_analysis"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:src="@mipmap/ic_request_analysis"
             app:fab_colorPressed="@android:color/holo_orange_light"
             app:fab_size="mini"
-            app:fab_label="出租车需求量分析预测"
+            app:fab_label="区域出租车需求量分析"
             app:fab_colorNormal="@android:color/transparent"
             app:fab_showShadow="true"
             app:fab_shadowColor="@android:color/transparent"
