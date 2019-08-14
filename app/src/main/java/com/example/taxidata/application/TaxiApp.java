@@ -2,10 +2,9 @@ package com.example.taxidata.application;
 
 import android.app.Application;
 import android.content.Context;
-import android.provider.ContactsContract;
-import android.util.Log;
 
 import com.example.taxidata.common.GreenDaoManager;
+import com.example.taxidata.common.SharedPreferencesManager;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
@@ -20,11 +19,18 @@ public class TaxiApp extends Application {
     /**
      * app默认时间为2017-02-06
      */
-    private static String defaultTime = "2017-02-06 10:00:00";
+    public static String DEFAULT_TIME = "2017-02-06 10:00:00";
     /**
      * 手机系统与app默认时间校准时间
      */
     private static long standardTime;
+
+    private static String defaultTime;
+
+    /**
+     * 是否第一次初始化时间
+     */
+    private boolean isFirst = true;
 
     @Override
     public void onCreate() {
@@ -92,6 +98,13 @@ public class TaxiApp extends Application {
     private void initAppTime(){
         //设置时间格式
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //第一次初始化时间,从本地或默认时间加载
+        if (isFirst){
+            //默认时间
+            defaultTime = SharedPreferencesManager.getManager()
+                    .getString(SharedPreferencesManager.CONST_NOW_APP_TIME,DEFAULT_TIME);
+            isFirst = false;
+        }
         //获取系统时间
         long systemTime = System.currentTimeMillis();
         try {

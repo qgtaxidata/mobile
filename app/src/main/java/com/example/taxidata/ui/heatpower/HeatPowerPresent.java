@@ -7,6 +7,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HeatPointInfo;
+import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.StatusBar;
 
@@ -24,15 +25,17 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     private HeatPowerContract.HeatPowerModel heatPowerModel;
     private HeatPowerContract.HeatPowerView heatPowerView;
     private static final String TAG = "HeatPowerPresent";
-    private static int time = 2;
+    private static final int DEFAULT_POLLING_TIME = 3;
+    /**
+     * 轮询间隔时间
+     */
+    private static int pollingTime = SharedPreferencesManager.getManager().getInt(SharedPreferencesManager.CONST_POLLING,DEFAULT_POLLING_TIME);
     private StatusBar statusBar;
     private Button hideButton;
     /**
      * 是否暂停轮询，默认为false，即不暂停轮询
      */
     private boolean isPaused = false;
-
-    private boolean isStop = false;
 
     public HeatPowerPresent(StatusBar statusBar,Button hideButton){
         heatPowerModel = new HeatPowerModel();
@@ -47,7 +50,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
             isPaused = false;
             //每3秒轮询一次
             heatPowerView.showHideButton();
-            Observable.interval(time,TimeUnit.SECONDS)
+            Observable.interval(pollingTime,TimeUnit.SECONDS)
                     .doOnNext(new Consumer<Long>() {
                         @Override
                         public void accept(Long aLong)throws Exception{
@@ -250,7 +253,15 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
      * 设置轮询时间
      * @param pollingTime 轮询时间
      */
-    public static void setTime(int pollingTime){
-        time = pollingTime;
+    public static void setPollingTime(int pollingTime){
+        HeatPowerPresent.pollingTime = pollingTime;
+    }
+
+    /**
+     * 获得轮询时间
+     * @return int
+     */
+    public static int getPollingTime(){
+        return pollingTime;
     }
 }

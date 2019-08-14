@@ -3,12 +3,11 @@ package com.example.taxidata.net;
 
 import android.util.Log;
 
+import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.constant.Api;
 
 import org.greenrobot.greendao.annotation.NotNull;
 
-import java.io.IOException;
-import java.io.PipedReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,10 +16,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -32,10 +28,11 @@ public class RetrofitManager {
     private static RetrofitManager retrofitManager;
     private Retrofit retrofit;
     private HttpService service;
+    public static int DEFAULT_TIME_OUT = 8;
     /**
-     * 超时时间
+     * 超时时间，默认为8秒
      */
-    private static int timeoutTime = 8;
+    private static int timeoutTime = SharedPreferencesManager.getManager().getInt(SharedPreferencesManager.CONST_TIME_OUT,DEFAULT_TIME_OUT);
     /**
      * 服务器ip地址
      */
@@ -105,5 +102,9 @@ public class RetrofitManager {
         baseUrl = url;
         //重新生成service
         retrofitManager = new RetrofitManager();
+    }
+
+    public static int getTimeoutTime(){
+        return timeoutTime;
     }
 }

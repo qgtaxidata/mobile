@@ -62,7 +62,7 @@ public class SetUpActivity extends AppCompatActivity {
     /**
      * 轮询最小时间
      */
-    private static final int CONST_MIN_POLLING = 2;
+    private static final int CONST_MIN_POLLING = 3;
 
     /**
      * 轮询间隔最大时间
@@ -192,10 +192,23 @@ public class SetUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_up);
         ButterKnife.bind(this);
+        calendarTv.setText(TaxiApp.getAppNowChineseTime());
+        if (RetrofitManager.getTimeoutTime() < 10){
+            timeoutTv.setText("0" + RetrofitManager.getTimeoutTime() + "秒");
+        }else {
+            timeoutTv.setText(RetrofitManager.getTimeoutTime() + "秒");
+        }
+        if (HeatPowerPresent.getPollingTime() < 10){
+            pollingTv.setText("0" + HeatPowerPresent.getPollingTime() + "秒");
+        }else {
+            pollingTv.setText(HeatPowerPresent.getPollingTime() + "秒");
+        }
         //初始化数据源
         initDataList();
         //初始化滑动组件
         initRecyclerview();
+
+        // TODO url的本地存储
     }
 
     /**
@@ -376,7 +389,7 @@ public class SetUpActivity extends AppCompatActivity {
         //重新设置app当前时间
         TaxiApp.getTaxiApp().setDefaultTime(newAppTime);
         //设置热力图轮询间隔时间
-        HeatPowerPresent.setTime(pollingTime);
+        HeatPowerPresent.setPollingTime(pollingTime);
         String url = "http://" + webServiceEdt.getText().toString() + "/";
         //重新生成网络类
         RetrofitManager.setTimeoutAndUrl(timeout,url);

@@ -6,6 +6,7 @@ import android.graphics.Color;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -22,6 +23,8 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.TileOverlayOptions;
 import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.adapter.CustomOnclick;
+import com.example.taxidata.application.TaxiApp;
+import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.common.eventbus.BaseEvent;
 import com.example.taxidata.constant.Algorithm;
 
@@ -29,6 +32,7 @@ import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
+import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.ui.TaxiDriverIncome.IncomeActivity;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.areaanalyze.AreaAnalyzeActivity;
@@ -45,6 +49,9 @@ import com.example.taxidata.widget.StatusBar;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.orhanobut.logger.Logger;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
@@ -666,5 +673,39 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 happenHeatPower();
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //退出程序时,显示对话框
+        if ((keyCode == KeyEvent.KEYCODE_BACK) || (keyCode == KeyEvent.KEYCODE_HOME)) {
+            new QMUIDialog.MessageDialogBuilder(this)
+                    .setTitle("标题")
+                    .setMessage("确认要退出吗？")
+                    .addAction("取消", new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .addAction(0, "确认", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            //退出时存储时间
+                            SharedPreferencesManager.getManager()
+                                    .save(SharedPreferencesManager.CONST_NOW_APP_TIME, TaxiApp.getAppNowTime());
+                            //退出时存储超时时间
+                            SharedPreferencesManager.getManager()
+                                    .save(SharedPreferencesManager.CONST_TIME_OUT, RetrofitManager.getTimeoutTime());
+                            //退出时存储轮询间隔时间
+                            SharedPreferencesManager.getManager()
+                                    .save(SharedPreferencesManager.CONST_POLLING,HeatPowerPresent.getPollingTime());
+                            finish();
+                        }
+                    })
+                    .show();
+        }
+        Log.d(TAG,"按下返回键");
+        return super.onKeyDown(keyCode,event);
     }
 }
