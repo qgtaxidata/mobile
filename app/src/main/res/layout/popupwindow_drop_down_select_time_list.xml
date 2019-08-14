@@ -6,7 +6,7 @@
     <ListView
         android:id="@+id/drop_down_select_time_lv"
         android:divider="@color/search_out_bg"
-        android:layout_width="180dp"
+        android:layout_width="165dp"
         android:layout_height="360dp"
         android:background="@drawable/shape_blue_frame">
 
