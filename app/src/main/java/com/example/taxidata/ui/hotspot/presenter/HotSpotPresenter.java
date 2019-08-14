@@ -95,7 +95,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                         public void onError(Throwable e) {
                             //假数据--度过服务器关掉的时光
                             hotSpotRecommandInfoList.clear();
-                            hotSpotRecommandInfoList.add(new HotSpotCallBackInfo.DataBean(113.23,23.16,3));
+                            hotSpotRecommandInfoList.add(new HotSpotCallBackInfo.DataBean(108.940174,34.341568,6));
                             mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
                             e.printStackTrace();
                             ToastUtil.showShortToastCenter("抱歉，网络似乎出现了异常 :(");
@@ -152,30 +152,34 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     public void convertToAddressName(HotSpotCallBackInfo.DataBean dataBean, GeocodeSearch geocodeSearch) {
         latLng = new LatLonPoint(dataBean.getLatitude(),dataBean.getLongitude());
         callbackHotSpotInfo = dataBean;
-
         RegeocodeQuery regeocodeQuery = new RegeocodeQuery(latLng ,100 ,GeocodeSearch.AMAP);
         geocodeSearch.getFromLocationAsyn(regeocodeQuery);
+        mHotSpotView.hotSpotChosenSuccess();
     }
 
     /**
-     * 回调函数：将坐标解析成地址名后，让展示页可以显示出来
+     * 回调函数：将坐标解析成地址名后，让路径展示页可以显示出来
      * @param regeocodeResult
      * @param i
      */
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-        String addressName = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
-        StatusManager.hotSpotChosen = addressName;
-        BaseEvent baseEvent = EventFactory.getInstance();
-        baseEvent.type = EventBusType.HOTSPOT_CHOSEN;
-        HotSpotInfo hotSpotInfo = new HotSpotInfo();
-        hotSpotInfo.setAddress(addressName);
-        hotSpotInfo.setLatitude(callbackHotSpotInfo.getLatitude());
-        hotSpotInfo.setLongitude(callbackHotSpotInfo.getLongitude());
-        hotSpotInfo.setHeat(callbackHotSpotInfo.getHeat());
-        baseEvent.object = hotSpotInfo;
-        EventBusUtils.postSticky(baseEvent);
-        mHotSpotView.hotSpotChosenSuccess();
+        Log.e(TAG, "onRegeocodeSearched: 正在将坐标转换成中文地址" );
+        if(regeocodeResult.getRegeocodeAddress().getRoads().size() > 0) {
+            String addressName = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
+            StatusManager.hotSpotChosen = addressName;
+            BaseEvent baseEvent = EventFactory.getInstance();
+            baseEvent.type = EventBusType.HOTSPOT_CHOSEN;
+            HotSpotInfo hotSpotInfo = new HotSpotInfo();
+            hotSpotInfo.setAddress(addressName);
+            hotSpotInfo.setLatitude(callbackHotSpotInfo.getLatitude());
+            hotSpotInfo.setLongitude(callbackHotSpotInfo.getLongitude());
+            hotSpotInfo.setHeat(callbackHotSpotInfo.getHeat());
+            baseEvent.object = hotSpotInfo;
+            EventBusUtils.postSticky(baseEvent);
+        } else {
+            ToastUtil.showLongToastBottom("无法识别此热点坐标信息:( ，请重新选择热点");
+        }
     }
 
     /**
@@ -190,7 +194,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
             LatLonPoint point = geocodeAddress.getLatLonPoint();
             double inputLatitude = point.getLatitude();
             double inputLongitude = point.getLongitude();
-            Log.e(TAG, "onGeocodeSearched: "+ "longtitude : " + inputLongitude + "   latitude:  " +inputLatitude );
             getHotSpotData(inputLongitude,inputLatitude ,"");
         } else {
             ToastUtil.showShortToastBottom("您输入的地址有误,系统无法识别,请重新输入");
@@ -205,7 +208,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     @Override
     public void  getHotSpotListAgain() {
         if(hotSpotRecommandInfoList != null && hotSpotRecommandInfoList.size() > 0) {
-            Logger.d("再次展示热点列表！");
             mHotSpotView.showHotSpot( hotSpotRecommandInfoList);
         }
     }

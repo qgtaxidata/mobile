@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.Fade;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +37,7 @@ import com.example.taxidata.ui.hotspot.adapter.RecommandHotSpotAdapter;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
 import com.example.taxidata.util.EventBusUtils;
+import com.example.taxidata.widget.EmptyHotSpotHistoryView;
 import com.example.taxidata.widget.EmptyHotSpotView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.orhanobut.logger.Logger;
@@ -97,6 +99,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         if (isRegisterEventBus()) {
             EventBusUtils.register(this);
         }
+
     }
     @Override
     protected void onStart() {
@@ -143,7 +146,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
                 } else {
                     //当前输入框没有内容,则显示历史消息记录
                     showHistorySearchList(mPresenter.getHistorySearchList());
-                    Logger.d("输入框被清空");
+
                 }
             }
         });
@@ -154,16 +157,17 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         historyAdapter = new HistoryHotspotSearchAdapter(R.layout.item_hotspot_history, historyList);
+        historyAdapter.setEmptyView(new EmptyHotSpotHistoryView(this ,null));
         hintAdapter = new HintHotSpotAdapter(R.layout.item_hotspot_hint, hintList);
         recommandAdapter = new RecommandHotSpotAdapter(R.layout.item_hotspot_recommand, hotSpotList);
-        recommandAdapter.setEmptyView(new EmptyHotSpotView(getApplicationContext(), null));
+        recommandAdapter.setEmptyView(new EmptyHotSpotView(this, null));
         rvSearch.setLayoutManager(layoutManager);
         rvSearch.setAdapter(historyAdapter);
         //初始化列表拖拽和滑动删除
         ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(historyAdapter);
         itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        itemTouchHelper.attachToRecyclerView(rvSearch);
         historyAdapter.enableSwipeItem();
-
         historyAdapter.openLoadAnimation();
         hintAdapter.openLoadAnimation();
         recommandAdapter.openLoadAnimation();
@@ -172,6 +176,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         historyAdapter.setOnItemSwipeListener(new OnItemSwipeListener() {
             @Override
             public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
+                mPresenter.removeHistory(historyAdapter.getItem(pos));
             }
 
             @Override
@@ -180,7 +185,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
             @Override
             public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
-                mPresenter.removeHistory(historyAdapter.getItem(pos));
+
             }
 
             @Override
@@ -292,6 +297,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
     @Override
     public void hotSpotChosenSuccess() {
+
         Intent intent = new Intent(this, HotSpotPathActivity.class);
         startActivity(intent);
     }
@@ -333,5 +339,6 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         refreshLayoutHotspot.setEnableRefresh(false);
         refreshLayoutHotspot.setVisibility(View.GONE);
     }
+
 
 }

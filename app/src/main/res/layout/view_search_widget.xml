@@ -50,7 +50,7 @@
                     android:background="@null"
                     android:layout_marginStart="10dp"
                     android:textSize="20sp"
-                    android:text="请输入起点"/>
+                    android:text="点击此处设置您的起点"/>
             </LinearLayout>
 
             <View
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:textSize="20sp"
-                    android:hint="请输入终点"/>
+                    android:hint="点击此处设置您的终点"/>
             </LinearLayout>
 
         </LinearLayout>

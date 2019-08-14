@@ -1,10 +1,15 @@
 package com.example.taxidata;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
 
 import android.os.Bundle;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,6 +21,7 @@ import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 
+import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.LatLng;
@@ -186,6 +192,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         initDropDownSelectClick();
         //初始化下拉框算法列表
         initAlgorithm();
+
     }
 
     @Override
@@ -240,6 +247,9 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         moveToAnyWhere(latLng);
         //监听相机位置变化,以获得屏幕中心经纬度
         homepageAMap.setOnCameraChangeListener(this);
+        //取消掉右下角的放大缩小+ -
+        UiSettings uiSettings = homepageAMap.getUiSettings();
+        uiSettings.setZoomControlsEnabled(false);
     }
 
     /**
@@ -401,8 +411,11 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         switch (view.getId()) {
             case R.id.fbtn_passenger_hot:
                 //载客热点推荐
-                Intent hotSpotIntent = new Intent(HomePageActivity.this, HotSpotResearchActivity.class);
-                startActivity(hotSpotIntent);
+//                Intent hotSpotIntent = new Intent(HomePageActivity.this, HotSpotResearchActivity.class);
+//                startActivity(hotSpotIntent);
+                ActivityOptions compat = ActivityOptions.makeSceneTransitionAnimation(this);
+                startActivity(new Intent(this, HotSpotResearchActivity.class), compat.toBundle());
+                overridePendingTransition(R.transition.transition_slide ,R.transition.transition_fade);
                 break;
             case R.id.fbtn_heat_power:
                 //热力图模式
@@ -706,4 +719,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         Log.d(TAG,"按下返回键");
         return super.onKeyDown(keyCode,event);
     }
+
+
 }
