@@ -28,27 +28,23 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
 
     @Override
-    public void getTaxiInfo(Context context,double longitude, double latitude, String time) {
+    public void getTaxiInfo(Context context,int area, String time) {
         Log.d("wxP1", time);
         if(model != null){
-            model.getTaxiInfo(longitude, latitude, time).subscribe(new Observer<TaxiInfo>() {
+            model.getTaxiInfo(area, time).subscribe(new Observer<TaxiInfo>() {
                 @Override
                 public void onSubscribe(Disposable d) {
                 }
-
                 @Override
                 public void onNext(TaxiInfo taxiInfo) {
                     //初始化dialog并弹出
-                    Log.d("wxP2", time);
                     final ChooseTaxiDialog chooseTaxiDialog = new ChooseTaxiDialog(context, R.style.dialog,taxiInfo.getData());
                     chooseTaxiDialog.show();
                 }
-
                 @Override
                 public void onError(Throwable e) {
                     e.printStackTrace();
                 }
-
                 @Override
                 public void onComplete() {
 
@@ -77,11 +73,9 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.d("wxP5", time);
                     e.printStackTrace();
                     Logger.d(e.getMessage());
                     StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "网络连接超时！请重试。");
-
                 }
 
                 @Override

@@ -22,12 +22,12 @@ public interface TaxiPathContract {
     }
 
     interface TaxiPathModel extends BaseModel{
-        Observable<TaxiInfo> getTaxiInfo(double longitude, double latitude, String time);
+        Observable<TaxiInfo> getTaxiInfo(int area, String time);
         Observable<TaxiPathInfo> getTaxiPathInfo(String time, String licenseplateno);
     }
 
     interface TaxiPathPresent extends BasePresent<TaxiPathView>{
-        void getTaxiInfo(Context context, double longitude, double latitude, String time);
+        void getTaxiInfo(Context context, int area, String time);
         void getTaxiPathInfo(Context context,String time, String licenseplateno);
     }
 }

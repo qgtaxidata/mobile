@@ -2,10 +2,9 @@ package com.example.taxidata.application;
 
 import android.app.Application;
 import android.content.Context;
-import android.provider.ContactsContract;
-import android.util.Log;
 
 import com.example.taxidata.common.GreenDaoManager;
+import com.example.taxidata.common.SharedPreferencesManager;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
@@ -15,21 +14,31 @@ import java.util.Date;
 public class TaxiApp extends Application {
 
     private static Context context;
+    private static TaxiApp taxiApp;
     private static final String TAG = "TaxiApp";
     /**
      * app默认时间为2017-02-06
      */
-    private static final String defaultTime = "2017-02-06 10:00:00";
+    public static String DEFAULT_TIME = "2017-02-06 10:00:00";
     /**
      * 手机系统与app默认时间校准时间
      */
     private static long standardTime;
+
+    private static String defaultTime;
+
+    /**
+     * 是否第一次初始化时间
+     */
+    private boolean isFirst = true;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         context = getApplicationContext();
+        //初始化TaxiApp
+        taxiApp = this;
         //Logger框架初始化
         Logger.addLogAdapter(new AndroidLogAdapter());
         initGreenDao();
@@ -89,6 +98,13 @@ public class TaxiApp extends Application {
     private void initAppTime(){
         //设置时间格式
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //第一次初始化时间,从本地或默认时间加载
+        if (isFirst){
+            //默认时间
+            defaultTime = SharedPreferencesManager.getManager()
+                    .getString(SharedPreferencesManager.CONST_NOW_APP_TIME,DEFAULT_TIME);
+            isFirst = false;
+        }
         //获取系统时间
         long systemTime = System.currentTimeMillis();
         try {
@@ -99,5 +115,23 @@ public class TaxiApp extends Application {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 设置app当前时间
+     * @param defaultTime  设置时间
+     */
+    public void setDefaultTime(String defaultTime) {
+        TaxiApp.defaultTime = defaultTime;
+        //重新初始化当前时间
+        initAppTime();
+    }
+
+    /**
+     * 获取taxiApp实例
+     * @return TaxiApp
+     */
+    public static TaxiApp getTaxiApp(){
+        return taxiApp;
     }
 }
