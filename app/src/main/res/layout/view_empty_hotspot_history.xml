@@ -5,20 +5,20 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/iv_empty_hotspot_recommand"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:id="@+id/iv_empty_hotspot_history"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_marginBottom="25dp"
-        android:layout_above="@id/tv_empty_hotspot_recommand"
-        android:src="@drawable/ui_hotspot_empty_sad"
+        android:layout_above="@id/tv_empty_hotspot_history"
+        android:src="@drawable/ic_hotspot_smile_emptyview"
         android:layout_centerHorizontal="true"
         />
     <TextView
-        android:id="@+id/tv_empty_hotspot_recommand"
+        android:id="@+id/tv_empty_hotspot_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="抱歉:( 在当前位置无载客热点"
+        android:text="暂无历史记录\n期待您的搜索"
         android:textSize="25sp"
         />
 

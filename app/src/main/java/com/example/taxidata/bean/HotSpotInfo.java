@@ -1,14 +1,19 @@
 package com.example.taxidata.bean;
 
 /**
+ * 热点信息实体类
+ *
  * @author: ODM
  * @date: 2019/8/11
  */
 public class HotSpotInfo {
-
+    //经度
     private double longitude;
+    //纬度
     private double latitude;
+    //热度
     private int heat;
+    //地址名
     private String address;
 
     public HotSpotInfo() {
