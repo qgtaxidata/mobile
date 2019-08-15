@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -49,6 +50,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import anylife.scrolltextview.ScrollTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -78,8 +80,8 @@ public class HotSpotPathActivity extends BaseActivity {
     List<TextView> textViewListThree;
     AMap pathMap;
     ImageView searchBack;
-    TextView searchOrigin;
-    TextView searchEndPoint;
+    ScrollTextView tvSearchOrigin;
+    ScrollTextView tvSearchEndPoint;
     UiSettings uiSettings;
     HotSpotRouteInfo routeInfo;
     List<LatLng> latLngs ;
@@ -128,9 +130,9 @@ public class HotSpotPathActivity extends BaseActivity {
     }
 
     public void initViews(){
-        searchEndPoint = layoutOriginHotSpot.findViewById(R.id.search_end_point);
-        searchOrigin = layoutOriginHotSpot.findViewById(R.id.search_origin);
-        searchOrigin.setOnClickListener(new View.OnClickListener() {
+        tvSearchEndPoint = layoutOriginHotSpot.findViewById(R.id.search_end_point);
+        tvSearchOrigin = layoutOriginHotSpot.findViewById(R.id.search_origin);
+        tvSearchOrigin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //选择输入起点，跳转输入界面
@@ -138,6 +140,7 @@ public class HotSpotPathActivity extends BaseActivity {
                 startActivity(intentHotSearch);
             }
         });
+
         searchBack = layoutOriginHotSpot.findViewById(R.id.search_back);
         searchBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,8 +280,8 @@ public class HotSpotPathActivity extends BaseActivity {
             EventBusUtils.postSticky(baseEventOrigin);
             showHotSpot(hotSpotInfo.getLongitude() ,hotSpotInfo.getLatitude());
             //如果热点文本框Visible则赋值用户选定的热点信息
-            if (searchEndPoint.getVisibility() == View.VISIBLE) {
-                searchEndPoint.setText(StatusManager.hotSpotChosen);
+            if (tvSearchEndPoint.getVisibility() == View.VISIBLE) {
+                tvSearchEndPoint.setText(StatusManager.hotSpotChosen);
             }
         }
 
@@ -347,8 +350,8 @@ public class HotSpotPathActivity extends BaseActivity {
     }
 
     public void  setOriginHotSpotText(String origin ,String hotspot) {
-        searchOrigin.setText(origin);
-        searchEndPoint.setText(hotspot);
+        tvSearchOrigin.setText(origin);
+        tvSearchEndPoint.setText(hotspot);
     }
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:customAttr="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="120dp"
@@ -43,14 +44,20 @@
                     android:layout_gravity="center"
                     android:background="@drawable/start_point_bg"/>
 
-                <TextView
+                <anylife.scrolltextview.ScrollTextView
                     android:id="@+id/search_origin"
-                    android:layout_width="220dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@null"
                     android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:text="点击此处设置您的起点"/>
+                    android:scrollbars="horizontal"
+                    android:singleLine="true"
+                    customAttr:clickEnable="true"
+                    customAttr:isHorizontal="true"
+                    customAttr:speed="1"
+                    customAttr:text="点击此处设置您的起点"
+                    customAttr:text_size="20sp"
+                    customAttr:text_color="@color/black_color"
+                    />
             </LinearLayout>
 
             <View
@@ -74,13 +81,19 @@
                     android:layout_gravity="center"
                     android:background="@drawable/end_point_bg"/>
 
-                <TextView
+                <anylife.scrolltextview.ScrollTextView
                     android:id="@+id/search_end_point"
-                    android:layout_width="220dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:hint="点击此处设置您的终点"/>
+                    android:singleLine="true"
+                    customAttr:clickEnable="true"
+                    customAttr:isHorizontal="true"
+                    customAttr:speed="1"
+                    customAttr:text="点击此处设置您的终点"
+                    customAttr:text_size="20sp"
+                    customAttr:text_color="@color/black_color"
+                    />
             </LinearLayout>
 
         </LinearLayout>
