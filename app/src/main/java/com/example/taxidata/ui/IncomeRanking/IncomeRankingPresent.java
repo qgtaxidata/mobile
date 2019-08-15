@@ -20,23 +20,22 @@ public class IncomeRankingPresent implements IncomeRankingContract.IncomeRanking
 
     @Override
     public void getIncomeRankingInfo(Context context, int area, String date) {
-        Log.d("wxp",date);
         model.getIncomeRankingInfo(area, date).subscribe(new Observer<IncomeRankingInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
-                Log.d("wx",date);
+                Log.d("wx","subscribe");
             }
 
             @Override
             public void onNext(IncomeRankingInfo incomeRankingInfo) {
-                Log.d("wxpn",date);
+                Log.d("wx","next");
                 Logger.d(incomeRankingInfo.getData());
                 view.showIncomeList(incomeRankingInfo.getData());
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.d("wxpe",date);
+                Log.d("wx","error");
                 e.printStackTrace();
                 Logger.d(e.getMessage());
             }

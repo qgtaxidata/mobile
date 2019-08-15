@@ -49,7 +49,7 @@ public interface HttpService {
     @POST("rank/getRank")
     Observable<IncomeRankingInfo> getIncomeRankingInfo(@Query("area") int area, @Query("date") String date);
 
-    @GET("")
+    @GET("rank/getSituation")
     Observable<DriverConditionInfo> getDriverConditionInfo(@Query("area") int area, @Query("date") String date, @Query("driverID") String driverID);
 
 

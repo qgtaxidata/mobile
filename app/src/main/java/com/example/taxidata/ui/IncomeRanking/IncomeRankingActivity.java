@@ -56,8 +56,8 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
     ArrayList<String> timeList = new ArrayList<>();
     ArrayList<IncomeRankingInfo.DataBean> incomeList= new ArrayList<IncomeRankingInfo.DataBean>();
     private IncomeAdapter adapter;
-    private int areaId;
-    private String date;
+    private int areaId = 5;
+    private String date = "2017-02-03";
 
     private IncomeRankingContract.IncomeRankingPresent present;
 
@@ -96,6 +96,7 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
             @Override
             public void onItemClick(int position) {
                 String driverID = incomeList.get(position).getDriverID();
+                Log.d("wxv1",driverID+"");
                 int rank = incomeList.get(position).getRank();
                 Log.d("wxv1",rank+"");
                 double income = incomeList.get(position).getIncome();
@@ -154,7 +155,9 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
     //展示司机收入排行榜列表
     @Override
     public void showIncomeList(List<IncomeRankingInfo.DataBean> list) {
+        incomeList.clear();
         incomeList.addAll(list);
+        Log.d("init",incomeList.get(10).getDriverID()+"");
         incomeRankingRecycleView.setAdapter(adapter);
     }
 
@@ -164,7 +167,7 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
         incomeRankingRecycleView.setLayoutManager(layoutManager);
         adapter = new IncomeAdapter(incomeList);
         incomeRankingRecycleView.setAdapter(adapter);
-        present.getIncomeRankingInfo(IncomeRankingActivity.this, 5, "2017-02-03");
+        present.getIncomeRankingInfo(IncomeRankingActivity.this, areaId, date);
     }
 
 }

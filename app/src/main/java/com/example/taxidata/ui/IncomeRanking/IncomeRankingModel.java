@@ -3,17 +3,11 @@ package com.example.taxidata.ui.IncomeRanking;
 import android.content.Context;
 
 import com.example.taxidata.bean.DriverConditionInfo;
-import com.example.taxidata.bean.GetDriverConditionInfo;
-import com.example.taxidata.bean.GetIncomeRankingInfo;
 import com.example.taxidata.bean.IncomeRankingInfo;
 import com.example.taxidata.net.RetrofitManager;
-import com.example.taxidata.util.GsonUtil;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 public class IncomeRankingModel implements IncomeRankingContract.IncomeRankingModel {
     @Override
