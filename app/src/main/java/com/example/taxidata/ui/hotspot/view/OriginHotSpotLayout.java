@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.taxidata.R;
@@ -21,10 +22,6 @@ public class OriginHotSpotLayout extends LinearLayout {
 
     @BindView(R.id.search_back)
     ImageView searchBack;
-    @BindView(R.id.search_origin)
-    TextView searchOrigin;
-    @BindView(R.id.ll_hotspot_origin)
-    LinearLayout llOrigin;
     @BindView(R.id.search_end_point)
     TextView searchEndPoint;
     @BindView(R.id.search_switch_start_end)

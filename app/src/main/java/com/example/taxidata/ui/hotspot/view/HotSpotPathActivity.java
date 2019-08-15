@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +42,7 @@ import com.example.taxidata.common.eventbus.EventFactory;
 import com.example.taxidata.constant.EventBusType;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.ToastUtil;
+import com.example.taxidata.widget.MarqueeTextView;
 import com.example.taxidata.widget.PlanInfoCard;
 import com.orhanobut.logger.Logger;
 
@@ -50,7 +52,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import anylife.scrolltextview.ScrollTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -66,7 +67,7 @@ public class HotSpotPathActivity extends BaseActivity {
     View linearLayoutOne;
     View linearLayoutTwo;
     View linearLayoutThree;
-    LinearLayout layoutOrigin;
+    RelativeLayout layoutOrigin;
     TextView tvPlanOne;
     TextView tvPlanTwo;
     TextView tvPlanThree;
@@ -81,9 +82,8 @@ public class HotSpotPathActivity extends BaseActivity {
     List<TextView> textViewListThree;
     AMap pathMap;
     ImageView searchBack;
-    ScrollTextView tvSearchOrigin;
-    ScrollTextView tvSearchEndPoint;
-    TextView tvSetOrigin;
+    MarqueeTextView tvSearchEndPoint;
+    MarqueeTextView tvSetOrigin;
     UiSettings uiSettings;
     HotSpotRouteInfo routeInfo;
     List<LatLng> latLngs ;
@@ -133,11 +133,8 @@ public class HotSpotPathActivity extends BaseActivity {
 
     public void initViews(){
         tvSearchEndPoint = layoutOriginHotSpot.findViewById(R.id.search_end_point);
-        tvSearchOrigin = layoutOriginHotSpot.findViewById(R.id.search_origin);
         layoutOrigin = layoutOriginHotSpot.findViewById(R.id.ll_hotspot_origin);
         tvSetOrigin = layoutOriginHotSpot.findViewById(R.id.tv_hotspot_set_origin);
-        tvSetOrigin.setVisibility(View.VISIBLE);
-        tvSetOrigin.setVisibility(View.GONE);
         tvSetOrigin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -286,8 +283,6 @@ public class HotSpotPathActivity extends BaseActivity {
         if (baseEvent.type.equals(EventBusType.HOTSPOT_CHOSEN)) {
             Log.e(TAG,"接收事件 热点已经选择，显示状态框");
             layoutPlanCard.setVisibility(View.GONE);
-            tvSetOrigin.setVisibility(View.VISIBLE);
-            tvSearchOrigin.setVisibility(View.GONE);
             layoutOriginHotSpot.setVisibility(View.VISIBLE);
             HotSpotInfo hotSpotInfo = (HotSpotInfo) baseEvent.object;
             //将选择好的热点坐标发送给 起点选择Activity
@@ -307,8 +302,6 @@ public class HotSpotPathActivity extends BaseActivity {
             routeInfo = (HotSpotRouteInfo) baseEvent.object;
             //将 方案卡片 显示出来
             layoutPlanCard .setVisibility(View.VISIBLE);
-            tvSearchOrigin.setVisibility(View.VISIBLE);
-            tvSetOrigin.setVisibility(View.GONE);
             initPlanCard(routeInfo);
             setOriginHotSpotText(StatusManager.originChosen ,StatusManager.hotSpotChosen);
             //默认选择第一个方案，并画出来
@@ -369,7 +362,7 @@ public class HotSpotPathActivity extends BaseActivity {
     }
 
     public void  setOriginHotSpotText(String origin ,String hotspot) {
-        tvSearchOrigin.setText(origin);
+        tvSetOrigin.setText(origin);
         tvSearchEndPoint.setText(hotspot);
     }
 
