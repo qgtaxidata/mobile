@@ -66,6 +66,7 @@ public class HotSpotPathActivity extends BaseActivity {
     View linearLayoutOne;
     View linearLayoutTwo;
     View linearLayoutThree;
+    LinearLayout layoutOrigin;
     TextView tvPlanOne;
     TextView tvPlanTwo;
     TextView tvPlanThree;
@@ -82,6 +83,7 @@ public class HotSpotPathActivity extends BaseActivity {
     ImageView searchBack;
     ScrollTextView tvSearchOrigin;
     ScrollTextView tvSearchEndPoint;
+    TextView tvSetOrigin;
     UiSettings uiSettings;
     HotSpotRouteInfo routeInfo;
     List<LatLng> latLngs ;
@@ -132,15 +134,28 @@ public class HotSpotPathActivity extends BaseActivity {
     public void initViews(){
         tvSearchEndPoint = layoutOriginHotSpot.findViewById(R.id.search_end_point);
         tvSearchOrigin = layoutOriginHotSpot.findViewById(R.id.search_origin);
-        tvSearchOrigin.setOnClickListener(new View.OnClickListener() {
+        layoutOrigin = layoutOriginHotSpot.findViewById(R.id.ll_hotspot_origin);
+        tvSetOrigin = layoutOriginHotSpot.findViewById(R.id.tv_hotspot_set_origin);
+        tvSetOrigin.setVisibility(View.VISIBLE);
+        tvSetOrigin.setVisibility(View.GONE);
+        tvSetOrigin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //选择输入起点，跳转输入界面
+                Logger.d("跳转页面！");
                 Intent intentHotSearch = new Intent(HotSpotPathActivity.this, OriginHotSpotActivity.class);
                 startActivity(intentHotSearch);
             }
         });
-
+        layoutOrigin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //选择输入起点，跳转输入界面
+                Logger.d("跳转页面！");
+                Intent intentHotSearch = new Intent(HotSpotPathActivity.this, OriginHotSpotActivity.class);
+                startActivity(intentHotSearch);
+            }
+        });
         searchBack = layoutOriginHotSpot.findViewById(R.id.search_back);
         searchBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,6 +286,8 @@ public class HotSpotPathActivity extends BaseActivity {
         if (baseEvent.type.equals(EventBusType.HOTSPOT_CHOSEN)) {
             Log.e(TAG,"接收事件 热点已经选择，显示状态框");
             layoutPlanCard.setVisibility(View.GONE);
+            tvSetOrigin.setVisibility(View.VISIBLE);
+            tvSearchOrigin.setVisibility(View.GONE);
             layoutOriginHotSpot.setVisibility(View.VISIBLE);
             HotSpotInfo hotSpotInfo = (HotSpotInfo) baseEvent.object;
             //将选择好的热点坐标发送给 起点选择Activity
@@ -290,6 +307,8 @@ public class HotSpotPathActivity extends BaseActivity {
             routeInfo = (HotSpotRouteInfo) baseEvent.object;
             //将 方案卡片 显示出来
             layoutPlanCard .setVisibility(View.VISIBLE);
+            tvSearchOrigin.setVisibility(View.VISIBLE);
+            tvSetOrigin.setVisibility(View.GONE);
             initPlanCard(routeInfo);
             setOriginHotSpotText(StatusManager.originChosen ,StatusManager.hotSpotChosen);
             //默认选择第一个方案，并画出来

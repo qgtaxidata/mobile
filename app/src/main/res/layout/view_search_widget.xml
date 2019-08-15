@@ -32,10 +32,11 @@
             android:layout_gravity="center">
 
             <LinearLayout
-                android:id= "@+id/ll_origin"
+                android:id= "@+id/ll_hotspot_origin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:descendantFocusability="blocksDescendants"
                 android:layout_gravity="center_vertical">
 
                 <View
@@ -46,18 +47,29 @@
 
                 <anylife.scrolltextview.ScrollTextView
                     android:id="@+id/search_origin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:scrollbars="horizontal"
                     android:singleLine="true"
-                    customAttr:clickEnable="true"
+                    customAttr:clickEnable="false"
                     customAttr:isHorizontal="true"
                     customAttr:speed="1"
-                    customAttr:text="点击此处设置您的起点"
+                    customAttr:text="您的起点"
                     customAttr:text_size="20sp"
                     customAttr:text_color="@color/black_color"
+                    android:visibility="gone"
                     />
+                <TextView
+                    android:id="@+id/tv_hotspot_set_origin"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:scrollbars="horizontal"
+                    android:singleLine="true"
+                    android:text="点击此处设置您的起点"
+                    android:textSize="19sp"
+                    android:visibility="visible"/>
             </LinearLayout>
 
             <View
@@ -70,6 +82,7 @@
                 android:background="@drawable/widget_divide_gray"/>
 
             <LinearLayout
+                android:id="@+id/ll_hotspot_hotspot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -83,15 +96,15 @@
 
                 <anylife.scrolltextview.ScrollTextView
                     android:id="@+id/search_end_point"
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:singleLine="true"
-                    customAttr:clickEnable="true"
+                    customAttr:clickEnable="false"
                     customAttr:isHorizontal="true"
-                    customAttr:speed="1"
-                    customAttr:text="点击此处设置您的终点"
-                    customAttr:text_size="20sp"
+                    customAttr:speed="2"
+                    customAttr:text="您的目的地"
+                    customAttr:text_size="19sp"
                     customAttr:text_color="@color/black_color"
                     />
             </LinearLayout>

@@ -23,7 +23,7 @@ public class OriginHotSpotLayout extends LinearLayout {
     ImageView searchBack;
     @BindView(R.id.search_origin)
     TextView searchOrigin;
-    @BindView(R.id.ll_origin)
+    @BindView(R.id.ll_hotspot_origin)
     LinearLayout llOrigin;
     @BindView(R.id.search_end_point)
     TextView searchEndPoint;
