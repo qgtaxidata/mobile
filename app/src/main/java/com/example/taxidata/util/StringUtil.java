@@ -13,7 +13,6 @@ public class StringUtil {
         timeBuilder.setCharAt(timeBuilder.indexOf("年"),'-');
         timeBuilder.setCharAt(timeBuilder.indexOf("月"),'-');
         timeBuilder.deleteCharAt(timeBuilder.indexOf("日"));
-
         return timeBuilder.toString();
     }
 }

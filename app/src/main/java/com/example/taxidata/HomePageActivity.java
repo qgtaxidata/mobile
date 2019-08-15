@@ -30,7 +30,6 @@ import com.example.taxidata.constant.Area;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.net.RetrofitManager;
-import com.example.taxidata.ui.TaxiDriverIncome.IncomeActivity;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.areaanalyze.AreaAnalyzeActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
@@ -436,9 +435,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 //区域出租车需求分析
                 break;
             case R.id.fbtn_taxi_income:
-                //出租车司机收入排行榜
-                Intent incomeIntent = new Intent(HomePageActivity.this, IncomeActivity.class);
-                startActivity(incomeIntent);
                 break;
             case R.id.fbtn_behavior_analysis:
                 //出租车行为分析与预测

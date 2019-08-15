@@ -1,8 +1,8 @@
-package com.example.taxidata.util;
+package com.example.taxidata.common;
 
 import android.view.View;
 
-public abstract class OnMultiClickListenerUtil implements View.OnClickListener {
+public abstract class OnMultiClickListener implements View.OnClickListener {
 
     //两次按钮点击间隔不小于1000毫秒
     private static final int MIN_CLICK_DELAY_TIME = 1000;
