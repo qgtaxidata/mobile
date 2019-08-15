@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.example.taxidata.R;
+import com.example.taxidata.application.TaxiApp;
 
 /**
  * @author: ODM
@@ -20,7 +21,7 @@ public class EmptyHotSpotView extends RelativeLayout {
     public EmptyHotSpotView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        View inflate = inflate(getContext(), R.layout.view_empty_hotspots_recommand, this);
+        View inflate = inflate(TaxiApp.getContext(), R.layout.view_empty_hotspots_recommand, this);
     }
 
     public EmptyHotSpotView(Context context, AttributeSet attrs, int defStyleAttr) {

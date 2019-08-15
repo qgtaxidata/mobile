@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="250dp"
+    android:layout_height="445dp"
+    android:background="@drawable/bg_driver_condition">
+
+    <ImageView
+        android:id="@+id/close_driver_condition_dialog_imv"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="215dp"
+        android:src="@mipmap/ic_close"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="司机编号："
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:id="@+id/driver_condition_number_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="所属公司："
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:id="@+id/driver_condition_company_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收入金额："
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:id="@+id/driver_condition_income_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="元"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收入排名："
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:id="@+id/driver_condition_rank_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="营运里程："
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:id="@+id/driver_condition_load_mile_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="公里"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="营运时长："
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:id="@+id/driver_condition_load_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分钟"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="空车里程："
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:id="@+id/driver_condition_no_load_mile_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="公里"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="空车时长："
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:id="@+id/driver_condition_no_load_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分钟"
+            android:textSize="16sp"
+            android:textColor="@color/black_color"
+            android:textStyle="normal"/>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

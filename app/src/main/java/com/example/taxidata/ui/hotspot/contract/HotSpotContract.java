@@ -102,6 +102,8 @@ public interface HotSpotContract {
          * Hot spot chsen success.
          */
         public void  hotSpotChosenSuccess();
+
+
     }
 
 
@@ -174,6 +176,7 @@ public interface HotSpotContract {
 
         public void  removeHistory(HotSpotHistorySearch historySearch);
 
+        public void  getHotSpotListAgain();
 
      }
 

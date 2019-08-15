@@ -145,8 +145,9 @@ public class HotSpotPathActivity extends BaseActivity {
                 BaseEvent baseEventBack = EventFactory.getInstance();
                 baseEventBack.type = EventBusType.HOTSPOT_CHOSE_AGAIN;
                 EventBusUtils.postSticky(baseEventBack);
-                Intent intentHotChooseAgain = new Intent(HotSpotPathActivity.this, HotSpotResearchActivity.class);
-                startActivity(intentHotChooseAgain);
+//                Intent intentHotChooseAgain = new Intent(HotSpotPathActivity.this, HotSpotResearchActivity.class);
+//                startActivity(intentHotChooseAgain);
+                finish();
             }
         });
         linearLayoutOne = layoutPlanCard.findViewById(R.id.ll_plan_one);
@@ -272,8 +273,7 @@ public class HotSpotPathActivity extends BaseActivity {
             //将选择好的热点坐标发送给 起点选择Activity
             BaseEvent baseEventOrigin = EventFactory.getInstance();
             baseEventOrigin.type = EventBusType.ORIGIN_HOTSPOT_TO_CHOOSE;
-            LatLng latLng = new LatLng( hotSpotInfo.getLatitude() ,hotSpotInfo.getLongitude());
-            baseEventOrigin.object = latLng;
+            baseEventOrigin.object = new LatLng( hotSpotInfo.getLatitude() ,hotSpotInfo.getLongitude());
             EventBusUtils.postSticky(baseEventOrigin);
             showHotSpot(hotSpotInfo.getLongitude() ,hotSpotInfo.getLatitude());
             //如果热点文本框Visible则赋值用户选定的热点信息

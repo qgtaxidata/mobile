@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.Fade;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +37,7 @@ import com.example.taxidata.ui.hotspot.adapter.RecommandHotSpotAdapter;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
 import com.example.taxidata.util.EventBusUtils;
+import com.example.taxidata.widget.EmptyHotSpotHistoryView;
 import com.example.taxidata.widget.EmptyHotSpotView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.orhanobut.logger.Logger;
@@ -92,19 +94,22 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         initRecyclerView();
         initOnclickEvent();
         initViews();
+
         //初始化注册EventBus
         if (isRegisterEventBus()) {
             EventBusUtils.register(this);
         }
 
     }
-
     @Override
     protected void onStart() {
         super.onStart();
-        showHistorySearchList(mPresenter.getHistorySearchList());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onDestroy() {
@@ -129,11 +134,9 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 intputString = s.toString();
@@ -143,6 +146,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
                 } else {
                     //当前输入框没有内容,则显示历史消息记录
                     showHistorySearchList(mPresenter.getHistorySearchList());
+
                 }
             }
         });
@@ -153,25 +157,26 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         historyAdapter = new HistoryHotspotSearchAdapter(R.layout.item_hotspot_history, historyList);
+        historyAdapter.setEmptyView(new EmptyHotSpotHistoryView(this ,null));
         hintAdapter = new HintHotSpotAdapter(R.layout.item_hotspot_hint, hintList);
         recommandAdapter = new RecommandHotSpotAdapter(R.layout.item_hotspot_recommand, hotSpotList);
         recommandAdapter.setEmptyView(new EmptyHotSpotView(this, null));
-
         rvSearch.setLayoutManager(layoutManager);
         rvSearch.setAdapter(historyAdapter);
         //初始化列表拖拽和滑动删除
         ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(historyAdapter);
         itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        itemTouchHelper.attachToRecyclerView(rvSearch);
         historyAdapter.enableSwipeItem();
-
         historyAdapter.openLoadAnimation();
         hintAdapter.openLoadAnimation();
         recommandAdapter.openLoadAnimation();
-
+        showHistorySearchList(mPresenter.getHistorySearchList());
         //历史列表 滑动删除的 回调函数
         historyAdapter.setOnItemSwipeListener(new OnItemSwipeListener() {
             @Override
             public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
+                mPresenter.removeHistory(historyAdapter.getItem(pos));
             }
 
             @Override
@@ -180,7 +185,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
             @Override
             public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
-                mPresenter.removeHistory(historyAdapter.getItem(pos));
+
             }
 
             @Override
@@ -196,8 +201,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             @Override
             public void onClick(View v) {
                 //Todo 搜索页面返回到地图页面？
-                Intent intent = new Intent(HotSpotResearchActivity.this, HomePageActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -255,11 +259,10 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     public void showHotSpot(List<HotSpotCallBackInfo.DataBean> hotSpotCallBackInfoList) {
 
         if (recommandAdapter != null && rvSearch != null) {
-            hotSpotList.clear();
-            recommandAdapter.setNewData(hotSpotList);
-            rvSearch.setAdapter(recommandAdapter);
+            //recommandAdapter.setNewData(hotSpotList);
             itemTouchHelper.attachToRecyclerView(null);
             recommandAdapter.setNewData(hotSpotCallBackInfoList);
+            rvSearch.setAdapter(recommandAdapter);
             cancelLoadingGame();
             //cancelLoadingDialong();
         }
@@ -294,6 +297,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
     @Override
     public void hotSpotChosenSuccess() {
+
         Intent intent = new Intent(this, HotSpotPathActivity.class);
         startActivity(intent);
     }
@@ -311,6 +315,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         if (baseEvent.type.equals(EventBusType.HOTSPOT_CHOSE_AGAIN)) {
             Logger.d("接收事件： 再次选择热点地点");
             rvSearch.setAdapter(recommandAdapter);
+            mPresenter.getHotSpotListAgain();
         }
     }
 
@@ -330,10 +335,10 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         refreshLayoutHotspot.autoRefresh();
     }
     public void cancelLoadingGame() {
-
-        refreshLayoutHotspot.finishRefresh(1000);
+        refreshLayoutHotspot.finishRefresh(2000);
         refreshLayoutHotspot.setEnableRefresh(false);
         refreshLayoutHotspot.setVisibility(View.GONE);
     }
+
 
 }

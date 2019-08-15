@@ -39,6 +39,7 @@ import com.example.taxidata.ui.hotspot.adapter.OriginHotSpotAdapter;
 import com.example.taxidata.ui.hotspot.contract.OriginHotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.OriginHotSpotPresenter;
 import com.example.taxidata.util.EventBusUtils;
+import com.example.taxidata.widget.EmptyHotSpotHistoryView;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -141,21 +142,24 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
         originAdapter = new OriginHotSpotAdapter(R.layout.item_hotspot_origin_history, originList);
         rvHotspotOrigin.setLayoutManager(layoutManager);
         rvHotspotOrigin.setAdapter(originAdapter);
+        originAdapter.setEmptyView(new EmptyHotSpotHistoryView(this ,null));
         //初始化列表拖拽和滑动删除
         ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(originAdapter);
         itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        itemTouchHelper.attachToRecyclerView(rvHotspotOrigin);
         originAdapter.enableSwipeItem();
         originAdapter.openLoadAnimation();
         originAdapter.setOnItemSwipeListener(new OnItemSwipeListener() {
             @Override
             public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
+                mPresenter.removeOriginHistory(originAdapter.getItem(pos));
             }
             @Override
             public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
             }
             @Override
             public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
-                mPresenter.removeOriginHistory(originAdapter.getItem(pos));
+
             }
             @Override
             public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
@@ -169,8 +173,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             @Override
             public void onClick(View v) {
                 //Todo 搜索页面返回到地图页面？
-                Intent intent = new Intent(OriginHotSpotActivity.this , HotSpotPathActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
         btnHotspotOrigin.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +215,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
     @Override
     public void showHistoryOriginList(List<HotSpotOrigin> hotSpotOrigins) {
         if (originAdapter != null && rvHotspotOrigin != null) {
+            itemTouchHelper.attachToRecyclerView(rvHotspotOrigin);
             rvHotspotOrigin.setAdapter(originAdapter);
             originAdapter.setNewData(hotSpotOrigins);
         }

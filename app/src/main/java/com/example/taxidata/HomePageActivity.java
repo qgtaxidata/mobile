@@ -1,5 +1,8 @@
 package com.example.taxidata;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,12 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+
+import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.LatLng;
@@ -29,6 +32,7 @@ import com.example.taxidata.constant.Algorithm;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
+import com.example.taxidata.ui.IncomeRanking.IncomeRankingActivity;
 import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.areaanalyze.AreaAnalyzeActivity;
@@ -258,6 +262,9 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         moveToAnyWhere(latLng);
         //监听相机位置变化,以获得屏幕中心经纬度
         homepageAMap.setOnCameraChangeListener(this);
+        //取消掉右下角的放大缩小+ -
+        UiSettings uiSettings = homepageAMap.getUiSettings();
+        uiSettings.setZoomControlsEnabled(false);
     }
 
     /**
@@ -421,8 +428,11 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         switch (view.getId()) {
             case R.id.fbtn_passenger_hot:
                 //载客热点推荐
-                Intent hotSpotIntent = new Intent(HomePageActivity.this, HotSpotResearchActivity.class);
-                startActivity(hotSpotIntent);
+//                Intent hotSpotIntent = new Intent(HomePageActivity.this, HotSpotResearchActivity.class);
+//                startActivity(hotSpotIntent);
+                ActivityOptions compat = ActivityOptions.makeSceneTransitionAnimation(this);
+                startActivity(new Intent(this, HotSpotResearchActivity.class), compat.toBundle());
+                overridePendingTransition(R.transition.transition_slide ,R.transition.transition_fade);
                 break;
             case R.id.fbtn_heat_power:
                 //热力图模式
@@ -435,6 +445,9 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 //区域出租车需求分析
                 break;
             case R.id.fbtn_taxi_income:
+                //出租车司机收入排行榜
+                Intent incomeIntent = new Intent(HomePageActivity.this, IncomeRankingActivity.class);
+                startActivity(incomeIntent);
                 break;
             case R.id.fbtn_behavior_analysis:
                 //出租车行为分析与预测
@@ -723,4 +736,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         Log.d(TAG, "按下返回键");
         return super.onKeyDown(keyCode, event);
     }
+
+
 }

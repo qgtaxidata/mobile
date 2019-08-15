@@ -134,6 +134,7 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
 
     @Override
     public void removeHistory(HotSpotHistorySearch historySearch) {
+        Logger.d("移除了"+historySearch.getHotSpotHistory());
         historyDaoSession.delete(historySearch);
     }
 

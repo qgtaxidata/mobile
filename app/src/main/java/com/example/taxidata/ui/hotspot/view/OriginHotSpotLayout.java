@@ -12,6 +12,8 @@ import com.example.taxidata.R;
 import butterknife.BindView;
 
 /**
+ * 自定义View：显示用户选择的热点和起点的框
+ *
  * @author: ODM
  * @date: 2019/8/11
  */
