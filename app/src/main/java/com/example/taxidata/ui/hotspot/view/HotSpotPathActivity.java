@@ -5,10 +5,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +42,7 @@ import com.example.taxidata.common.eventbus.EventFactory;
 import com.example.taxidata.constant.EventBusType;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.ToastUtil;
+import com.example.taxidata.widget.MarqueeTextView;
 import com.example.taxidata.widget.PlanInfoCard;
 import com.orhanobut.logger.Logger;
 
@@ -64,6 +67,7 @@ public class HotSpotPathActivity extends BaseActivity {
     View linearLayoutOne;
     View linearLayoutTwo;
     View linearLayoutThree;
+    RelativeLayout layoutOrigin;
     TextView tvPlanOne;
     TextView tvPlanTwo;
     TextView tvPlanThree;
@@ -78,8 +82,8 @@ public class HotSpotPathActivity extends BaseActivity {
     List<TextView> textViewListThree;
     AMap pathMap;
     ImageView searchBack;
-    TextView searchOrigin;
-    TextView searchEndPoint;
+    MarqueeTextView tvSearchEndPoint;
+    MarqueeTextView tvSetOrigin;
     UiSettings uiSettings;
     HotSpotRouteInfo routeInfo;
     List<LatLng> latLngs ;
@@ -128,12 +132,23 @@ public class HotSpotPathActivity extends BaseActivity {
     }
 
     public void initViews(){
-        searchEndPoint = layoutOriginHotSpot.findViewById(R.id.search_end_point);
-        searchOrigin = layoutOriginHotSpot.findViewById(R.id.search_origin);
-        searchOrigin.setOnClickListener(new View.OnClickListener() {
+        tvSearchEndPoint = layoutOriginHotSpot.findViewById(R.id.search_end_point);
+        layoutOrigin = layoutOriginHotSpot.findViewById(R.id.ll_hotspot_origin);
+        tvSetOrigin = layoutOriginHotSpot.findViewById(R.id.tv_hotspot_set_origin);
+        tvSetOrigin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //选择输入起点，跳转输入界面
+                Logger.d("跳转页面！");
+                Intent intentHotSearch = new Intent(HotSpotPathActivity.this, OriginHotSpotActivity.class);
+                startActivity(intentHotSearch);
+            }
+        });
+        layoutOrigin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //选择输入起点，跳转输入界面
+                Logger.d("跳转页面！");
                 Intent intentHotSearch = new Intent(HotSpotPathActivity.this, OriginHotSpotActivity.class);
                 startActivity(intentHotSearch);
             }
@@ -277,8 +292,8 @@ public class HotSpotPathActivity extends BaseActivity {
             EventBusUtils.postSticky(baseEventOrigin);
             showHotSpot(hotSpotInfo.getLongitude() ,hotSpotInfo.getLatitude());
             //如果热点文本框Visible则赋值用户选定的热点信息
-            if (searchEndPoint.getVisibility() == View.VISIBLE) {
-                searchEndPoint.setText(StatusManager.hotSpotChosen);
+            if (tvSearchEndPoint.getVisibility() == View.VISIBLE) {
+                tvSearchEndPoint.setText(StatusManager.hotSpotChosen);
             }
         }
 
@@ -347,8 +362,8 @@ public class HotSpotPathActivity extends BaseActivity {
     }
 
     public void  setOriginHotSpotText(String origin ,String hotspot) {
-        searchOrigin.setText(origin);
-        searchEndPoint.setText(hotspot);
+        tvSetOrigin.setText(origin);
+        tvSearchEndPoint.setText(hotspot);
     }
 
 }

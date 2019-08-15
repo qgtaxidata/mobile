@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:customAttr="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="120dp"
@@ -24,66 +25,98 @@
         android:layout_marginStart="25dp">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_gravity="center">
 
-            <LinearLayout
-                android:id= "@+id/ll_origin"
+            <RelativeLayout
+                android:id= "@+id/ll_hotspot_origin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginStart="20dp"
+                android:layout_alignParentTop="true"
+                android:descendantFocusability="blocksDescendants"
                 android:layout_gravity="center_vertical">
 
                 <View
+                    android:id="@+id/include_img_start_point"
                     android:layout_width="13dp"
                     android:layout_height="13dp"
-                    android:layout_gravity="center"
+                    android:layout_centerVertical="true"
                     android:background="@drawable/start_point_bg"/>
 
                 <TextView
                     android:id="@+id/search_origin"
-                    android:layout_width="220dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:background="@null"
                     android:layout_marginStart="10dp"
+                    android:scrollbars="horizontal"
+                    android:singleLine="true"
+                    android:visibility="gone"
+                    />
+                <com.example.taxidata.widget.MarqueeTextView
+                    android:id="@+id/tv_hotspot_set_origin"
+                    android:layout_width="210dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_centerVertical="true"
+                    android:singleLine="true"
+                    android:text="请点击此处设置您的起点"
                     android:textSize="20sp"
-                    android:text="点击此处设置您的起点"/>
-            </LinearLayout>
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:visibility="visible"/>
+
+
+            </RelativeLayout>
 
             <View
-
-                android:layout_width="220dp"
+                android:id="@+id/view_hotspot_divide"
+                android:layout_width="200dp"
                 android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_alignLeft="@id/ll_hotspot_origin"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/widget_divide_gray"/>
+                android:background="@drawable/widget_divide_gray" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <RelativeLayout
+                android:id="@+id/ll_hotspot_hotspot"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/ll_hotspot_origin"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp">
 
                 <View
+                    android:id="@+id/include_img_end_point"
                     android:layout_width="13dp"
                     android:layout_height="13dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/end_point_bg"/>
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/end_point_bg" />
 
-                <TextView
+                <com.example.taxidata.widget.MarqueeTextView
                     android:id="@+id/search_end_point"
-                    android:layout_width="220dp"
+                    android:layout_width="210dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="25dp"
+                    android:singleLine="true"
+                    android:layout_centerVertical="true"
+                    android:text="您的目的地"
                     android:textSize="20sp"
-                    android:hint="点击此处设置您的终点"/>
-            </LinearLayout>
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:visibility="visible"
+                    />
+            </RelativeLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/search_switch_start_end"
