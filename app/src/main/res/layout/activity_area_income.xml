@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray_color">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <com.example.taxidata.widget.DropDownSelectView
+            android:id="@+id/area_income_area_select_view"
+            android:layout_width="77dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            />
+
+        <com.example.taxidata.widget.DropDownSelectView
+            android:id="@+id/area_income_time_select_view"
+            android:layout_width="165dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:id="@+id/area_income_refresh_list_btn"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/shape_button_radius_search"
+            android:text="刷新"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            android:textColor="@color/search_out_bg"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

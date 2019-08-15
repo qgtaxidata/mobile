@@ -1,4 +1,4 @@
-package com.example.taxidata.ui.areaanalyze;
+package com.example.taxidata.ui.roadquality;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -31,52 +31,46 @@ import static com.example.taxidata.constant.Area.TIAN_HE;
 import static com.example.taxidata.constant.Area.YUE_XIU;
 import static com.example.taxidata.constant.Area.ZENG_CHENG;
 
-public class AreaAnalyzeActivity extends AppCompatActivity {
+public class RoadQualityActivity extends AppCompatActivity {
 
-    @BindView(R.id.area_analyze_vp)
-    ViewPager areaAnalyzeVp;
-    @BindView(R.id.area_analyze_area_select_view)
-    DropDownSelectView areaAnalyzeAreaSelectView;
-    @BindView(R.id.area_analyze_time_select_view)
-    DropDownSelectView areaAnalyzeTimeSelectView;
-    @BindView(R.id.area_analyze_btn_refresh_list)
-    Button areaAnalyzeBtnRefreshList;
+    @BindView(R.id.road_quality_area_select_view)
+    DropDownSelectView roadQualityAreaSelectView;
+    @BindView(R.id.road_quality_time_select_view)
+    DropDownSelectView roadQualityTimeSelectView;
+    @BindView(R.id.road_quality_refresh_list_btn)
+    Button roadQualityRefreshListBtn;
+    @BindView(R.id.road_quality_vp)
+    ViewPager roadQualityVp;
 
-    private List<Fragment> areaAnalyzeList = new ArrayList<>();
+    private List<Fragment> roadQualityList = new ArrayList<>();
     ArrayList<String> areaList = new ArrayList<>();
     ArrayList<String> timeList = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_area_analyze);
+        setContentView(R.layout.activity_road_quality);
         ButterKnife.bind(this);
-        //设置viewPager
-        setViewPager(areaAnalyzeVp);
-        //初始化区域popupWindow
         initAreaList();
-        //初始化时间popupWindow
         initTimeList();
+        //设置viewPager
+        setViewPager(roadQualityVp);
     }
 
+    @OnClick(R.id.road_quality_refresh_list_btn)
+    public void onViewClicked() {
+    }
 
     private void setViewPager(ViewPager viewPager) {
-        areaAnalyzeList.add(new DepartureRateFragment());      //添加出车率碎片
-        areaAnalyzeList.add(new PassagerFrequencyFragment());    //添加载客频率碎片
-        areaAnalyzeList.add(new MileageUtilizationRateFragment());     //添加里程利用率碎片
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), areaAnalyzeList);
+        roadQualityList.add(new CongestionDegreeFragment());      //添加拥挤度碎片
+        roadQualityList.add(new TrafficFlowFragment());    //添加车流量碎片
+        roadQualityList.add(new SpeedFragment());     //添加车速碎片
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), roadQualityList);
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new AreaAnalyzeTransformer());
         viewPager.setOffscreenPageLimit(2);
         viewPager.setPageMargin(10);
     }
-
-
-    @OnClick(R.id.area_analyze_btn_refresh_list)
-    public void onViewClicked() {
-    }
-
 
     private void initAreaList() {
         areaList.add(LI_WAN);
@@ -90,10 +84,8 @@ public class AreaAnalyzeActivity extends AppCompatActivity {
         areaList.add(NAN_SHA);
         areaList.add(CONG_HUA);
         areaList.add(ZENG_CHENG);
-        areaAnalyzeAreaSelectView.setItemsData(areaList, 1);
+        roadQualityAreaSelectView.setItemsData(areaList, 1);
     }
-
-
 
     private void initTimeList(){
         timeList.add("2007年02月04日");
@@ -108,6 +100,6 @@ public class AreaAnalyzeActivity extends AppCompatActivity {
         timeList.add("2007年02月13日");
         timeList.add("2007年02月14日");
         timeList.add("2007年02月15日");
-        areaAnalyzeTimeSelectView.setItemsData(timeList, 2);
+        roadQualityTimeSelectView.setItemsData(timeList, 2);
     }
 }

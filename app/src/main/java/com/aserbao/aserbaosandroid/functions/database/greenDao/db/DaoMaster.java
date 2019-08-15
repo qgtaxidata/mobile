@@ -23,12 +23,18 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void createAllTables(Database db, boolean ifNotExists) {
         HotSpotHistorySearchDao.createTable(db, ifNotExists);
         HotSpotOriginDao.createTable(db, ifNotExists);
+        EndInfoDao.createTable(db, ifNotExists);
+        OriginEndInfoDao.createTable(db, ifNotExists);
+        OriginInfoDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
         HotSpotHistorySearchDao.dropTable(db, ifExists);
         HotSpotOriginDao.dropTable(db, ifExists);
+        EndInfoDao.dropTable(db, ifExists);
+        OriginEndInfoDao.dropTable(db, ifExists);
+        OriginInfoDao.dropTable(db, ifExists);
     }
 
     /**
@@ -49,6 +55,9 @@ public class DaoMaster extends AbstractDaoMaster {
         super(db, SCHEMA_VERSION);
         registerDaoClass(HotSpotHistorySearchDao.class);
         registerDaoClass(HotSpotOriginDao.class);
+        registerDaoClass(EndInfoDao.class);
+        registerDaoClass(OriginEndInfoDao.class);
+        registerDaoClass(OriginInfoDao.class);
     }
 
     public DaoSession newSession() {
