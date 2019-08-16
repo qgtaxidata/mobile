@@ -118,6 +118,8 @@ public class HotSpotPathActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        StatusManager.hotSpotChosen = "您的热点";
+        StatusManager.originChosen = "请点击此处设置您的起点";
         mvHotspotPath.onDestroy();
         if (isRegisterEventBus()) {
             EventBusUtils.unregister(this);
@@ -158,6 +160,7 @@ public class HotSpotPathActivity extends BaseActivity {
     }
 
     public void initViews(){
+
         tvSearchEndPoint = layoutOriginHotSpot.findViewById(R.id.search_end_point);
         layoutOrigin = layoutOriginHotSpot.findViewById(R.id.ll_hotspot_origin);
         tvSetOrigin = layoutOriginHotSpot.findViewById(R.id.tv_hotspot_set_origin);

@@ -41,6 +41,7 @@ import com.example.taxidata.ui.hotspot.presenter.OriginHotSpotPresenter;
 import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.widget.EmptyHotSpotHistoryView;
+import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -75,7 +76,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
     private OriginHotSpotPresenter mPresenter = new OriginHotSpotPresenter();
     private HotSpotRouteRequest routeRequest;
     private String originAddressChosen;
-
+    private SimpleLoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +108,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
     }
 
     private void initViews() {
+        loadingDialog = new SimpleLoadingDialog(this, "正在加载服务器数据", R.drawable.dialog_image_loading);
         geocodeSearch = new GeocodeSearch(this);
         etHotspotOrigin.addTextChangedListener(new TextWatcher() {
             @Override
@@ -183,6 +185,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
                 //Todo: 将 热点 和 地点 打包 发送给 服务器 请求返回数据
                 Logger.d("点击了热点--起点--搜索键");
                 if("".equals(etHotspotOrigin.getText().toString())) {
+                    showLoadingDialog();
                     originAddressChosen  = etHotspotOrigin.getText().toString();
                     StatusManager.originChosen = originAddressChosen;
                     mPresenter.saveOriginHotSpotHistory(originAddressChosen);
@@ -194,6 +197,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //Todo：带着 选中的 热点 & 起点信息 ，去 地图页面画出来！
+                showLoadingDialog();
                 originAddressChosen = originAdapter.getData().get(position).getHotSpotOriginHistory();
                 StatusManager.originChosen = originAddressChosen;
                 mPresenter.saveOriginHotSpotHistory(originAddressChosen);
@@ -204,6 +208,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //Todo：带着 选中的 热点 & 起点信息 ，去 地图页面画出来！
+                showLoadingDialog();
                 originAddressChosen =hintAdapter.getData().get(position).getHotSpotName();
                 StatusManager.originChosen = originAddressChosen;
                 mPresenter.saveOriginHotSpotHistory(originAddressChosen);
@@ -229,6 +234,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             itemTouchHelper.attachToRecyclerView(null);
             rvHotspotOrigin.setAdapter(hintAdapter);
             hintAdapter.setNewData(hintList);
+            cancelLoadingDialong();
         } else {
             //输入框为空则显示历史列表
             showHistoryOriginList(mPresenter.getHistoryOriginList());
@@ -257,6 +263,16 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             routeRequest.setLatDestination(latLng.latitude);
             Log.e(TAG,"接收用户选择的热点（"+latLng.longitude+","+latLng.latitude+") ,准备选择 起点");
         }
+    }
+
+    public void showLoadingDialog() {
+
+        loadingDialog.show();
+    }
+
+    public void cancelLoadingDialong() {
+
+        loadingDialog.cancel();
     }
 
     @Override

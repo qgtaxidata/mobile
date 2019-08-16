@@ -42,6 +42,7 @@ import com.example.taxidata.ui.passengerpath.widget.DoubleSearch;
 import com.example.taxidata.ui.passengerpath.widget.SearchOnClickListener;
 import com.example.taxidata.ui.passengerpath.widget.SelectPlanCard;
 import com.example.taxidata.ui.passengerpath.widget.SelectedListener;
+import com.example.taxidata.widget.SimpleLoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -94,6 +95,8 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
     private UiSettings settings;
 
     private List<PathInfo.DataBean> plan = new ArrayList<>();
+
+    private SimpleLoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +155,7 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
                 }
             }
         });
+        loadingDialog = new SimpleLoadingDialog(this,"加载中",R.drawable.dialog_image_loading);
     }
 
     @Override
@@ -204,6 +208,8 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                isEndHaveContent = true;
+                isOriginHaveContent = true;
                 //输入框填充信息
                 OriginEndInfo info = detailHistoryList.get(position);
                 originEndSearchDs.setOriginText(info.getOrigin());
@@ -244,6 +250,9 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
         }
         planSpc.init(timeDistances);
         List<LatLng> latlngs = new ArrayList<>();
+        if (pathInfos.size() < 1) {
+            return;
+        }
         //默认选择第一条路线
         List<PathInfo.DataBean.RouteBean> one = pathInfos.get(0).getRoute();
         for (int i = 0; i < one.size(); i++) {
@@ -353,5 +362,19 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
     private void moveTo(LatLng latLng) {
         CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng,14,0,0));
         pathMap.moveCamera(update);
+    }
+
+    @Override
+    public void showLoading() {
+        if (loadingDialog != null) {
+            loadingDialog.show();
+        }
+    }
+
+    @Override
+    public void hideLoading() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 }
