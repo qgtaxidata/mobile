@@ -9,9 +9,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.taxidata.R;
 import com.example.taxidata.adapter.AreaAnalyzeTransformer;
+import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.adapter.ViewPagerAdapter;
+import com.example.taxidata.base.BaseActivity;
+import com.example.taxidata.constant.Area;
+import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +35,9 @@ import static com.example.taxidata.constant.Area.PAN_YU;
 import static com.example.taxidata.constant.Area.TIAN_HE;
 import static com.example.taxidata.constant.Area.YUE_XIU;
 import static com.example.taxidata.constant.Area.ZENG_CHENG;
+import static com.example.taxidata.constant.Area.area;
 
-public class AreaAnalyzeActivity extends AppCompatActivity {
+public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeContract.AreaAnalyzeView {
 
     @BindView(R.id.area_analyze_vp)
     ViewPager areaAnalyzeVp;
@@ -42,9 +48,12 @@ public class AreaAnalyzeActivity extends AppCompatActivity {
     @BindView(R.id.area_analyze_btn_refresh_list)
     Button areaAnalyzeBtnRefreshList;
 
+    private AreaAnalyzeContract.AreaAnalyzePresent present;
     private List<Fragment> areaAnalyzeList = new ArrayList<>();
     ArrayList<String> areaList = new ArrayList<>();
     ArrayList<String> timeList = new ArrayList<>();
+    private int areaId = 5;
+    private String date = "2017-02-03";
 
 
     @Override
@@ -52,12 +61,34 @@ public class AreaAnalyzeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_area_analyze);
         ButterKnife.bind(this);
+        present = new AreaAnalyzePresent();
+        present.attachView(this);
         //设置viewPager
         setViewPager(areaAnalyzeVp);
         //初始化区域popupWindow
         initAreaList();
         //初始化时间popupWindow
         initTimeList();
+        //获取用户选择的区域
+        areaAnalyzeAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                String areaName = areaList.get(position);
+                areaId = Area.area.get(areaName);
+            }
+        });
+        //获取用户选择的时间
+        areaAnalyzeTimeSelectView.seOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                String time = timeList.get(position);
+                try {
+                    date = TimeChangeUtil.transform(time);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 
@@ -72,11 +103,10 @@ public class AreaAnalyzeActivity extends AppCompatActivity {
         viewPager.setPageMargin(10);
     }
 
-
     @OnClick(R.id.area_analyze_btn_refresh_list)
     public void onViewClicked() {
+        present.getAreaAnalyzeInfo(AreaAnalyzeActivity.this, areaId, date);
     }
-
 
     private void initAreaList() {
         areaList.add(LI_WAN);
@@ -93,8 +123,6 @@ public class AreaAnalyzeActivity extends AppCompatActivity {
         areaAnalyzeAreaSelectView.setItemsData(areaList, 1);
     }
 
-
-
     private void initTimeList(){
         timeList.add("2007年02月04日");
         timeList.add("2007年02月05日");
@@ -109,5 +137,11 @@ public class AreaAnalyzeActivity extends AppCompatActivity {
         timeList.add("2007年02月14日");
         timeList.add("2007年02月15日");
         areaAnalyzeTimeSelectView.setItemsData(timeList, 2);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        present.detachView();
     }
 }

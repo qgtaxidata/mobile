@@ -129,4 +129,10 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
     private void initChart(){
         present.getAreaIncomeInfo(AreaIncomeActivity.this, areaId, date);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        present.detachView();
+    }
 }

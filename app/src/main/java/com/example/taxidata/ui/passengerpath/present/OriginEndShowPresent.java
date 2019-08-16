@@ -11,6 +11,7 @@ import com.example.taxidata.ui.passengerpath.enity.OriginEndInfo;
 import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 import com.example.taxidata.ui.passengerpath.model.OriginEndShowModel;
 import com.example.taxidata.widget.StatusToast;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
@@ -65,6 +66,9 @@ public class OriginEndShowPresent implements OriginEndShowContract.OriginEndShow
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Logger.d(e.getMessage());
+
                         Log.d("OriginEndShowPresent",e.getMessage());
                         view.hideLoading();
                         StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null,R.mipmap.ic_sad,"网络错误");

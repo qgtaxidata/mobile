@@ -1,14 +1,14 @@
 package com.example.taxidata.net;
 
 
+import com.example.taxidata.bean.AreaAnalyzeInfo;
 import com.example.taxidata.bean.AreaIncomeInfo;
 import com.example.taxidata.bean.DriverConditionInfo;
 import com.example.taxidata.bean.HeatPointInfo;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
-import com.example.taxidata.bean.HotSpotRequestInfo;
 import com.example.taxidata.bean.HotSpotRouteInfo;
-import com.example.taxidata.bean.HotSpotRouteRequest;
 import com.example.taxidata.bean.IncomeRankingInfo;
+import com.example.taxidata.bean.RoadQualityInfo;
 import com.example.taxidata.bean.TaxiDemandInfo;
 import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.bean.TaxiPathInfo;
@@ -16,9 +16,7 @@ import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -42,8 +40,12 @@ public interface HttpService {
     Observable<TaxiInfo> getTaxiInfo(@Body RequestBody info);
 
     @Headers({"Content-Type: application/json","Accept: application/json"})
-    @POST("taxiRoute/findRoute")
-    Observable<TaxiPathInfo> getTaxiPathInfo(@Body RequestBody info);
+    @POST("/taxiRoute/findRoute")
+    Observable<TaxiPathInfo> getHistoryTaxiPathInfo(@Body RequestBody info);
+
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("/taxiRoute/findLiveRoute")
+    Observable<TaxiPathInfo> getCurrentTaxiPathInfo(@Body RequestBody info);
 
 
 
@@ -70,6 +72,13 @@ public interface HttpService {
 
     @POST("")
     Observable<AreaIncomeInfo> getAreaIncomeInfo(@Query("area") int area, @Query("date") String date);
+
+    @POST("")
+    Observable<AreaAnalyzeInfo> getAreaAnalyzeInfo(@Query("area") int area, @Query("date") String date);
+
+    @POST("")
+    Observable<RoadQualityInfo> getRoadQualityInfo(@Query("area") int area, @Query("date") String date);
+
 
 }
 

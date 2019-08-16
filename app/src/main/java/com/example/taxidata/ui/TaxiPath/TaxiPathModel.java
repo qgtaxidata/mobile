@@ -1,7 +1,5 @@
 package com.example.taxidata.ui.TaxiPath;
 
-import android.util.Log;
-
 import com.example.taxidata.bean.GetTaxiInfo;
 import com.example.taxidata.bean.GetTaxiPathInfo;
 import com.example.taxidata.bean.TaxiInfo;
@@ -15,7 +13,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 
 public class TaxiPathModel implements TaxiPathContract.TaxiPathModel {
     @Override
@@ -33,7 +30,7 @@ public class TaxiPathModel implements TaxiPathContract.TaxiPathModel {
     }
 
     @Override
-    public Observable<TaxiPathInfo> getTaxiPathInfo(String time, String licenseplateno) {
+    public Observable<TaxiPathInfo> getHistoryTaxiPathInfo(String time, String licenseplateno) {
         GetTaxiPathInfo getTaxiPathInfo = new GetTaxiPathInfo();
         getTaxiPathInfo.setTime(time);
         getTaxiPathInfo.setLicenseplateno(licenseplateno);
@@ -41,7 +38,21 @@ public class TaxiPathModel implements TaxiPathContract.TaxiPathModel {
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
         return PathRetrofitManager.getInstance()
                 .getHttpService()
-                .getTaxiPathInfo(body)
+                .getHistoryTaxiPathInfo(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<TaxiPathInfo> getCurrentTaxiPathInfo(String time, String licenseplateno) {
+        GetTaxiPathInfo getTaxiPathInfo = new GetTaxiPathInfo();
+        getTaxiPathInfo.setTime(time);
+        getTaxiPathInfo.setLicenseplateno(licenseplateno);
+        String json = GsonUtil.GsonString(getTaxiPathInfo);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+        return PathRetrofitManager.getInstance()
+                .getHttpService()
+                .getCurrentTaxiPathInfo(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

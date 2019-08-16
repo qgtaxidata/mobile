@@ -50,28 +50,15 @@ public class LineChartActivity extends AppCompatActivity {
         xAxis.setAxisMinimum(0f);   //设置x轴的最小值
         xAxis.setAxisMaximum(100f);   //设置x轴的最大值
 
-//        LimitLine goodLL = new LimitLine(150f, "优秀");
-//        goodLL.setLineWidth(4f);
-//        goodLL.enableDashedLine(10f, 10f, 0f);
-//        goodLL.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-//        goodLL.setTextSize(10f);
-//
-//        LimitLine badLL = new LimitLine(30f, "不及格");
-//        badLL.setLineWidth(4f);
-//        badLL.enableDashedLine(10f, 10f, 0f);
-//        badLL.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
-//        badLL.setTextSize(10f);
-
         YAxis leftY = chart.getAxisLeft();
         leftY.removeAllLimitLines();
-//        leftY.addLimitLine(goodLL);    //设置优秀线
-//        leftY.addLimitLine(badLL);     //设置及格线
         leftY.setAxisMinimum(0f);      //设置Y轴最小值
         leftY.setAxisMaximum(100f);    //设置Y轴最大值
         leftY.enableGridDashedLine(10f, 10f, 0f);
         leftY.setDrawZeroLine(false);
         leftY.setDrawLimitLinesBehindData(true);   //限制数据
         chart.getAxisRight().setEnabled(false);
+
         ArrayList<Entry> values = new ArrayList<Entry>();
         values.add(new Entry(0,30));
         values.add(new Entry(10,50));
@@ -114,12 +101,6 @@ public class LineChartActivity extends AppCompatActivity {
             lineDataSet.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f},0f));
             lineDataSet.setFormSize(15.f);
 
-//            //填充背景
-//            if(Utils.getSDKInt() >= 18){
-//                lineDataSet.setFillColor(Color.YELLOW);
-//            }else {
-//                lineDataSet.setFillColor(Color.BLACK);
-//            }
 
             //添加数据集
             ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
