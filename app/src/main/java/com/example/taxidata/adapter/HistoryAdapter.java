@@ -18,5 +18,6 @@ public class HistoryAdapter extends BaseItemDraggableAdapter<String,BaseViewHold
     @Override
     protected void convert(@NonNull BaseViewHolder helper, String item) {
         helper.setText(R.id.tv_passenger_path,item);
+        helper.itemView.setSelected(true);
     }
 }
