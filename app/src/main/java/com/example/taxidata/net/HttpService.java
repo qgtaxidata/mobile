@@ -10,6 +10,7 @@ import com.example.taxidata.bean.HotSpotRouteRequest;
 import com.example.taxidata.bean.IncomeRankingInfo;
 import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.bean.TaxiPathInfo;
+import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -52,6 +53,10 @@ public interface HttpService {
     @GET("")
     Observable<DriverConditionInfo> getDriverConditionInfo(@Query("area") int area, @Query("date") String date, @Query("driverID") String driverID);
 
-
+    @GET("route/getRoute")
+    Observable<PathInfo> getPath(@Query("lonOrigin")double lonOrigin,
+                                 @Query("latOrigin")double latOrigin,
+                                 @Query("lonDestination")double lonDestination,
+                                 @Query("latDestination")double latDestination);
 }
 

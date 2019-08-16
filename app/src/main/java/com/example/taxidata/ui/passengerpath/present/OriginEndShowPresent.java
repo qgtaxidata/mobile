@@ -1,17 +1,26 @@
 package com.example.taxidata.ui.passengerpath.present;
 
+import com.aserbao.aserbaosandroid.functions.database.greenDao.db.OriginEndInfoDao;
+import com.example.taxidata.R;
+import com.example.taxidata.application.TaxiApp;
+import com.example.taxidata.common.GreenDaoManager;
 import com.example.taxidata.ui.passengerpath.contract.OriginEndShowContract;
 import com.example.taxidata.ui.passengerpath.enity.OriginEndInfo;
+import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 import com.example.taxidata.ui.passengerpath.model.OriginEndShowModel;
+import com.example.taxidata.widget.StatusToast;
 
-import java.util.ArrayList;
+import org.greenrobot.greendao.query.QueryBuilder;
+
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 public class OriginEndShowPresent implements OriginEndShowContract.OriginEndShowPresent {
 
     OriginEndShowContract.OriginEndShowModel model;
     OriginEndShowContract.OriginEndShowView view;
-    List<OriginEndInfo> history;
 
     public OriginEndShowPresent() {
         model = new OriginEndShowModel();
@@ -20,31 +29,59 @@ public class OriginEndShowPresent implements OriginEndShowContract.OriginEndShow
     @Override
     public void getHistory() {
         //获得历史记录
+        List<OriginEndInfo> history;
         history = model.getOriginEnd();
         if (history != null){
-            List<String> historyNameList = new ArrayList<>();
-            for (int i = 0; i < history.size(); i++){
-                //获得起点--终点
-                String historyName = history.get(i).getOrigin() + "--" + history.get(i).getEnd();
-                //加入列表
-                historyNameList.add(historyName);
-                //展示数据
-                if (view != null){
-                    view.showHistory(historyNameList);
-                }
-            }
+           view.showHistory(history);
         }
     }
 
     @Override
-    public void saveHistory(String origin, String end, double originLng, double originLat, double endLng, double endLat) {
+    public void saveHistory(OriginEndInfo info) {
         //存储记录
-        model.saveOriginEnd(origin,end,originLng,originLat,endLng,endLat);
+        model.saveOriginEnd(info);
     }
 
     @Override
-    public void managePath() {
-        //TODO 未设计
+    public void managePath(OriginEndInfo info) {
+        model.requestPath(info)
+                .subscribe(new Observer<PathInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(PathInfo pathInfo) {
+                        if (pathInfo.getCode() == 1) {
+                            view.showPath(pathInfo.getData());
+                        }else {
+                            StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,pathInfo.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null,R.mipmap.ic_sad,"网络错误");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void deleteHistory(OriginEndInfo info) {
+        QueryBuilder<OriginEndInfo> infoBuilder = GreenDaoManager.getInstance().getDaoSession().queryBuilder(OriginEndInfo.class).where(OriginEndInfoDao.Properties.End.eq(info.getEnd()));
+        List<OriginEndInfo> originQuery = infoBuilder.list();
+        if (originQuery.isEmpty()){
+            return;
+        }else {
+            model.delete(info);
+        }
     }
 
     @Override

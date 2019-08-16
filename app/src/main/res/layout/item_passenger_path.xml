@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_passenger_path"
     android:orientation="vertical"
     android:background="@drawable/item_selector_wave"
     android:layout_width="match_parent"

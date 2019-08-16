@@ -2,11 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/hotspot_plan_card"
+        android:id="@+id/cv_passener_path"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         app:cardElevation = "10dp"
@@ -18,50 +18,53 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
-                android:id="@+id/ll_plan_one"
+                android:id="@+id/ll_path_plane_one"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
                 <TextView
-                    android:id="@+id/hotspot_plan_first"
+                    android:id="@+id/tv_plan_one"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="方案一"
+                    android:textColor="#4c93fd"
                     android:clickable="true"
                     android:textSize="18sp"/>
                 <TextView
-                    android:id="@+id/hotspot_time_first"
+                    android:id="@+id/tv_time_one"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
                     android:textSize="22sp"
+                    android:textColor="#4c93fd"
                     android:text="时间一"/>
                 <TextView
-                    android:id="@+id/hotspot_far_first"
+                    android:id="@+id/tv_distance_one"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="距离一"
+                    android:textColor="#4c93fd"
                     android:textSize="16sp"/>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_plan_two"
+                android:id="@+id/ll_path_plane_two"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
                 <TextView
-                    android:id="@+id/hotspot_plan_second"
+                    android:id="@+id/tv_plan_two"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="方案二"
                     android:textSize="18sp"/>
                 <TextView
-                    android:id="@+id/hotspot_time_second"
+                    android:id="@+id/tv_time_two"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -69,7 +72,7 @@
                     android:textSize="22sp"
                     android:text="时间二"/>
                 <TextView
-                    android:id="@+id/hotspot_far_second"
+                    android:id="@+id/tv_distance_two"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="距离二"
@@ -77,20 +80,20 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_plan_third"
+                android:id="@+id/ll_path_plan_three"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
                 <TextView
-                    android:id="@+id/hotspot_plan_third"
+                    android:id="@+id/tv_plan_three"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="方案三"
                     android:textSize="18sp"/>
                 <TextView
-                    android:id="@+id/hotsopt_time_third"
+                    android:id="@+id/tv_time_tree"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -98,7 +101,7 @@
                     android:textSize="22sp"
                     android:text="时间三"/>
                 <TextView
-                    android:id="@+id/hotspot_far_third"
+                    android:id="@+id/tv_distance_three"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="距离三"
