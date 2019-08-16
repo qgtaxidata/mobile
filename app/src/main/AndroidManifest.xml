@@ -30,6 +30,7 @@
         <activity android:name=".ui.passengerpath.view.OriginEndActivity" />
         <activity android:name=".ui.passengerpath.view.EndActivity" />
         <activity android:name=".ui.setup.SetUpActivity" />
+        <activity android:name=".ui.taxidemand.TaxiDemandActivity" />
         <activity android:name=".ui.areaanalyze.AreaAnalyzeActivity" />
         <activity android:name=".ui.hotspot.view.HotSpotPathActivity" />
         <activity android:name=".ui.IncomeRanking.IncomeRankingActivity" />

@@ -212,8 +212,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
                 String inputAddress = etSearch.getText().toString();
                 //将用户输入的地址转换为坐标
                 if (mPresenter != null && !"".equals(inputAddress)) {
-                    showLoadingGame();
-                  //  showLoadingDialog();
+//                    showLoadingGame();
+                    showLoadingDialog();
                     mPresenter.convertToLocation(inputAddress, geocodeSearch);
                     mPresenter.saveHotSpotSearchHistory(inputAddress);
                 }
@@ -225,8 +225,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 String address = historyAdapter.getData().get(position).getHotSpotHistory();
                 etSearch.setText(address);
-                showLoadingGame();
-                //showLoadingDialog();
+//                showLoadingGame();
+                showLoadingDialog();
                 mPresenter.saveHotSpotSearchHistory(address);
                 mPresenter.convertToLocation(address, geocodeSearch);
             }
@@ -263,8 +263,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             itemTouchHelper.attachToRecyclerView(null);
             recommandAdapter.setNewData(hotSpotCallBackInfoList);
             rvSearch.setAdapter(recommandAdapter);
-            cancelLoadingGame();
-            //cancelLoadingDialong();
+//            cancelLoadingGame();
+            cancelLoadingDialong();
         }
     }
 
