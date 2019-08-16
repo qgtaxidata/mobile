@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -15,7 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.PolylineOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -41,6 +46,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,6 +87,8 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
     private boolean isEndHaveContent = false;
 
     private AMap pathMap;
+
+    private UiSettings settings;
 
     private List<PathInfo.DataBean> plan = new ArrayList<>();
 
@@ -162,13 +170,15 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
         if (pathMap == null) {
             pathMap = pathMp.getMap();
         }
+        settings = pathMap.getUiSettings();
+        settings.setZoomControlsEnabled(false);
     }
 
     /**
      * 初始化rv
      */
     private void initRecyclerView() {
-        adapter = new HistoryAdapter(R.layout.item_hotspot_history, historyList);
+        adapter = new HistoryAdapter(R.layout.item_passenger_path, historyList);
         manager = new LinearLayoutManager(this);
         historyRv.setLayoutManager(manager);
         historyRv.setAdapter(adapter);
@@ -207,7 +217,7 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
         plan.clear();
         plan.addAll(pathInfos);
         List<TimeDistance> timeDistances = new ArrayList<>();
-        for (int i = 0; i <= plan.size(); i++) {
+        for (int i = 0; i < plan.size(); i++) {
             TimeDistance timeDistance = new TimeDistance();
             timeDistance.setTime(pathInfos.get(i).getTime());
             timeDistance.setDistance(pathInfos.get(i).getDistance());
@@ -216,12 +226,12 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
         planSpc.init(timeDistances);
         List<LatLng> latlngs = new ArrayList<>();
         //默认选择第一条路线
-        PathInfo.DataBean one = pathInfos.get(0);
-        for (int i = 0; i <= latlngs.size(); i++) {
+        List<PathInfo.DataBean.RouteBean> one = pathInfos.get(0).getRoute();
+        for (int i = 0; i < one.size(); i++) {
             //获取经度
-            double lng = one.getRoute().get(i).getLng();
+            double lng = one.get(i).getLng();
             //获取纬度
-            double lat = one.getRoute().get(i).getLat();
+            double lat = one.get(i).getLat();
             latlngs.add(new LatLng(lat,lng));
         }
         showRoad(latlngs);
@@ -230,7 +240,10 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
     private void showRoad(List<LatLng> paths) {
         //清空地图状态
         pathMap.clear();
-        pathMap.addPolyline(new PolylineOptions().addAll(paths).width(10).color(Color.argb(255,1,1,1)));
+        for (LatLng temp : paths) {
+            Log.d("showRoad","latitude:" + temp.latitude + "lng:" + temp.longitude);
+        }
+        pathMap.addPolyline(new PolylineOptions().addAll(paths).width(10).color(Color.parseColor("#51B46D")));
     }
 
     @Override
@@ -278,9 +291,12 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
     }
 
     /**
-     * 根据当前输入的信息画图
+     * 根据当前输入的信息画图,并定位
      */
     private void drawByNowInputInfo() {
+        originEndLl.setBackgroundColor(Color.TRANSPARENT);
+        historyCv.setVisibility(View.GONE);
+        planSpc.setVisibility(View.VISIBLE);
         //打起点标记
         LatLng origin = new LatLng(nowInputInfo.getOriginLat(),nowInputInfo.getOriginLng());
         pathMap.addMarker(MakerFactory.create(MakerFactory.CONST_ORIGIN,origin));
@@ -289,9 +305,7 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
         pathMap.addMarker(MakerFactory.create(MakerFactory.CONST_END,end));
         //把当前输入框内的起始点进行网络请求
         present.managePath(nowInputInfo);
-        originEndLl.setBackgroundColor(Color.TRANSPARENT);
-        historyCv.setVisibility(View.GONE);
-        planSpc.setVisibility(View.VISIBLE);
+        moveTo(origin);
     }
 
     @Override
@@ -315,5 +329,10 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
     @Override
     public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
 
+    }
+
+    private void moveTo(LatLng latLng) {
+        CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng,14,0,0));
+        pathMap.moveCamera(update);
     }
 }
