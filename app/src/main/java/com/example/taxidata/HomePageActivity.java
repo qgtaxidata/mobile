@@ -742,6 +742,4 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         Log.d(TAG, "按下返回键");
         return super.onKeyDown(keyCode, event);
     }
-
-
 }
