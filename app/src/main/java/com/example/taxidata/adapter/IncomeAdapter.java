@@ -47,7 +47,7 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ViewHolder
         holder.numberTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = v.getId();
+                int position = holder.getAdapterPosition();
                 if(onItemClickListener != null){
                     onItemClickListener.onItemClick(position);
                 }
@@ -60,17 +60,19 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ViewHolder
     public void onBindViewHolder(@NonNull IncomeAdapter.ViewHolder holder, int position) {
         if (position < incomeList.size()){
             //为各项进行赋值
+            Log.d("size1", incomeList.size()+"");
             IncomeRankingInfo.DataBean incomeRankingInfo = incomeList.get(position);
             ViewHolder viewHolder = holder;
-            Log.d("adapter", incomeRankingInfo.getDriverID());
-            viewHolder.rankingTv.setText(incomeRankingInfo.getRank());
-            viewHolder.numberTv.setText(incomeRankingInfo.getDriverID());
-            viewHolder.incomeTv.setText((int)incomeRankingInfo.getIncome());
+            Log.d("adapter", position+"");
+            viewHolder.rankingTv.setText(incomeRankingInfo.getRank()+"");
+            viewHolder.numberTv.setText(incomeRankingInfo.getDriverID()+"");
+            viewHolder.incomeTv.setText(incomeRankingInfo.getIncome()+"");
         }
     }
 
     @Override
     public int getItemCount() {
+        Log.d("size", incomeList.size()+"");
         return incomeList.size();
     }
 

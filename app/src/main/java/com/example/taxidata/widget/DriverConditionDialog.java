@@ -3,6 +3,7 @@ package com.example.taxidata.widget;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,18 +37,17 @@ public class DriverConditionDialog extends Dialog {
     @BindView(R.id.driver_condition_no_load_time_tv)
     TextView driverConditionNoLoadTimeTv;
 
-
+    private DriverConditionInfo.DataBean mDataBean;
+    private int mRank;
+    private String mDriverID;
+    private double mIncome;
 
     public DriverConditionDialog(@NonNull Context context, int themeResId,DriverConditionInfo.DataBean dataBean,int rank, String driverID, double income) {
         super(context, themeResId);
-        driverConditionNumberTv.setText(driverID);
-        driverConditionCompanyTv.setText(dataBean.getCompanyID());
-        driverConditionIncomeTv.setText((int)income);
-        driverConditionRankTv.setText(rank);
-        driverConditionLoadMileTv.setText((int) dataBean.getLoad_mile());
-        driverConditionLoadTimeTv.setText((int) dataBean.getLoad_time());
-        driverConditionNoLoadMileTv.setText((int) dataBean.getNo_load_mile());
-        driverConditionNoLoadTimeTv.setText((int) dataBean.getNo_load_time());
+        mDataBean = dataBean;
+        mRank = rank;
+        mDriverID = driverID;
+        mIncome = income;
     }
 
     @Override
@@ -55,6 +55,14 @@ public class DriverConditionDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_driver_condition);
         ButterKnife.bind(this);
+        driverConditionNumberTv.setText(mDriverID);
+        driverConditionCompanyTv.setText(mDataBean.getCompanyID());
+        driverConditionIncomeTv.setText(mIncome+"");
+        driverConditionRankTv.setText(mRank+"");
+        driverConditionLoadMileTv.setText(mDataBean.getLoad_mile()+"");
+        driverConditionLoadTimeTv.setText(mDataBean.getLoad_time()+"");
+        driverConditionNoLoadMileTv.setText(mDataBean.getNo_load_mile()+"");
+        driverConditionNoLoadTimeTv.setText(mDataBean.getNo_load_time()+"");
     }
 
     @OnClick(R.id.close_driver_condition_dialog_imv)

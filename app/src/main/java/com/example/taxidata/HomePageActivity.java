@@ -39,7 +39,9 @@ import com.example.taxidata.ui.areaanalyze.AreaAnalyzeActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
+import com.example.taxidata.ui.passengerpath.view.OriginEndActivity;
 import com.example.taxidata.ui.setup.SetUpActivity;
+import com.example.taxidata.ui.taxidemand.TaxiDemandActivity;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.DropDownSelectView;
@@ -197,6 +199,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             @Override
             public void onClick(View v) {
                 // TODO 路线
+                Intent intent = new Intent(HomePageActivity.this, OriginEndActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -443,6 +447,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 break;
             case R.id.fbtn_request_analysis:
                 //区域出租车需求分析
+                Intent taxiDemandIntent = new Intent(HomePageActivity.this, TaxiDemandActivity.class);
+                startActivity(taxiDemandIntent);
                 break;
             case R.id.fbtn_taxi_income:
                 //出租车司机收入排行榜
@@ -450,7 +456,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 startActivity(incomeIntent);
                 break;
             case R.id.fbtn_behavior_analysis:
-                //出租车行为分析与预测
+                //区域收入分析与预测
                 break;
             case R.id.fbtn_abnormal_analysis:
                 //出租车异常情况分析

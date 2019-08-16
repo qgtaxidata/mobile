@@ -8,24 +8,24 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AreaAnalyzeViewPagerAdapter extends FragmentPagerAdapter {
+public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private List<Fragment> areaAnalyzeList = new ArrayList<>();
+    private List<Fragment> mList = new ArrayList<>();
 
-    public AreaAnalyzeViewPagerAdapter(@NonNull FragmentManager fragmentManager, List<Fragment> list) {
+    public ViewPagerAdapter(@NonNull FragmentManager fragmentManager, List<Fragment> list) {
         super(fragmentManager);
-        this.areaAnalyzeList = list;
+        this.mList = list;
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return areaAnalyzeList.get(position);
+        return mList.get(position);
     }
 
     @Override
     public int getCount() {
-        return areaAnalyzeList.size();
+        return mList.size();
     }
 
 }

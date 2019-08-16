@@ -166,7 +166,8 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
         Log.e(TAG, "onRegeocodeSearched: 正在将坐标转换成中文地址" );
         if(regeocodeResult.getRegeocodeAddress().getRoads().size() > 0) {
-            String addressName = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
+            String addressName =regeocodeResult.getRegeocodeAddress().getDistrict() + regeocodeResult.getRegeocodeAddress().getTownship()+ regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName() ;
+//            String addressName = regeocodeResult.getRegeocodeAddress().getFormatAddress();
             StatusManager.hotSpotChosen = addressName;
             BaseEvent baseEvent = EventFactory.getInstance();
             baseEvent.type = EventBusType.HOTSPOT_CHOSEN;

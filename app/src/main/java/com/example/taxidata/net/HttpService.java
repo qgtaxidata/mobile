@@ -1,6 +1,7 @@
 package com.example.taxidata.net;
 
 
+import com.example.taxidata.bean.AreaIncomeInfo;
 import com.example.taxidata.bean.DriverConditionInfo;
 import com.example.taxidata.bean.HeatPointInfo;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
@@ -8,6 +9,7 @@ import com.example.taxidata.bean.HotSpotRequestInfo;
 import com.example.taxidata.bean.HotSpotRouteInfo;
 import com.example.taxidata.bean.HotSpotRouteRequest;
 import com.example.taxidata.bean.IncomeRankingInfo;
+import com.example.taxidata.bean.TaxiDemandInfo;
 import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.bean.TaxiPathInfo;
 import com.example.taxidata.ui.passengerpath.enity.PathInfo;
@@ -50,7 +52,7 @@ public interface HttpService {
     @POST("rank/getRank")
     Observable<IncomeRankingInfo> getIncomeRankingInfo(@Query("area") int area, @Query("date") String date);
 
-    @GET("")
+    @GET("rank/getSituation")
     Observable<DriverConditionInfo> getDriverConditionInfo(@Query("area") int area, @Query("date") String date, @Query("driverID") String driverID);
 
     @GET("route/getRoute")
@@ -58,5 +60,12 @@ public interface HttpService {
                                  @Query("latOrigin")double latOrigin,
                                  @Query("lonDestination")double lonDestination,
                                  @Query("latDestination")double latDestination);
+
+    @GET("AreaRequirement/analyseRequirement")
+    Observable<TaxiDemandInfo> getTaxiDemandInfo(@Query("area") int area, @Query("time") String time);
+
+    @POST("")
+    Observable<AreaIncomeInfo> getAreaIncomeInfo(@Query("area") int area, @Query("date") String date);
+
 }
 

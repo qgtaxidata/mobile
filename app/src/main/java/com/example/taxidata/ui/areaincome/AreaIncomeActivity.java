@@ -1,28 +1,20 @@
-package com.example.taxidata.ui.IncomeRanking;
+package com.example.taxidata.ui.areaincome;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.amap.api.maps.model.LatLng;
 import com.example.taxidata.R;
-import com.example.taxidata.adapter.IncomeAdapter;
 import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.base.BaseActivity;
-import com.example.taxidata.bean.IncomeRankingInfo;
 import com.example.taxidata.constant.Area;
+import com.example.taxidata.ui.taxidemand.TaxiDemandActivity;
 import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.DropDownSelectView;
-import com.orhanobut.logger.Logger;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,40 +31,35 @@ import static com.example.taxidata.constant.Area.PAN_YU;
 import static com.example.taxidata.constant.Area.TIAN_HE;
 import static com.example.taxidata.constant.Area.YUE_XIU;
 import static com.example.taxidata.constant.Area.ZENG_CHENG;
-import static com.example.taxidata.constant.Area.area;
 
-public class IncomeRankingActivity extends BaseActivity implements IncomeRankingContract.IncomeRankingView {
+public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContract.AreaIncomeView {
 
-    @BindView(R.id.income_ranking_area_select_view)
-    DropDownSelectView incomeRankingAreaSelectView;
-    @BindView(R.id.income_ranking_time_select_view)
-    DropDownSelectView incomeRankingTimeSelectView;
-    @BindView(R.id.income_ranking_btn_refresh_list)
-    Button incomeRankingBtnRefreshList;
-    @BindView(R.id.income_ranking_recycle_view)
-    RecyclerView incomeRankingRecycleView;
 
+    @BindView(R.id.area_income_area_select_view)
+    DropDownSelectView areaIncomeAreaSelectView;
+    @BindView(R.id.area_income_time_select_view)
+    DropDownSelectView areaIncomeTimeSelectView;
+    @BindView(R.id.area_income_refresh_list_btn)
+    Button areaIncomeRefreshListBtn;
+
+    private AreaIncomeContract.AreaIncomePresent present;
     ArrayList<String> areaList = new ArrayList<>();
     ArrayList<String> timeList = new ArrayList<>();
-    ArrayList<IncomeRankingInfo.DataBean> incomeList= new ArrayList<IncomeRankingInfo.DataBean>();
-    private IncomeAdapter adapter;
     private int areaId = 5;
     private String date = "2017-02-03";
-
-    private IncomeRankingContract.IncomeRankingPresent present;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_income_ranking);
+        setContentView(R.layout.activity_area_income);
         ButterKnife.bind(this);
-        present = new IncomeRankingPresent();
+        present = new AreaIncomePresent();
         present.attachView(this);
         initAreaList();
         initTimeList();
-        initIncomeList();
+        initChart();
         //获取用户选择的区域
-        incomeRankingAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
+        areaIncomeAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String areaName = areaList.get(position);
@@ -80,7 +67,7 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
             }
         });
         //获取用户选择的时间
-        incomeRankingTimeSelectView.seOnItemClickListener(new OnItemClickListener() {
+        areaIncomeTimeSelectView.seOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String time = timeList.get(position);
@@ -91,22 +78,11 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
                 }
             }
         });
-        //用户点击司机编号展示司机运营情况
-        adapter.seOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                String driverID = incomeList.get(position).getDriverID();
-                int rank = incomeList.get(position).getRank();
-                double income = incomeList.get(position).getIncome();
-                present.getDriverConditionInfo(IncomeRankingActivity.this, areaId, date, driverID, rank, income);
-            }
-        });
     }
 
-    @OnClick(R.id.income_ranking_btn_refresh_list)
+    @OnClick(R.id.area_income_refresh_list_btn)
     public void onViewClicked() {
-        //发送请求司机收入排行榜数据
-        present.getIncomeRankingInfo(IncomeRankingActivity.this, areaId, date);
+        present.getAreaIncomeInfo(AreaIncomeActivity.this, areaId, date);
     }
 
     //初始化区域popupWindow
@@ -122,7 +98,7 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
         areaList.add(NAN_SHA);
         areaList.add(CONG_HUA);
         areaList.add(ZENG_CHENG);
-        incomeRankingAreaSelectView.setItemsData(areaList, 1);
+        areaIncomeAreaSelectView.setItemsData(areaList, 1);
     }
 
     //初始化时间popupWindow
@@ -146,25 +122,11 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
         timeList.add("2017年02月19日");
         timeList.add("2017年02月20日");
         timeList.add("2017年02月21日");
-        incomeRankingTimeSelectView.setItemsData(timeList, 2);
+        areaIncomeTimeSelectView.setItemsData(timeList, 2);
     }
 
-    //展示司机收入排行榜列表
-    @Override
-    public void showIncomeList(List<IncomeRankingInfo.DataBean> list) {
-        incomeList.clear();
-        incomeList.addAll(list);
-        Log.d("init",incomeList.get(10).getDriverID()+"");
-        incomeRankingRecycleView.setAdapter(adapter);
+    //初始化图表(默认显示番禺区和2017年02月03号的数据)
+    private void initChart(){
+        present.getAreaIncomeInfo(AreaIncomeActivity.this, areaId, date);
     }
-
-    //初始化列表(默认显示番禺区和2017年02月03号的数据)
-    private void initIncomeList(){
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        incomeRankingRecycleView.setLayoutManager(layoutManager);
-        adapter = new IncomeAdapter(incomeList);
-        incomeRankingRecycleView.setAdapter(adapter);
-        present.getIncomeRankingInfo(IncomeRankingActivity.this, areaId, date);
-    }
-
 }
