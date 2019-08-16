@@ -1,5 +1,7 @@
 package com.example.taxidata.ui.passengerpath.present;
 
+import android.util.Log;
+
 import com.aserbao.aserbaosandroid.functions.database.greenDao.db.OriginEndInfoDao;
 import com.example.taxidata.R;
 import com.example.taxidata.application.TaxiApp;
@@ -44,6 +46,7 @@ public class OriginEndShowPresent implements OriginEndShowContract.OriginEndShow
 
     @Override
     public void managePath(OriginEndInfo info) {
+        view.showLoading();
         model.requestPath(info)
                 .subscribe(new Observer<PathInfo>() {
                     @Override
@@ -62,13 +65,14 @@ public class OriginEndShowPresent implements OriginEndShowContract.OriginEndShow
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        Log.d("OriginEndShowPresent",e.getMessage());
+                        view.hideLoading();
                         StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null,R.mipmap.ic_sad,"网络错误");
                     }
 
                     @Override
                     public void onComplete() {
-
+                        view.hideLoading();
                     }
                 });
     }

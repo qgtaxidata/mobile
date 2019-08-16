@@ -15,6 +15,7 @@ import com.amap.api.maps.model.PolylineOptions;
 import com.example.taxidata.R;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.StrongStengthTimerPicker;
+import com.example.taxidata.widget.TimePickClickedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,14 @@ public class DemoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ToastUtil.showShortToastBottom(picker.getTime());
+                picker.getChineseTime();
+            }
+        });
+
+        picker.setTimeStatusBarClick(new TimePickClickedListener() {
+            @Override
+            public void onClick(StrongStengthTimerPicker v) {
+                v.showDetailTimerPicker();
             }
         });
     }
