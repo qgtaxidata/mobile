@@ -17,8 +17,10 @@ import com.example.taxidata.common.GreenDaoManager;
 import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.ui.hotspot.contract.OriginHotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.OriginHotSpotPresenter;
+import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 import com.example.taxidata.util.GsonUtil;
 import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
@@ -40,7 +42,7 @@ public class OriginHotSpotModel implements OriginHotSpotContract.OriginHotSpotMo
     private static final String TAG = "OriginHotSpotModel";
     private DaoSession originDaoSession;
     private List<HotSpotHint> hintList;
-    private OriginHotSpotPresenter mPresenter;
+    private OriginHotSpotContract.OriginHotSpotPresenter mPresenter;
     private List<HotSpotOrigin> originHistoryList;
 
     public OriginHotSpotModel(OriginHotSpotPresenter mPresenter) {
@@ -73,12 +75,20 @@ public class OriginHotSpotModel implements OriginHotSpotContract.OriginHotSpotMo
     }
 
     @Override
-    public Observable<HotSpotRouteInfo> requestRouteData(HotSpotRouteRequest request) {
-        String requestJsonString = GsonUtil.GsonString(request);
-        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),requestJsonString) ;
+    public Observable<PathInfo> requestRouteData(HotSpotRouteRequest request) {
+//        return RetrofitManager.getInstance()
+//                .getHttpService()
+//                .getPath(request.getLonOrigin(),request.getLatOrigin(),request.getLonDestination(),request.getLatDestination())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread());
+        double latOrigin = request.getLatOrigin();
+        double lngOrigin = request.getLonOrigin();
+        double latEnd = request.getLatDestination();
+        double lngEnd = request.getLonDestination();
+        Logger.d("M 层发送 热点路径 请求"+latOrigin+" "+lngOrigin+" "+latEnd+ "  "+ lngEnd);
         return RetrofitManager.getInstance()
                 .getHttpService()
-                .getHotSpotRoute(body)
+                .getPath(lngOrigin,latOrigin,lngEnd,latEnd)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -86,11 +96,13 @@ public class OriginHotSpotModel implements OriginHotSpotContract.OriginHotSpotMo
     @Override
     public void onGetInputtips(List<Tip> list, int i) {
         hintList.clear();
-        for(Tip tip : list) {
-            if(! "".equals(tip.getPoiID()) && tip.getPoint() != null ) {
-                //真实存在的地点加入列表
-                HotSpotHint hint = new HotSpotHint(tip.getName(),tip.getAddress(),tip.getPoint().getLongitude() ,tip.getPoint().getLatitude());
-                hintList.add(hint);
+        if(list.size() > 0 ){
+            for(Tip tip : list) {
+                if(! "".equals(tip.getPoiID()) && tip.getPoint() != null ) {
+                    //真实存在的地点加入列表
+                    HotSpotHint hint = new HotSpotHint(tip.getName(),tip.getAddress(),tip.getPoint().getLongitude() ,tip.getPoint().getLatitude());
+                    hintList.add(hint);
+                }
             }
         }
         if(hintList.size() > 0) {

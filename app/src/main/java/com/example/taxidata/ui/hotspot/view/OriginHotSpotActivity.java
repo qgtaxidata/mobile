@@ -38,6 +38,7 @@ import com.example.taxidata.ui.hotspot.adapter.HintHotSpotAdapter;
 import com.example.taxidata.ui.hotspot.adapter.OriginHotSpotAdapter;
 import com.example.taxidata.ui.hotspot.contract.OriginHotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.OriginHotSpotPresenter;
+import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.widget.EmptyHotSpotHistoryView;
 import com.orhanobut.logger.Logger;
@@ -148,7 +149,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
         itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
         itemTouchHelper.attachToRecyclerView(rvHotspotOrigin);
         originAdapter.enableSwipeItem();
-        originAdapter.openLoadAnimation();
+        originAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         originAdapter.setOnItemSwipeListener(new OnItemSwipeListener() {
             @Override
             public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
@@ -223,10 +224,14 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
 
     @Override
     public void showHintHotSpotList(List<HotSpotHint> hintList) {
-        if (hintAdapter != null && rvHotspotOrigin != null) {
+        if (hintAdapter != null && rvHotspotOrigin != null && ! "".equals(intputString)) {
+            //输入框不为空，则正常显示提示列表
             itemTouchHelper.attachToRecyclerView(null);
             rvHotspotOrigin.setAdapter(hintAdapter);
             hintAdapter.setNewData(hintList);
+        } else {
+            //输入框为空则显示历史列表
+            showHistoryOriginList(mPresenter.getHistoryOriginList());
         }
     }
 
@@ -248,20 +253,20 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
     public void handleEvent(BaseEvent baseEvent) {
         if (baseEvent.type.equals(EventBusType.ORIGIN_HOTSPOT_TO_CHOOSE)) {
             LatLng latLng = (LatLng) baseEvent.object;
-            routeRequest.getEnd().setLongitute(latLng.longitude);
-            routeRequest.getEnd().setLatitute(latLng.latitude);
+            routeRequest.setLonDestination(latLng.longitude);
+            routeRequest.setLatDestination(latLng.latitude);
             Log.e(TAG,"接收用户选择的热点（"+latLng.longitude+","+latLng.latitude+") ,准备选择 起点");
         }
     }
 
     @Override
-    public void requestSuccess(HotSpotRouteInfo info) {
+    public void requestSuccess(PathInfo info) {
         BaseEvent baseEventBothChosen = EventFactory.getInstance();
         baseEventBothChosen.type = EventBusType.ORIGIN_HOTSPOT_BOTH_CHOSEN ;
         baseEventBothChosen.object = info;
         baseEventBothChosen.content = originAddressChosen;
         EventBusUtils.postSticky(baseEventBothChosen);
-        Intent intentBothChosen = new Intent(OriginHotSpotActivity.this ,HotSpotPathActivity.class);
-        startActivity(intentBothChosen);
+        //返回热点路径页面
+        finish();
     }
 }

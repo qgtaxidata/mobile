@@ -73,7 +73,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                     .subscribe(new Observer<HotSpotCallBackInfo>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-//                            Logger.d("热点数据订阅√");
                         }
                         @Override
                         public void onNext(HotSpotCallBackInfo hotSpotCallBackInfo) {
@@ -95,7 +94,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                         public void onError(Throwable e) {
                             //假数据--度过服务器关掉的时光
                             hotSpotRecommandInfoList.clear();
-                            hotSpotRecommandInfoList.add(new HotSpotCallBackInfo.DataBean(108.940174,34.341568,6));
+                            hotSpotRecommandInfoList.add(new HotSpotCallBackInfo.DataBean(113.056778,23.402886,6));
                             mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
                             e.printStackTrace();
                             ToastUtil.showShortToastCenter("抱歉，网络似乎出现了异常 :(");
@@ -190,14 +189,16 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
      */
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-        if(geocodeResult.getGeocodeAddressList().size() > 0) {
-            GeocodeAddress geocodeAddress = geocodeResult.getGeocodeAddressList().get(0);
-            LatLonPoint point = geocodeAddress.getLatLonPoint();
-            double inputLatitude = point.getLatitude();
-            double inputLongitude = point.getLongitude();
-            getHotSpotData(inputLongitude,inputLatitude ,"");
-        } else {
-            ToastUtil.showShortToastBottom("您输入的地址有误,系统无法识别,请重新输入");
+        if(geocodeResult != null) {
+            if(geocodeResult.getGeocodeAddressList().size() > 0) {
+                GeocodeAddress geocodeAddress = geocodeResult.getGeocodeAddressList().get(0);
+                LatLonPoint point = geocodeAddress.getLatLonPoint();
+                double inputLatitude = point.getLatitude();
+                double inputLongitude = point.getLongitude();
+                getHotSpotData(inputLongitude,inputLatitude ,"");
+            } else {
+                ToastUtil.showShortToastBottom("您输入的地址有误,系统无法识别,请重新输入");
+            }
         }
     }
 
