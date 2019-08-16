@@ -11,6 +11,8 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.PolylineOptions;
 import com.example.taxidata.R;
+import com.example.taxidata.adapter.OnItemClickListener;
+import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.bean.GetTaxiPathInfo;
 import com.example.taxidata.bean.TaxiInfo;
@@ -54,11 +56,11 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
 
     private TaxiPathContract.TaxiPathPresent taxiPathPresent;
     private AMap taxiPathAMap;
-    private double longitude;    //经度
-    private double latitude;     //纬度
-    private int area;
+    private int areaId;
+    private String currentTime;
     private List<TaxiInfo.DataBean> taxiList = new ArrayList<>();
     ArrayList<String> areaList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,8 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         ButterKnife.bind(this);
         taxiPathPresent = new TaxiPathPresent();
         taxiPathPresent.attachView(this);
+        //获取APP当前时间
+        currentTime = TaxiApp.getAppNowTime();
         //绑定显示出租车信息的dialog
         EventBus.getDefault().register(this);
         //隐藏清除按钮
@@ -81,6 +85,14 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         //设置默认显示番禺区
         LatLng latLng = Area.area_latlng.get(5);
         taxiPathAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+        //获取用户选择的区域
+        taxiPathAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                String areaName = areaList.get(position);
+                areaId = Area.area.get(areaName);
+            }
+        });
     }
 
     @Override
@@ -90,32 +102,32 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         EventBus.getDefault().unregister(this);
     }
 
-    //初始化车牌号列表dialog
-    @Override
-    public void initList(List<TaxiInfo.DataBean> taxiInfoList) {
-        taxiList.addAll(taxiInfoList);
-        //LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-    }
 
-    //在地图上显示出租车路径
+    //显示出租车历史路径
     @Override
-    public void showPath(List<TaxiPathInfo.DataBean> listInfo) {
+    public void showHistoryPath(List<TaxiPathInfo.DataBean> listInfo) {
         List<LatLng> latLngs = new ArrayList<LatLng>();
         for (TaxiPathInfo.DataBean info : listInfo) {
             latLngs.add(new LatLng(info.getLatitude(), info.getLongitude()));
         }
         taxiPathAMap.addPolyline(new PolylineOptions()
                 .addAll(latLngs)
-                .width(10)
-                .color(Color.GREEN));
+                .width(20)
+                .color(Color.parseColor("51b46d")));
         //显示清除路径按钮
         taxiPathClearBtn.setVisibility(View.VISIBLE);
+    }
+
+    //显示出租车实时路径
+    @Override
+    public void showCurrentPath(List<TaxiPathInfo.DataBean> listInfo) {
+
     }
 
     //处理dialog发送的事件
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void getPathInfo(GetTaxiPathInfo getTaxiPathInfo) {
-        taxiPathPresent.getTaxiPathInfo(this, getTaxiPathInfo.getTime(), getTaxiPathInfo.getLicenseplateno());
+        taxiPathPresent.getHistoryTaxiPathInfo(this, getTaxiPathInfo.getTime(), getTaxiPathInfo.getLicenseplateno());
     }
 
     //点击事件
@@ -129,10 +141,8 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
                 taxiPathClearBtn.setVisibility(View.GONE);
                 break;
             case R.id.taxi_path_licenseplateno_btn:
-                //显示车牌号
-                //得到用户所选区域
-                area = 1;
-                taxiPathPresent.getTaxiInfo(TaxiPathActivity.this, area, "2017-02-01 17:00:00");
+                //显示车牌号列表
+                taxiPathPresent.getTaxiInfo(TaxiPathActivity.this, areaId, currentTime);
                 break;
         }
     }
@@ -151,5 +161,10 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         areaList.add(CONG_HUA);
         areaList.add(ZENG_CHENG);
         taxiPathAreaSelectView.setItemsData(areaList, 1);
+    }
+
+    @Override
+    public void clearMap() {
+        taxiPathAMap.clear();
     }
 }

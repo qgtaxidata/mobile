@@ -167,4 +167,9 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
         present.getIncomeRankingInfo(IncomeRankingActivity.this, areaId, date);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        present.detachView();
+    }
 }

@@ -33,6 +33,7 @@
         <activity android:name=".test.MainActivity" />
         <activity android:name=".ui.hotspot.view.HotSpotResearchActivity" />
         <activity android:name=".ui.hotspot.view.OriginHotSpotActivity" />
+        <activity android:name=".ui.taxidemand.TaxiDemandActivity" />
         <activity
             android:name=".HomePageActivity"
             android:launchMode="standard">

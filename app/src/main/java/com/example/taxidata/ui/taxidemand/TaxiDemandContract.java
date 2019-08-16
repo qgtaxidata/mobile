@@ -7,12 +7,14 @@ import com.example.taxidata.base.BasePresent;
 import com.example.taxidata.base.BaseView;
 import com.example.taxidata.bean.TaxiDemandInfo;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 
 public interface TaxiDemandContract {
 
     interface TaxiDemandView extends BaseView{
-        void showChart(TaxiDemandInfo.DataBean dataBean);
+        void showChart(TaxiDemandInfo.DataBean  dataBeans);
     }
 
     interface TaxiDemandModel extends BaseModel{

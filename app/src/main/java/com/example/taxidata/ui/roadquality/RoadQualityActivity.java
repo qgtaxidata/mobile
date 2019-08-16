@@ -9,9 +9,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.taxidata.R;
 import com.example.taxidata.adapter.AreaAnalyzeTransformer;
+import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.adapter.ViewPagerAdapter;
+import com.example.taxidata.base.BaseActivity;
+import com.example.taxidata.constant.Area;
+import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +36,7 @@ import static com.example.taxidata.constant.Area.TIAN_HE;
 import static com.example.taxidata.constant.Area.YUE_XIU;
 import static com.example.taxidata.constant.Area.ZENG_CHENG;
 
-public class RoadQualityActivity extends AppCompatActivity {
+public class RoadQualityActivity extends BaseActivity implements RoadQualityContract.RoadQualityView {
 
     @BindView(R.id.road_quality_area_select_view)
     DropDownSelectView roadQualityAreaSelectView;
@@ -42,23 +47,49 @@ public class RoadQualityActivity extends AppCompatActivity {
     @BindView(R.id.road_quality_vp)
     ViewPager roadQualityVp;
 
+    private RoadQualityContract.RoadQualityPresent present;
     private List<Fragment> roadQualityList = new ArrayList<>();
     ArrayList<String> areaList = new ArrayList<>();
     ArrayList<String> timeList = new ArrayList<>();
+    private int areaId = 5;
+    private String date = "2017-02-03";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_road_quality);
         ButterKnife.bind(this);
+        present = new RoadQualityPresent();
+        present.attachView(this);
         initAreaList();
         initTimeList();
         //设置viewPager
         setViewPager(roadQualityVp);
+        //获取用户选择的区域
+        roadQualityAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                String areaName = areaList.get(position);
+                areaId = Area.area.get(areaName);
+            }
+        });
+        //获取用户选择的时间
+        roadQualityTimeSelectView.seOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                String time = timeList.get(position);
+                try {
+                    date = TimeChangeUtil.transform(time);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @OnClick(R.id.road_quality_refresh_list_btn)
     public void onViewClicked() {
+        present.getRoadQualityInfo(RoadQualityActivity.this, areaId,date);
     }
 
     private void setViewPager(ViewPager viewPager) {
@@ -101,5 +132,11 @@ public class RoadQualityActivity extends AppCompatActivity {
         timeList.add("2007年02月14日");
         timeList.add("2007年02月15日");
         roadQualityTimeSelectView.setItemsData(timeList, 2);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        present.detachView();
     }
 }

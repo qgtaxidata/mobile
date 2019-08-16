@@ -3,7 +3,6 @@ package com.example.taxidata.widget;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -64,7 +63,6 @@ public class ChooseTaxiDialog extends Dialog {
                 cancel();
                 break;
             case R.id.choose_taxi_sure:
-                Log.d("wxD", "wx");
                 EventBus.getDefault().post(pathInfo);
                 dismiss();
                 break;
@@ -80,7 +78,6 @@ public class ChooseTaxiDialog extends Dialog {
         chooseTaxiRecyclerV.setLayoutManager(layoutManager);
         adapter = new TaxiChooseAdapter(taxiInfoList);
         chooseTaxiRecyclerV.setAdapter(adapter);
-        Log.d("wxD1", "wx");
         adapter.seOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -90,7 +87,6 @@ public class ChooseTaxiDialog extends Dialog {
                 String time = taxiInfoList.get(position).getTime();
                 pathInfo.setTime(time);
                 pathInfo.setLicenseplateno(licenseplateno);
-                Log.d("wxD2", time);
             }
         });
     }

@@ -1,6 +1,9 @@
 package com.example.taxidata.ui.taxidemand;
 
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -14,8 +17,17 @@ import com.example.taxidata.bean.TaxiDemandInfo;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +61,7 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
     ArrayList<String> areaList = new ArrayList<>();
     private int areaId = 5;
     private String currentTime;
+    private XAxis xAxis;
 
 
     @Override
@@ -99,13 +112,91 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
 
     //初始化图表(默认显示番禺区当前时间的数据)
     private void initChart(){
-        present.getTaxiDemandInfo(TaxiDemandActivity.this, areaId, currentTime);
+        taxiDemandAnalyzeLineChart.setDrawGridBackground(false);
+        taxiDemandAnalyzeLineChart.setDragEnabled(false);  //禁止缩放
+        taxiDemandAnalyzeLineChart.setScaleEnabled(false);  //禁止推动
+        taxiDemandAnalyzeLineChart.setDrawBorders(false);    //设置四周是否有边框
+        taxiDemandAnalyzeLineChart.setDescription(null);   //设置右下角说明文字
+        //x轴的相关设置
+        xAxis = taxiDemandAnalyzeLineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置
+        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisLineWidth(3f);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawLabels(true);
+        xAxis.setTextColor(Color.BLACK);
+        xAxis.setAxisLineColor(Color.BLACK);
+        xAxis.setLabelCount(3);  //x轴上有多少个刻度
+        //Y轴的相关设置
+        taxiDemandAnalyzeLineChart.getAxisRight().setEnabled(false);
+        YAxis leftY = taxiDemandAnalyzeLineChart.getAxisLeft();
+        leftY.setEnabled(true);
+        leftY.setAxisLineWidth(3f);
+        leftY.setDrawGridLines(false);
+        leftY.setAxisMinimum(0f);
+        leftY.setDrawAxisLine(true);
+        leftY.setTextColor(Color.BLACK);
+        leftY.setAxisLineColor(Color.BLACK);
+        present.getTaxiDemandInfo(TaxiDemandActivity.this, areaId, "2017-02-03 11:11:11");
     }
 
     //展示列表
     @Override
-    public void showChart(TaxiDemandInfo.DataBean dataBean) {
-        taxiDemandAnalyzeTitleTv.setText(dataBean.getGraph_title());
-
+    public void showChart(TaxiDemandInfo.DataBean dataBeans) {
+        if(dataBeans!=null){
+            taxiDemandAnalyzeTitleTv.setText(dataBeans.getGraph_title());
+            List<TaxiDemandInfo.DataBean.GraphDataBean> dataList = dataBeans.getGraph_data();
+            //设置X轴数据
+            String[] xValues = new String[3];
+            xValues[0] = null;
+            for(int j = 0; j<3; j++){
+            xValues[j] = dataList.get(j).getTitle();
+        }
+            IAxisValueFormatter formatter = new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return xValues[(int)value];
+            }
+        };
+            xAxis.setValueFormatter(formatter);
+            //添加Y轴数据
+            ArrayList<Entry> values = new ArrayList<>();
+            values.add(new Entry(0,0));
+            for(int i = 0; i<3; i++){
+            values.add(new Entry(i, dataList.get(i).getDemand()));
+        }
+            LineDataSet lineDataSet;
+            if(taxiDemandAnalyzeLineChart.getData() != null && taxiDemandAnalyzeLineChart.getData().getDataSetCount() > 0){
+            lineDataSet = (LineDataSet)taxiDemandAnalyzeLineChart.getData().getDataSetByIndex(0);
+            lineDataSet.setValues(values);
+            taxiDemandAnalyzeLineChart.getData().notifyDataChanged();
+            taxiDemandAnalyzeLineChart.notifyDataSetChanged();
+        }else {
+            lineDataSet = new LineDataSet(values, null);
+            lineDataSet.setLineWidth(2f);
+            lineDataSet.setCircleRadius(3f);
+            lineDataSet.setDrawCircleHole(false);   //实心还是空心
+            lineDataSet.setValueTextSize(14f);
+            lineDataSet.setDrawFilled(false);
+            lineDataSet.setFormLineWidth(5f);
+            lineDataSet.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+            lineDataSet.setFormSize(15.f);
+            //添加数据集
+            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            dataSets.add(lineDataSet);
+            //创建数据集的数据对象
+            LineData data = new LineData(dataSets);
+            taxiDemandAnalyzeLineChart.setData(data);
+        }
+        }
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        present.detachView();
+    }
+
 }
