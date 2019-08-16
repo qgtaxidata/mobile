@@ -138,7 +138,17 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
                 if (planSpc.getStatus() == position) {
                     return;
                 } else {
-
+                    List<LatLng> latLngs = new ArrayList<>();
+                    PathInfo.DataBean onePlan = plan.get(position);
+                    List<PathInfo.DataBean.RouteBean> route = onePlan.getRoute();
+                    for (int i = 0; i < route.size(); i++) {
+                        //获取经度
+                        double lng = route.get(i).getLng();
+                        //获取纬度
+                        double lat = route.get(i).getLat();
+                        latLngs.add(new LatLng(lat,lng));
+                    }
+                    showRoad(latLngs);
                 }
             }
         });

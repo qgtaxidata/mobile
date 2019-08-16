@@ -1,13 +1,14 @@
 package com.example.taxidata.ui.passengerpath.model;
 
+import com.aserbao.aserbaosandroid.functions.database.greenDao.db.OriginEndInfoDao;
 import com.example.taxidata.common.GreenDaoManager;
 import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.ui.passengerpath.contract.OriginEndShowContract;
 import com.example.taxidata.ui.passengerpath.enity.OriginEndInfo;
 import com.example.taxidata.ui.passengerpath.enity.PathInfo;
-import com.example.taxidata.ui.passengerpath.enity.PointInfo;
 
-import java.util.ArrayList;
+import org.greenrobot.greendao.query.QueryBuilder;
+
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -43,6 +44,12 @@ public class OriginEndShowModel implements OriginEndShowContract.OriginEndShowMo
 
     @Override
     public void delete(OriginEndInfo info) {
+        QueryBuilder<OriginEndInfo> infoBuilder = GreenDaoManager.getInstance().getDaoSession().queryBuilder(OriginEndInfo.class)
+                .where(OriginEndInfoDao.Properties.Origin.eq(info.getOrigin()));
+        List<OriginEndInfo> originEndQuery = infoBuilder.list();
+        if (originEndQuery.size() >= 0) {
+            return;
+        }
         GreenDaoManager.getInstance()
                 .getDaoSession()
                 .delete(info);

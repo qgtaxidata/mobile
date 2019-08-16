@@ -4,49 +4,59 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.security.keystore.StrongBoxUnavailableException;
+import android.view.View;
+import android.widget.Button;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.PolylineOptions;
 import com.example.taxidata.R;
+import com.example.taxidata.util.ToastUtil;
+import com.example.taxidata.widget.StrongStengthTimerPicker;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DemoActivity extends AppCompatActivity {
 
-    MapView mapView;
-    AMap aMap;
+    StrongStengthTimerPicker picker;
+    Button start;
+    Button end;
+    Button getTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo);
 
-        mapView = findViewById(R.id.map_demo);
+        picker = findViewById(R.id.stp_demo);
+        start = findViewById(R.id.start_time);
+        end = findViewById(R.id.end_time);
+        getTime = findViewById(R.id.get_time);
 
-        if (aMap == null) {
-            aMap = mapView.getMap();
-        }
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //顶部时间状态栏时间开始走动
+                picker.startTimer();
+            }
+        });
 
-        mapView.onCreate(savedInstanceState);
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //顶部时间状态栏停止走动
+                picker.stopTimer();
+            }
+        });
 
-        LatLng a = new LatLng(23.1793090781462,113.25147617125815);
-        LatLng b = new LatLng(23.11212215288405,113.2912442012871);
-        LatLng c = new LatLng(23.151750116289975,113.35072287540632);
-        LatLng d = new LatLng(23.591819371822364,113.57680634160592);
-        LatLng e = new LatLng(22.80783659108823,113.54724554599153);
-        List<LatLng> latLngs = new ArrayList<LatLng>();
-        latLngs.add(a);
-        latLngs.add(b);
-        latLngs.add(c);
-        latLngs.add(d);
-        latLngs.add(e);
-        aMap.addPolyline(new PolylineOptions().
-                addAll(latLngs).width(10).color(Color.argb(255, 1, 1, 1)));
-
+        getTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.showShortToastBottom(picker.getTime());
+            }
+        });
     }
-
-
 }
