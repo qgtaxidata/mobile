@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -184,6 +185,8 @@ public class EndActivity extends AppCompatActivity implements EndContract.EndVie
         itemTouchHelper.attachToRecyclerView(endRv);
         adapter.enableSwipeItem();
         adapter.setOnItemSwipeListener(this);
+        //设置空布局
+        adapter.setEmptyView(LayoutInflater.from(this).inflate(R.layout.view_empty_passenger,null));
     }
 
     @Override

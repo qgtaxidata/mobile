@@ -24,6 +24,11 @@
         android:textSize="22sp"
         android:layout_alignBottom="@id/iv_passenger"
         android:layout_toRightOf="@id/iv_passenger"
-        android:text="我是一条热点历史记录"/>
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:text="我是一条热点历史记录"
+        />
 
 </RelativeLayout>

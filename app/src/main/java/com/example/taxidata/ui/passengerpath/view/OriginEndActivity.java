@@ -6,12 +6,14 @@ import android.graphics.Color;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +26,7 @@ import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.PolylineOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.example.taxidata.R;
 import com.example.taxidata.adapter.HistoryAdapter;
@@ -182,6 +185,10 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
         manager = new LinearLayoutManager(this);
         historyRv.setLayoutManager(manager);
         historyRv.setAdapter(adapter);
+        //开启滑动删除
+        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        itemTouchHelper.attachToRecyclerView(historyRv);
         adapter.enableSwipeItem();
         adapter.setOnItemSwipeListener(this);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -197,6 +204,8 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
                 drawByNowInputInfo();
             }
         });
+        //设置空布局
+        adapter.setEmptyView(LayoutInflater.from(this).inflate(R.layout.view_empty_passenger,null));
     }
 
     @Override
@@ -206,7 +215,7 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
         detailHistoryList.clear();
         detailHistoryList.addAll(history);
         for (OriginEndInfo info : detailHistoryList) {
-            historyList.add(info.getOrigin() + " -- " + info.getEnd());
+            historyList.add(info.getOrigin() + " —— " + info.getEnd());
         }
         //刷新
         adapter.notifyDataSetChanged();
@@ -240,6 +249,13 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
     private void showRoad(List<LatLng> paths) {
         //清空地图状态
         pathMap.clear();
+        //打起点标记
+        LatLng origin = new LatLng(nowInputInfo.getOriginLat(),nowInputInfo.getOriginLng());
+        pathMap.addMarker(MakerFactory.create(MakerFactory.CONST_ORIGIN,origin));
+        //打终点标记
+        LatLng end = new LatLng(nowInputInfo.getEndLat(),nowInputInfo.getEndLng());
+        pathMap.addMarker(MakerFactory.create(MakerFactory.CONST_END,end));
+        moveTo(origin);
         for (LatLng temp : paths) {
             Log.d("showRoad","latitude:" + temp.latitude + "lng:" + temp.longitude);
         }
@@ -297,15 +313,8 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
         originEndLl.setBackgroundColor(Color.TRANSPARENT);
         historyCv.setVisibility(View.GONE);
         planSpc.setVisibility(View.VISIBLE);
-        //打起点标记
-        LatLng origin = new LatLng(nowInputInfo.getOriginLat(),nowInputInfo.getOriginLng());
-        pathMap.addMarker(MakerFactory.create(MakerFactory.CONST_ORIGIN,origin));
-        //打终点标记
-        LatLng end = new LatLng(nowInputInfo.getEndLat(),nowInputInfo.getEndLng());
-        pathMap.addMarker(MakerFactory.create(MakerFactory.CONST_END,end));
         //把当前输入框内的起始点进行网络请求
         present.managePath(nowInputInfo);
-        moveTo(origin);
     }
 
     @Override
