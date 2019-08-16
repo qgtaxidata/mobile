@@ -239,8 +239,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
                 etSearch.setText(hintAdapter.getData().get(position).getHotSpotName());
                 double longitute = hintAdapter.getData().get(position).getLongitude();
                 double latitute = hintAdapter.getData().get(position).getLatitute();
-                showLoadingGame();
-              //  showLoadingDialog();
+//                showLoadingGame();
+                showLoadingDialog();
                 mPresenter.getHotSpotData(longitute, latitute, "");
             }
         });

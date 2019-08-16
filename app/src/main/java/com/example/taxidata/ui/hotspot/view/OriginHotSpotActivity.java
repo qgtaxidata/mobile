@@ -283,6 +283,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
         baseEventBothChosen.content = originAddressChosen;
         EventBusUtils.postSticky(baseEventBothChosen);
         //返回热点路径页面
+        cancelLoadingDialong();
         finish();
     }
 }
