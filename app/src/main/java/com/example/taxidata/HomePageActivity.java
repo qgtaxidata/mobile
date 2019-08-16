@@ -41,6 +41,7 @@ import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
 import com.example.taxidata.ui.roadquality.RoadQualityActivity;
+import com.example.taxidata.ui.passengerpath.view.OriginEndActivity;
 import com.example.taxidata.ui.setup.SetUpActivity;
 import com.example.taxidata.ui.taxidemand.TaxiDemandActivity;
 import com.example.taxidata.util.EventBusUtils;
@@ -92,6 +93,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      */
     private MapView homePageMv;
     private AMap homepageAMap;
+    private UiSettings uiSettings;
     /**
      * 热力图
      */
@@ -200,6 +202,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             @Override
             public void onClick(View v) {
                 // TODO 路线
+                Intent intent = new Intent(HomePageActivity.this, OriginEndActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -266,7 +270,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         //监听相机位置变化,以获得屏幕中心经纬度
         homepageAMap.setOnCameraChangeListener(this);
         //取消掉右下角的放大缩小+ -
-        UiSettings uiSettings = homepageAMap.getUiSettings();
+        uiSettings = homepageAMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(false);
     }
 
@@ -745,6 +749,4 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         Log.d(TAG, "按下返回键");
         return super.onKeyDown(keyCode, event);
     }
-
-
 }

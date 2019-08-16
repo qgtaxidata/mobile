@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".test.DemoActivity">
+
+    <com.example.taxidata.widget.StrongStengthTimerPicker
+        android:id="@+id/stp_demo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        />
+
+    <Button
+        android:id="@+id/start_time"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="开始"
+        />
+
+    <Button
+        android:id="@+id/end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="结束"
+        android:layout_marginStart="100dp"
+        />
+
+    <Button
+        android:id="@+id/get_time"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="获得时间"
+        android:layout_marginTop="50dp"
+        />
+
+</RelativeLayout>

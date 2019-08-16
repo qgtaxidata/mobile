@@ -149,8 +149,7 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
             List<TaxiDemandInfo.DataBean.GraphDataBean> dataList = dataBeans.getGraph_data();
             //设置X轴数据
             String[] xValues = new String[3];
-            xValues[0] = null;
-            for(int j = 0; j<3; j++){
+            for(int j = 2; j>=0; j--){
             xValues[j] = dataList.get(j).getTitle();
         }
             IAxisValueFormatter formatter = new IAxisValueFormatter() {
@@ -168,11 +167,11 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
         }
             LineDataSet lineDataSet;
             if(taxiDemandAnalyzeLineChart.getData() != null && taxiDemandAnalyzeLineChart.getData().getDataSetCount() > 0){
-            lineDataSet = (LineDataSet)taxiDemandAnalyzeLineChart.getData().getDataSetByIndex(0);
-            lineDataSet.setValues(values);
-            taxiDemandAnalyzeLineChart.getData().notifyDataChanged();
-            taxiDemandAnalyzeLineChart.notifyDataSetChanged();
-        }else {
+                lineDataSet = (LineDataSet)taxiDemandAnalyzeLineChart.getData().getDataSetByIndex(0);
+                lineDataSet.setValues(values);
+                taxiDemandAnalyzeLineChart.getData().notifyDataChanged();
+                taxiDemandAnalyzeLineChart.notifyDataSetChanged();
+            }else {
             lineDataSet = new LineDataSet(values, null);
             lineDataSet.setLineWidth(2f);
             lineDataSet.setCircleRadius(3f);

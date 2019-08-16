@@ -11,6 +11,7 @@ import com.example.taxidata.widget.ChooseTaxiDialog;
 import com.example.taxidata.widget.StatusToast;
 import com.orhanobut.logger.Logger;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -22,6 +23,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
     private TaxiPathContract.TaxiPathModel model;
     private TaxiPathContract.TaxiPathView view;
+    private boolean flag = false;
 
 
     @Override
@@ -118,6 +120,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                                     });
                         }
                     })
+                    .takeUntil(stop -> flag)
                     .subscribe(new Observer<Long>() {
                         @Override
                         public void onSubscribe(Disposable d) {
@@ -153,5 +156,10 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
     public void detachView() {
         view = null;
         model = null;
+    }
+
+    @Override
+    public void setFlag() {
+        flag = true;
     }
 }

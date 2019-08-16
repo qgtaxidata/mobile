@@ -1,6 +1,5 @@
 package com.example.taxidata.ui.TaxiPath;
 
-import com.example.taxidata.bean.CurrentTaxiPathInfo;
 import com.example.taxidata.bean.GetTaxiInfo;
 import com.example.taxidata.bean.GetTaxiPathInfo;
 import com.example.taxidata.bean.TaxiInfo;
@@ -45,7 +44,7 @@ public class TaxiPathModel implements TaxiPathContract.TaxiPathModel {
     }
 
     @Override
-    public Observable<CurrentTaxiPathInfo> getCurrentTaxiPathInfo(String time, String licenseplateno) {
+    public Observable<TaxiPathInfo> getCurrentTaxiPathInfo(String time, String licenseplateno) {
         GetTaxiPathInfo getTaxiPathInfo = new GetTaxiPathInfo();
         getTaxiPathInfo.setTime(time);
         getTaxiPathInfo.setLicenseplateno(licenseplateno);

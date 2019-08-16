@@ -4,10 +4,12 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.taxidata.R;
+import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.DriverConditionInfo;
 import com.example.taxidata.bean.IncomeRankingInfo;
 import com.example.taxidata.widget.ChooseTaxiDialog;
 import com.example.taxidata.widget.DriverConditionDialog;
+import com.example.taxidata.widget.StatusToast;
 import com.orhanobut.logger.Logger;
 
 import io.reactivex.Observer;
@@ -28,14 +30,16 @@ public class IncomeRankingPresent implements IncomeRankingContract.IncomeRanking
 
             @Override
             public void onNext(IncomeRankingInfo incomeRankingInfo) {
-                Log.d("wx","next");
-                Logger.d(incomeRankingInfo.getData());
-                view.showIncomeList(incomeRankingInfo.getData());
+                if(incomeRankingInfo.getCode() == 1){
+                    Logger.d(incomeRankingInfo.getData());
+                    view.showIncomeList(incomeRankingInfo.getData());
+                }else {
+                    StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,incomeRankingInfo.getMsg());
+                }
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.d("wx","error");
                 e.printStackTrace();
                 Logger.d(e.getMessage());
             }

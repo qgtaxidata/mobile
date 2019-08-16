@@ -3,8 +3,11 @@ package com.example.taxidata.ui.taxidemand;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.taxidata.R;
+import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.base.BaseView;
 import com.example.taxidata.bean.TaxiDemandInfo;
+import com.example.taxidata.widget.StatusToast;
 import com.orhanobut.logger.Logger;
 
 import io.reactivex.Observer;
@@ -26,9 +29,11 @@ public class TaxiDemandPresent implements TaxiDemandContract.TaxiDemandPresent {
 
                 @Override
                 public void onNext(TaxiDemandInfo taxiDemandInfo) {
-                    Log.d("next", time);
-                    view.showChart(taxiDemandInfo.getData());
-                    Log.d("next", time);
+                    if(taxiDemandInfo.getCode()== 1){
+                        view.showChart(taxiDemandInfo.getData());
+                    }else {
+                        StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,taxiDemandInfo.getMsg());
+                    }
                 }
 
                 @Override

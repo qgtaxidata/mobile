@@ -17,13 +17,13 @@ import butterknife.OnClick;
 
 public class DoubleSearch extends LinearLayout {
 
-    @BindView(R.id.search_back)
-    ImageView backIv;
-    @BindView(R.id.search_origin)
-    TextView originSearchTv;
-    @BindView(R.id.search_end_point)
-    TextView endSearchTv;
 
+    @BindView(R.id.iv_search_back)
+    ImageView backIv;
+    @BindView(R.id.tv_search_origin)
+    TextView originSearchTv;
+    @BindView(R.id.tv_search_end_point)
+    TextView endSearchTv;
     private SearchOnClickListener originListener;
 
     private SearchOnClickListener endListener;
@@ -36,8 +36,10 @@ public class DoubleSearch extends LinearLayout {
 
     public DoubleSearch(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View view = LinearLayout.inflate(context, R.layout.view_search_widget, this);
+        View view = LinearLayout.inflate(context, R.layout.view_double_search, this);
         ButterKnife.bind(view);
+        originSearchTv.setSelected(true);
+        endSearchTv.setSelected(true);
     }
 
     public void setOriginListener(SearchOnClickListener originListener) {
@@ -52,35 +54,41 @@ public class DoubleSearch extends LinearLayout {
         this.backListener = backListener;
     }
 
-    @OnClick({R.id.search_back, R.id.search_origin, R.id.search_end_point})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.search_back:
-                backListener.onClick();
-                break;
-            case R.id.search_origin:
-                originListener.onClick();
-                break;
-            case R.id.search_end_point:
-                endListener.onClick();
-                break;
-            default:
-        }
-    }
-
-    public void setOriginText(String originName){
+    public void setOriginText(String originName) {
         originSearchTv.setText(originName);
     }
 
-    public void setEndText(String endName){
+    public void setEndText(String endName) {
         endSearchTv.setText(endName);
     }
 
-    public String getOriginText(){
+    public String getOriginText() {
         return originSearchTv.getText().toString();
     }
 
-    public String getEndText(){
+    public String getEndText() {
         return endSearchTv.getText().toString();
+    }
+
+    @OnClick({R.id.iv_search_back, R.id.tv_search_origin, R.id.tv_search_end_point})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_search_back:
+                if (backListener != null){
+                    backListener.onClick();
+                }
+                break;
+            case R.id.tv_search_origin:
+                if (originListener != null){
+                    originListener.onClick();
+                }
+                break;
+            case R.id.tv_search_end_point:
+                if (endListener != null){
+                    endListener.onClick();
+                }
+                break;
+            default:
+        }
     }
 }

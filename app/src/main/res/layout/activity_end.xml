@@ -18,12 +18,12 @@
         app:cardCornerRadius="5dp"
         >
         <RelativeLayout
-            android:id="@+id/rl_intput_origin_passenger"
+            android:id="@+id/rl_intput_end_passenger"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/ibtn_origin_path_search_back"
+                android:id="@+id/ibtn_end_path_search_back"
                 android:layout_marginTop="27dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -31,13 +31,13 @@
                 android:background="@mipmap/ui_hotspot_search_return"
                 />
             <EditText
-                android:id="@+id/et_origin_path_search"
+                android:id="@+id/et_end_path_search"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_marginStart="10dp"
-                android:layout_toRightOf="@id/ibtn_origin_path_search_back"
-                android:layout_alignBottom="@id/ibtn_origin_path_search_back"
-                android:layout_toLeftOf="@id/btn_origin_search"
+                android:layout_toRightOf="@id/ibtn_end_path_search_back"
+                android:layout_alignBottom="@id/ibtn_end_path_search_back"
+                android:layout_toLeftOf="@id/btn_end_search"
                 android:textSize="20sp"
                 android:singleLine="true"
                 android:inputType="text"
@@ -46,7 +46,7 @@
 
                 />
             <Button
-                android:id="@+id/btn_origin_search"
+                android:id="@+id/btn_end_search"
                 android:layout_width="90dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="12dp"
@@ -76,7 +76,7 @@
         >
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_history_origin"
+            android:id="@+id/rv_history_end"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"

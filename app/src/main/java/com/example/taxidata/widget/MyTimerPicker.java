@@ -410,21 +410,6 @@ public class MyTimerPicker extends FrameLayout {
      * @return String
      */
     public String getTime(){
-       /* //获取viewHolder
-        View dayView = mDayRv.getChildAt(CONST_CENTER);
-        TimeAdapter.ViewHolder dayHolder = (TimeAdapter.ViewHolder) mDayRv.getChildViewHolder(dayView);
-        View hourView = mHourRv.getChildAt(CONST_CENTER);
-        TimeAdapter.ViewHolder hourHolder = (TimeAdapter.ViewHolder) mHourRv.getChildViewHolder(hourView);
-        View minuteView = mMinuteRv.getChildAt(CONST_CENTER);
-        TimeAdapter.ViewHolder minuteHolder = (TimeAdapter.ViewHolder) mMinuteRv.getChildViewHolder(minuteView);*/
-        //获取字符串
-/*        StringBuffer timeBuilder = new StringBuffer(chineseTime);
-        timeBuilder.setCharAt(timeBuilder.indexOf("年"),'-');
-        timeBuilder.setCharAt(timeBuilder.indexOf("月"),'-');
-        timeBuilder.deleteCharAt(timeBuilder.indexOf("日"));
-
-        Log.d("MyTimerPicker",timeBuilder.toString());
-        return timeBuilder.toString();*/
         String chineseTime = calendarTv.getText().toString();
 
         return StringUtil.ChineseToStandardFormat(chineseTime);
@@ -479,6 +464,7 @@ public class MyTimerPicker extends FrameLayout {
                         Message message = new Message();
                         message.obj = TaxiApp.getAppNowChineseTime();
                         mHandler.sendMessage(message);
+
                     }
                 }
             }

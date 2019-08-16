@@ -168,7 +168,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
         itemTouchHelper.attachToRecyclerView(rvSearch);
         historyAdapter.enableSwipeItem();
-        historyAdapter.openLoadAnimation();
+        historyAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         hintAdapter.openLoadAnimation();
         recommandAdapter.openLoadAnimation();
         showHistorySearchList(mPresenter.getHistorySearchList());
@@ -281,11 +281,13 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
     @Override
     public void showHintHotSpotList(List<HotSpotHint> hintList) {
-        if (hintAdapter != null && rvSearch != null) {
+        if (hintAdapter != null && rvSearch != null && ! "".equals(intputString)) {
             itemTouchHelper.attachToRecyclerView(null);
             rvSearch.setAdapter(hintAdapter);
             hintAdapter.setNewData(hintList);
-
+        } else {
+            showHistorySearchList(mPresenter.getHistorySearchList());
+            Logger.d("触发了空输入框，转为显示历史列表");
         }
     }
 

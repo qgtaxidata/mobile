@@ -3,7 +3,6 @@ package com.example.taxidata.net;
 
 import com.example.taxidata.bean.AreaAnalyzeInfo;
 import com.example.taxidata.bean.AreaIncomeInfo;
-import com.example.taxidata.bean.CurrentTaxiPathInfo;
 import com.example.taxidata.bean.DriverConditionInfo;
 import com.example.taxidata.bean.HeatPointInfo;
 import com.example.taxidata.bean.HotSpotCallBackInfo;
@@ -13,6 +12,7 @@ import com.example.taxidata.bean.RoadQualityInfo;
 import com.example.taxidata.bean.TaxiDemandInfo;
 import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.bean.TaxiPathInfo;
+import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -45,17 +45,27 @@ public interface HttpService {
 
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("/taxiRoute/findLiveRoute")
-    Observable<CurrentTaxiPathInfo> getCurrentTaxiPathInfo(@Body RequestBody info);
+    Observable<TaxiPathInfo> getCurrentTaxiPathInfo(@Body RequestBody info);
 
-    @Headers({"Content-Type: application/json","Accept: application/json"})
-    @POST("/")
-    Observable<HotSpotRouteInfo>  getHotSpotRoute(@Body RequestBody info);
+
+
+    @GET("route/getRoute")
+    Observable<HotSpotRouteInfo>  getHotSpotRoute(@Query("lonOrigin") double lonOrigin,
+                                                  @Query("latOrigin") double latOrigin ,
+                                                  @Query("lonDestination") double lonDestination ,
+                                                  @Query("latDestination")double latDestination );
 
     @POST("rank/getRank")
     Observable<IncomeRankingInfo> getIncomeRankingInfo(@Query("area") int area, @Query("date") String date);
 
     @GET("rank/getSituation")
     Observable<DriverConditionInfo> getDriverConditionInfo(@Query("area") int area, @Query("date") String date, @Query("driverID") String driverID);
+
+    @GET("route/getRoute")
+    Observable<PathInfo> getPath(@Query("lonOrigin")double lonOrigin,
+                                 @Query("latOrigin")double latOrigin,
+                                 @Query("lonDestination")double lonDestination,
+                                 @Query("latDestination")double latDestination);
 
     @GET("AreaRequirement/analyseRequirement")
     Observable<TaxiDemandInfo> getTaxiDemandInfo(@Query("area") int area, @Query("time") String time);

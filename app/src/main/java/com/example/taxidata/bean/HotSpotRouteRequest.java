@@ -8,83 +8,47 @@ package com.example.taxidata.bean;
  */
 public class HotSpotRouteRequest {
 
-    public HotSpotRouteRequest() {
-        start = new startBean();
-        end = new endBean();
-    }
-
-
     /**
-     *  start : {"longitute":23.632157,"latitute":23.632157}
-     *  end  : {"longitute ":23.632157,"latitute ":23.632157}
+     * lonOrigin : 1.2623522
+     * latOrigin : 5.561235552
+     * lonDestination : 2.5521551125
+     * latDestination : 2.551254145
      */
 
-    private startBean start;
-    private endBean end;
-    public startBean getStart() {
-        return start;
+     double lonOrigin;
+     double latOrigin;
+     double lonDestination;
+     double latDestination;
+
+    public double getLonOrigin() {
+        return lonOrigin;
     }
 
-    public void setStart(startBean start) {
-        this.start = start;
+    public void setLonOrigin(double lonOrigin) {
+        this.lonOrigin = lonOrigin;
     }
 
-    public endBean getEnd() {
-        return end;
+    public double getLatOrigin() {
+        return latOrigin;
     }
 
-    public void setEnd(endBean end) {
-        this.end = end;
-    }
-    public  static class startBean {
-        /**
-         * longitute : 23.632157
-         * latitute : 23.632157
-         */
-
-        private double longitute;
-        private double latitute;
-
-        public double getLongitute() {
-            return longitute;
-        }
-
-        public void setLongitute(double longitute) {
-            this.longitute = longitute;
-        }
-
-        public double getLatitute() {
-            return latitute;
-        }
-
-        public void setLatitute(double latitute) {
-            this.latitute = latitute;
-        }
+    public void setLatOrigin(double latOrigin) {
+        this.latOrigin = latOrigin;
     }
 
-    public static class endBean {
-        /**
-         * longitute  : 23.632157
-         * latitute  : 23.632157
-         */
+    public double getLonDestination() {
+        return lonDestination;
+    }
 
-        private double longitute;
-        private double latitute;
+    public void setLonDestination(double lonDestination) {
+        this.lonDestination = lonDestination;
+    }
 
-        public double getLongitute() {
-            return longitute;
-        }
+    public double getLatDestination() {
+        return latDestination;
+    }
 
-        public void setLongitute(double longitute) {
-            this.longitute = longitute;
-        }
-
-        public double getLatitute() {
-            return latitute;
-        }
-
-        public void setLatitute(double latitute) {
-            this.latitute = latitute;
-        }
+    public void setLatDestination(double latDestination) {
+        this.latDestination = latDestination;
     }
 }

@@ -1,17 +1,19 @@
 package com.example.taxidata.ui.passengerpath.present;
 
+import com.aserbao.aserbaosandroid.functions.database.greenDao.db.OriginInfoDao;
+import com.example.taxidata.common.GreenDaoManager;
 import com.example.taxidata.ui.passengerpath.contract.OriginContract;
 import com.example.taxidata.ui.passengerpath.enity.OriginInfo;
 import com.example.taxidata.ui.passengerpath.model.OriginModel;
 
-import java.util.ArrayList;
+import org.greenrobot.greendao.query.QueryBuilder;
+
 import java.util.List;
 
 public class OriginPresent implements OriginContract.OriginPresent {
 
     OriginContract.OriginView view;
     OriginContract.OriginModel model;
-    List<OriginInfo> originInfoList;
 
     public OriginPresent() {
         model = new OriginModel();
@@ -29,23 +31,23 @@ public class OriginPresent implements OriginContract.OriginPresent {
     public void showHistory() {
         if (model != null){
             //获取历史记录
-            originInfoList = model.getHistory();
+            List<OriginInfo> originInfoList = model.getHistory();
             if (view != null){
-                List<String> historyNameList = new ArrayList<>();
-                for (int i = 0; i < originInfoList.size(); i++) {
-                    //获得历史记录的名称
-                    String historyName = originInfoList.get(i).getOrigin();
-                    historyNameList.add(historyName);
-                }
                 //展示历史记录
-                view.showList(historyNameList);
+                view.showList(originInfoList);
             }
         }
     }
 
     @Override
-    public void showTips(String newText) {
-
+    public void delete(OriginInfo info) {
+        QueryBuilder<OriginInfo> infoBuilder = GreenDaoManager.getInstance().getDaoSession().queryBuilder(OriginInfo.class).where(OriginInfoDao.Properties.Origin.eq(info.getOrigin()));
+        List<OriginInfo> originQuery = infoBuilder.list();
+        if (originQuery.isEmpty()){
+            return;
+        }else {
+            model.deleteHistory(info);
+        }
     }
 
     @Override
