@@ -10,6 +10,7 @@ import com.example.taxidata.bean.HotSpotOrigin;
 import com.example.taxidata.bean.HotSpotRequestInfo;
 import com.example.taxidata.bean.HotSpotRouteInfo;
 import com.example.taxidata.bean.HotSpotRouteRequest;
+import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public interface OriginHotSpotContract {
          * @param request the request
          * @return the observable
          */
-        public Observable<HotSpotRouteInfo> requestRouteData(HotSpotRouteRequest  request);
+        public Observable<PathInfo> requestRouteData(HotSpotRouteRequest  request);
 
         /**
          * Gets history origin list.
@@ -92,7 +93,7 @@ public interface OriginHotSpotContract {
          *
          * @param info the info
          */
-        public void  requestSuccess(HotSpotRouteInfo info);
+        public void  requestSuccess(PathInfo info);
     }
 
     /**

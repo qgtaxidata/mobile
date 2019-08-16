@@ -45,9 +45,13 @@ public interface HttpService {
     @POST("taxiRoute/findRoute")
     Observable<TaxiPathInfo> getTaxiPathInfo(@Body RequestBody info);
 
-    @Headers({"Content-Type: application/json","Accept: application/json"})
-    @POST("/")
-    Observable<HotSpotRouteInfo>  getHotSpotRoute(@Body RequestBody info);
+
+
+    @GET("route/getRoute")
+    Observable<HotSpotRouteInfo>  getHotSpotRoute(@Query("lonOrigin") double lonOrigin,
+                                                  @Query("latOrigin") double latOrigin ,
+                                                  @Query("lonDestination") double lonDestination ,
+                                                  @Query("latDestination")double latDestination );
 
     @POST("rank/getRank")
     Observable<IncomeRankingInfo> getIncomeRankingInfo(@Query("area") int area, @Query("date") String date);
