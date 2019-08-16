@@ -22,6 +22,16 @@ public interface OriginEndShowContract {
          * @param pathPlan 路径
          */
         void showPath(List<PathInfo.DataBean> pathPlan);
+
+        /**
+         * 展示loading
+         */
+        void showLoading();
+
+        /**
+         * 隐藏loading
+         */
+        void hideLoading();
     }
 
     interface OriginEndShowPresent extends BasePresent<OriginEndShowView>{

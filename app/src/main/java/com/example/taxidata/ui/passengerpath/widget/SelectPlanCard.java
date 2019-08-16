@@ -79,17 +79,17 @@ public class SelectPlanCard extends LinearLayout {
 
     private void setText() {
         //防御式编程
-        if (timeDistances.size() >= 0) {
+        if (timeDistances.size() >= 1) {
             TimeDistance one = timeDistances.get(0);
             timeOneTv.setText(one.getTime() + "分钟");
             distanceOneTv.setText(one.getDistance() + "公里");
         }
-        if (timeDistances.size() >= 1) {
+        if (timeDistances.size() >= 2) {
             TimeDistance two = timeDistances.get(1);
             timeTwoTv.setText(two.getTime() + "分钟");
             distanceTwoTv.setText(two.getDistance() + "公里");
         }
-        if (timeDistances.size() >= 2) {
+        if (timeDistances.size() >= 3) {
             TimeDistance three = timeDistances.get(2);
             timeThreeTv.setText(three.getTime() + "分钟");
             distanceThreeTv.setText(three.getDistance() + "公里");
