@@ -74,11 +74,9 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     private List<HotSpotHistorySearch> historyList;
     private List<HotSpotHint> hintList;
     private List<HotSpotCallBackInfo.DataBean> hotSpotList;
-    private List<HotSpotOrigin> originList;
     private HistoryHotspotSearchAdapter historyAdapter;
     private HintHotSpotAdapter hintAdapter;
     private RecommandHotSpotAdapter recommandAdapter;
-    private OriginHotSpotAdapter originAdapter;
     private GeocodeSearch geocodeSearch;
     private String intputString;
     private ItemTouchHelper itemTouchHelper;
@@ -286,8 +284,9 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             rvSearch.setAdapter(hintAdapter);
             hintAdapter.setNewData(hintList);
         } else {
-            showHistorySearchList(mPresenter.getHistorySearchList());
-            Logger.d("触发了空输入框，转为显示历史列表");
+            if(rvSearch != null && rvSearch.getAdapter() != historyAdapter){
+                showHistorySearchList(mPresenter.getHistorySearchList());
+            }
         }
     }
 
