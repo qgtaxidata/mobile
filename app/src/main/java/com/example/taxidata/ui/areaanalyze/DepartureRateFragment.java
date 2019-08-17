@@ -19,13 +19,13 @@ public class DepartureRateFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_departure_rate, container, false);
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
         return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        EventBus.getDefault().unregister(this);
+        //EventBus.getDefault().unregister(this);
     }
 }

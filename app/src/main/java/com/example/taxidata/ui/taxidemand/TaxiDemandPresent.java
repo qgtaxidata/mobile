@@ -29,6 +29,7 @@ public class TaxiDemandPresent implements TaxiDemandContract.TaxiDemandPresent {
 
                 @Override
                 public void onNext(TaxiDemandInfo taxiDemandInfo) {
+                    Log.d("next", time);
                     if(taxiDemandInfo.getCode()== 1){
                         view.showChart(taxiDemandInfo.getData());
                     }else {

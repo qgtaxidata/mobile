@@ -81,7 +81,7 @@ public class ChooseTaxiDialog extends Dialog {
         adapter.seOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                taxiInfoList.get(position).setSelected(true);
+                //taxiInfoList.get(position).setSelected(true);
                 adapter.notifyDataSetChanged();
                 String licenseplateno = taxiInfoList.get(position).getLicenseplateno();
                 String time = taxiInfoList.get(position).getTime();

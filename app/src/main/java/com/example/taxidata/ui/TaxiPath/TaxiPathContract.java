@@ -28,7 +28,7 @@ public interface TaxiPathContract {
     }
 
     interface TaxiPathPresent extends BasePresent<TaxiPathView>{
-        void setFlag();
+        void setFlag(boolean flag);
         void getTaxiInfo(Context context, int area, String time);
         void getCurrentTaxiPathInfo(Context context,String time, String licenseplateno);
         void getHistoryTaxiPathInfo(Context context,String time, String licenseplateno);

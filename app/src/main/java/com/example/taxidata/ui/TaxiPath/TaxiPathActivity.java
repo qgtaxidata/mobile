@@ -2,6 +2,7 @@ package com.example.taxidata.ui.TaxiPath;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,7 +23,6 @@ import com.example.taxidata.constant.Area;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.StrongStengthTimerPicker;
 import com.example.taxidata.widget.TimePickClickedListener;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -65,8 +65,8 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
 
     private TaxiPathContract.TaxiPathPresent taxiPathPresent;
     private AMap taxiPathAMap;
-    private int areaId;
-    private String currentTime;
+    private int areaId = 5;
+    private int flag = 1;   //实时为1，历史为2
     private List<TaxiInfo.DataBean> taxiList = new ArrayList<>();
     ArrayList<String> areaList = new ArrayList<>();
 
@@ -78,13 +78,11 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         ButterKnife.bind(this);
         taxiPathPresent = new TaxiPathPresent();
         taxiPathPresent.attachView(this);
-        //获取APP当前时间
-        currentTime = TaxiApp.getAppNowTime();
         //绑定显示出租车信息的dialog
         EventBus.getDefault().register(this);
         //隐藏清除按钮
         taxiPathClearBtn.setVisibility(View.GONE);
-        //将时间选择器设置为不可点击且开始计时
+        //将时间选择器设置为不可点击且开始计时（实时状态）
         taxiPathTimePicker.startTimer();
         taxiPathTimePicker.setTimeStatusBarClick(null);
         //初始化区域选择框
@@ -118,14 +116,21 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     //显示出租车历史路径
     @Override
     public void showHistoryPath(List<TaxiPathInfo.DataBean> listInfo) {
+        LatLng latLng = new LatLng(listInfo.get(0).getLatitude(),listInfo.get(0).getLongitude());
+        taxiPathAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+        Log.d("show1",listInfo.get(0).getLicenseplateno());
         List<LatLng> latLngs = new ArrayList<LatLng>();
+        Log.d("show2",listInfo.get(0).getLicenseplateno());
         for (TaxiPathInfo.DataBean info : listInfo) {
             latLngs.add(new LatLng(info.getLatitude(), info.getLongitude()));
+            Log.d("TaxiPathActivity", info.getLatitude()+"和"+info.getLongitude());
         }
+        Log.d("show3",listInfo.get(0).getLicenseplateno());
         taxiPathAMap.addPolyline(new PolylineOptions()
                 .addAll(latLngs)
-                .width(20)
-                .color(Color.parseColor("51b46d")));
+                .width(10)
+                .color(Color.parseColor("#51b46d")));
+        Log.d("show4",listInfo.get(0).getLicenseplateno());
         //显示清除路径按钮
         taxiPathClearBtn.setVisibility(View.VISIBLE);
     }
@@ -138,8 +143,13 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
 
     //处理dialog发送的事件
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void getPathInfo(GetTaxiPathInfo getTaxiPathInfo) {
-        taxiPathPresent.getHistoryTaxiPathInfo(this, getTaxiPathInfo.getTime(), getTaxiPathInfo.getLicenseplateno());
+    public void getPathInfo(GetTaxiPathInfo getPathInfo) {
+        Log.d("flag", ""+flag);
+        if(flag == 1){
+            taxiPathPresent.getCurrentTaxiPathInfo(this, getPathInfo.getTime(), getPathInfo.getLicenseplateno());
+        }else {
+            taxiPathPresent.getHistoryTaxiPathInfo(this, getPathInfo.getTime(), getPathInfo.getLicenseplateno());
+        }
     }
 
     //点击事件
@@ -151,13 +161,26 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
                 taxiPathAMap.clear();
                 //将清除按钮隐藏
                 taxiPathClearBtn.setVisibility(View.GONE);
+                //停止轮询
+                taxiPathPresent.setFlag(true);
                 break;
             case R.id.taxi_path_licenseplateno_btn:
                 //显示车牌号列表
-                taxiPathPresent.getTaxiInfo(TaxiPathActivity.this, areaId, taxiPathTimePicker.getTime());
+                if(flag == 1){
+                    //实时
+                    taxiPathPresent.getTaxiInfo(this, areaId, taxiPathTimePicker.getTime());
+                }else {
+                    //历史
+                    taxiPathPresent.getTaxiInfo(this, areaId, taxiPathTimePicker.getHistoryTime());
+                }
                 break;
             case R.id.taxi_path_history_tv:
-                taxiPathPresent.setFlag();
+                flag = 2;
+                //清除地图的路径
+                taxiPathAMap.clear();
+                //停止轮询
+                taxiPathPresent.setFlag(true);
+                //改变布局
                 taxiPathHistoryTv.setBackgroundResource(R.drawable.shape_small_button);
                 taxiPathHistoryTv.setTextColor(Color.parseColor("#ffffff"));
                 taxiPathNowTv.setBackgroundResource(R.drawable.shape_status_bar);
@@ -171,6 +194,12 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
                 });
                 break;
             case R.id.taxi_path_now_tv:
+                flag = 1;
+                //清除地图的路径
+                taxiPathAMap.clear();
+                //停止轮询
+                taxiPathPresent.setFlag(true);
+                //改变布局
                 taxiPathNowTv.setBackgroundResource(R.drawable.shape_small_button);
                 taxiPathNowTv.setTextColor(Color.parseColor("#ffffff"));
                 taxiPathHistoryTv.setBackgroundResource(R.drawable.shape_status_bar);
