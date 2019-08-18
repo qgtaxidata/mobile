@@ -22,9 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.recommendad.RecommendAdActivity">
+        <activity android:name=".test.DemoActivity">
         </activity>
-        <activity android:name=".test.DemoActivity"></activity>
         <activity android:name=".ui.roadquality.RoadQualityActivity" />
         <activity android:name=".ui.areaincome.AreaIncomeActivity" />
         <activity android:name=".ui.passengerpath.view.OriginActivity" />
@@ -51,6 +50,7 @@
         <activity android:name=".ui.TaxiPath.TaxiPathActivity" />
         <activity android:name=".ChartText.PieChartActivity" />
         <activity android:name=".ChartText.BarChartActivity" />
+        <activity android:name=".ChartText.LineChartActivity" />
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
