@@ -16,8 +16,8 @@ import io.reactivex.Observable;
 /**
  * The interface Hotspot contract.
  *
- * @author: ODM
- * @date: 2019 /8/9
+ * author: ODM
+ * date: 2019 /8/9
  */
 public interface HotSpotContract {
 
@@ -35,16 +35,14 @@ public interface HotSpotContract {
          * @param time      the time
          * @return the observable
          */
-        public Observable<HotSpotCallBackInfo> requestHotSpotInfo(double longitude, double latitude, String time);
+         Observable<HotSpotCallBackInfo> requestHotSpotInfo(double longitude, double latitude, String time);
 
         /**
          * 打开数据库获取历史搜索列表
          *
          * @return the history search list
          */
-        public List<HotSpotHistorySearch>  getHistorySearchList();
-
-
+         List<HotSpotHistorySearch>  getHistorySearchList();
 
 
         /**
@@ -52,20 +50,22 @@ public interface HotSpotContract {
          *
          * @param keyword the keyword
          */
-        public void getHintList(String keyword) ;
+         void getHintList(String keyword) ;
 
         /**
          * Save hot spot search history.
          *
          * @param historyHotSpot the history hot spot
          */
-        public void  saveHotSpotSearchHistory(String historyHotSpot) ;
+         void  saveHotSpotSearchHistory(String historyHotSpot) ;
 
 
-
-
-
-        public void  removeHistory(HotSpotHistorySearch historySearch);
+        /**
+         * Remove history.
+         *
+         * @param historySearch the history search
+         */
+         void  removeHistory(HotSpotHistorySearch historySearch);
 
 
     }
@@ -80,15 +80,14 @@ public interface HotSpotContract {
          *
          * @param hotSpotCallBackInfoList the hot spot call back info list
          */
-        public void showHotSpot(List<HotSpotCallBackInfo.DataBean> hotSpotCallBackInfoList);
+         void showHotSpot(List<HotSpotCallBackInfo.DataBean> hotSpotCallBackInfoList);
 
         /**
          * 呈现 历史搜索列表
          *
          * @param hotSpotHistorySearchList the hot spot history search list
          */
-        public void showHistorySearchList(List<HotSpotHistorySearch> hotSpotHistorySearchList);
-
+         void showHistorySearchList(List<HotSpotHistorySearch> hotSpotHistorySearchList);
 
 
         /**
@@ -96,17 +95,15 @@ public interface HotSpotContract {
          *
          * @param hintList the hint list
          */
-        public void showHintHotSpotList(List<HotSpotHint> hintList);
+         void showHintHotSpotList(List<HotSpotHint> hintList);
 
         /**
          * Hot spot chsen success.
          */
-        public void  hotSpotChosenSuccess();
+         void  hotSpotChosenSuccess();
 
 
     }
-
-
 
 
     /**
@@ -122,15 +119,14 @@ public interface HotSpotContract {
          * @param latitude  the latitude
          * @param time      the time
          */
-        public void getHotSpotData(double longitude, double latitude, String time) ;
+         void getHotSpotData(double longitude, double latitude, String time) ;
 
         /**
          * 获取历史搜索的列表
          *
          * @return the history search list
          */
-        public  List<HotSpotHistorySearch>  getHistorySearchList();
-
+          List<HotSpotHistorySearch>  getHistorySearchList();
 
 
         /**
@@ -138,22 +134,21 @@ public interface HotSpotContract {
          *
          * @param keyword the keyword
          */
-        public void getHintList(String keyword) ;
+         void getHintList(String keyword) ;
 
         /**
          * 成功获取到了 提示的列表
          *
          * @param hintList the hint list
          */
-        public void getHintListSuccess(List<HotSpotHint> hintList);
+         void getHintListSuccess(List<HotSpotHint> hintList);
 
         /**
          * Save hot spot search history.
          *
          * @param historyHotSpot the history hot spot
          */
-        public void  saveHotSpotSearchHistory(String historyHotSpot) ;
-
+         void  saveHotSpotSearchHistory(String historyHotSpot) ;
 
 
         /**
@@ -162,7 +157,7 @@ public interface HotSpotContract {
          * @param address       the address
          * @param geocodeSearch the geocode search
          */
-        public void convertToLocation(String address ,GeocodeSearch geocodeSearch );
+         void convertToLocation(String address ,GeocodeSearch geocodeSearch );
 
 
         /**
@@ -171,12 +166,20 @@ public interface HotSpotContract {
          * @param dataBean      the data bean
          * @param geocodeSearch the geocode search
          */
-        public void convertToAddressName(HotSpotCallBackInfo.DataBean dataBean , GeocodeSearch geocodeSearch) ;
+         void convertToAddressName(HotSpotCallBackInfo.DataBean dataBean , GeocodeSearch geocodeSearch) ;
 
 
-        public void  removeHistory(HotSpotHistorySearch historySearch);
+        /**
+         * Remove history.
+         *
+         * @param historySearch the history search
+         */
+         void  removeHistory(HotSpotHistorySearch historySearch);
 
-        public void  getHotSpotListAgain();
+        /**
+         * Gets hot spot list again.
+         */
+         void  getHotSpotListAgain();
 
      }
 

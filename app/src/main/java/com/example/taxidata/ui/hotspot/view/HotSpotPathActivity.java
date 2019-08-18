@@ -4,16 +4,11 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
@@ -27,15 +22,9 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
-import com.amap.api.services.geocoder.GeocodeResult;
-import com.amap.api.services.geocoder.GeocodeSearch;
-import com.amap.api.services.geocoder.RegeocodeResult;
-import com.example.taxidata.HomePageActivity;
 import com.example.taxidata.R;
 import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.bean.HotSpotInfo;
-import com.example.taxidata.bean.HotSpotRequestInfo;
-import com.example.taxidata.bean.HotSpotRouteInfo;
 import com.example.taxidata.common.StatusManager;
 import com.example.taxidata.common.eventbus.BaseEvent;
 import com.example.taxidata.common.eventbus.EventFactory;
@@ -43,9 +32,9 @@ import com.example.taxidata.constant.EventBusType;
 import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.GsonUtil;
-import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.MarqueeTextView;
 import com.example.taxidata.widget.PlanInfoCard;
+import com.github.clans.fab.FloatingActionButton;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -88,7 +77,10 @@ public class HotSpotPathActivity extends BaseActivity {
     MarqueeTextView tvSetOrigin;
     UiSettings uiSettings;
     PathInfo routeInfo;
-    List<LatLng> latLngs ;
+    List<LatLng> latLngs;
+    @BindView(R.id.fbtn_test)
+    FloatingActionButton fbtnTest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,8 +94,9 @@ public class HotSpotPathActivity extends BaseActivity {
         if (isRegisterEventBus()) {
             EventBusUtils.register(this);
         }
-        Log.e(TAG,"onCreate!!");
+        Log.e(TAG, "onCreate!!");
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -115,6 +108,7 @@ public class HotSpotPathActivity extends BaseActivity {
         super.onResume();
         mvHotspotPath.onResume();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -135,7 +129,7 @@ public class HotSpotPathActivity extends BaseActivity {
         mvHotspotPath.onSaveInstanceState(outState);
     }
 
-    public void initMap(){
+    public void initMap() {
         if (mvHotspotPath != null) {
             pathMap = mvHotspotPath.getMap();
         }
@@ -156,10 +150,10 @@ public class HotSpotPathActivity extends BaseActivity {
         textViewListThree.add(tvPlanThree);
         textViewListThree.add(tvFarThree);
         textViewListThree.add(tvTimeThree);
-        latLngs =  new ArrayList<LatLng>();
+        latLngs = new ArrayList<LatLng>();
     }
 
-    public void initViews(){
+    public void initViews() {
 
         tvSearchEndPoint = layoutOriginHotSpot.findViewById(R.id.search_end_point);
         layoutOrigin = layoutOriginHotSpot.findViewById(R.id.ll_hotspot_origin);
@@ -176,7 +170,6 @@ public class HotSpotPathActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //选择输入起点，跳转输入界面
-                Logger.d("跳转页面！");
                 Intent intentHotSearch = new Intent(HotSpotPathActivity.this, OriginHotSpotActivity.class);
                 startActivity(intentHotSearch);
             }
@@ -207,45 +200,50 @@ public class HotSpotPathActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 clearMap();
-                changeTextColor(textViewListOne ,getResources().getColor(R.color.blue_color));
-                changeTextColor(textViewListTwo ,Color.BLACK);
-                changeTextColor(textViewListThree ,Color.BLACK);
-                int endIndex  = routeInfo.getData().get(0).getRoute().size() - 1;
-                showHotSpotAndOrigin(routeInfo.getData().get(0).getRoute().get(0).getLng() ,routeInfo.getData().get(0).getRoute().get(0).getLat(),
-                        routeInfo.getData().get(0).getRoute().get(endIndex).getLng(),routeInfo.getData().get(0).getRoute().get(endIndex).getLat() );
-                drawLines(routeInfo ,0);
+                changeTextColor(textViewListOne, getResources().getColor(R.color.blue_color));
+                changeTextColor(textViewListTwo, Color.BLACK);
+                changeTextColor(textViewListThree, Color.BLACK);
+                int endIndex = routeInfo.getData().get(0).getRoute().size() - 1;
+                showHotSpotAndOrigin(routeInfo.getData().get(0).getRoute().get(0).getLng(), routeInfo.getData().get(0).getRoute().get(0).getLat(),
+                        routeInfo.getData().get(0).getRoute().get(endIndex).getLng(), routeInfo.getData().get(0).getRoute().get(endIndex).getLat());
+                drawLines(routeInfo, 0);
             }
         });
         linearLayoutTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearMap();
-                changeTextColor(textViewListOne ,Color.BLACK);
-                changeTextColor(textViewListTwo ,getResources().getColor(R.color.blue_color));
-                changeTextColor(textViewListThree ,Color.BLACK);
-                int endIndex  = routeInfo.getData().get(1).getRoute().size() - 1;
-                showHotSpotAndOrigin(routeInfo.getData().get(1).getRoute().get(0).getLng() ,routeInfo.getData().get(1).getRoute().get(0).getLat(),
-                        routeInfo.getData().get(1).getRoute().get(endIndex).getLng(),routeInfo.getData().get(1).getRoute().get(endIndex).getLat() );
-                drawLines(routeInfo ,1);
+                changeTextColor(textViewListOne, Color.BLACK);
+                changeTextColor(textViewListTwo, getResources().getColor(R.color.blue_color));
+                changeTextColor(textViewListThree, Color.BLACK);
+                int endIndex = routeInfo.getData().get(1).getRoute().size() - 1;
+
+                showHotSpotAndOrigin(routeInfo.getData().get(1).getRoute().get(0).getLng(), routeInfo.getData().get(1).getRoute().get(0).getLat(),
+                        routeInfo.getData().get(1).getRoute().get(endIndex).getLng(), routeInfo.getData().get(1).getRoute().get(endIndex).getLat());
+                drawLines(routeInfo, 1);
             }
         });
         linearLayoutThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearMap();
-                changeTextColor(textViewListOne ,Color.BLACK);
-                changeTextColor(textViewListTwo ,Color.BLACK);
-                changeTextColor(textViewListThree ,getResources().getColor(R.color.blue_color));
-                int endIndex  = routeInfo.getData().get(2).getRoute().size() - 1;
-                showHotSpotAndOrigin(routeInfo.getData().get(2).getRoute().get(0).getLng() ,routeInfo.getData().get(2).getRoute().get(0).getLat(),
-                        routeInfo.getData().get(2).getRoute().get(endIndex).getLng(),routeInfo.getData().get(2).getRoute().get(endIndex).getLat() );
-                drawLines(routeInfo ,2);
+                changeTextColor(textViewListOne, Color.BLACK);
+                changeTextColor(textViewListTwo, Color.BLACK);
+                changeTextColor(textViewListThree, getResources().getColor(R.color.blue_color));
+                int endIndex = routeInfo.getData().get(2).getRoute().size() - 1;
+                showHotSpotAndOrigin(routeInfo.getData().get(2).getRoute().get(0).getLng(), routeInfo.getData().get(2).getRoute().get(0).getLat(),
+                        routeInfo.getData().get(2).getRoute().get(endIndex).getLng(), routeInfo.getData().get(2).getRoute().get(endIndex).getLat());
+                drawLines(routeInfo, 2);
             }
         });
-
+        //悬浮按钮测试 是否清空地图
+        fbtnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearMap();
+            }
+        });
     }
-
-
 
 
     /**
@@ -259,8 +257,8 @@ public class HotSpotPathActivity extends BaseActivity {
         Logger.d("打标记：经度: " + lng + "： 纬度" + lat);
         LatLng latLngHot = new LatLng(lat, lng);
         MarkerOptions markerOptions = new MarkerOptions().position(latLngHot)
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources() ,R.mipmap.ui_hotspot_endpoint)));
-        final Marker markerHot =pathMap .addMarker(markerOptions);
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ui_hotspot_endpoint)));
+        final Marker markerHot = pathMap.addMarker(markerOptions);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLngHot, 17, 0, 0));
         //将相机移动到标记所在位置
         pathMap.moveCamera(cameraUpdate);
@@ -274,16 +272,16 @@ public class HotSpotPathActivity extends BaseActivity {
      * @param originLng  the origin lng
      * @param originLat  the origin lat
      */
-    public void showHotSpotAndOrigin(double hotSpotLng ,double hotSpotLat ,double originLng ,double originLat) {
-        Logger.d("打上起点终点标记"+ hotSpotLng+hotSpotLat + originLat + originLng);
-        LatLng latLngHotSpot = new LatLng(hotSpotLat,hotSpotLng);
-        LatLng latlngOrigin = new LatLng(originLat ,originLng);
+    public void showHotSpotAndOrigin(double hotSpotLng, double hotSpotLat, double originLng, double originLat) {
+        Logger.d("打上起点终点标记" + hotSpotLng + hotSpotLat + originLat + originLng);
+        LatLng latLngHotSpot = new LatLng(hotSpotLat, hotSpotLng);
+        LatLng latlngOrigin = new LatLng(originLat, originLng);
         MarkerOptions markerOptionsHotSpot = new MarkerOptions().position(latLngHotSpot)
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources() ,R.mipmap.ui_hotspot_endpoint)));
-        Marker markerHot =pathMap .addMarker(markerOptionsHotSpot);
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ui_hotspot_endpoint)));
+        Marker markerHot = pathMap.addMarker(markerOptionsHotSpot);
         MarkerOptions markerOptionsOrigin = new MarkerOptions().position(latlngOrigin)
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources() ,R.mipmap.ui_hotspot_origin)));
-         Marker markerOrigin =pathMap .addMarker(markerOptionsOrigin);
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ui_hotspot_origin)));
+        Marker markerOrigin = pathMap.addMarker(markerOptionsOrigin);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latlngOrigin, 10, 0, 0));
         //将相机移动到标记所在位置
         pathMap.moveCamera(cameraUpdate);
@@ -297,42 +295,42 @@ public class HotSpotPathActivity extends BaseActivity {
     /**
      * 处理eventbus发过来的事件
      */
-    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void handleEvent(BaseEvent baseEvent) {
         if (baseEvent.type.equals(EventBusType.HOTSPOT_CHOSEN)) {
-            Log.e(TAG,"接收事件 热点已经选择，显示状态框");
+            Log.e(TAG, "接收事件 热点已经选择，显示状态框");
             layoutPlanCard.setVisibility(View.GONE);
             layoutOriginHotSpot.setVisibility(View.VISIBLE);
             HotSpotInfo hotSpotInfo = (HotSpotInfo) baseEvent.object;
             //将选择好的热点坐标发送给 起点选择Activity
             BaseEvent baseEventOrigin = EventFactory.getInstance();
             baseEventOrigin.type = EventBusType.ORIGIN_HOTSPOT_TO_CHOOSE;
-            baseEventOrigin.object = new LatLng( hotSpotInfo.getLatitude() ,hotSpotInfo.getLongitude());
+            baseEventOrigin.object = new LatLng(hotSpotInfo.getLatitude(), hotSpotInfo.getLongitude());
             EventBusUtils.postSticky(baseEventOrigin);
-            showHotSpot(hotSpotInfo.getLongitude() ,hotSpotInfo.getLatitude());
+            showHotSpot(hotSpotInfo.getLongitude(), hotSpotInfo.getLatitude());
             //如果热点文本框Visible则赋值用户选定的热点信息
             if (tvSearchEndPoint.getVisibility() == View.VISIBLE) {
                 tvSearchEndPoint.setText(StatusManager.hotSpotChosen);
             }
         }
 
-        if(baseEvent.type.equals(EventBusType.ORIGIN_HOTSPOT_BOTH_CHOSEN)) {
+        if (baseEvent.type.equals(EventBusType.ORIGIN_HOTSPOT_BOTH_CHOSEN)) {
             Logger.d("接收事件 ： 热点和地点都已经选择");
             clearMap();
             routeInfo = (PathInfo) baseEvent.object;
             //将 方案卡片 显示出来
-            layoutPlanCard .setVisibility(View.VISIBLE);
+            layoutPlanCard.setVisibility(View.VISIBLE);
             initPlanCard(routeInfo);
-            setOriginHotSpotText(StatusManager.originChosen ,StatusManager.hotSpotChosen);
+            setOriginHotSpotText(StatusManager.originChosen, StatusManager.hotSpotChosen);
             //默认选择第一个方案，并画出来
-            changeTextColor(textViewListOne ,getResources().getColor(R.color.blue_color));
-            changeTextColor(textViewListTwo ,Color.BLACK);
-            changeTextColor(textViewListThree ,Color.BLACK);
-            drawLines(routeInfo ,0);
+            changeTextColor(textViewListOne, getResources().getColor(R.color.blue_color));
+            changeTextColor(textViewListTwo, Color.BLACK);
+            changeTextColor(textViewListThree, Color.BLACK);
+            drawLines(routeInfo, 0);
             //第一个方案的路径点集合的 最后的 子项的序号
-            int endIndex  = routeInfo.getData().get(0).getRoute().size() - 1;
-            showHotSpotAndOrigin(routeInfo.getData().get(0).getRoute().get(0).getLng() ,routeInfo.getData().get(0).getRoute().get(0).getLat(),
-                                 routeInfo.getData().get(0).getRoute().get(endIndex).getLng(),routeInfo.getData().get(0).getRoute().get(endIndex).getLat() );
+            int endIndex = routeInfo.getData().get(0).getRoute().size() - 1;
+            showHotSpotAndOrigin(routeInfo.getData().get(0).getRoute().get(0).getLng(), routeInfo.getData().get(0).getRoute().get(0).getLat(),
+                    routeInfo.getData().get(0).getRoute().get(endIndex).getLng(), routeInfo.getData().get(0).getRoute().get(endIndex).getLat());
         }
     }
 
@@ -343,12 +341,14 @@ public class HotSpotPathActivity extends BaseActivity {
      * @param routeInfo the route info
      * @param index     the index
      */
-    public void  drawLines(PathInfo routeInfo , int index ) {
+    public void drawLines(PathInfo routeInfo, int index) {
         List<PathInfo.DataBean.RouteBean> routeBeanList = routeInfo.getData().get(index).getRoute();
-            Logger.d("方案："+index+" 点集合大小为： " +routeBeanList.size());
-            for(PathInfo.DataBean.RouteBean point : routeBeanList) {
-                latLngs.add(new LatLng(point.getLat(),point.getLng()));
-            }
+        Logger.d("方案：" + index + " 点集合大小为： " + routeBeanList.size());
+        //画线前，先将原有的点的集合清空
+        latLngs.clear();
+        for (PathInfo.DataBean.RouteBean point : routeBeanList) {
+            latLngs.add(new LatLng(point.getLat(), point.getLng()));
+        }
         Polyline polyline = pathMap.addPolyline(new PolylineOptions().
                 addAll(latLngs).width(15).color(getResources().getColor(R.color.blue_color)));
     }
@@ -358,10 +358,10 @@ public class HotSpotPathActivity extends BaseActivity {
      *
      * @param info the info
      */
-    public void  initPlanCard(PathInfo info) {
-        if(info != null) {
+    public void initPlanCard(PathInfo info) {
+        if (info != null) {
             Logger.d(GsonUtil.GsonString(info));
-            tvTimeOne .setText(String.valueOf(info.getData().get(0).getTime()).concat("分钟"));
+            tvTimeOne.setText(String.valueOf(info.getData().get(0).getTime()).concat("分钟"));
             tvTimeTwo.setText(String.valueOf(info.getData().get(1).getTime()).concat("分钟"));
             tvTimeThree.setText(String.valueOf(info.getData().get(2).getTime()).concat("分钟"));
             tvFarOne.setText(String.valueOf(info.getData().get(0).getDistance()).concat("公里"));
@@ -373,20 +373,19 @@ public class HotSpotPathActivity extends BaseActivity {
     }
 
 
-
     /**
      * 改变底部方案栏的文字颜色
      *
      * @param viewList the view list
      * @param color    the color
      */
-    public void  changeTextColor(List<TextView> viewList , int color){
-        for(TextView view : viewList) {
+    public void changeTextColor(List<TextView> viewList, int color) {
+        for (TextView view : viewList) {
             view.setTextColor(color);
         }
     }
 
-    public void  setOriginHotSpotText(String origin ,String hotspot) {
+    public void setOriginHotSpotText(String origin, String hotspot) {
         tvSetOrigin.setText(origin);
         tvSearchEndPoint.setText(hotspot);
     }
@@ -396,6 +395,7 @@ public class HotSpotPathActivity extends BaseActivity {
      */
     public void clearMap() {
         if (pathMap != null) {
+            Logger.d("清空地图");
             pathMap.clear();
         }
     }

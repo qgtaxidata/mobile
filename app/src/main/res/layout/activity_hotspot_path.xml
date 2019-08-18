@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.amap.api.maps.MapView
@@ -29,4 +30,21 @@
         android:layout_alignParentBottom="true">
 
     </com.example.taxidata.widget.PlanInfoCard>
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fbtn_test"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@mipmap/ic_set_up"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="160dp"
+        android:layout_gravity="bottom|right"
+        app:fab_size="mini"
+        app:fab_label="设置"
+        app:fab_colorNormal="@android:color/transparent"
+        app:fab_colorPressed="@android:color/holo_orange_light"
+        app:fab_showShadow="true"
+        app:fab_shadowColor="@android:color/transparent"
+        app:fab_shadowRadius="4dp"
+        />
 </RelativeLayout>

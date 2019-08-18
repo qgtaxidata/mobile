@@ -40,6 +40,7 @@ import com.example.taxidata.ui.hotspot.contract.OriginHotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.OriginHotSpotPresenter;
 import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 import com.example.taxidata.util.EventBusUtils;
+import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.EmptyHotSpotHistoryView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.orhanobut.logger.Logger;
@@ -183,13 +184,16 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             @Override
             public void onClick(View v) {
                 //Todo: 将 热点 和 地点 打包 发送给 服务器 请求返回数据
-                Logger.d("点击了热点--起点--搜索键");
                 if("".equals(etHotspotOrigin.getText().toString())) {
-                    showLoadingDialog();
                     originAddressChosen  = etHotspotOrigin.getText().toString();
-                    StatusManager.originChosen = originAddressChosen;
-                    mPresenter.saveOriginHotSpotHistory(originAddressChosen);
-                    mPresenter.convertToLocation(originAddressChosen,routeRequest ,geocodeSearch);
+                    if(originAddressChosen.equals(StatusManager.hotSpotChosen)){
+                        ToastUtil.showLongToastBottom("所选热点与起点相同，请重新选择");
+                    } else {
+                        showLoadingDialog();
+                        StatusManager.originChosen = originAddressChosen;
+                        mPresenter.saveOriginHotSpotHistory(originAddressChosen);
+                        mPresenter.convertToLocation(originAddressChosen,routeRequest ,geocodeSearch);
+                    }
                 }
             }
         });
@@ -197,23 +201,30 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //Todo：带着 选中的 热点 & 起点信息 ，去 地图页面画出来！
-                showLoadingDialog();
                 originAddressChosen = originAdapter.getData().get(position).getHotSpotOriginHistory();
-                StatusManager.originChosen = originAddressChosen;
-                mPresenter.saveOriginHotSpotHistory(originAddressChosen);
-                mPresenter.convertToLocation(originAddressChosen,routeRequest ,geocodeSearch);
+                if (originAddressChosen.equals(StatusManager.hotSpotChosen)) {
+                    ToastUtil.showLongToastBottom("所选热点与起点相同，请重新选择");
+                } else {
+                    showLoadingDialog();
+                    StatusManager.originChosen = originAddressChosen;
+                    mPresenter.saveOriginHotSpotHistory(originAddressChosen);
+                    mPresenter.convertToLocation(originAddressChosen, routeRequest, geocodeSearch);
+                }
             }
         });
         hintAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //Todo：带着 选中的 热点 & 起点信息 ，去 地图页面画出来！
-                showLoadingDialog();
                 originAddressChosen =hintAdapter.getData().get(position).getHotSpotName();
-                StatusManager.originChosen = originAddressChosen;
-                mPresenter.saveOriginHotSpotHistory(originAddressChosen);
-                mPresenter.convertToLocation(originAddressChosen,routeRequest ,geocodeSearch);
-
+                if (originAddressChosen.equals(StatusManager.hotSpotChosen)) {
+                    ToastUtil.showLongToastBottom("所选热点与起点相同，请重新选择");
+                } else {
+                    showLoadingDialog();
+                    StatusManager.originChosen = originAddressChosen;
+                    mPresenter.saveOriginHotSpotHistory(originAddressChosen);
+                    mPresenter.convertToLocation(originAddressChosen, routeRequest, geocodeSearch);
+                }
             }
         });
     }
@@ -236,8 +247,10 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             hintAdapter.setNewData(hintList);
             cancelLoadingDialong();
         } else {
-            //输入框为空则显示历史列表
-            showHistoryOriginList(mPresenter.getHistoryOriginList());
+            //输入框为空,且适配器非历史适配器则显示历史列表
+            if (rvHotspotOrigin != null && rvHotspotOrigin.getAdapter() != originAdapter) {
+                showHistoryOriginList(mPresenter.getHistoryOriginList());
+            }
         }
     }
 
@@ -283,6 +296,7 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
         baseEventBothChosen.content = originAddressChosen;
         EventBusUtils.postSticky(baseEventBothChosen);
         //返回热点路径页面
+        cancelLoadingDialong();
         finish();
     }
 }
