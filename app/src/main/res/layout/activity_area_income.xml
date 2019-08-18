@@ -40,5 +40,24 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/area_income_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        android:textColor="@color/black_color"
+        android:text="天河区收入分析及预测"
+        />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/area_income_line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/search_out_bg" />
 
 </LinearLayout>

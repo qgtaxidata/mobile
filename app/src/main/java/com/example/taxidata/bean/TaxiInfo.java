@@ -52,6 +52,7 @@ public class TaxiInfo implements Serializable {
         private String latitude;
         private String time;
         private String licenseplateno;
+        private boolean isSelected;
 
         public String getLongitude() {
             return longitude;
@@ -83,6 +84,14 @@ public class TaxiInfo implements Serializable {
 
         public void setLicenseplateno(String licenseplateno) {
             this.licenseplateno = licenseplateno;
+        }
+
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
         }
     }
 }
