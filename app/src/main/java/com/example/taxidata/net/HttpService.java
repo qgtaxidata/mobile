@@ -41,7 +41,7 @@ public interface HttpService {
      * @param time
      * @return
      */
-    @GET("taxiRoute/findTaxi")
+    @GET("/taxiRoute/findTaxi")
     Observable<TaxiInfo> getTaxiInfo(@Query("area") int area, @Query("time") String time);
 
     /**
@@ -85,10 +85,10 @@ public interface HttpService {
     @GET("AreaRequirement/analyseRequirement")
     Observable<TaxiDemandInfo> getTaxiDemandInfo(@Query("area") int area, @Query("time") String time);
 
-    @POST("")
+    @GET("/analyse/income")
     Observable<AreaIncomeInfo> getAreaIncomeInfo(@Query("area") int area, @Query("date") String date);
 
-    @POST("")
+    @POST("analyse/vehicleUtilizationRate")
     Observable<AreaAnalyzeInfo> getAreaAnalyzeInfo(@Query("area") int area, @Query("date") String date);
 
     @POST("")

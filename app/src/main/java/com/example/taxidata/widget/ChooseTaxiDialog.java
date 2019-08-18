@@ -16,6 +16,7 @@ import com.example.taxidata.adapter.TaxiOnClickListener;
 import com.example.taxidata.bean.GetTaxiPathInfo;
 import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.adapter.OnItemClickListener;
+import com.example.taxidata.bean.TaxiPathInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -38,6 +39,7 @@ public class ChooseTaxiDialog extends Dialog {
     private TaxiChooseAdapter adapter;
     private List<TaxiInfo.DataBean> taxiInfoList = new ArrayList<>();
     GetTaxiPathInfo pathInfo = new GetTaxiPathInfo();
+    private int currentNum = -1;
 
     public ChooseTaxiDialog(@NonNull Context context) {
         super(context);
@@ -81,7 +83,27 @@ public class ChooseTaxiDialog extends Dialog {
         adapter.seOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //taxiInfoList.get(position).setSelected(true);
+                for (TaxiInfo.DataBean dataBean : taxiInfoList){
+                    dataBean.setSelected(false);
+                }
+                if(currentNum == -1){
+                    //选中
+                    taxiInfoList.get(position).setSelected(true);
+                    currentNum = position;
+                }else if(currentNum == position){
+                    //同一个item选中后取消
+                    for (TaxiInfo.DataBean dataBean : taxiInfoList){
+                        dataBean.setSelected(false);
+                    }
+                    currentNum = -1;
+                }else {
+                    //与上次选中的item不同（即更换选择）
+                    for (TaxiInfo.DataBean dataBean : taxiInfoList){
+                        dataBean.setSelected(false);
+                    }
+                    taxiInfoList.get(position).setSelected(true);
+                    currentNum = position;
+                }
                 adapter.notifyDataSetChanged();
                 String licenseplateno = taxiInfoList.get(position).getLicenseplateno();
                 String time = taxiInfoList.get(position).getTime();

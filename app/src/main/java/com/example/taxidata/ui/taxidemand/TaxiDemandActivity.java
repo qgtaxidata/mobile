@@ -78,8 +78,8 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
         currentTime = TaxiApp.getAppNowTime();
         //初始化区域选择框
         initAreaList();
-        //初始化图表
-        initChart();
+        //初始化图表(默认显示番禺当前时间)
+        getChartInfo();
         //获取用户选择的区域
         taxiDemandAnalyzeAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -114,8 +114,7 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
     }
 
     //初始化图表(默认显示番禺区当前时间的数据)
-    private void initChart(){
-
+    private void getChartInfo(){
         present.getTaxiDemandInfo(TaxiDemandActivity.this, areaId, "2017-02-03 11:11:11");
     }
 

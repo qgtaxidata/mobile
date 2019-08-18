@@ -64,20 +64,19 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
     @Override
     public void getHistoryTaxiPathInfo(Context context, String time, String licenseplateno) {
-        Logger.d(time);
-        Logger.d(licenseplateno);
+        view.showLoadingView();
+        Log.d("p",licenseplateno);
         if(model!=null){
             model.getHistoryTaxiPathInfo(time, licenseplateno)
-
                     .subscribe(new Observer<TaxiPathInfo>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-
+                            Log.d("p","sub");
                         }
 
                         @Override
                         public void onNext(TaxiPathInfo historyTaxiPathInfo) {
-                            Log.d("next",historyTaxiPathInfo.getMsg());
+                            Log.d("p","next");
                             if(historyTaxiPathInfo.getData() != null){
                                 view.showHistoryPath(historyTaxiPathInfo.getData());
                             }else {
@@ -89,12 +88,14 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                         public void onError(Throwable e) {
                             e.printStackTrace();
                             Logger.d(e.getMessage());
+                            view.clearMap();
+                            //view.hideLoadingView();
                             StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
                         }
 
                         @Override
                         public void onComplete() {
-                            view.clearMap();
+                            view.hideLoadingView();
                         }
                     });
         }
@@ -103,17 +104,16 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
     @SuppressLint("CheckResult")
     @Override
     public void getCurrentTaxiPathInfo(Context context,String time, String licenseplateno) {
-        Logger.d(time);
-        Logger.d(licenseplateno);
         flag = false;
         if(model != null){
-            Observable.interval(10, TimeUnit.SECONDS)
+            Observable.interval(8, TimeUnit.SECONDS)
                     .doOnNext(new Consumer<Long>() {
                         @Override
                         public void accept(Long aLong) throws Exception {
                             model.getCurrentTaxiPathInfo(time, licenseplateno)
 
                                     .subscribe(new Observer<TaxiPathInfo>() {
+
                                         @Override
                                         public void onSubscribe(Disposable d) {
 
@@ -121,6 +121,9 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
                                         @Override
                                         public void onNext(TaxiPathInfo currentTaxiPathInfo) {
+                                            Logger.d(time);
+                                            Logger.d(licenseplateno);
+                                            Log.d("p","next");
                                             if (currentTaxiPathInfo.getCode() == 1){
                                                 //显示实时路径
                                                 view.showCurrentPath(currentTaxiPathInfo.getData());
@@ -156,7 +159,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
                         @Override
                         public void onNext(Long aLong) {
-
+                            Logger.d("第"+aLong+"次");
                         }
 
                         @Override
@@ -170,6 +173,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                         @Override
                         public void onComplete() {
                             view.clearMap();
+                            Log.d("P","COM");
                             flag = true;
                         }
                     });
