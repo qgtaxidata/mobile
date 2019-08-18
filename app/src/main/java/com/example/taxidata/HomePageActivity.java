@@ -1,10 +1,9 @@
 package com.example.taxidata;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -12,11 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
@@ -26,22 +26,23 @@ import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.adapter.CustomOnclick;
 import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.application.TaxiApp;
+import com.example.taxidata.common.FloatingButtonBuilderManager;
 import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.common.eventbus.BaseEvent;
 import com.example.taxidata.constant.Algorithm;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
-import com.example.taxidata.ui.IncomeRanking.IncomeRankingActivity;
 import com.example.taxidata.net.RetrofitManager;
+import com.example.taxidata.ui.IncomeRanking.IncomeRankingActivity;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.areaanalyze.AreaAnalyzeActivity;
 import com.example.taxidata.ui.areaincome.AreaIncomeActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
-import com.example.taxidata.ui.roadquality.RoadQualityActivity;
 import com.example.taxidata.ui.passengerpath.view.OriginEndActivity;
+import com.example.taxidata.ui.roadquality.RoadQualityActivity;
 import com.example.taxidata.ui.setup.SetUpActivity;
 import com.example.taxidata.ui.taxidemand.TaxiDemandActivity;
 import com.example.taxidata.util.EventBusUtils;
@@ -51,6 +52,10 @@ import com.example.taxidata.widget.MyTimerPicker;
 import com.example.taxidata.widget.StatusBar;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.nightonke.boommenu.BoomButtons.BoomButton;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.OnBoomListener;
+import com.nightonke.boommenu.Util;
 import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -142,6 +147,10 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     FloatingActionButton passengerPathFbtn;
     @BindView(R.id.fbtn_regional_analysis)
     FloatingActionButton regionalAnalysisFbtn;
+    @BindView(R.id.buttom_menu_homepage)
+    BoomMenuButton buttonMenu;
+
+
 
     /*------------------------------------present相关-----------------------------------------------*/
 
@@ -179,6 +188,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         initPresent();
         //初始化悬浮按钮
         initFloatButton();
+        initButtonMenu();
+        initButtonClickEvent();
         //初始化地图
         initMap();
         //初始化时间选择器
@@ -211,7 +222,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             @Override
             public void onClick(View v) {
                 // TODO 区域分析
-                Intent intent = new Intent(HomePageActivity.this,AreaAnalyzeActivity.class);
+                Intent intent = new Intent(HomePageActivity.this, AreaAnalyzeActivity.class);
                 startActivity(intent);
             }
         });
@@ -439,7 +450,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 //                startActivity(hotSpotIntent);
                 ActivityOptions compat = ActivityOptions.makeSceneTransitionAnimation(this);
                 startActivity(new Intent(this, HotSpotResearchActivity.class), compat.toBundle());
-                overridePendingTransition(R.transition.transition_slide ,R.transition.transition_fade);
+                overridePendingTransition(R.transition.transition_slide, R.transition.transition_fade);
                 break;
             case R.id.fbtn_heat_power:
                 //热力图模式
@@ -748,5 +759,79 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         }
         Log.d(TAG, "按下返回键");
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    public void initButtonMenu() {
+        for (int i = 0; i < 12; i++) {
+            //建造者模式 ，添加按钮，你们自己注意按钮并不会被初始化的
+            buttonMenu.addBuilder(FloatingButtonBuilderManager.getTextOutsideCircleButtonBuilderWithDifferentPieceColor());
+        }
+        float width = Util.dp2px(80);
+        float height = Util.dp2px(96);
+        float height_0_5 = height / 2;
+        float height_1_5 = height * 1.5f;
+        float heightMargin = buttonMenu.getButtonHorizontalMargin();
+        float widthMargin = buttonMenu.getButtonVerticalMargin();
+        float vm_0_5 = widthMargin / 2;
+        float vm_1_5 = widthMargin * 1.5f;
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(-width - heightMargin, -height_1_5 - vm_1_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(      0, -height_1_5 - vm_1_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(+width + heightMargin, -height_1_5 - vm_1_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(-width - heightMargin, -height_0_5 - vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(      0, -height_0_5 - vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(+width + heightMargin, -height_0_5 - vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(-width - heightMargin, +height_0_5 + vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(      0, +height_0_5 + vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(+width + heightMargin, +height_0_5 + vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(-width - heightMargin, +height_1_5 + vm_1_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(      0, +height_1_5 + vm_1_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(+width + heightMargin, +height_1_5 + vm_1_5-height_0_5));
+    }
+
+    /**
+     * 设置悬浮按钮(子按钮）的点击事件
+     */
+    public void initButtonClickEvent() {
+        buttonMenu.setOnBoomListener(new OnBoomListener() {
+            @Override
+            public void onClicked(int index, BoomButton boomButton) {
+                Log.e(TAG, "onClicked: 当前点击了第" + index+" 个" );
+                switch (index ) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 5:
+                        //载客热点推荐
+                        ActivityOptions compat = ActivityOptions.makeSceneTransitionAnimation(HomePageActivity.this);
+                        startActivity(new Intent(HomePageActivity.this, HotSpotResearchActivity.class), compat.toBundle());
+                        overridePendingTransition(R.transition.transition_slide, R.transition.transition_fade);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            @Override
+            public void onBackgroundClick() {
+            }
+            @Override
+            public void onBoomWillHide() {
+            }
+            @Override
+            public void onBoomDidHide() {
+            }
+            @Override
+            public void onBoomWillShow() {
+            }
+            @Override
+            public void onBoomDidShow() {
+            }
+        });
+
     }
 }

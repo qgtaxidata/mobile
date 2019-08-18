@@ -18,12 +18,14 @@ import com.example.taxidata.constant.Area;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
@@ -62,6 +64,7 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
     private int areaId = 5;
     private String currentTime;
     private XAxis xAxis;
+    private YAxis yAxis;
 
 
     @Override
@@ -112,83 +115,62 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
 
     //初始化图表(默认显示番禺区当前时间的数据)
     private void initChart(){
-        taxiDemandAnalyzeLineChart.setDrawGridBackground(false);
-        taxiDemandAnalyzeLineChart.setDragEnabled(false);  //禁止缩放
-        taxiDemandAnalyzeLineChart.setScaleEnabled(false);  //禁止推动
-        taxiDemandAnalyzeLineChart.setDrawBorders(false);    //设置四周是否有边框
-        taxiDemandAnalyzeLineChart.setDescription(null);   //设置右下角说明文字
-        //x轴的相关设置
-        xAxis = taxiDemandAnalyzeLineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置
-        xAxis.setAxisMinimum(0f);
-        xAxis.setAxisLineWidth(3f);
-        xAxis.setDrawAxisLine(true);
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawLabels(true);
-        xAxis.setTextColor(Color.BLACK);
-        xAxis.setAxisLineColor(Color.BLACK);
-        xAxis.setLabelCount(3);  //x轴上有多少个刻度
-        //Y轴的相关设置
-        taxiDemandAnalyzeLineChart.getAxisRight().setEnabled(false);
-        YAxis leftY = taxiDemandAnalyzeLineChart.getAxisLeft();
-        leftY.setEnabled(true);
-        leftY.setAxisLineWidth(3f);
-        leftY.setDrawGridLines(false);
-        leftY.setAxisMinimum(0f);
-        leftY.setDrawAxisLine(true);
-        leftY.setTextColor(Color.BLACK);
-        leftY.setAxisLineColor(Color.BLACK);
+
         present.getTaxiDemandInfo(TaxiDemandActivity.this, areaId, "2017-02-03 11:11:11");
     }
 
     //展示列表
     @Override
     public void showChart(TaxiDemandInfo.DataBean dataBeans) {
-        if(dataBeans!=null){
-            taxiDemandAnalyzeTitleTv.setText(dataBeans.getGraph_title());
-            List<TaxiDemandInfo.DataBean.GraphDataBean> dataList = dataBeans.getGraph_data();
-            //设置X轴数据
-            String[] xValues = new String[3];
-            for(int j = 2; j>=0; j--){
-            xValues[j] = dataList.get(j).getTitle();
+        //图表初始化
+        taxiDemandAnalyzeLineChart.setDrawGridBackground(false);
+        taxiDemandAnalyzeLineChart.setDragEnabled(false);  //禁止缩放
+        taxiDemandAnalyzeLineChart.setScaleEnabled(false);  //禁止推动
+        taxiDemandAnalyzeLineChart.setDrawBorders(false);    //设置四周是否有边框
+        taxiDemandAnalyzeLineChart.setBackgroundColor(Color.WHITE);
+        taxiDemandAnalyzeLineChart.getAxisRight().setEnabled(false);   //不显示右侧y轴
+        taxiDemandAnalyzeLineChart.getDescription().setEnabled(false);
+        taxiDemandAnalyzeLineChart.getLegend().setEnabled(false);   //不显示图例
+        //x轴的相关设置
+        xAxis = taxiDemandAnalyzeLineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置
+        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisLineWidth(1.5f);
+        xAxis.setTextColor(Color.BLACK);
+        xAxis.setAxisLineColor(Color.BLACK);
+        xAxis.setGranularity(1f);
+        xAxis.setDrawGridLines(false);   //去掉x轴的网格线
+        xAxis.setLabelCount(3,false);
+        //Y轴的相关设置
+        yAxis = taxiDemandAnalyzeLineChart.getAxisLeft();
+        yAxis.removeAllLimitLines();
+        yAxis.setAxisLineWidth(1.5f);
+        yAxis.setDrawGridLines(true);      //显示y轴的网格线
+        yAxis.enableGridDashedLine(10f, 10f, 0f);   //并设置为破折线
+        yAxis.setAxisMinimum(0f);
+        yAxis.setDrawAxisLine(true);
+        yAxis.setTextColor(Color.BLACK);
+        yAxis.setAxisLineColor(Color.BLACK);
+        Log.d("show", "wx");
+        //设置标题
+        taxiDemandAnalyzeTitleTv.setText(dataBeans.getGraph_title());
+        Log.d("show", dataBeans.getGraph_title());
+        List<String> xList = new ArrayList<>();
+        //添加数据
+        for (int i = 0 ; i<3; i++){
+            xList.add(dataBeans.getGraph_data().get(i).getTitle());
         }
-            IAxisValueFormatter formatter = new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return xValues[(int)value];
-            }
-        };
-            xAxis.setValueFormatter(formatter);
-            //添加Y轴数据
-            ArrayList<Entry> values = new ArrayList<>();
-            values.add(new Entry(0,0));
-            for(int i = 0; i<3; i++){
-            values.add(new Entry(i, dataList.get(i).getDemand()));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
+        ArrayList<Entry> values = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            values.add(new Entry(i, dataBeans.getGraph_data().get(i).getDemand()));
         }
-            LineDataSet lineDataSet;
-            if(taxiDemandAnalyzeLineChart.getData() != null && taxiDemandAnalyzeLineChart.getData().getDataSetCount() > 0){
-                lineDataSet = (LineDataSet)taxiDemandAnalyzeLineChart.getData().getDataSetByIndex(0);
-                lineDataSet.setValues(values);
-                taxiDemandAnalyzeLineChart.getData().notifyDataChanged();
-                taxiDemandAnalyzeLineChart.notifyDataSetChanged();
-            }else {
-            lineDataSet = new LineDataSet(values, null);
-            lineDataSet.setLineWidth(2f);
-            lineDataSet.setCircleRadius(3f);
-            lineDataSet.setDrawCircleHole(false);   //实心还是空心
-            lineDataSet.setValueTextSize(14f);
-            lineDataSet.setDrawFilled(false);
-            lineDataSet.setFormLineWidth(5f);
-            lineDataSet.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-            lineDataSet.setFormSize(15.f);
-            //添加数据集
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            dataSets.add(lineDataSet);
-            //创建数据集的数据对象
-            LineData data = new LineData(dataSets);
-            taxiDemandAnalyzeLineChart.setData(data);
-        }
-        }
+        //每个LineDataSet代表一条线
+        LineDataSet lineDataSet = new LineDataSet(values, "");
+        initLineDataSet(lineDataSet);
+        LineData lineData = new LineData(lineDataSet);
+        taxiDemandAnalyzeLineChart.setData(lineData);
+
     }
 
 
@@ -198,4 +180,17 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
         present.detachView();
     }
 
+    //初始化折线
+    private void initLineDataSet(LineDataSet lineDataSet) {
+        lineDataSet.setColor(Color.parseColor("#51b46d"));
+        lineDataSet.setLineWidth(1f);
+        lineDataSet.setCircleColor(Color.parseColor("#51b46d"));
+        lineDataSet.setCircleRadius(2f);
+        lineDataSet.setDrawCircleHole(false);    //设置曲线值的圆点是实心还是空心
+        lineDataSet.setValueTextSize(20f);
+        lineDataSet.setValueTextColor(Color.parseColor("#51b46d"));
+        lineDataSet.setDrawFilled(false);
+        lineDataSet.setFormLineWidth(1f);
+        lineDataSet.setFormSize(15.f);
+    }
 }

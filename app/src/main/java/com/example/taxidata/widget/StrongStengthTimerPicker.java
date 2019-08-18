@@ -417,4 +417,8 @@ public class StrongStengthTimerPicker extends FrameLayout {
     public void stopTimer() {
         isStop = true;
     }
+
+    public String getHistoryTime() {
+        return getTime() + ":00";
+    }
 }

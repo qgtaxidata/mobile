@@ -36,21 +36,36 @@ public interface HttpService {
     @POST("hotspot/findHotspot")
     Observable<HotSpotCallBackInfo>  getHotSpot(@Body RequestBody info);
 
-    @Headers({"Content-Type: application/json","Accept: application/json"})
-    @POST("/taxiRoute/findTaxi")
-    Observable<TaxiInfo> getTaxiInfo(@Body RequestBody info);
+    /**
+     * 路径可视化之查询车牌号
+     * @param area
+     * @param time
+     * @return
+     */
+    @GET("taxiRoute/findTaxi")
+    Observable<TaxiInfo> getTaxiInfo(@Query("area") int area, @Query("time") String time);
 
+    /**
+     * 路径可视化之查询历史路径
+     * @param
+     * @return
+     */
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("/taxiRoute/findRoute")
     Observable<TaxiPathInfo> getHistoryTaxiPathInfo(@Body RequestBody info);
 
+    /**
+     * 路径可视化之查询实时路径
+     * @param
+     * @return
+     */
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("/taxiRoute/findLiveRoute")
     Observable<TaxiPathInfo> getCurrentTaxiPathInfo(@Body RequestBody info);
 
 
 
-    @GET("route/getRoute")
+    @POST("route/getRoute")
     Observable<HotSpotRouteInfo>  getHotSpotRoute(@Query("lonOrigin") double lonOrigin,
                                                   @Query("latOrigin") double latOrigin ,
                                                   @Query("lonDestination") double lonDestination ,
