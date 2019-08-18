@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <com.example.taxidata.widget.DropDownSelectView
+        android:id="@+id/dsv_ad_day_style"
+        android:layout_height="@dimen/dp_25"
+        android:layout_width="146dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="30dp"
+        />
+
+    <com.example.taxidata.widget.DropDownSelectView
+        android:id="@+id/dsv_ad_time_style"
+        android:layout_width="146dp"
+        android:layout_height="@dimen/dp_25"
+        android:layout_toRightOf="@id/dsv_ad_day_style"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        />
+
+    <com.example.taxidata.widget.DropDownSelectView
+        android:id="@+id/dsv_ad_area"
+        android:layout_width="116dp"
+        android:layout_height="@dimen/dp_25"
+        android:layout_below="@id/dsv_ad_time_style"
+        android:layout_toRightOf="@id/dsv_ad_day_style"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginStart="-20dp"
+        />
+
+    <Button
+        android:id="@+id/btn_ad_config_refresh"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_25"
+        android:layout_below="@id/dsv_ad_day_style"
+        android:layout_alignRight="@id/dsv_ad_time_style"
+        android:background="@drawable/shape_small_button"
+        android:layout_marginTop="10dp"
+        android:textColor="#fff"
+        android:textStyle="normal"
+        android:text="确认"
+        />
+
+    <RelativeLayout
+        android:layout_height="470dp"
+        android:layout_width="270dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/shape_ad_background"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/transparent"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/transparent"
+                android:textStyle="normal"
+                android:textColor="#4d4d4d"
+                android:textSize="16sp"
+                android:text="广告牌位置推荐"/>
+
+            <LinearLayout
+                android:id="@+id/ll_ad_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:background="@android:color/transparent">
+
+                <ImageView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@mipmap/ic_placeholder"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_ad_one"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@android:color/transparent"
+                    android:textStyle="normal"
+                    android:textColor="#4d4d4d"
+                    android:textSize="16sp"
+                    android:text="广告牌位置1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_ad_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/transparent">
+
+                <ImageView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@mipmap/ic_placeholder"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_ad_two"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@android:color/transparent"
+                    android:textStyle="normal"
+                    android:textColor="#4d4d4d"
+                    android:textSize="16sp"
+                    android:text="广告牌位置2"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_ad_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/transparent">
+
+                <ImageView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@mipmap/ic_placeholder"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_ad_three"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@android:color/transparent"
+                    android:textStyle="normal"
+                    android:textColor="#4d4d4d"
+                    android:textSize="16sp"
+                    android:text="广告牌位置3"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_ad_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/transparent">
+
+                <ImageView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@mipmap/ic_placeholder"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_ad_four"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@android:color/transparent"
+                    android:textStyle="normal"
+                    android:textColor="#4d4d4d"
+                    android:textSize="16sp"
+                    android:text="广告牌位置4"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_ad_five"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/transparent">
+
+                <ImageView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@mipmap/ic_placeholder"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_ad_five"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@android:color/transparent"
+                    android:textStyle="normal"
+                    android:textColor="#4d4d4d"
+                    android:textSize="16sp"
+                    android:text="广告牌位置5"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_ad_create_chart"
+                android:layout_height="@dimen/dp_35"
+                android:layout_width="@dimen/dp_140"
+                android:background="@drawable/shape_small_button"
+                android:layout_marginTop="@dimen/dp_30"
+                android:textSize="16sp"
+                android:textColor="#fff"
+                android:textStyle="normal"
+                android:text="生成对比图表"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

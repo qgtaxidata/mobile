@@ -98,7 +98,7 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         LatLng latLng = Area.area_latlng.get(5);
         taxiPathAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
         //获取用户选择的区域
-        taxiPathAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
+        taxiPathAreaSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String areaName = areaList.get(position);

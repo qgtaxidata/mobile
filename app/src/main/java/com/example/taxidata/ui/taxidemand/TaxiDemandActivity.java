@@ -78,7 +78,7 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
         //初始化图表
         initChart();
         //获取用户选择的区域
-        taxiDemandAnalyzeAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
+        taxiDemandAnalyzeAreaSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String areaName = areaList.get(position);

@@ -13,7 +13,7 @@ public interface OriginEndShowContract {
     interface OriginEndShowView extends BaseView{
         /**
          * 展示历史记录
-         * @param history
+         * @param history 历史
          */
         void showHistory(List<OriginEndInfo> history);
 

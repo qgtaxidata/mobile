@@ -63,6 +63,18 @@ public class DropDownSelectView extends LinearLayout {
                         case 3:
                             showAreaPopWindow();
                             break;
+                        case 4:
+                            //显示广告牌界面的天数类型选择框
+                            showAdTimePopWindow();
+                            break;
+                        case 5:
+                            //显示广告牌界面的时间段选择框
+                            showAdTimePopWindow();
+                            break;
+                        case 6:
+                            //显示广告牌界面的区域选择框
+                            showAdAreaPopWindow();
+                            break;
                         default:
                     }
                 }else {
@@ -74,20 +86,42 @@ public class DropDownSelectView extends LinearLayout {
 
     //弹出区域选择列表
     private void showAreaPopWindow(){
-        LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+/*        LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = layoutInflater.inflate(R.layout.popupwindow_drop_down_select_area_list,this,false);
         ListView listView = contentView.findViewById(R.id.drop_down_select_area_lv);
         listView.setAdapter(new AreaChooseListAdapter(getContext(), mList));
         areaPopupWindow = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         areaPopupWindow.setOutsideTouchable(true);
-        areaPopupWindow.showAsDropDown(this);
+        areaPopupWindow.showAsDropDown(this);*/
+        loadLayout(R.layout.popupwindow_drop_down_select_area_list,R.id.drop_down_select_area_lv);
     }
 
     //弹出时间选择列表
     private void showTimePopWindow(){
-        LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+ /*       LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = layoutInflater.inflate(R.layout.popupwindow_drop_down_select_time_list,this,false);
         ListView listView = contentView.findViewById(R.id.drop_down_select_time_lv);
+        listView.setAdapter(new AreaChooseListAdapter(getContext(), mList));
+        areaPopupWindow = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        areaPopupWindow.setOutsideTouchable(true);
+        areaPopupWindow.showAsDropDown(this);*/
+        loadLayout(R.layout.popupwindow_drop_down_select_time_list,R.id.drop_down_select_time_lv);
+    }
+
+    //弹出广告牌时间选择列表
+    private void showAdTimePopWindow() {
+        loadLayout(R.layout.popupwindow_drop_dow_ad_time,R.id.drop_down_select_ad_time);
+    }
+
+    //弹出广告牌地址选择列表
+    private void showAdAreaPopWindow() {
+        loadLayout(R.layout.popupwindow_drop_down_ad_area,R.id.drop_down_select_ad_area);
+    }
+
+    private void loadLayout(int resoureId,int listViewId) {
+        LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = layoutInflater.inflate(resoureId,this,false);
+        ListView listView = contentView.findViewById(listViewId);
         listView.setAdapter(new AreaChooseListAdapter(getContext(), mList));
         areaPopupWindow = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         areaPopupWindow.setOutsideTouchable(true);
@@ -111,6 +145,15 @@ public class DropDownSelectView extends LinearLayout {
                 break;
             case 3:
                 resultTv.setText(Algorithm.WANG_ALGORITHM);
+                break;
+            case 4:
+                resultTv.setText("请选择天数类型");
+                break;
+            case 5:
+                resultTv.setText("请选择目标时段");
+                break;
+            case 6:
+                resultTv.setText("请选择区域");
                 break;
             default:
         }
@@ -177,9 +220,6 @@ public class DropDownSelectView extends LinearLayout {
         TextView textView;
     }
 
-    public void seOnItemClickListener(OnItemClickListener onItemClickListener){
-        this.onItemClickListener = onItemClickListener;
-    }
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;
     }

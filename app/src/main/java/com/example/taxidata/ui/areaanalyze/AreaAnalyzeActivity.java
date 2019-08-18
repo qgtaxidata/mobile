@@ -70,7 +70,7 @@ public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeCont
         //初始化时间popupWindow
         initTimeList();
         //获取用户选择的区域
-        areaAnalyzeAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
+        areaAnalyzeAreaSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String areaName = areaList.get(position);
@@ -78,7 +78,7 @@ public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeCont
             }
         });
         //获取用户选择的时间
-        areaAnalyzeTimeSelectView.seOnItemClickListener(new OnItemClickListener() {
+        areaAnalyzeTimeSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String time = timeList.get(position);
