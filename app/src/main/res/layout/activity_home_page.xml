@@ -248,6 +248,27 @@
             />
     </com.github.clans.fab.FloatingActionMenu>
 
+    <com.nightonke.boommenu.BoomMenuButton
+        android:id="@+id/buttom_menu_homepage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        app:bmb_boomInWholeScreen="true"
+        app:bmb_normalColor="#4c93fd"
+        app:bmb_draggable="true"
+        app:bmb_buttonRadius="35dp"
+        app:bmb_dotRadius="5dp"
+        app:bmb_shareLineWidth="3dp"
+        app:bmb_sharedLineLength="30dp"
+        app:bmb_pieceInclinedMargin="15dp"
+        app:bmb_shareLine1Color="#FFFFFF"
+        app:bmb_shareLine2Color="#FFFFFF"
+        app:bmb_buttonEnum="textOutsideCircle"
+        app:bmb_piecePlaceEnum="piecePlace_share"
+        app:bmb_buttonPlaceEnum="buttonPlace_custom"
+        />
+
     <include
         android:id="@+id/search_chosen"
         layout="@layout/view_search_widget"
