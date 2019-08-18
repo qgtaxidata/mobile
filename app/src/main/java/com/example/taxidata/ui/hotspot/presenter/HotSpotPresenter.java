@@ -70,6 +70,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     public void getHotSpotData(double longitude, double latitude, String time) {
         if(mHotSpotModel != null) {
             mHotSpotModel.requestHotSpotInfo(longitude,latitude,time)
+                    //发出请求并对网络请求回调进行处理
                     .subscribe(new Observer<HotSpotCallBackInfo>() {
                         @Override
                         public void onSubscribe(Disposable d) {

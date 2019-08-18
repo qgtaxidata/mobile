@@ -74,7 +74,7 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         initTimeList();
         initChart();
         //获取用户选择的区域
-        areaIncomeAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
+        areaIncomeAreaSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String areaName = areaList.get(position);
@@ -82,7 +82,7 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
             }
         });
         //获取用户选择的时间
-        areaIncomeTimeSelectView.seOnItemClickListener(new OnItemClickListener() {
+        areaIncomeTimeSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String time = timeList.get(position);

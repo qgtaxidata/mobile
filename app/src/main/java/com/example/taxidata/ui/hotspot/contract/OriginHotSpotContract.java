@@ -22,6 +22,7 @@ import io.reactivex.Observable;
  * author: ODM
  * date: 2019 /8/12
  */
+
 public interface OriginHotSpotContract {
 
     /**

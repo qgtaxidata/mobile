@@ -1,10 +1,9 @@
 package com.example.taxidata;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -12,11 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.HeatmapTileProvider;
@@ -26,22 +26,23 @@ import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.adapter.CustomOnclick;
 import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.application.TaxiApp;
+import com.example.taxidata.common.FloatingButtonBuilderManager;
 import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.common.eventbus.BaseEvent;
 import com.example.taxidata.constant.Algorithm;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.constant.ColorGriant;
 import com.example.taxidata.constant.MyCharacter;
-import com.example.taxidata.ui.IncomeRanking.IncomeRankingActivity;
 import com.example.taxidata.net.RetrofitManager;
+import com.example.taxidata.ui.IncomeRanking.IncomeRankingActivity;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 import com.example.taxidata.ui.areaanalyze.AreaAnalyzeActivity;
 import com.example.taxidata.ui.areaincome.AreaIncomeActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
-import com.example.taxidata.ui.roadquality.RoadQualityActivity;
 import com.example.taxidata.ui.passengerpath.view.OriginEndActivity;
+import com.example.taxidata.ui.roadquality.RoadQualityActivity;
 import com.example.taxidata.ui.setup.SetUpActivity;
 import com.example.taxidata.ui.taxidemand.TaxiDemandActivity;
 import com.example.taxidata.util.EventBusUtils;
@@ -49,8 +50,13 @@ import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.MyTimerPicker;
 import com.example.taxidata.widget.StatusBar;
+import com.example.taxidata.widget.StatusToast;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.nightonke.boommenu.BoomButtons.BoomButton;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.OnBoomListener;
+import com.nightonke.boommenu.Util;
 import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -86,6 +92,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      */
     private static final int ZOOM = 14;
 
+    private static final int CONST_INDEX_HEAT_POWER = 4;
+
     /*----------------------------------地图相关---------------------------------------------------*/
 
     /**
@@ -106,26 +114,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
     /*----------------------------------ui组件相关--------------------------------------------------*/
 
-    @BindView(R.id.fbtn_passenger_hot)
-    FloatingActionButton passengerHotFbtn;
-    @BindView(R.id.fbtn_heat_power)
-    FloatingActionButton heatPowerFbtn;
-    @BindView(R.id.fbtn_road_quality)
-    FloatingActionButton roadQualityFbtn;
-    @BindView(R.id.fbtn_request_analysis)
-    FloatingActionButton requestAnalysisFbtn;
-    @BindView(R.id.fbtn_taxi_income)
-    FloatingActionButton taxiIncomeFbtn;
-    @BindView(R.id.fbtn_behavior_analysis)
-    FloatingActionButton behaviorAnalysisFbtn;
-    @BindView(R.id.fbtn_abnormal_analysis)
-    FloatingActionButton abnormalAnalysisFbtn;
-    @BindView(R.id.fbtn_visualization)
-    FloatingActionButton visualizationFbtn;
-    @BindView(R.id.fbtn_set_up)
-    FloatingActionButton setUpFbtn;
-    @BindView(R.id.fam_home_page_menu)
-    FloatingActionMenu homePageMenuFam;
     @BindView(R.id.stb_heat_power)
     StatusBar heatPowerStb;
     @BindView(R.id.tp_home_page_time_picker)
@@ -138,10 +126,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
     DropDownSelectView heatpowerAreaDsv;
     @BindView(R.id.dsv_algorithm)
     DropDownSelectView algorithmDsv;
-    @BindView(R.id.fbtn_passenger_path)
-    FloatingActionButton passengerPathFbtn;
-    @BindView(R.id.fbtn_regional_analysis)
-    FloatingActionButton regionalAnalysisFbtn;
+    @BindView(R.id.buttom_menu_homepage)
+    BoomMenuButton buttonMenu;
 
     /*------------------------------------present相关-----------------------------------------------*/
 
@@ -177,8 +163,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
         //初始化present
         initPresent();
-        //初始化悬浮按钮
-        initFloatButton();
+        initButtonMenu();
+        initButtonClickEvent();
         //初始化地图
         initMap();
         //初始化时间选择器
@@ -198,23 +184,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         //初始化下拉框算法列表
         initAlgorithm();
 
-        passengerPathFbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO 路线
-                Intent intent = new Intent(HomePageActivity.this, OriginEndActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        regionalAnalysisFbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO 区域分析
-                Intent intent = new Intent(HomePageActivity.this,AreaAnalyzeActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -272,24 +241,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         //取消掉右下角的放大缩小+ -
         uiSettings = homepageAMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(false);
-    }
-
-    /**
-     * 初始化悬浮按钮
-     */
-    private void initFloatButton() {
-        //将悬浮按钮的Label背景设置为透明
-        heatPowerFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
-        abnormalAnalysisFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
-        behaviorAnalysisFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
-        passengerHotFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
-        requestAnalysisFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
-        roadQualityFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
-        setUpFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
-        taxiIncomeFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
-        visualizationFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
-        passengerPathFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
-        regionalAnalysisFbtn.setLabelColors(Color.TRANSPARENT, CONST_LABEL_BACKGROUND, Color.TRANSPARENT);
     }
 
     /**
@@ -371,7 +322,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                heatPowerFbtn.setLabelText(MyCharacter.CONST_HIDE_BUTTON);
+                buttonMenu.getBoomButton(CONST_INDEX_HEAT_POWER).getTextView().setText(MyCharacter.CONST_HIDE_BUTTON);
             }
         });
     }
@@ -381,7 +332,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                heatPowerFbtn.setLabelText(MyCharacter.CONST_SHOW_BUTTON);
+                buttonMenu.getBoomButton(CONST_INDEX_HEAT_POWER).getTextView().setText(MyCharacter.CONST_SHOW_BUTTON);
             }
         });
     }
@@ -404,7 +355,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             heatpowerRl.setVisibility(View.GONE);
             //退出热力图模式
             isHeatPowerMode = false;
-            heatPowerFbtn.setLabelText(MyCharacter.CONST_SHOW_BUTTON);
+            buttonMenu.getBoomButton(CONST_INDEX_HEAT_POWER).getTextView().setText(MyCharacter.CONST_SHOW_BUTTON);
             //将状态切换至最初位置
             if (!(heatPowerStb.getStatus() == 1)) {
                 heatPowerStb.switchToRealTime();
@@ -413,75 +364,13 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             //热力图模式
             heatpowerRl.setVisibility(View.VISIBLE);
             isHeatPowerMode = true;
-            heatPowerFbtn.setLabelText(MyCharacter.CONST_HIDE_BUTTON);
+            buttonMenu.getBoomButton(CONST_INDEX_HEAT_POWER).getTextView().setText(MyCharacter.CONST_HIDE_BUTTON);
         }
     }
 
 
     public void initViews() {
 
-    }
-
-
-    /**
-     * 悬浮按钮点击事件
-     *
-     * @param view
-     */
-    @OnClick({R.id.fbtn_passenger_hot, R.id.fbtn_heat_power, R.id.fbtn_road_quality, R.id.fbtn_request_analysis, R.id.fbtn_taxi_income
-            , R.id.fbtn_behavior_analysis, R.id.fbtn_abnormal_analysis, R.id.fbtn_visualization, R.id.fbtn_set_up})
-    public void onViewClicked(View view) {
-        Intent intent;
-        switch (view.getId()) {
-            case R.id.fbtn_passenger_hot:
-                //载客热点推荐
-//                Intent hotSpotIntent = new Intent(HomePageActivity.this, HotSpotResearchActivity.class);
-//                startActivity(hotSpotIntent);
-                ActivityOptions compat = ActivityOptions.makeSceneTransitionAnimation(this);
-                startActivity(new Intent(this, HotSpotResearchActivity.class), compat.toBundle());
-                overridePendingTransition(R.transition.transition_slide ,R.transition.transition_fade);
-                break;
-            case R.id.fbtn_heat_power:
-                //热力图模式
-                controlHeatPower();
-                break;
-            case R.id.fbtn_road_quality:
-                //道路质量分析
-                Intent roadQualityIntent = new Intent(HomePageActivity.this, RoadQualityActivity.class);
-                startActivity(roadQualityIntent);
-                break;
-            case R.id.fbtn_request_analysis:
-                //区域出租车需求分析
-                Intent taxiDemandIntent = new Intent(HomePageActivity.this, TaxiDemandActivity.class);
-                startActivity(taxiDemandIntent);
-                break;
-            case R.id.fbtn_taxi_income:
-                //出租车司机收入排行榜
-                Intent incomeIntent = new Intent(HomePageActivity.this, IncomeRankingActivity.class);
-                startActivity(incomeIntent);
-                break;
-            case R.id.fbtn_behavior_analysis:
-                //区域收入分析与预测
-                Intent areaIncomeIntent = new Intent(HomePageActivity.this, AreaIncomeActivity.class);
-                startActivity(areaIncomeIntent);
-                break;
-            case R.id.fbtn_abnormal_analysis:
-                //出租车异常情况分析
-                break;
-            case R.id.fbtn_visualization:
-                //路径可视化
-                intent = new Intent(HomePageActivity.this, TaxiPathActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.fbtn_set_up:
-                //设置
-                intent = new Intent(HomePageActivity.this, SetUpActivity.class);
-                startActivity(intent);
-                break;
-            default:
-        }
-        //收起菜单栏
-        homePageMenuFam.close(true);
     }
 
     /**
@@ -552,41 +441,28 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         int status = heatPowerStb.getStatus();
         switch (status) {
             case 0:
-                // FIXME 测试
                 Log.d(TAG, Area.area.get(heatpowerAreaDsv.getSlectedArea()) + "");
                 Log.d(TAG, heatpowerAreaDsv.getSlectedArea());
                 if (chooseTimeTp.isNoSelectedTime()) {
-                    // FIXME 修改为MyToast
-                    ToastUtil.showShortToastBottom("请选择时间");
+                    StatusToast.getMyToast().ToastShow(this,null,R.mipmap.ic_sad,"请选择时间");
                     return;
                 }
                 if (!chooseTimeTp.isHistory()) {
-                    // FIXME 修改为MyToast
-                    ToastUtil.showShortToastBottom("这不是历史时间");
+                    StatusToast.getMyToast().ToastShow(this,null,R.mipmap.ic_sad,"这不是历史时间");
                     return;
                 }
                 heatPowerPresent.showHistoryHeatPower(Area.area.get(heatpowerAreaDsv.getSlectedArea()), chooseTimeTp.getTime() + ":00");
                 break;
             case 1:
-                //显示选中的区域
-                Log.d(TAG, Area.area.get(heatpowerAreaDsv.getSlectedArea()) + "");
-                Log.d(TAG, heatpowerAreaDsv.getSlectedArea());
                 heatPowerPresent.showRealTimeHeatPower(Area.area.get(heatpowerAreaDsv.getSlectedArea()));
                 break;
             case 2:
-                //TODO 未来热力图
-                                /*
-                                1.获取用户选择的时间和地点
-                                2.发送网络请求
-                                 */
                 if (chooseTimeTp.isNoSelectedTime()) {
-                    // FIXME 修改为MyToast
-                    ToastUtil.showShortToastBottom("请选择时间");
+                    StatusToast.getMyToast().ToastShow(this,null,R.mipmap.ic_sad,"请选择时间");
                     return;
                 }
                 if (!chooseTimeTp.isFeature()) {
-                    // FIXME 修改为MyToast
-                    ToastUtil.showShortToastBottom("这不是未来时间");
+                    StatusToast.getMyToast().ToastShow(this,null,R.mipmap.ic_sad,"这不是未来时间");
                     return;
                 }
                 heatPowerPresent.showFeatureHeatPower(Area.area.get(heatpowerAreaDsv.getSlectedArea()),
@@ -665,7 +541,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
 
     /**
      * 相机移动到地图上的某一地点
-     *
      * @param latLng 该地点的经纬度
      */
     private void moveToAnyWhere(LatLng latLng) {
@@ -677,7 +552,6 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
      * 初始化下拉选择框的点击事件
      */
     private void initDropDownSelectClick() {
-        // TODO 设置点击事件
         //设置热力图区域下拉框点击事件
         heatpowerAreaDsv.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -748,5 +622,122 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         }
         Log.d(TAG, "按下返回键");
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    public void initButtonMenu() {
+        for (int i = 0; i < 12; i++) {
+            //建造者模式 ，添加按钮，你们自己注意按钮并不会被初始化的
+            buttonMenu.addBuilder(FloatingButtonBuilderManager.getTextOutsideCircleButtonBuilderWithDifferentPieceColor());
+        }
+        float width = Util.dp2px(80);
+        float height = Util.dp2px(96);
+        float height_0_5 = height / 2;
+        float height_1_5 = height * 1.5f;
+        float heightMargin = buttonMenu.getButtonHorizontalMargin();
+        float widthMargin = buttonMenu.getButtonVerticalMargin();
+        float vm_0_5 = widthMargin / 2;
+        float vm_1_5 = widthMargin * 1.5f;
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(-width - heightMargin, -height_1_5 - vm_1_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(      0, -height_1_5 - vm_1_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(+width + heightMargin, -height_1_5 - vm_1_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(-width - heightMargin, -height_0_5 - vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(      0, -height_0_5 - vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(+width + heightMargin, -height_0_5 - vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(-width - heightMargin, +height_0_5 + vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(      0, +height_0_5 + vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(+width + heightMargin, +height_0_5 + vm_0_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(-width - heightMargin, +height_1_5 + vm_1_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(      0, +height_1_5 + vm_1_5-height_0_5));
+        buttonMenu.getCustomButtonPlacePositions().add(new PointF(+width + heightMargin, +height_1_5 + vm_1_5-height_0_5));
+    }
+
+    /**
+     * 设置悬浮按钮(子按钮）的点击事件
+     */
+    public void initButtonClickEvent() {
+        buttonMenu.setOnBoomListener(new OnBoomListener() {
+            @Override
+            public void onClicked(int index, BoomButton boomButton) {
+                Log.e(TAG, "onClicked: 当前点击了第" + index+" 个" );
+                Intent intent = null;
+                switch (index ) {
+                    case 0:
+                        //广告牌位置推荐
+                        break;
+                    case 1:
+                        //车辆利用率分析
+                        intent = new Intent(HomePageActivity.this, AreaAnalyzeActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        //区域收入分析
+                        Intent areaIncomeIntent = new Intent(HomePageActivity.this, AreaIncomeActivity.class);
+                        startActivity(areaIncomeIntent);
+                        break;
+                    case 3:
+                        //出租车异常
+                        break;
+                    case 4:
+                        //热力图模式
+                        controlHeatPower();
+                        break;
+                    case 5:
+                        //载客热点推荐
+                        ActivityOptions compat = ActivityOptions.makeSceneTransitionAnimation(HomePageActivity.this);
+                        startActivity(new Intent(HomePageActivity.this, HotSpotResearchActivity.class), compat.toBundle());
+                        overridePendingTransition(R.transition.transition_slide, R.transition.transition_fade);
+                        break;
+                    case 6:
+                        //收入排行榜
+                        Intent incomeIntent = new Intent(HomePageActivity.this, IncomeRankingActivity.class);
+                        startActivity(incomeIntent);
+                        break;
+                    case 7:
+                        //出租车需求量分析
+                        Intent taxiDemandIntent = new Intent(HomePageActivity.this, TaxiDemandActivity.class);
+                        startActivity(taxiDemandIntent);
+                        break;
+                    case 8:
+                        //道路质量分析
+                        Intent roadQualityIntent = new Intent(HomePageActivity.this, RoadQualityActivity.class);
+                        startActivity(roadQualityIntent);
+                        break;
+                    case 9:
+                        //路线
+                        intent = new Intent(HomePageActivity.this, OriginEndActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 10:
+                        //路径可视化
+                        intent = new Intent(HomePageActivity.this, TaxiPathActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 11:
+                        //设置
+                        intent = new Intent(HomePageActivity.this, SetUpActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            @Override
+            public void onBackgroundClick() {
+            }
+            @Override
+            public void onBoomWillHide() {
+            }
+            @Override
+            public void onBoomDidHide() {
+            }
+            @Override
+            public void onBoomWillShow() {
+            }
+            @Override
+            public void onBoomDidShow() {
+            }
+        });
+
     }
 }

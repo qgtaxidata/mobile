@@ -66,7 +66,7 @@ public class RoadQualityActivity extends BaseActivity implements RoadQualityCont
         //设置viewPager
         setViewPager(roadQualityVp);
         //获取用户选择的区域
-        roadQualityAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
+        roadQualityAreaSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String areaName = areaList.get(position);
@@ -74,7 +74,7 @@ public class RoadQualityActivity extends BaseActivity implements RoadQualityCont
             }
         });
         //获取用户选择的时间
-        roadQualityTimeSelectView.seOnItemClickListener(new OnItemClickListener() {
+        roadQualityTimeSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String time = timeList.get(position);

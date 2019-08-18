@@ -72,7 +72,7 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
         initTimeList();
         initIncomeList();
         //获取用户选择的区域
-        incomeRankingAreaSelectView.seOnItemClickListener(new OnItemClickListener() {
+        incomeRankingAreaSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String areaName = areaList.get(position);
@@ -80,7 +80,7 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
             }
         });
         //获取用户选择的时间
-        incomeRankingTimeSelectView.seOnItemClickListener(new OnItemClickListener() {
+        incomeRankingTimeSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String time = timeList.get(position);
