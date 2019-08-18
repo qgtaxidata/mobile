@@ -23,26 +23,35 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
     private TaxiPathContract.TaxiPathModel model;
     private TaxiPathContract.TaxiPathView view;
-    private boolean flag = false;
-
+    private boolean flag = false; //true时暂停轮询
 
     @Override
     public void getTaxiInfo(Context context,int area, String time) {
-        Log.d("wxP1", time);
+        Logger.d(time);
+        Logger.d(area);
         if(model != null){
             model.getTaxiInfo(area, time).subscribe(new Observer<TaxiInfo>() {
                 @Override
                 public void onSubscribe(Disposable d) {
+                    Log.d("sub", "wx");
                 }
                 @Override
                 public void onNext(TaxiInfo taxiInfo) {
-                    //初始化dialog并弹出
-                    final ChooseTaxiDialog chooseTaxiDialog = new ChooseTaxiDialog(context, R.style.dialog,taxiInfo.getData());
-                    chooseTaxiDialog.show();
+                    Log.d("TaxiPathPresent",taxiInfo.getMsg());
+                    Log.d("TaxiPathPresent",taxiInfo.getCode()+"");
+                    if(taxiInfo.getData() !=null){
+                        //初始化dialog并弹出
+                        final ChooseTaxiDialog chooseTaxiDialog = new ChooseTaxiDialog(context, R.style.dialog, taxiInfo.getData());
+                        chooseTaxiDialog.show();
+                    } else {
+                        StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "数据为空！请重试。");
+                    }
                 }
                 @Override
                 public void onError(Throwable e) {
                     e.printStackTrace();
+                    Logger.d(e.getMessage());
+                    StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
                 }
                 @Override
                 public void onComplete() {
@@ -55,6 +64,8 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
     @Override
     public void getHistoryTaxiPathInfo(Context context, String time, String licenseplateno) {
+        Logger.d(time);
+        Logger.d(licenseplateno);
         if(model!=null){
             model.getHistoryTaxiPathInfo(time, licenseplateno)
 
@@ -66,7 +77,12 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
                         @Override
                         public void onNext(TaxiPathInfo historyTaxiPathInfo) {
-                            view.showHistoryPath(historyTaxiPathInfo.getData());
+                            Log.d("next",historyTaxiPathInfo.getMsg());
+                            if(historyTaxiPathInfo.getData() != null){
+                                view.showHistoryPath(historyTaxiPathInfo.getData());
+                            }else {
+                                StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "数据为空！请重试。");
+                            }
                         }
 
                         @Override
@@ -87,8 +103,11 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
     @SuppressLint("CheckResult")
     @Override
     public void getCurrentTaxiPathInfo(Context context,String time, String licenseplateno) {
+        Logger.d(time);
+        Logger.d(licenseplateno);
+        flag = false;
         if(model != null){
-            Observable.interval(15, TimeUnit.SECONDS)
+            Observable.interval(10, TimeUnit.SECONDS)
                     .doOnNext(new Consumer<Long>() {
                         @Override
                         public void accept(Long aLong) throws Exception {
@@ -102,13 +121,20 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
                                         @Override
                                         public void onNext(TaxiPathInfo currentTaxiPathInfo) {
-                                            //显示实时路径
-                                            view.showCurrentPath(currentTaxiPathInfo.getData());
+                                            if (currentTaxiPathInfo.getCode() == 1){
+                                                //显示实时路径
+                                                view.showCurrentPath(currentTaxiPathInfo.getData());
+                                            }else {
+                                                StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
+                                                flag = true;
+                                                view.clearMap();
+                                            }
                                         }
 
                                         @Override
                                         public void onError(Throwable e) {
                                             e.printStackTrace();
+                                            flag = true;
                                             Logger.d(e.getMessage());
                                             StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
                                         }
@@ -116,6 +142,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                                         @Override
                                         public void onComplete() {
                                             view.clearMap();
+                                            flag = true;
                                         }
                                     });
                         }
@@ -134,12 +161,16 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
                         @Override
                         public void onError(Throwable e) {
-
+                            e.printStackTrace();
+                            flag = true;
+                            Logger.d(e.getMessage());
+                            StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
                         }
 
                         @Override
                         public void onComplete() {
-
+                            view.clearMap();
+                            flag = true;
                         }
                     });
 
@@ -159,7 +190,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
     }
 
     @Override
-    public void setFlag() {
-        flag = true;
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 }

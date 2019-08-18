@@ -1,17 +1,15 @@
 package com.example.taxidata.bean;
 
-import android.os.Parcelable;
-
 import java.io.Serializable;
 import java.util.List;
 
-public class TaxiInfo {
+public class TaxiInfo implements Serializable {
 
 
     /**
      * msg : success
      * code : 1
-     * data : [{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AP199K"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AU1E24"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AY2K42"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AT2R45"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AT1Q15"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AQ0J64"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AV3W64"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AM5C49"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AL1T50"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤A0JW49"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AK5E04"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AR0Y51"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤A5EY52"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AR2N42"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AZ7M04"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤A4KY40"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤A1PZ47"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AU1J17"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AG9P41"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AL2N20"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AG579J"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤A2633U"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤A7048F"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AN4S75"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤AX4U34"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤A1799G"},{"longitude":null,"latitude":null,"time":null,"licenseplateno":"粤A164SC"}]
+     * data : [{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤A715RB"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤A4NT07"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤A2EJ57"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤AY5T53"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤A0LU13"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤A4HY64"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤A464SK"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤AY2N41"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤AH94B7"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤AC49M1"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤AJ94C8"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤A0XT16"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤AY3E24"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤AE05L9"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤AY0R50"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤AH30J2"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤AT3R42"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤A2AU46"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤A5LS30"},{"longitude":null,"latitude":null,"time":"2017-02-04 10:10:10.0","licenseplateno":"粤AU1Q24"}]
      */
 
     private String msg;
@@ -42,33 +40,32 @@ public class TaxiInfo {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable {
+    public static class DataBean {
         /**
          * longitude : null
          * latitude : null
-         * time : null
-         * licenseplateno : 粤AP199K
+         * time : 2017-02-04 10:10:10.0
+         * licenseplateno : 粤A715RB
          */
 
-        private double longitude;
-        private double latitude;
+        private String longitude;
+        private String latitude;
         private String time;
         private String licenseplateno;
-        private boolean isSelected;
 
-        public double getLongitude() {
+        public String getLongitude() {
             return longitude;
         }
 
-        public void setLongitude(double longitude) {
+        public void setLongitude(String longitude) {
             this.longitude = longitude;
         }
 
-        public double getLatitude() {
+        public String getLatitude() {
             return latitude;
         }
 
-        public void setLatitude(double latitude) {
+        public void setLatitude(String latitude) {
             this.latitude = latitude;
         }
 
@@ -86,14 +83,6 @@ public class TaxiInfo {
 
         public void setLicenseplateno(String licenseplateno) {
             this.licenseplateno = licenseplateno;
-        }
-
-        public boolean isSelected() {
-            return isSelected;
-        }
-
-        public void setSelected(boolean selected) {
-            isSelected = selected;
         }
     }
 }
