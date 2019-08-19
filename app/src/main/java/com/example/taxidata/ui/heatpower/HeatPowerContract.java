@@ -39,6 +39,11 @@ public interface HeatPowerContract {
          * 显示展示按钮
          */
         void showShowButton();
+
+        /**
+         * 展示错误信息
+         */
+        void showError();
     }
 
     interface HeatPowerPresent extends BasePresent<HeatPowerView> {

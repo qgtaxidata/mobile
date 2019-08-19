@@ -1,5 +1,6 @@
 package com.example.taxidata;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.PointF;
@@ -63,6 +64,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +73,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomePageActivity extends AppCompatActivity implements AMap.OnCameraChangeListener, HeatPowerContract.HeatPowerView {
+
+    private WeakReference<Activity> weakActivity = new WeakReference<Activity>(this);
 
     /*--------------------------------常量相关------------------------------------------------------*/
 
@@ -737,6 +741,19 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             public void onBoomDidShow() {
             }
         });
+    }
 
+    @Override
+    public void showError() {
+        if (weakActivity.get() != null) {
+            weakActivity.get()
+                    .runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            StatusToast.getMyToast().ToastShow(HomePageActivity.this,
+                                    null,R.mipmap.ic_sad,"网络异常");
+                        }
+                    });
+        }
     }
 }

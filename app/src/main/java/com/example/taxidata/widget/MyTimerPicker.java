@@ -535,7 +535,6 @@ public class MyTimerPicker extends FrameLayout {
         try {
             selectedTime = format.parse(getTime() + ":00").getTime();
         }catch (Exception e){
-            // TODO 失败处理
             e.printStackTrace();
         }
         //获取app当前时间

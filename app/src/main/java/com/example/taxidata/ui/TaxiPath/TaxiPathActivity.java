@@ -2,6 +2,7 @@ package com.example.taxidata.ui.TaxiPath;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -120,8 +121,14 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         super.onDestroy();
         taxiPathPresent.detachView();
         EventBus.getDefault().unregister(this);
+        taxiPathMap.onDestroy();
     }
 
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        taxiPathMap.onResume();
+    }
 
     //显示出租车历史路径
     @Override
@@ -234,6 +241,7 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
                 taxiPathTimePicker.startTimer();
                 taxiPathTimePicker.setTimeStatusBarClick(null);
                 break;
+            default:
         }
     }
 
@@ -291,5 +299,11 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     protected void onResume() {
         super.onResume();
         taxiPathMap.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        taxiPathMap.onSaveInstanceState(outState);
     }
 }
