@@ -147,13 +147,13 @@ public class DropDownSelectView extends LinearLayout {
                 resultTv.setText(Algorithm.WANG_ALGORITHM);
                 break;
             case 4:
-                resultTv.setText("请选择天数类型");
+                resultTv.setText("请选择区域");
                 break;
             case 5:
                 resultTv.setText("请选择目标时段");
                 break;
             case 6:
-                resultTv.setText("请选择区域");
+                resultTv.setText("请选择天数类型");
                 break;
             default:
         }

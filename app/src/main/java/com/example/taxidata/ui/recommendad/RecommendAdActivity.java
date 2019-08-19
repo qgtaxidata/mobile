@@ -112,9 +112,9 @@ public class RecommendAdActivity extends AppCompatActivity implements RecommendA
     }
 
     private void initDsv() {
-        adDayStyleDsv.setItemsData(new ArrayList<>(dayStyle.keySet()),4);
+        adDayStyleDsv.setItemsData(new ArrayList<>(dayStyle.keySet()),6);
         adTimeStyleDsv.setItemsData(new ArrayList<>(timeStyle.keySet()),5);
-        adAreaDsv.setItemsData(new ArrayList<>(areaStyle.keySet()),6);
+        adAreaDsv.setItemsData(new ArrayList<>(areaStyle.keySet()),4);
     }
 
     @Override
@@ -166,6 +166,7 @@ public class RecommendAdActivity extends AppCompatActivity implements RecommendA
 
     @OnClick({R.id.btn_ad_config_refresh, R.id.ll_ad_one, R.id.ll_ad_two, R.id.ll_ad_three, R.id.ll_ad_four, R.id.ll_ad_five, R.id.btn_ad_create_chart})
     public void onViewClicked(View view) {
+        String pre = "广东省广州市" + adAreaDsv.getSlectedArea();
         switch (view.getId()) {
             case R.id.btn_ad_config_refresh:
                 if (isFirst) {
@@ -177,24 +178,29 @@ public class RecommendAdActivity extends AppCompatActivity implements RecommendA
                 }
                 break;
             case R.id.ll_ad_one:
-                present.positingPosition(0,oneAdTv.getText().toString());
-                jumpToNextActivity();
+                if (present.positingPosition(0,pre + oneAdTv.getText().toString())) {
+                    jumpToNextActivity();
+                }
                 break;
             case R.id.ll_ad_two:
-                present.positingPosition(1,twoAdTv.getText().toString());
-                jumpToNextActivity();
+                if (present.positingPosition(1,pre + twoAdTv.getText().toString())) {
+                    jumpToNextActivity();
+                }
                 break;
             case R.id.ll_ad_three:
-                present.positingPosition(2,threeAdTv.getText().toString());
-                jumpToNextActivity();
+                if (present.positingPosition(2,pre + threeAdTv.getText().toString())) {
+                    jumpToNextActivity();
+                }
                 break;
             case R.id.ll_ad_four:
-                present.positingPosition(3,fourAdTv.getText().toString());
-                jumpToNextActivity();
+                if (present.positingPosition(3,pre + fourAdTv.getText().toString())) {
+                    jumpToNextActivity();
+                }
                 break;
             case R.id.ll_ad_five:
-                present.positingPosition(4,fiveAdTv.getText().toString());
-                jumpToNextActivity();
+                if (present.positingPosition(4,pre + fiveAdTv.getText().toString())) {
+                    jumpToNextActivity();
+                }
                 break;
             case R.id.btn_ad_create_chart:
                 if (present.createChart()) {

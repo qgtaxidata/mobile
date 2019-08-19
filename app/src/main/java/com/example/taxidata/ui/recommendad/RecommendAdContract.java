@@ -52,8 +52,9 @@ public interface RecommendAdContract {
          * 定位广告牌位置
          * @param position 点击的广告牌位置
          * @param detaiAdInfo 详细地址信息
+         * @return boolean
          */
-        void positingPosition(int position,String detaiAdInfo);
+        boolean positingPosition(int position,String detaiAdInfo);
 
         /**
          * 生成对比图表

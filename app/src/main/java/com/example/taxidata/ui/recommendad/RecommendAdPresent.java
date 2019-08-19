@@ -90,7 +90,7 @@ public class RecommendAdPresent implements RecommendAdContract.RecommendAdPresen
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
         if (i == 1000) {
             String address = regeocodeResult.getRegeocodeAddress().getFormatAddress();
-            view.showAdPosition(address,position);
+            view.showAdPosition(address.replaceAll("广东省广州市..区",""),position);
             position++;
         }else {
             StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,"未知错误");
@@ -103,9 +103,15 @@ public class RecommendAdPresent implements RecommendAdContract.RecommendAdPresen
     }
 
     @Override
-    public void positingPosition(int position,String detailAdInfo) {
-        DetailAdInfo info = new DetailAdInfo(adPosition.get(position),detailAdInfo);
-        EventBus.getDefault().postSticky(info);
+    public boolean positingPosition(int position,String detailAdInfo) {
+        if (adPosition != null && position < adPosition.size()) {
+            DetailAdInfo info = new DetailAdInfo(adPosition.get(position),detailAdInfo);
+            EventBus.getDefault().postSticky(info);
+            return true;
+        }else {
+            StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null,R.mipmap.ic_sad,"没有对应的广告牌");
+            return false;
+        }
     }
 
     @Override
