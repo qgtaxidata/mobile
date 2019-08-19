@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
@@ -21,6 +23,7 @@ import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.bean.TaxiPathInfo;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.widget.DropDownSelectView;
+import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.example.taxidata.widget.StrongStengthTimerPicker;
 import com.example.taxidata.widget.TimePickClickedListener;
 import org.greenrobot.eventbus.EventBus;
@@ -63,7 +66,9 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     @BindView(R.id.taxi_path_now_tv)
     TextView taxiPathNowTv;
 
+    private final static String TAG = "TaxiPathActivity";
     private TaxiPathContract.TaxiPathPresent taxiPathPresent;
+    private SimpleLoadingDialog loading;
     private AMap taxiPathAMap;
     private int areaId = 5;
     private int flag = 1;   //实时为1，历史为2
@@ -85,6 +90,8 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         //将时间选择器设置为不可点击且开始计时（实时状态）
         taxiPathTimePicker.startTimer();
         taxiPathTimePicker.setTimeStatusBarClick(null);
+        //初始化loading界面
+        loading = new SimpleLoadingDialog(this,"路径正在绘制中！",R.drawable.dialog_image_loading);
         //初始化区域选择框
         initAreaList();
         //得到地图实例
@@ -116,21 +123,17 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     //显示出租车历史路径
     @Override
     public void showHistoryPath(List<TaxiPathInfo.DataBean> listInfo) {
-        LatLng latLng = new LatLng(listInfo.get(0).getLatitude(),listInfo.get(0).getLongitude());
-        taxiPathAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
-        Log.d("show1",listInfo.get(0).getLicenseplateno());
-        List<LatLng> latLngs = new ArrayList<LatLng>();
-        Log.d("show2",listInfo.get(0).getLicenseplateno());
+        LatLng historyLatLng = new LatLng(listInfo.get(0).getLatitude(),listInfo.get(0).getLongitude());
+        taxiPathAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(historyLatLng, 12));
+        List<LatLng> historyLatLngs = new ArrayList<>();
         for (TaxiPathInfo.DataBean info : listInfo) {
-            latLngs.add(new LatLng(info.getLatitude(), info.getLongitude()));
-            Log.d("TaxiPathActivity", info.getLatitude()+"和"+info.getLongitude());
+            historyLatLngs.add(new LatLng(info.getLatitude(), info.getLongitude()));
+            Log.d(TAG, info.getLatitude()+"和"+info.getLongitude());
         }
-        Log.d("show3",listInfo.get(0).getLicenseplateno());
         taxiPathAMap.addPolyline(new PolylineOptions()
-                .addAll(latLngs)
+                .addAll(historyLatLngs)
                 .width(10)
                 .color(Color.parseColor("#51b46d")));
-        Log.d("show4",listInfo.get(0).getLicenseplateno());
         //显示清除路径按钮
         taxiPathClearBtn.setVisibility(View.VISIBLE);
     }
@@ -138,16 +141,34 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     //显示出租车实时路径
     @Override
     public void showCurrentPath(List<TaxiPathInfo.DataBean> listInfo) {
+        //将地图移至路径处
+        LatLng currentLatLng = new LatLng(listInfo.get(0).getLatitude(),listInfo.get(0).getLongitude());
+        taxiPathAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+        //将所有点添加至集合
+        List<LatLng> currentLatLngs = new ArrayList<LatLng>();
+        for (TaxiPathInfo.DataBean info : listInfo) {
+            currentLatLngs.add(new LatLng(info.getLatitude(), info.getLongitude()));
+            Log.d(TAG, info.getLatitude()+"和"+info.getLongitude());
+        }
+        //路线的绘制
+        taxiPathAMap.addPolyline(new PolylineOptions()
+                .addAll(currentLatLngs)
+                .width(10)
+                .color(Color.parseColor("#51b46d")));
+        //显示清除路径按钮
+        taxiPathClearBtn.setVisibility(View.VISIBLE);
 
     }
 
     //处理dialog发送的事件
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void getPathInfo(GetTaxiPathInfo getPathInfo) {
         Log.d("flag", ""+flag);
         if(flag == 1){
+            Log.d("current", 1+"");
             taxiPathPresent.getCurrentTaxiPathInfo(this, getPathInfo.getTime(), getPathInfo.getLicenseplateno());
         }else {
+            Log.d("history", 2+"");
             taxiPathPresent.getHistoryTaxiPathInfo(this, getPathInfo.getTime(), getPathInfo.getLicenseplateno());
         }
     }
@@ -226,11 +247,43 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         taxiPathAreaSelectView.setItemsData(areaList, 1);
     }
 
+    //清除地图的路径
     @Override
     public void clearMap() {
         taxiPathAMap.clear();
     }
 
+    //加载loading界面
+    @Override
+    public void showLoadingView() {
+        if(loading!=null) {
+            Log.d(TAG, "loading");
+            loading.show();
+        }
+    }
+    //取消loading界面
+    @Override
+    public void hideLoadingView() {
+        if(loading!=null){
+            loading.dismiss();
+        }
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        taxiPathMap.onPause();
+    }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        taxiPathMap.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        taxiPathMap.onResume();
+    }
 }

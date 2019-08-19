@@ -19,6 +19,8 @@ public interface TaxiPathContract {
         void showHistoryPath(List<TaxiPathInfo.DataBean> listInfo);
         void showCurrentPath(List<TaxiPathInfo.DataBean> listInfo);
         void clearMap();
+        void showLoadingView();
+        void hideLoadingView();
     }
 
     interface TaxiPathModel extends BaseModel{
