@@ -59,6 +59,26 @@ public class SharedPreferencesManager {
     }
 
     /**
+     * 保存数据
+     * @param key jian
+     * @param value jian zhi
+     */
+    public void save(String key,double value) {
+        editor.putFloat(key,(float)value);
+        editor.apply();
+    }
+
+    /**
+     * 读取数据
+     * @param key 键
+     * @param defaultValue  默认值
+     * @return double
+     */
+    public double getDouble(String key,double defaultValue) {
+        return preferences.getFloat(key,(float) defaultValue);
+    }
+
+    /**
      * 读取数据
      * @param key 键
      * @return String

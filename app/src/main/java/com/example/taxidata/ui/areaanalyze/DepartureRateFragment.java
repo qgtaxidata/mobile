@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.taxidata.R;
+import com.example.taxidata.util.EventBusUtils;
 
 import org.greenrobot.eventbus.EventBus;
 

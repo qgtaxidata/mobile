@@ -197,7 +197,13 @@ public class RecommendAdActivity extends AppCompatActivity implements RecommendA
                 jumpToNextActivity();
                 break;
             case R.id.btn_ad_create_chart:
-
+                if (present.createChart()) {
+                    //生成图表成功,跳往该界面
+                    Intent intent = new Intent(RecommendAdActivity.this,ContrastChartActivity.class);
+                    startActivity(intent);
+                }else {
+                    StatusToast.getMyToast().ToastShow(RecommendAdActivity.this,null,R.mipmap.ic_sad,"生成图表失败");
+                }
                 break;
             default:
         }

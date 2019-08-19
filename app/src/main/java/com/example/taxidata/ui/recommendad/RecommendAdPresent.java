@@ -14,7 +14,6 @@ import com.example.taxidata.widget.StatusToast;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -107,5 +106,14 @@ public class RecommendAdPresent implements RecommendAdContract.RecommendAdPresen
     public void positingPosition(int position,String detailAdInfo) {
         DetailAdInfo info = new DetailAdInfo(adPosition.get(position),detailAdInfo);
         EventBus.getDefault().postSticky(info);
+    }
+
+    @Override
+    public boolean createChart() {
+        if (adPosition != null && !adPosition.isEmpty()) {
+            EventBus.getDefault().postSticky(adPosition);
+            return true;
+        }
+        return false;
     }
 }
