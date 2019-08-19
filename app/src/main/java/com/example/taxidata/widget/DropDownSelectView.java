@@ -141,7 +141,7 @@ public class DropDownSelectView extends LinearLayout {
                 resultTv.setText("番禺区");
                 break;
             case 2:
-                resultTv.setText("2007年02月03日");
+                resultTv.setText("2007年02月05日");
                 break;
             case 3:
                 resultTv.setText(Algorithm.WANG_ALGORITHM);

@@ -58,8 +58,8 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
     private AreaIncomeContract.AreaIncomePresent present;
     ArrayList<String> areaList = new ArrayList<>();
     ArrayList<String> timeList = new ArrayList<>();
-    private int areaId = 10;
-    private String date = "2017-02-07";
+    private int areaId = 5;
+    private String date = "2017-02-05";
     private XAxis xAxis;
     private YAxis yAxis;
 
@@ -118,8 +118,6 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
 
     //初始化时间popupWindow
     private void initTimeList() {
-        timeList.add("2017年02月03日");
-        timeList.add("2017年02月04日");
         timeList.add("2017年02月05日");
         timeList.add("2017年02月06日");
         timeList.add("2017年02月07日");
@@ -147,6 +145,7 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
 
     @Override
     public void showChart(AreaIncomeInfo.DataBean dataBean) {
+        areaIncomeLineChart.clear();
         //图表初始化
         areaIncomeLineChart.setDrawGridBackground(false);
         areaIncomeLineChart.setDragEnabled(true);  //禁止缩放
@@ -196,6 +195,7 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         initLineDataSet(lineDataSet);
         LineData lineData = new LineData(lineDataSet);
         areaIncomeLineChart.setData(lineData);
+        areaIncomeLineChart.notifyDataSetChanged();
     }
 
     @Override
@@ -206,10 +206,12 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
 
     //初始化折线
     private void initLineDataSet(LineDataSet lineDataSet) {
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         lineDataSet.setColor(Color.parseColor("#51b46d"));
         lineDataSet.setLineWidth(1f);
         lineDataSet.setCircleColor(Color.parseColor("#51b46d"));
         lineDataSet.setCircleRadius(1f);
+        lineDataSet.setDrawCircles(false);
         lineDataSet.setDrawCircleHole(false);    //设置曲线值的圆点是实心还是空心
         lineDataSet.setValueTextSize(20f);
         lineDataSet.setValueTextColor(Color.parseColor("#51b46d"));

@@ -30,7 +30,7 @@ public class TaxiDemandPresent implements TaxiDemandContract.TaxiDemandPresent {
                 @Override
                 public void onNext(TaxiDemandInfo taxiDemandInfo) {
                     Log.d("next", time);
-                    if(taxiDemandInfo.getCode()== 1){
+                    if(taxiDemandInfo.getCode()== 1&& taxiDemandInfo.getData() != null){
                         view.showChart(taxiDemandInfo.getData());
                     }else {
                         StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,taxiDemandInfo.getMsg());

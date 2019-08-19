@@ -78,27 +78,26 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                         @Override
                         public void onNext(HotSpotCallBackInfo hotSpotCallBackInfo) {
                             //Todo 获取了返回的callback对象后,解析获取列表
-                            if (hotSpotCallBackInfo.getCode() == 1 && hotSpotCallBackInfo.getData().size() > 0 ) {
-                                hotSpotRecommandInfoList.clear();
-                                hotSpotRecommandInfoList.addAll(hotSpotCallBackInfo.getData());
-                                if (hotSpotRecommandInfoList.size() > 0 ) {
+                            if (hotSpotCallBackInfo.getCode() == 1  ) {
+                                if(hotSpotCallBackInfo.getData().size() > 0) {
+                                    hotSpotRecommandInfoList.clear();
+                                    hotSpotRecommandInfoList.addAll(hotSpotCallBackInfo.getData());
                                     mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
                                 } else {
-                                    Logger.d("获取了返回的热点数据,但是列表大小为0 ");
+                                    Logger.d("正常网络状态获取了返回的热点数据,但是列表大小为0 ");
+                                    mHotSpotView.requestFailed(StatusManager.FAIL_CODE_NONE_DATA);
                                 }
                             } else {
-                                String errorMsg = hotSpotCallBackInfo.getMsg();
-                                Log.e(TAG, "onNext: 热点 P层,获取热点数据出现异常: " +errorMsg );
+                                ToastUtil.showLongToastBottom(hotSpotCallBackInfo.getMsg());
                             }
                         }
                         @Override
                         public void onError(Throwable e) {
                             //假数据--度过服务器关掉的时光
                             hotSpotRecommandInfoList.clear();
-                            hotSpotRecommandInfoList.add(new HotSpotCallBackInfo.DataBean(113.056778,23.402886,6));
-                            mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
                             e.printStackTrace();
-                            ToastUtil.showShortToastCenter("抱歉，网络似乎出现了异常 :(");
+                            mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
+                            ToastUtil.showShortToastBottom("抱歉，网络似乎出现了异常 :(");
                         }
 
                         @Override
@@ -152,7 +151,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         callbackHotSpotInfo = dataBean;
         RegeocodeQuery regeocodeQuery = new RegeocodeQuery(latLng ,100 ,GeocodeSearch.AMAP);
         geocodeSearch.getFromLocationAsyn(regeocodeQuery);
-        mHotSpotView.hotSpotChosenSuccess();
+
     }
 
     /**
@@ -175,6 +174,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
             hotSpotInfo.setHeat(callbackHotSpotInfo.getHeat());
             baseEvent.object = hotSpotInfo;
             EventBusUtils.postSticky(baseEvent);
+            mHotSpotView.hotSpotChosenSuccess();
         } else {
             ToastUtil.showLongToastBottom("无法识别此热点坐标信息:( ，请重新选择热点");
         }
@@ -195,8 +195,10 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                 double inputLongitude = point.getLongitude();
                 getHotSpotData(inputLongitude,inputLatitude ,"");
             } else {
-                ToastUtil.showShortToastBottom("您输入的地址有误,系统无法识别,请重新输入");
+                mHotSpotView.requestFailed(StatusManager.FAIL_CODE_WRONG_ADDRESS);
             }
+        } else {
+            mHotSpotView.requestFailed(StatusManager.FAIL_CODE_WRONG_ADDRESS);
         }
     }
 

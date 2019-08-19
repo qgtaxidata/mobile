@@ -57,7 +57,7 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
     ArrayList<IncomeRankingInfo.DataBean> incomeList= new ArrayList<IncomeRankingInfo.DataBean>();
     private IncomeAdapter adapter;
     private int areaId = 5;
-    private String date = "2017-02-03";
+    private String date = "2017-02-05";
 
     private IncomeRankingContract.IncomeRankingPresent present;
 
@@ -158,7 +158,7 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
         incomeRankingRecycleView.setAdapter(adapter);
     }
 
-    //初始化列表(默认显示番禺区和2017年02月03号的数据)
+    //初始化列表(默认显示番禺区和2017年02月05号的数据)
     private void initIncomeList(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         incomeRankingRecycleView.setLayoutManager(layoutManager);

@@ -90,7 +90,7 @@ public interface HttpService {
     @GET("/analyse/income")
     Observable<AreaIncomeInfo> getAreaIncomeInfo(@Query("area") int area, @Query("date") String date);
 
-    @POST("analyse/vehicleUtilizationRate")
+    @GET("analyse/vehicleUtilizationRate")
     Observable<AreaAnalyzeInfo> getAreaAnalyzeInfo(@Query("area") int area, @Query("date") String date);
 
     @POST("")

@@ -68,7 +68,6 @@ public class OriginEndShowPresent implements OriginEndShowContract.OriginEndShow
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         Logger.d(e.getMessage());
-
                         Log.d("OriginEndShowPresent",e.getMessage());
                         view.hideLoading();
                         StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null,R.mipmap.ic_sad,"网络错误");

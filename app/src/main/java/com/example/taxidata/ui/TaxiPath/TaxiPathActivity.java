@@ -21,6 +21,7 @@ import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.bean.GetTaxiPathInfo;
 import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.bean.TaxiPathInfo;
+import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
@@ -108,6 +109,8 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
             public void onItemClick(int position) {
                 String areaName = areaList.get(position);
                 areaId = Area.area.get(areaName);
+                //将地图移至路径处
+                taxiPathAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Area.area_latlng.get(areaId), 11));
             }
         });
     }
@@ -141,15 +144,18 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     //显示出租车实时路径
     @Override
     public void showCurrentPath(List<TaxiPathInfo.DataBean> listInfo) {
-        //将地图移至路径处
-        LatLng currentLatLng = new LatLng(listInfo.get(0).getLatitude(),listInfo.get(0).getLongitude());
-        taxiPathAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
         //将所有点添加至集合
         List<LatLng> currentLatLngs = new ArrayList<LatLng>();
+        //取出上次轮询的最后一个点并添加
+        currentLatLngs.add(new LatLng(SharedPreferencesManager.getManager().getDouble("latitude",listInfo.get(0).getLatitude()),
+                                        SharedPreferencesManager.getManager().getDouble("longitude",listInfo.get(0).getLongitude()) ));
         for (TaxiPathInfo.DataBean info : listInfo) {
             currentLatLngs.add(new LatLng(info.getLatitude(), info.getLongitude()));
             Log.d(TAG, info.getLatitude()+"和"+info.getLongitude());
         }
+        //储存最后一个点
+        SharedPreferencesManager.getManager().save("latitude",listInfo.get(listInfo.size()-1).getLatitude());
+        SharedPreferencesManager.getManager().save("longitude",listInfo.get(listInfo.size()-1).getLongitude());
         //路线的绘制
         taxiPathAMap.addPolyline(new PolylineOptions()
                 .addAll(currentLatLngs)
@@ -166,7 +172,7 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         Log.d("flag", ""+flag);
         if(flag == 1){
             Log.d("current", 1+"");
-            taxiPathPresent.getCurrentTaxiPathInfo(this, getPathInfo.getTime(), getPathInfo.getLicenseplateno());
+            taxiPathPresent.getCurrentTaxiPathInfo(this, TaxiApp.getAppNowTime(), getPathInfo.getLicenseplateno());
         }else {
             Log.d("history", 2+"");
             taxiPathPresent.getHistoryTaxiPathInfo(this, getPathInfo.getTime(), getPathInfo.getLicenseplateno());
@@ -265,7 +271,7 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     @Override
     public void hideLoadingView() {
         if(loading!=null){
-            loading.dismiss();
+            loading.cancel();
         }
     }
 

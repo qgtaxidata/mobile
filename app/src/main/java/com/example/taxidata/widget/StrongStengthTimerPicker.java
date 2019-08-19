@@ -24,6 +24,8 @@ import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.common.OnMultiClickListener;
 import com.example.taxidata.util.StringUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -31,7 +33,7 @@ import java.util.TimerTask;
 
 /**
  * @author wangyuyong
- * @deprecated 加强版时间选择器，不再绑定状态栏,提供更好的封装性和适用性
+ * @Description 加强版时间选择器，不再绑定状态栏,提供更好的封装性和适用性
  */
 public class StrongStengthTimerPicker extends FrameLayout {
 
@@ -355,10 +357,12 @@ public class StrongStengthTimerPicker extends FrameLayout {
         configTv.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
-                //为标题栏设置时间
-                setTimeStausTime(getChineseTime());
-                //隐藏具体时间选择器
-                hideDetailTimerPicker();
+                if(isHistory()){
+                    //为标题栏设置时间
+                    setTimeStausTime(getChineseTime());
+                    //隐藏具体时间选择器
+                    hideDetailTimerPicker();
+                }
             }
         });
         cancelTv.setOnClickListener(new OnMultiClickListener() {
@@ -420,5 +424,16 @@ public class StrongStengthTimerPicker extends FrameLayout {
 
     public String getHistoryTime() {
         return getTime() + ":00";
+    }
+
+    public boolean isHistory(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+        long selected = 0;
+        try {
+            selected = format.parse(getTime()+":00").getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return TaxiApp.getMillionTime()>=selected;
     }
 }

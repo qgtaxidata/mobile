@@ -115,12 +115,13 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
 
     //初始化图表(默认显示番禺区当前时间的数据)
     private void getChartInfo(){
-        present.getTaxiDemandInfo(TaxiDemandActivity.this, areaId, "2017-02-03 11:11:11");
+        present.getTaxiDemandInfo(TaxiDemandActivity.this, areaId, currentTime);
     }
 
     //展示列表
     @Override
     public void showChart(TaxiDemandInfo.DataBean dataBeans) {
+        taxiDemandAnalyzeLineChart.clear();
         //图表初始化
         taxiDemandAnalyzeLineChart.setDrawGridBackground(false);
         taxiDemandAnalyzeLineChart.setDragEnabled(false);  //禁止缩放
@@ -158,18 +159,20 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
         //添加数据
         for (int i = 0 ; i<3; i++){
             xList.add(dataBeans.getGraph_data().get(i).getTitle());
+            Log.d("X", dataBeans.getGraph_data().get(i).getTitle());
         }
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
         ArrayList<Entry> values = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             values.add(new Entry(i, dataBeans.getGraph_data().get(i).getDemand()));
+            Log.d(""+i, dataBeans.getGraph_data().get(i).getDemand()+"");
         }
         //每个LineDataSet代表一条线
         LineDataSet lineDataSet = new LineDataSet(values, "");
         initLineDataSet(lineDataSet);
         LineData lineData = new LineData(lineDataSet);
         taxiDemandAnalyzeLineChart.setData(lineData);
-
+        taxiDemandAnalyzeLineChart.notifyDataSetChanged();
     }
 
 
@@ -181,10 +184,11 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
 
     //初始化折线
     private void initLineDataSet(LineDataSet lineDataSet) {
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         lineDataSet.setColor(Color.parseColor("#51b46d"));
         lineDataSet.setLineWidth(1f);
         lineDataSet.setCircleColor(Color.parseColor("#51b46d"));
-        lineDataSet.setCircleRadius(2f);
+        lineDataSet.setCircleRadius(1f);
         lineDataSet.setDrawCircleHole(false);    //设置曲线值的圆点是实心还是空心
         lineDataSet.setValueTextSize(20f);
         lineDataSet.setValueTextColor(Color.parseColor("#51b46d"));

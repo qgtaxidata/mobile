@@ -15,5 +15,10 @@ public class TimeChangeUtil {
         return date;
     }
 
+    public static String transformToString(Long milliseconds)throws ParseException{
+        Date date = new Date(Long.parseLong(milliseconds+""));
+        SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(date);
+    }
 
 }
