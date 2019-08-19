@@ -9,4 +9,9 @@ public class StatusManager {
     public static String originChosen = "";
 
     public  static  String  hotSpotChosen = "";
+
+    public static final int FAIL_CODE_NONE_DATA = 0;
+
+    public static final int FAIL_CODE_WRONG_ADDRESS = 1;
+
 }

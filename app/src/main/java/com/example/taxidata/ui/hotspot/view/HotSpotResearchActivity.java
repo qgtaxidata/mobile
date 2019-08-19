@@ -37,6 +37,7 @@ import com.example.taxidata.ui.hotspot.adapter.RecommandHotSpotAdapter;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
 import com.example.taxidata.util.EventBusUtils;
+import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.EmptyHotSpotHistoryView;
 import com.example.taxidata.widget.EmptyHotSpotView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
@@ -327,7 +328,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
 
     public void cancelLoadingDialong() {
 
-        loadingDialog.cancel();
+        loadingDialog.dismiss();
     }
 
     public void showLoadingGame() {
@@ -342,7 +343,15 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     }
 
     @Override
-    public void requestFailed() {
-        cancelLoadingDialong();
+    public void requestFailed(int failCode) {
+        if(failCode == 0) {
+            //失败类型：返回数据，热点列表大小为 0
+            hotSpotList.clear();
+            showHotSpot(hotSpotList);
+        }
+        if(failCode == 1 ) {
+            cancelLoadingDialong();
+            ToastUtil.showShortToastBottom("您输入的地址有误,系统无法识别,请重新输入");
+        }
     }
 }
