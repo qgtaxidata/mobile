@@ -99,8 +99,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                             mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
                             e.printStackTrace();
                             ToastUtil.showShortToastCenter("抱歉，网络似乎出现了异常 :(");
-
-
                         }
 
                         @Override
@@ -167,7 +165,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         Log.e(TAG, "onRegeocodeSearched: 正在将坐标转换成中文地址" );
         if(regeocodeResult.getRegeocodeAddress().getRoads().size() > 0) {
             String addressName =regeocodeResult.getRegeocodeAddress().getDistrict() + regeocodeResult.getRegeocodeAddress().getTownship()+ regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName() ;
-//            String addressName = regeocodeResult.getRegeocodeAddress().getFormatAddress();
             StatusManager.hotSpotChosen = addressName;
             BaseEvent baseEvent = EventFactory.getInstance();
             baseEvent.type = EventBusType.HOTSPOT_CHOSEN;

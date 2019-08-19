@@ -299,4 +299,12 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
         cancelLoadingDialong();
         finish();
     }
+
+    @Override
+    public void requestFailed(int failCode) {
+        if(failCode == 0) {
+            cancelLoadingDialong();
+            ToastUtil.showLongToastBottom("服务器无法正确识别此地址，请稍后重试");
+        }
+    }
 }

@@ -67,7 +67,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
     Button btnSearch;
     @BindView(R.id.rv_hotspot_search_history)
     RecyclerView rvSearch;
-    private static final String TAG = "HotSpotResearchFragment";
+    private static final String TAG = "HotSpotResearchActivity";
     @BindView(R.id.refreshLayout_hotspot)
     SmartRefreshLayout refreshLayoutHotspot;
     private HotSpotPresenter mPresenter = new HotSpotPresenter();
@@ -341,5 +341,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         refreshLayoutHotspot.setVisibility(View.GONE);
     }
 
-
+    @Override
+    public void requestFailed() {
+        cancelLoadingDialong();
+    }
 }

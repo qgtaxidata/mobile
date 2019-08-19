@@ -7,15 +7,19 @@ import com.example.taxidata.common.GreenDaoManager;
 import com.example.taxidata.common.SharedPreferencesManager;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 public class TaxiApp extends Application {
 
     private static Context context;
     private static TaxiApp taxiApp;
     private static final String TAG = "TaxiApp";
+    private RefWatcher refWatcher;
     /**
      * app默认时间为2017-02-06
      */
@@ -43,6 +47,8 @@ public class TaxiApp extends Application {
         Logger.addLogAdapter(new AndroidLogAdapter());
         initGreenDao();
         initAppTime();
+        //LeakCanary 监控者
+        refWatcher =  LeakCanary.install(this);
     }
 
     public static Context getContext(){
@@ -133,5 +139,10 @@ public class TaxiApp extends Application {
      */
     public static TaxiApp getTaxiApp(){
         return taxiApp;
+    }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        TaxiApp application = (TaxiApp) context.getApplicationContext();
+        return application.refWatcher;
     }
 }
