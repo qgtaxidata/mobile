@@ -6,14 +6,23 @@
     android:background="@drawable/bg_passager_frequency">
 
     <TextView
+        android:id="@+id/passager_frequency_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
         android:layout_gravity="center"
         android:text="载客频率"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textColor="@color/black_color"
         android:textStyle="normal"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/passager_frequency_line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/search_out_bg" />
 
 
 </LinearLayout>

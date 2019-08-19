@@ -5,8 +5,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.taxidata.R;
+import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.bean.TaxiPathInfo;
+import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.ChooseTaxiDialog;
 import com.example.taxidata.widget.StatusToast;
 import com.orhanobut.logger.Logger;
@@ -24,6 +26,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
     private TaxiPathContract.TaxiPathModel model;
     private TaxiPathContract.TaxiPathView view;
     private boolean flag = false; //true时暂停轮询
+    private int n = 0;
 
     @Override
     public void getTaxiInfo(Context context,int area, String time) {
@@ -104,14 +107,16 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
     @SuppressLint("CheckResult")
     @Override
     public void getCurrentTaxiPathInfo(Context context,String time, String licenseplateno) {
-        flag = false;
         if(model != null){
-            Observable.interval(8, TimeUnit.SECONDS)
+            flag = false;
+            n = 0;
+            Observable.interval(10, TimeUnit.SECONDS)
                     .doOnNext(new Consumer<Long>() {
                         @Override
                         public void accept(Long aLong) throws Exception {
-                            model.getCurrentTaxiPathInfo(time, licenseplateno)
-
+                            Logger.d(TimeChangeUtil.transformToString(TaxiApp.getMillionTime()+50000*n));
+                            Log.d("n:", n+"");
+                            model.getCurrentTaxiPathInfo(TimeChangeUtil.transformToString(TaxiApp.getMillionTime()+50000*(n++)), licenseplateno)
                                     .subscribe(new Observer<TaxiPathInfo>() {
 
                                         @Override
@@ -121,31 +126,29 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
 
                                         @Override
                                         public void onNext(TaxiPathInfo currentTaxiPathInfo) {
-                                            Logger.d(time);
-                                            Logger.d(licenseplateno);
                                             Log.d("p","next");
                                             if (currentTaxiPathInfo.getCode() == 1){
                                                 //显示实时路径
                                                 view.showCurrentPath(currentTaxiPathInfo.getData());
                                             }else {
-                                                StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
+                                                Logger.d(currentTaxiPathInfo.getMsg());
+                                                Logger.d(currentTaxiPathInfo.getCode());
+                                                StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, currentTaxiPathInfo.getMsg());
                                                 flag = true;
-                                                view.clearMap();
                                             }
                                         }
 
                                         @Override
                                         public void onError(Throwable e) {
                                             e.printStackTrace();
-                                            flag = true;
                                             Logger.d(e.getMessage());
+                                            flag = true;
                                             StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
                                         }
 
                                         @Override
                                         public void onComplete() {
-                                            view.clearMap();
-                                            flag = true;
+                                            Log.d("p","complete");
                                         }
                                     });
                         }
@@ -165,15 +168,14 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
-                            flag = true;
                             Logger.d(e.getMessage());
                             StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
                         }
 
                         @Override
                         public void onComplete() {
-                            view.clearMap();
                             Log.d("P","COM");
+                            view.clearMap();
                             flag = true;
                         }
                     });

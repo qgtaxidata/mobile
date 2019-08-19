@@ -166,7 +166,7 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         Log.d("flag", ""+flag);
         if(flag == 1){
             Log.d("current", 1+"");
-            taxiPathPresent.getCurrentTaxiPathInfo(this, getPathInfo.getTime(), getPathInfo.getLicenseplateno());
+            taxiPathPresent.getCurrentTaxiPathInfo(this, TaxiApp.getAppNowTime(), getPathInfo.getLicenseplateno());
         }else {
             Log.d("history", 2+"");
             taxiPathPresent.getHistoryTaxiPathInfo(this, getPathInfo.getTime(), getPathInfo.getLicenseplateno());

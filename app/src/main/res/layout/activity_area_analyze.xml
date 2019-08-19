@@ -50,8 +50,8 @@
         android:clipChildren="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="50dp">
 

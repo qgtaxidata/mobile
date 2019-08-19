@@ -52,7 +52,7 @@ public class RoadQualityActivity extends BaseActivity implements RoadQualityCont
     ArrayList<String> areaList = new ArrayList<>();
     ArrayList<String> timeList = new ArrayList<>();
     private int areaId = 5;
-    private String date = "2017-02-03";
+    private String date = "2017-02-05";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,8 @@ public class RoadQualityActivity extends BaseActivity implements RoadQualityCont
         initTimeList();
         //设置viewPager
         setViewPager(roadQualityVp);
+        //默认显示番禺区2017年02月05日的数据
+        present.getRoadQualityInfo(this, areaId, date);
         //获取用户选择的区域
         roadQualityAreaSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override

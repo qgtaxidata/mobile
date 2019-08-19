@@ -1,9 +1,11 @@
 package com.example.taxidata.ui.areaanalyze;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.taxidata.bean.AreaAnalyzeInfo;
 import com.example.taxidata.ui.areaincome.AreaIncomeContract;
+import com.orhanobut.logger.Logger;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -23,12 +25,16 @@ public class AreaAnalyzePresent implements AreaAnalyzeContract.AreaAnalyzePresen
 
             @Override
             public void onNext(AreaAnalyzeInfo areaAnalyzeInfo) {
-
+                Log.d("next", areaAnalyzeInfo.getMsg());
+                if(areaAnalyzeInfo.getData() != null) {
+                    view.sendData(areaAnalyzeInfo.getData());
+                }
             }
 
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
+                Logger.d(e.getMessage());
             }
 
             @Override
@@ -40,7 +46,7 @@ public class AreaAnalyzePresent implements AreaAnalyzeContract.AreaAnalyzePresen
 
     @Override
     public void attachView(AreaAnalyzeContract.AreaAnalyzeView view) {
-        this.view = null;
+        this.view = view;
         model = new AreaAnalyzeModel();
     }
 
