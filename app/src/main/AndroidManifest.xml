@@ -22,9 +22,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.recommendad.RecommendAdActivity">
+        <activity android:name=".ui.recommendad.ContrastChartActivity">
         </activity>
-        <activity android:name=".test.DemoActivity"></activity>
+        <activity android:name=".ui.recommendad.MapDetailActivity" />
+        <activity android:name=".ui.recommendad.RecommendAdActivity" ></activity>
+        <activity android:name=".test.DemoActivity" />
         <activity android:name=".ui.roadquality.RoadQualityActivity" />
         <activity android:name=".ui.areaincome.AreaIncomeActivity" />
         <activity android:name=".ui.passengerpath.view.OriginActivity" />

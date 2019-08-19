@@ -45,6 +45,7 @@
         />
 
     <RelativeLayout
+        android:id="@+id/rl_ad"
         android:layout_height="470dp"
         android:layout_width="270dp"
         android:layout_centerInParent="true"
@@ -66,6 +67,9 @@
                 android:textStyle="normal"
                 android:textColor="#4d4d4d"
                 android:textSize="16sp"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
                 android:text="广告牌位置推荐"/>
 
             <LinearLayout
@@ -84,11 +88,14 @@
                 <TextView
                     android:id="@+id/tv_ad_one"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/dp_90"
                     android:layout_marginLeft="20dp"
                     android:background="@android:color/transparent"
                     android:textStyle="normal"
                     android:textColor="#4d4d4d"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
                     android:textSize="16sp"
                     android:text="广告牌位置1"/>
 
@@ -110,11 +117,14 @@
                 <TextView
                     android:id="@+id/tv_ad_two"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/dp_90"
                     android:layout_marginLeft="20dp"
                     android:background="@android:color/transparent"
                     android:textStyle="normal"
                     android:textColor="#4d4d4d"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
                     android:textSize="16sp"
                     android:text="广告牌位置2"/>
 
@@ -136,11 +146,14 @@
                 <TextView
                     android:id="@+id/tv_ad_three"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/dp_90"
                     android:layout_marginLeft="20dp"
                     android:background="@android:color/transparent"
                     android:textStyle="normal"
                     android:textColor="#4d4d4d"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
                     android:textSize="16sp"
                     android:text="广告牌位置3"/>
 
@@ -162,11 +175,15 @@
                 <TextView
                     android:id="@+id/tv_ad_four"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/dp_90"
                     android:layout_marginLeft="20dp"
+                    android:gravity="center"
                     android:background="@android:color/transparent"
                     android:textStyle="normal"
                     android:textColor="#4d4d4d"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
                     android:textSize="16sp"
                     android:text="广告牌位置4"/>
 
@@ -188,11 +205,14 @@
                 <TextView
                     android:id="@+id/tv_ad_five"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/dp_90"
                     android:layout_marginLeft="20dp"
                     android:background="@android:color/transparent"
                     android:textStyle="normal"
                     android:textColor="#4d4d4d"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
                     android:textSize="16sp"
                     android:text="广告牌位置5"/>
 
