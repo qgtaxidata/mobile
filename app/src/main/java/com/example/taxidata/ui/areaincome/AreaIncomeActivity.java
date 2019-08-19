@@ -210,7 +210,8 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         lineDataSet.setColor(Color.parseColor("#51b46d"));
         lineDataSet.setLineWidth(1f);
         lineDataSet.setCircleColor(Color.parseColor("#51b46d"));
-        lineDataSet.setCircleRadius(0.5f);
+        lineDataSet.setCircleRadius(1f);
+        lineDataSet.setDrawCircles(false);
         lineDataSet.setDrawCircleHole(false);    //设置曲线值的圆点是实心还是空心
         lineDataSet.setValueTextSize(20f);
         lineDataSet.setValueTextColor(Color.parseColor("#51b46d"));

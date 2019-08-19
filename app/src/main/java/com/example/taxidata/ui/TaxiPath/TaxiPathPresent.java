@@ -79,10 +79,10 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                         @Override
                         public void onNext(TaxiPathInfo historyTaxiPathInfo) {
                             Log.d("p","next");
-                            if(historyTaxiPathInfo.getData() != null){
+                            if(historyTaxiPathInfo.getData() != null&&historyTaxiPathInfo.getCode()==1){
                                 view.showHistoryPath(historyTaxiPathInfo.getData());
                             }else {
-                                StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "数据为空！请重试。");
+                                StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, historyTaxiPathInfo.getMsg());
                             }
                         }
 
