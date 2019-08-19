@@ -11,7 +11,7 @@
         android:layout_marginTop="40dp"
         android:layout_gravity="center"
         android:text="车速"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textColor="@color/black_color"
         android:textStyle="normal"/>
 

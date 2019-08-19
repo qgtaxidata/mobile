@@ -68,7 +68,7 @@
         android:layout_below="@+id/second_linear_layout">
         <Button
             android:id="@+id/taxi_path_clear_btn"
-            android:layout_width="125dp"
+            android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/bg_dialog_blue_btn"

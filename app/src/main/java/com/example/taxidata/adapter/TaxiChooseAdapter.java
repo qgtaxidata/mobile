@@ -59,6 +59,7 @@ public class TaxiChooseAdapter extends RecyclerView.Adapter<TaxiChooseAdapter.Vi
             TaxiInfo.DataBean taxiInfo = taxiInfoList.get(position);
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.licenseplatenoTv.setText(taxiInfo.getLicenseplateno());
+            viewHolder.licenseplatenoCkb.setChecked(taxiInfoList.get(position).isSelected());
         }
     }
 

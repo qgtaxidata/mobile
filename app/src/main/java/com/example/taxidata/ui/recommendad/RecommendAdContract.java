@@ -54,6 +54,12 @@ public interface RecommendAdContract {
          * @param detaiAdInfo 详细地址信息
          */
         void positingPosition(int position,String detaiAdInfo);
+
+        /**
+         * 生成对比图表
+         * return boolean 生成图表是否成功
+         */
+        boolean createChart();
     }
 
     interface RecommendAdModel {

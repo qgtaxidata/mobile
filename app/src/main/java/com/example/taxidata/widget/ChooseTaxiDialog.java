@@ -109,6 +109,7 @@ public class ChooseTaxiDialog extends Dialog {
                 String time = taxiInfoList.get(position).getTime();
                 pathInfo.setTime(time);
                 pathInfo.setLicenseplateno(licenseplateno);
+                adapter.notifyDataSetChanged();
             }
         });
     }

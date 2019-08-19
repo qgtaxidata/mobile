@@ -12,7 +12,7 @@ import io.reactivex.Observable;
 public interface AreaAnalyzeContract {
 
     interface AreaAnalyzeView extends BaseView {
-
+        void sendData(AreaAnalyzeInfo.DataBean dataBean);
     }
 
     interface AreaAnalyzeModel extends BaseModel {

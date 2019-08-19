@@ -1,6 +1,7 @@
 package com.example.taxidata.ui.areaanalyze;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,9 +13,13 @@ import com.example.taxidata.adapter.AreaAnalyzeTransformer;
 import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.adapter.ViewPagerAdapter;
 import com.example.taxidata.base.BaseActivity;
+import com.example.taxidata.bean.AreaAnalyzeInfo;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.DropDownSelectView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Logger;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -53,7 +58,7 @@ public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeCont
     ArrayList<String> areaList = new ArrayList<>();
     ArrayList<String> timeList = new ArrayList<>();
     private int areaId = 5;
-    private String date = "2017-02-03";
+    private String date = "2017-02-05";
 
 
     @Override
@@ -69,6 +74,8 @@ public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeCont
         initAreaList();
         //初始化时间popupWindow
         initTimeList();
+        //默认显示番禺区2017年02月05日的数据
+        present.getAreaAnalyzeInfo(this, areaId, date);
         //获取用户选择的区域
         areaAnalyzeAreaSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -103,6 +110,14 @@ public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeCont
         viewPager.setPageMargin(10);
     }
 
+    @Override
+    public void sendData(AreaAnalyzeInfo.DataBean dataBean) {
+        Log.d("AreaAnalyzeActivity", "data");
+        EventBus.getDefault().post(dataBean.getMileage_utilization());   //里程利用率
+        EventBus.getDefault().post(dataBean.getPick_up_freq());          //载客频率
+        EventBus.getDefault().post(dataBean.getTime_utilization());     //出车率
+    }
+
     @OnClick(R.id.area_analyze_btn_refresh_list)
     public void onViewClicked() {
         present.getAreaAnalyzeInfo(AreaAnalyzeActivity.this, areaId, date);
@@ -124,18 +139,17 @@ public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeCont
     }
 
     private void initTimeList(){
-        timeList.add("2007年02月04日");
-        timeList.add("2007年02月05日");
-        timeList.add("2007年02月06日");
-        timeList.add("2007年02月07日");
-        timeList.add("2007年02月08日");
-        timeList.add("2007年02月09日");
-        timeList.add("2007年02月10日");
-        timeList.add("2007年02月11日");
-        timeList.add("2007年02月12日");
-        timeList.add("2007年02月13日");
-        timeList.add("2007年02月14日");
-        timeList.add("2007年02月15日");
+        timeList.add("2017年02月05日");
+        timeList.add("2017年02月06日");
+        timeList.add("2017年02月07日");
+        timeList.add("2017年02月08日");
+        timeList.add("2017年02月09日");
+        timeList.add("2017年02月10日");
+        timeList.add("2017年02月11日");
+        timeList.add("2017年02月12日");
+        timeList.add("2017年02月13日");
+        timeList.add("2017年02月14日");
+        timeList.add("2017年02月15日");
         areaAnalyzeTimeSelectView.setItemsData(timeList, 2);
     }
 
