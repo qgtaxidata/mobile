@@ -95,6 +95,9 @@ public interface OriginHotSpotContract {
          * @param info the info
          */
          void  requestSuccess(PathInfo info);
+
+
+         void requestFailed(int failCode) ;
     }
 
     /**

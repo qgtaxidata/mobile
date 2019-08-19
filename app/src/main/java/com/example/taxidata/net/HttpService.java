@@ -13,6 +13,7 @@ import com.example.taxidata.bean.TaxiDemandInfo;
 import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.bean.TaxiPathInfo;
 import com.example.taxidata.ui.passengerpath.enity.PathInfo;
+import com.example.taxidata.ui.recommendad.AdInfo;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -95,7 +96,7 @@ public interface HttpService {
     @POST("")
     Observable<RoadQualityInfo> getRoadQualityInfo(@Query("area") int area, @Query("date") String date);
 
-    @POST("")
-    Observable<ResponseBody> getAdPosition();
+    @GET("analyse/billboard")
+    Observable<AdInfo> getAdPosition(@Query("area")int area, @Query("targetTime")int targetTime, @Query("targetDay")int targetDay);
 }
 

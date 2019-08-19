@@ -120,7 +120,7 @@ public class MileageUtilizationRateFragment extends BaseFragment {
         lineDataSet.setColor(Color.parseColor("#51b46d"));
         lineDataSet.setLineWidth(1f);
         lineDataSet.setCircleColor(Color.parseColor("#51b46d"));
-        lineDataSet.setCircleRadius(1f);
+        lineDataSet.setCircleRadius(0.5f);
         lineDataSet.setDrawCircleHole(false);    //设置曲线值的圆点是实心还是空心
         lineDataSet.setValueTextSize(20f);
         lineDataSet.setValueTextColor(Color.parseColor("#51b46d"));

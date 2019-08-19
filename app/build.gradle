@@ -86,5 +86,8 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0'  //没有使用特殊Header，可以不加这行
 
     implementation 'com.nightonke:boommenu:2.1.1'
+    //内存泄漏检测
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-2'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.3'
 
 }

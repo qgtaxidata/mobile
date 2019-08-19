@@ -22,9 +22,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.recommendad.RecommendAdActivity">
+        <activity android:name=".ui.recommendad.ContrastChartActivity">
         </activity>
-        <activity android:name=".test.DemoActivity"></activity>
+        <activity android:name=".ui.recommendad.MapDetailActivity" />
+        <activity android:name=".ui.recommendad.RecommendAdActivity" >
+        </activity>
+        <activity android:name=".test.DemoActivity" />
         <activity android:name=".ui.roadquality.RoadQualityActivity" />
         <activity android:name=".ui.areaincome.AreaIncomeActivity" />
         <activity android:name=".ui.passengerpath.view.OriginActivity" />
@@ -39,19 +42,23 @@
         <activity android:name=".ui.hotspot.view.HotSpotResearchActivity" />
         <activity android:name=".ui.hotspot.view.OriginHotSpotActivity" />
         <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ThemeSplash">
+           <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.LAUNCHER" />
+           </intent-filter>
+        </activity>
+        <activity
             android:name=".HomePageActivity"
             android:launchMode="standard">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.TaxiPath.TaxiPathActivity" />
         <activity android:name=".ChartText.PieChartActivity" />
-        <activity android:name=".ChartText.BarChartActivity" />
-
+        <activity android:name=".ChartText.BarChartActivity" >
+        </activity>
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="2002b6e6cb4527690f56dab4374fc825" />

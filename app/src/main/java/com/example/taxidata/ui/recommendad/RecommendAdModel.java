@@ -10,10 +10,10 @@ import okhttp3.ResponseBody;
 public class RecommendAdModel implements RecommendAdContract.RecommendAdModel{
 
     @Override
-    public Observable<ResponseBody> requestAdPosition() {
+    public Observable<AdInfo> requestAdPosition(int area, int targetTime,int targetDay) {
         return RetrofitManager.getInstance()
                 .getHttpService()
-                .getAdPosition()
+                .getAdPosition(area,targetTime,targetDay)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

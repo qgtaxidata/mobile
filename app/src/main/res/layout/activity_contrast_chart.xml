@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:andriod="http://schemas.android.com/apk/res/android"
+    andriod:layout_height="match_parent"
+    andriod:layout_width="match_parent">
+
+    <com.github.mikephil.charting.charts.BarChart
+        andriod:id="@+id/bc_ad_recommend"
+        andriod:layout_width="370dp"
+        andriod:layout_height="600dp"
+        andriod:layout_centerInParent="true"
+        />
+
+</RelativeLayout>

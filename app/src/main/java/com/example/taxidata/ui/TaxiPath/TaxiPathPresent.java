@@ -64,7 +64,6 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
         }
     }
 
-
     @Override
     public void getHistoryTaxiPathInfo(Context context, String time, String licenseplateno) {
         view.showLoadingView();
@@ -92,7 +91,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                             e.printStackTrace();
                             Logger.d(e.getMessage());
                             view.clearMap();
-                            //view.hideLoadingView();
+                            view.hideLoadingView();
                             StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
                         }
 
@@ -127,7 +126,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                                         @Override
                                         public void onNext(TaxiPathInfo currentTaxiPathInfo) {
                                             Log.d("p","next");
-                                            if (currentTaxiPathInfo.getCode() == 1){
+                                            if (currentTaxiPathInfo.getCode() == 1&&currentTaxiPathInfo.getData()!=null){
                                                 //显示实时路径
                                                 view.showCurrentPath(currentTaxiPathInfo.getData());
                                             }else {
@@ -175,7 +174,6 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                         @Override
                         public void onComplete() {
                             Log.d("P","COM");
-                            view.clearMap();
                             flag = true;
                         }
                     });

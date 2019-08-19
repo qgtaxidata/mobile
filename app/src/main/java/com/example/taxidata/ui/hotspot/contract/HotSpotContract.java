@@ -98,10 +98,11 @@ public interface HotSpotContract {
          void showHintHotSpotList(List<HotSpotHint> hintList);
 
         /**
-         * Hot spot chsen success.
+         * Hot spot chosen success.
          */
          void  hotSpotChosenSuccess();
 
+         void  requestFailed();
 
     }
 
