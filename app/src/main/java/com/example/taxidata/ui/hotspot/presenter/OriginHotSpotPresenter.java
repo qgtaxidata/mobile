@@ -159,6 +159,8 @@ public class OriginHotSpotPresenter implements OriginHotSpotContract.OriginHotSp
             }
         } else {
             Logger.d("geocodeResult 对象为空");
+            //查询地址可能有误，回调让用户重新选择
+            mView.requestFailed(0);
         }
     }
 
