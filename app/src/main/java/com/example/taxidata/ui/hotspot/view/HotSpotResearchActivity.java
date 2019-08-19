@@ -341,5 +341,8 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
         refreshLayoutHotspot.setVisibility(View.GONE);
     }
 
-
+    @Override
+    public void requestFailed() {
+        cancelLoadingDialong();
+    }
 }
