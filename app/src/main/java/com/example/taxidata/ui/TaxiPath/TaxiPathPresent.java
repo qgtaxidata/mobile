@@ -154,7 +154,6 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                                         @Override
                                         public void onComplete() {
                                             Log.d("p","complete");
-                                            view.clearMap();
                                         }
                                     });
                         }
@@ -186,7 +185,6 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                             view.clearMap();
                         }
                     });
-
         }
     }
 
