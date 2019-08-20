@@ -75,6 +75,14 @@ public class DropDownSelectView extends LinearLayout {
                             //显示广告牌界面的区域选择框
                             showAdAreaPopWindow();
                             break;
+                        case 7:
+                            //显示地区选择框
+                            showAreaPopWindow();
+                            break;
+                        case 8:
+                            //显示车牌选择框
+                            showAdTimePopWindow();
+                            break;
                         default:
                     }
                 }else {
@@ -127,7 +135,7 @@ public class DropDownSelectView extends LinearLayout {
                 resultTv.setText("番禺区");
                 break;
             case 2:
-                resultTv.setText("2007年02月05日");
+                resultTv.setText("2017年02月05日");
                 break;
             case 3:
                 resultTv.setText(Algorithm.WANG_ALGORITHM);
@@ -141,7 +149,14 @@ public class DropDownSelectView extends LinearLayout {
             case 6:
                 resultTv.setText("请选择天数类型");
                 break;
+            case 7:
+                resultTv.setText("全广州");
+                break;
+            case 8:
+                resultTv.setText("请选择一辆车");
+                break;
             default:
+
         }
     }
 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <Button
+        android:id="@+id/btn_refresh_abnormal_analyze"
+        android:layout_width="65dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/shape_button_radius_refresh"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="刷新"
+        android:textSize="20sp"
+        android:textColor="@color/search_out_bg"/>
+
+    <com.example.taxidata.widget.DropDownSelectView
+        android:id="@+id/select_area_abnormal_analyze"
+        android:layout_width="78dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@id/btn_refresh_abnormal_analyze"
+        android:layout_alignBottom="@id/btn_refresh_abnormal_analyze"
+        />
+
+    <TextView
+        android:id="@+id/tv_abnormal_analyze_summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="全广州异常车辆分布"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/select_area_abnormal_analyze"
+        android:textSize="20sp"
+        android:textColor="#4d4d4d"
+        android:layout_marginTop="35dp"/>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart_abnormal_analyze_summary"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:layout_below="@id/tv_abnormal_analyze_summary"
+         />
+    <TextView
+        android:id="@+id/tv_abnormal_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="广州各行政区异常车辆数量分布"
+        android:textSize="20sp"
+        android:textColor="#4d4d4d"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/chart_abnormal_analyze_summary"
+        />
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart_abnormal_detail"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:layout_below="@id/tv_abnormal_detail"
+        />
+
+</RelativeLayout>

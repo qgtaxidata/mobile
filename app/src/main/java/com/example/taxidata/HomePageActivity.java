@@ -37,6 +37,7 @@ import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.ui.IncomeRanking.IncomeRankingActivity;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
+import com.example.taxidata.ui.abnormlAnalyze.AbnormalRootActivity;
 import com.example.taxidata.ui.areaanalyze.AreaAnalyzeActivity;
 import com.example.taxidata.ui.areaincome.AreaIncomeActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
@@ -681,6 +682,7 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
                         break;
                     case 3:
                         //出租车异常
+                        startActivity(new Intent(HomePageActivity.this , AbnormalRootActivity.class));
                         break;
                     case 4:
                         //热力图模式
