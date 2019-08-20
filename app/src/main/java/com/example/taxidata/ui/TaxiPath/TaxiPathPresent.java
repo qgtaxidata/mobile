@@ -44,6 +44,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                     Log.d("TaxiPathPresent",taxiInfo.getCode()+"");
                     if(taxiInfo.getData() !=null){
                         //初始化dialog并弹出
+                        view.hideLoadingView();
                         final ChooseTaxiDialog chooseTaxiDialog = new ChooseTaxiDialog(context, R.style.dialog, taxiInfo);
                         chooseTaxiDialog.show();
                         //储存返回的车牌号数据
@@ -61,7 +62,6 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                 }
                 @Override
                 public void onComplete() {
-
                 }
             });
         }
@@ -85,6 +85,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                             if(historyTaxiPathInfo.getData() != null&&historyTaxiPathInfo.getCode()==1){
                                 view.showHistoryPath(historyTaxiPathInfo.getData());
                             }else {
+                                view.hideLoadingView();
                                 StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, historyTaxiPathInfo.getMsg());
                             }
                         }
@@ -101,6 +102,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                         @Override
                         public void onComplete() {
                             view.hideLoadingView();
+                            view.clearMap();
                         }
                     });
         }
@@ -145,12 +147,14 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                                             e.printStackTrace();
                                             Logger.d(e.getMessage());
                                             flag = true;
+                                            view.clearMap();
                                             StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
                                         }
 
                                         @Override
                                         public void onComplete() {
                                             Log.d("p","complete");
+                                            view.clearMap();
                                         }
                                     });
                         }
@@ -171,6 +175,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                         public void onError(Throwable e) {
                             e.printStackTrace();
                             Logger.d(e.getMessage());
+                            view.clearMap();
                             StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
                         }
 
@@ -178,6 +183,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                         public void onComplete() {
                             Log.d("P","COM");
                             flag = true;
+                            view.clearMap();
                         }
                     });
 

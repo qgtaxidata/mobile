@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -161,7 +162,7 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         xAxis = areaIncomeLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置
         xAxis.setAxisMinimum(0f);
-        xAxis.setAxisLineWidth(1.5f);
+        xAxis.setAxisLineWidth(1f);
         xAxis.setTextColor(Color.BLACK);
         xAxis.setAxisLineColor(Color.BLACK);
         xAxis.setGranularity(1f);
@@ -170,7 +171,7 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         //Y轴的相关设置
         yAxis = areaIncomeLineChart.getAxisLeft();
         yAxis.removeAllLimitLines();
-        yAxis.setAxisLineWidth(1.5f);
+        yAxis.setAxisLineWidth(1f);
         yAxis.setDrawGridLines(true);      //显示y轴的网格线
         yAxis.enableGridDashedLine(10f, 10f, 0f);   //并设置为破折线
         yAxis.setAxisMinimum(0f);
@@ -181,21 +182,30 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         //设置标题
         areaIncomeTitleTv.setText(dataBean.getTitle());
         Log.d("show", dataBean.getTitle());
-        List<String> xList = new ArrayList<>();
-        //添加数据
-        Log.d("size",dataBean.getGraph().getX().size()+"");
-        for (int i = 0 ; i<dataBean.getGraph().getX().size(); i++){
-            xList.add(dataBean.getGraph().getX().get(i));
+        //添加x轴数据
+        List<String> xAnalyzeList = new ArrayList<>();
+        xAnalyzeList.addAll(dataBean.getImcome().getX().get(0));
+        xAnalyzeList.addAll(dataBean.getImcome().getX().get(1));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xAnalyzeList));
+        //添加分析数据
+        ArrayList<Entry> analyzeValues = new ArrayList<>();
+        for (int i = 0; i <dataBean.getImcome().getY().get(0).size(); i++) {
+            analyzeValues.add(new Entry(i, dataBean.getImcome().getY().get(0).get(i)));
         }
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
-        ArrayList<Entry> values = new ArrayList<>();
-        for (int i = 0; i <dataBean.getGraph().getY().size(); i++) {
-            values.add(new Entry(i, dataBean.getGraph().getY().get(i)));
+        //添加预测数据
+        ArrayList<Entry> forecastValues = new ArrayList<>();
+        for (int i =0 ;dataBean.getImcome().getY().get(0).size()+i <dataBean.getImcome().getY().get(1).size()+dataBean.getImcome().getY().get(0).size(); i++) {
+            forecastValues.add(new Entry(i+dataBean.getImcome().getY().get(0).size(), dataBean.getImcome().getY().get(1).get(i)));
         }
         //每个LineDataSet代表一条线
-        LineDataSet lineDataSet = new LineDataSet(values, "");
-        initLineDataSet(lineDataSet);
-        LineData lineData = new LineData(lineDataSet);
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "收入分析");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "收入预测");
+        initLineDataSet(analyzeLineDataSet,"#4472c4");
+        initLineDataSet(forecastLineDataSet, "#ed7d31");
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(analyzeLineDataSet);
+        dataSets.add(forecastLineDataSet);
+        LineData lineData = new LineData(dataSets);
         areaIncomeLineChart.setData(lineData);
         areaIncomeLineChart.notifyDataSetChanged();
     }
@@ -207,16 +217,16 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
     }
 
     //初始化折线
-    private void initLineDataSet(LineDataSet lineDataSet) {
+    private void initLineDataSet(LineDataSet lineDataSet, String color) {
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        lineDataSet.setColor(Color.parseColor("#51b46d"));
+        lineDataSet.setColor(Color.parseColor(color));
         lineDataSet.setLineWidth(1f);
-        lineDataSet.setCircleColor(Color.parseColor("#51b46d"));
+        lineDataSet.setCircleColor(Color.parseColor(color));
         lineDataSet.setCircleRadius(1f);
         lineDataSet.setDrawCircles(false);
         lineDataSet.setDrawCircleHole(false);    //设置曲线值的圆点是实心还是空心
         lineDataSet.setValueTextSize(20f);
-        lineDataSet.setValueTextColor(Color.parseColor("#51b46d"));
+        lineDataSet.setValueTextColor(Color.parseColor(color));
         lineDataSet.setDrawFilled(false);
         lineDataSet.setFormLineWidth(1f);
         lineDataSet.setFormSize(15.f);
