@@ -17,6 +17,7 @@ import com.example.taxidata.bean.IncomeRankingInfo;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.DropDownSelectView;
+import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.orhanobut.logger.Logger;
 
 import java.text.ParseException;
@@ -55,6 +56,7 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
     ArrayList<String> areaList = new ArrayList<>();
     ArrayList<String> timeList = new ArrayList<>();
     ArrayList<IncomeRankingInfo.DataBean> incomeList= new ArrayList<IncomeRankingInfo.DataBean>();
+    private SimpleLoadingDialog loading;
     private IncomeAdapter adapter;
     private int areaId = 5;
     private String date = "2017-02-05";
@@ -171,5 +173,20 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
     protected void onDestroy() {
         super.onDestroy();
         present.detachView();
+    }
+
+    //加载loading界面
+    @Override
+    public void showLoadingView() {
+        //初始化loading界面
+        loading = new SimpleLoadingDialog(this,"图表正在绘制中！",R.drawable.dialog_image_loading);
+        loading.show();
+    }
+    //取消loading界面
+    @Override
+    public void hideLoadingView() {
+        if(loading!=null){
+            loading.dismiss();
+        }
     }
 }

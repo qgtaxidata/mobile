@@ -73,6 +73,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                 heatPowerView.hideHeatPower();
             }
         });
+        task.setRepeatTime(pollingTime);
         //开启轮询
         task.execute(area);
     }

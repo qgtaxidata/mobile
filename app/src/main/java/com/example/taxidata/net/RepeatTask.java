@@ -83,6 +83,14 @@ public class RepeatTask extends AsyncTask<Integer, HeatPointInfo,Integer> {
     }
 
     /**
+     * 设置轮询时间
+     * @param repeatTime
+     */
+    public void setRepeatTime(int repeatTime) {
+        this.repeatTime = repeatTime;
+    }
+
+    /**
      * 提供暂停
      */
     public void pause() {
