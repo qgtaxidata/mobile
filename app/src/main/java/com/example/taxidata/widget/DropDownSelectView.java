@@ -86,25 +86,11 @@ public class DropDownSelectView extends LinearLayout {
 
     //弹出区域选择列表
     private void showAreaPopWindow(){
-/*        LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = layoutInflater.inflate(R.layout.popupwindow_drop_down_select_area_list,this,false);
-        ListView listView = contentView.findViewById(R.id.drop_down_select_area_lv);
-        listView.setAdapter(new AreaChooseListAdapter(getContext(), mList));
-        areaPopupWindow = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        areaPopupWindow.setOutsideTouchable(true);
-        areaPopupWindow.showAsDropDown(this);*/
         loadLayout(R.layout.popupwindow_drop_down_select_area_list,R.id.drop_down_select_area_lv);
     }
 
     //弹出时间选择列表
     private void showTimePopWindow(){
- /*       LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = layoutInflater.inflate(R.layout.popupwindow_drop_down_select_time_list,this,false);
-        ListView listView = contentView.findViewById(R.id.drop_down_select_time_lv);
-        listView.setAdapter(new AreaChooseListAdapter(getContext(), mList));
-        areaPopupWindow = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        areaPopupWindow.setOutsideTouchable(true);
-        areaPopupWindow.showAsDropDown(this);*/
         loadLayout(R.layout.popupwindow_drop_down_select_time_list,R.id.drop_down_select_time_lv);
     }
 
@@ -147,13 +133,13 @@ public class DropDownSelectView extends LinearLayout {
                 resultTv.setText(Algorithm.WANG_ALGORITHM);
                 break;
             case 4:
-                resultTv.setText("请选择天数类型");
+                resultTv.setText("请选择区域");
                 break;
             case 5:
                 resultTv.setText("请选择目标时段");
                 break;
             case 6:
-                resultTv.setText("请选择区域");
+                resultTv.setText("请选择天数类型");
                 break;
             default:
         }

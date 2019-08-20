@@ -88,7 +88,7 @@
                 <TextView
                     android:id="@+id/tv_ad_one"
                     android:layout_height="wrap_content"
-                    android:layout_width="@dimen/dp_200"
+                    android:layout_width="255dp"
                     android:layout_marginLeft="20dp"
                     android:background="@android:color/transparent"
                     android:textStyle="normal"
@@ -117,7 +117,7 @@
                 <TextView
                     android:id="@+id/tv_ad_two"
                     android:layout_height="wrap_content"
-                    android:layout_width="200dp"
+                    android:layout_width="255dp"
                     android:layout_marginLeft="20dp"
                     android:background="@android:color/transparent"
                     android:textStyle="normal"
@@ -146,7 +146,7 @@
                 <TextView
                     android:id="@+id/tv_ad_three"
                     android:layout_height="wrap_content"
-                    android:layout_width="200dp"
+                    android:layout_width="255dp"
                     android:layout_marginLeft="20dp"
                     android:background="@android:color/transparent"
                     android:textStyle="normal"
@@ -175,7 +175,7 @@
                 <TextView
                     android:id="@+id/tv_ad_four"
                     android:layout_height="wrap_content"
-                    android:layout_width="200dp"
+                    android:layout_width="255dp"
                     android:layout_marginLeft="20dp"
                     android:background="@android:color/transparent"
                     android:textStyle="normal"
@@ -204,7 +204,7 @@
                 <TextView
                     android:id="@+id/tv_ad_five"
                     android:layout_height="wrap_content"
-                    android:layout_width="200dp"
+                    android:layout_width="255dp"
                     android:layout_marginLeft="20dp"
                     android:background="@android:color/transparent"
                     android:textStyle="normal"

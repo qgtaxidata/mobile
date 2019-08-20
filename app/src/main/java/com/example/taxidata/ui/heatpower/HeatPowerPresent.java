@@ -5,11 +5,13 @@ import android.widget.Button;
 
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.WeightedLatLng;
+import com.example.taxidata.R;
 import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HeatPointInfo;
 import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.StatusBar;
+import com.example.taxidata.widget.StatusToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +119,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                             e.printStackTrace();
                             //出现异常，清空热力图，并显示显示热力图按钮
                             heatPowerView.hideHeatPower();
+                            heatPowerView.showError();
                         }
 
                         @Override
@@ -124,6 +127,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                             Log.d(TAG, "对Complete事件作出响应");
                             //轮询结束，清空热力图，并显示显示热力图的按钮
                             heatPowerView.hideHeatPower();
+                            heatPowerView.showError();
                         }
                     });
         }
@@ -144,16 +148,15 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                             List<WeightedLatLng> weightedLatLngList = getWeightedLatLng(heatPointInfo);
                             heatPowerView.showHeatPower(weightedLatLngList);
                         }else {
-                            // TODO 将改为MyToast
-                            ToastUtil.showShortToastBottom(heatPointInfo.getMsg());
+                            StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,heatPointInfo.getMsg());
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        // TODO 将改为
-                        ToastUtil.showShortToastBottom("网络访问失败");
+                        heatPowerView.showError();
                         heatPowerView.hideHeatPower();
+                        heatPowerView.showError();
                     }
 
                     @Override
@@ -184,8 +187,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                             List<WeightedLatLng> weightedLatLngList = getWeightedLatLng(info);
                             heatPowerView.showHeatPower(weightedLatLngList);
                         }else {
-                            // TODO 将改为MyToast
-                            ToastUtil.showShortToastBottom(info.getMsg());
+                            StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,info.getMsg());
                             heatPowerView.hideHeatPower();
                         }
                     }
@@ -195,6 +197,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                         e.printStackTrace();
                         //异常则清除热力图
                         heatPowerView.hideHeatPower();
+                        heatPowerView.showError();
                     }
 
                     @Override

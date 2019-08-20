@@ -12,8 +12,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_splash);
-        //延迟1.5s
+        setContentView(R.layout.activity_splash);
+        //延迟1s
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 1500);
+        }, 1000);
     }
 }
 

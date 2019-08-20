@@ -29,6 +29,7 @@ public class SimpleLoadingDialog extends Dialog {
     private int mImageId;
     private boolean mCancelable;
     private RotateAnimation mRotateAnimation;
+    private ImageView iv_loading;
 
     public SimpleLoadingDialog(@NonNull Context context, String message, int imageId) {
         this(context, R.style.LoadingDialog,message,imageId,false);
@@ -46,6 +47,12 @@ public class SimpleLoadingDialog extends Dialog {
         initView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        iv_loading.setAnimation(mRotateAnimation);
+    }
+
     private void initView() {
         setContentView(R.layout.view_dialog_loading_simple);
         // 设置窗口大小
@@ -60,7 +67,7 @@ public class SimpleLoadingDialog extends Dialog {
         getWindow().setAttributes(attributes);
         setCancelable(mCancelable);
         TextView tv_loading = findViewById(R.id.tv_loading);
-        ImageView iv_loading = findViewById(R.id.iv_loading);
+        iv_loading = findViewById(R.id.iv_loading);
         tv_loading.setText(mMessage);
         iv_loading.setImageResource(mImageId);
         // 先对imageView进行测量，才能拿到它的宽高（否则getMeasuredWidth为0）
@@ -70,16 +77,6 @@ public class SimpleLoadingDialog extends Dialog {
         mRotateAnimation.setInterpolator(new LinearInterpolator());
         mRotateAnimation.setDuration(1000);
         mRotateAnimation.setRepeatCount(-1);
-        iv_loading.startAnimation(mRotateAnimation);
-    }
-
-    /**
-     * 取消动画,关闭弹窗
-     */
-    @Override
-    public void dismiss() {
-        mRotateAnimation.cancel();
-        super.dismiss();
     }
 
     @Override
