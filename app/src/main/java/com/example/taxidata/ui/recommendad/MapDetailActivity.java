@@ -17,12 +17,13 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.example.taxidata.R;
+import com.example.taxidata.base.BaseActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class MapDetailActivity extends AppCompatActivity {
+public class MapDetailActivity extends BaseActivity {
 
     private static final String TAG = "MapDetailActivity";
     private MapView detailAdMv;

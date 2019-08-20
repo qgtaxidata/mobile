@@ -24,6 +24,7 @@ import com.example.taxidata.adapter.TimeAdapter;
 import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.util.StringUtil;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -246,21 +247,38 @@ public class MyTimerPicker extends FrameLayout {
     private Timer timer;
 
     /**
-     * 定时器处理实时时间
+     * 定时任务
      */
-    private Handler mHandler = new Handler(){
+    private TimerTask timerTask;
+
+    static class WeakHandler extends Handler {
+        WeakReference<MyTimerPicker> tpWeakRef;
+
+        WeakHandler(MyTimerPicker tp) {
+            tpWeakRef = new WeakReference<>(tp);
+        }
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             String time = (String) msg.obj;
-            if (statusBar != null){
-                if (statusBar.getStatus() == 1){
-                    //实时状态下更新时间
-                    calendarTv.setText(time);
+            MyTimerPicker tp = tpWeakRef.get();
+            if (tp != null) {
+                if (tp.statusBar != null) {
+                    if (tp.statusBar.getStatus() == 1) {
+                        if (tp.calendarTv != null) {
+                            tp.calendarTv.setText(time);
+                        }
+                    }
                 }
             }
         }
-    };
+    }
+
+    /**
+     * 定时器处理实时时间
+     */
+    private WeakHandler mHandler;
 
 
     public MyTimerPicker(Context context) {
@@ -270,6 +288,7 @@ public class MyTimerPicker extends FrameLayout {
     public MyTimerPicker(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         View view = LayoutInflater.from(context).inflate(R.layout.view_timer_picker,this);
+        mHandler = new WeakHandler(this);
         //获取时间状态栏实例
         timeLl = view.findViewById(R.id.ll_choose_time);
         //获取时间选择器的实例
@@ -455,7 +474,7 @@ public class MyTimerPicker extends FrameLayout {
         this.statusBar = statusBar;
         //绑定status同时开启定时器
         timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
+        timerTask = new TimerTask() {
             @Override
             public void run() {
                 while (true){
@@ -553,11 +572,21 @@ public class MyTimerPicker extends FrameLayout {
         try {
             selectedTime = format.parse(getTime() + ":00").getTime();
         }catch (Exception e){
-            // TODO 失败处理
             e.printStackTrace();
         }
         //获取app当前时间
         long appNowTime = TaxiApp.getMillionTime();
         return appNowTime <= selectedTime;
+    }
+
+    public void onDestroy() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        if (timerTask != null) {
+            timerTask.cancel();
+            timerTask = null;
+        }
     }
 }

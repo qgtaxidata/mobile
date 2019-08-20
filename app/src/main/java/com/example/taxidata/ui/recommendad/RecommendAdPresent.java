@@ -93,7 +93,7 @@ public class RecommendAdPresent implements RecommendAdContract.RecommendAdPresen
             view.showAdPosition(address.replaceAll("广东省广州市..区",""),position);
             position++;
         }else {
-            StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,"未知错误");
+
         }
     }
 

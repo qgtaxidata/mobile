@@ -26,6 +26,7 @@ import com.amap.api.maps.model.WeightedLatLng;
 import com.example.taxidata.adapter.CustomOnclick;
 import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.application.TaxiApp;
+import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.common.FloatingButtonBuilderManager;
 import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.common.eventbus.BaseEvent;
@@ -42,17 +43,15 @@ import com.example.taxidata.ui.heatpower.HeatPowerContract;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.ui.hotspot.view.HotSpotResearchActivity;
 import com.example.taxidata.ui.passengerpath.view.OriginEndActivity;
+import com.example.taxidata.ui.recommendad.RecommendAdActivity;
 import com.example.taxidata.ui.roadquality.RoadQualityActivity;
 import com.example.taxidata.ui.setup.SetUpActivity;
 import com.example.taxidata.ui.taxidemand.TaxiDemandActivity;
 import com.example.taxidata.util.EventBusUtils;
-import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.MyTimerPicker;
 import com.example.taxidata.widget.StatusBar;
 import com.example.taxidata.widget.StatusToast;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 import com.nightonke.boommenu.BoomButtons.BoomButton;
 import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.OnBoomListener;
@@ -70,9 +69,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class HomePageActivity extends AppCompatActivity implements AMap.OnCameraChangeListener, HeatPowerContract.HeatPowerView {
+public class HomePageActivity extends BaseActivity implements AMap.OnCameraChangeListener, HeatPowerContract.HeatPowerView {
 
     private WeakReference<Activity> weakActivity = new WeakReference<Activity>(this);
 
@@ -186,12 +184,10 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         initDropDownSelectClick();
         //初始化下拉框算法列表
         initAlgorithm();
-
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         homePageMv.onDestroy();
         destroyPresent();
         //解绑EventBus
@@ -199,6 +195,10 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
             EventBusUtils.unregister(this);
         }
         Logger.d("onDestory");
+        if (chooseTimeTp != null) {
+            chooseTimeTp.onDestroy();
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -598,7 +598,7 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
         //退出程序时,显示对话框
         if ((keyCode == KeyEvent.KEYCODE_BACK) || (keyCode == KeyEvent.KEYCODE_HOME)) {
             new QMUIDialog.MessageDialogBuilder(this)
-                    .setTitle("标题")
+                    .setTitle("提示")
                     .setMessage("确认要退出吗？")
                     .addAction("取消", new QMUIDialogAction.ActionListener() {
                         @Override
@@ -666,7 +666,8 @@ public class HomePageActivity extends AppCompatActivity implements AMap.OnCamera
                 Intent intent = null;
                 switch (index ) {
                     case 0:
-                        //广告牌位置推荐
+                        intent = new Intent(HomePageActivity.this, RecommendAdActivity.class);
+                        startActivity(intent);
                         break;
                     case 1:
                         //车辆利用率分析

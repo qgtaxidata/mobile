@@ -4,6 +4,52 @@
     andriod:layout_height="match_parent"
     andriod:layout_width="match_parent">
 
+    <TextView
+        andriod:id="@+id/tv_ad_traffic_flow"
+        andriod:layout_height="wrap_content"
+        andriod:layout_width="wrap_content"
+        andriod:textStyle="normal"
+        andriod:textColor="#4d4d4d"
+        andriod:textSize="10sp"
+        andriod:text="traffic flow"
+        andriod:layout_alignRight="@id/bc_ad_recommend"
+        andriod:layout_marginTop="63dp"
+        andriod:layout_marginRight="20dp"
+        />
+
+    <TextView
+        andriod:id="@+id/tv_ad_revery"
+        andriod:layout_height="wrap_content"
+        andriod:layout_width="wrap_content"
+        andriod:textStyle="normal"
+        andriod:textColor="#4d4d4d"
+        andriod:textSize="10sp"
+        andriod:text="revery"
+        andriod:layout_alignRight="@id/bc_ad_recommend"
+        andriod:layout_below="@id/tv_ad_traffic_flow"
+        andriod:layout_marginTop="5dp"
+        andriod:layout_marginRight="20dp"
+        />
+
+    <View
+        andriod:background="#f7f79c"
+        andriod:layout_toLeftOf="@id/tv_ad_traffic_flow"
+        andriod:layout_width="8dp"
+        andriod:layout_height="8dp"
+        andriod:layout_marginTop="65dp"
+        andriod:layout_marginRight="5dp"
+        />
+
+    <View
+        andriod:background="#6bf3ad"
+        andriod:layout_toLeftOf="@id/tv_ad_revery"
+        andriod:layout_below="@id/tv_ad_traffic_flow"
+        andriod:layout_width="8dp"
+        andriod:layout_height="8dp"
+        andriod:layout_marginTop="8dp"
+        andriod:layout_marginRight="5dp"
+        />
+
     <com.github.mikephil.charting.charts.BarChart
         andriod:id="@+id/bc_ad_recommend"
         andriod:layout_width="370dp"

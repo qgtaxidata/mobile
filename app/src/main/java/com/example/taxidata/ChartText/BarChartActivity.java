@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.example.taxidata.R;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -26,13 +27,18 @@ public class BarChartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_chart);
+
+        Description description = new Description();
+        description.setText("测试");
+
         barChart = findViewById(R.id.bar_chart);
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
-        barChart.getDescription().setEnabled(false);
+        barChart.getDescription().setEnabled(true);
         barChart.setMaxVisibleValueCount(60);
         barChart.setPinchZoom(false);
         barChart.setDrawGridBackground(false);   //是否显示表格颜色
+        barChart.setDescription(description);
 
         //IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(barChart);
 

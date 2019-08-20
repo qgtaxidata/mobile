@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.taxidata.R;
 import com.example.taxidata.adapter.TimeAdapter;
 import com.example.taxidata.application.TaxiApp;
+import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.ui.heatpower.HeatPowerPresent;
 import com.example.taxidata.util.StringUtil;
@@ -28,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SetUpActivity extends AppCompatActivity {
+public class SetUpActivity extends BaseActivity {
 
     private static final String TAG = "SetUpActivity";
 
