@@ -560,6 +560,7 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
         heatpowerAreaDsv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                heatPowerPresent.pause();
                 //取出地区地址
                 String adress = areaList.get(position);
                 //取出地区编号

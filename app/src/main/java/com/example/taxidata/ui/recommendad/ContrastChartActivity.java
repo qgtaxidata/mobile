@@ -15,6 +15,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import org.greenrobot.eventbus.EventBus;
@@ -102,9 +103,11 @@ public class ContrastChartActivity extends BaseActivity {
         rightY.setAxisMinimum(0f);
         rightY.setAxisMaximum(valueY);
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new ContrastFormatter());;
+        String[] str = {"位置1","位置2","位置3","位置4","位置5"};
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(str));
+        xAxis.setLabelCount(5);
 
-        barChart.groupBars(0f,groupSpace,barSpace);
+        barChart.groupBars(0.0f,groupSpace,barSpace);
         barChart.invalidate();
     }
 
@@ -115,14 +118,14 @@ public class ContrastChartActivity extends BaseActivity {
         barChart.setMaxVisibleValueCount(60);
         barChart.setPinchZoom(false);
         barChart.setDrawGridBackground(false);
+        barChart.getLegend().setEnabled(true);
 
         //X轴的设置
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
-        xAxis.setLabelCount(5);
-        xAxis.setAxisMaximum(4f);
+        xAxis.setAxisMaximum(5f);
         xAxis.setAxisMinimum(0f);
         xAxis.setCenterAxisLabels(true);
 
@@ -148,9 +151,9 @@ public class ContrastChartActivity extends BaseActivity {
         legend.setDrawInside(false);
         legend.setForm(Legend.LegendForm.SQUARE);
         legend.setFormSize(9f);
-        legend.setTextSize(20f);
-        legend.setXEntrySpace(4f);
-        legend.setEnabled(false);
+        legend.setTextSize(12f);
+        legend.setXEntrySpace(8f);
+        legend.setEnabled(true);
 
         //设置显示动画
         barChart.animateY(4000);

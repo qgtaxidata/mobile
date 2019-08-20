@@ -42,7 +42,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                 public void onNext(TaxiInfo taxiInfo) {
                     Log.d("TaxiPathPresent",taxiInfo.getMsg());
                     Log.d("TaxiPathPresent",taxiInfo.getCode()+"");
-                    if(taxiInfo.getData() !=null){
+                    if(taxiInfo.getData() !=null&&taxiInfo.getCode()==1){
                         //初始化dialog并弹出
                         view.hideLoadingView();
                         final ChooseTaxiDialog chooseTaxiDialog = new ChooseTaxiDialog(context, R.style.dialog, taxiInfo);
@@ -51,7 +51,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                         ACache aCache = ACache.get(context);
                         aCache.put("taxi_number",taxiInfo);
                     } else {
-                        StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "数据为空！请重试。");
+                        StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, taxiInfo.getMsg());
                     }
                 }
                 @Override
@@ -102,7 +102,6 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                         @Override
                         public void onComplete() {
                             view.hideLoadingView();
-                            view.clearMap();
                         }
                     });
         }
