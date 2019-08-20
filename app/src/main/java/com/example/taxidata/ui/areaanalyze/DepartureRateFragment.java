@@ -22,6 +22,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -94,36 +95,45 @@ public class DepartureRateFragment extends BaseFragment {
         //设置标题
         departureRateTitle.setText(timeUtilizationBean.getType());
         Log.d("show", timeUtilizationBean.getType());
+        //添加x轴数据
         List<String> xList = new ArrayList<>();
-        //添加数据
-        Log.d("size",timeUtilizationBean.getX().size()+"");
-        for (int i = 0 ; i<timeUtilizationBean.getX().size(); i++){
-            xList.add(timeUtilizationBean.getX().get(i));
-        }
+        xList.addAll(timeUtilizationBean.getX().get(0));
+        xList.addAll(timeUtilizationBean.getX().get(1));
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
-        ArrayList<Entry> values = new ArrayList<>();
-        for (int i = 0; i <timeUtilizationBean.getY().size(); i++) {
-            values.add(new Entry(i, timeUtilizationBean.getY().get(i)));
+        //添加分析数据
+        ArrayList<Entry> analyzeValues = new ArrayList<>();
+        for (int i = 0; i <timeUtilizationBean.getY().get(0).size(); i++) {
+            analyzeValues.add(new Entry(i, timeUtilizationBean.getY().get(0).get(i)));
+        }
+        //添加预测数据
+        ArrayList<Entry> forecastValues = new ArrayList<>();
+        for (int i =0 ;timeUtilizationBean.getY().get(0).size()+i <timeUtilizationBean.getY().get(0).size()+timeUtilizationBean.getY().get(1).size(); i++) {
+            forecastValues.add(new Entry(i+timeUtilizationBean.getY().get(0).size(), timeUtilizationBean.getY().get(1).get(i)));
         }
         //每个LineDataSet代表一条线
-        LineDataSet lineDataSet = new LineDataSet(values, "");
-        initLineDataSet(lineDataSet);
-        LineData lineData = new LineData(lineDataSet);
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "出车率分析");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "出车率预测");
+        initLineDataSet(analyzeLineDataSet,"#4472c4");
+        initLineDataSet(forecastLineDataSet, "#ed7d31");
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(analyzeLineDataSet);
+        dataSets.add(forecastLineDataSet);
+        LineData lineData = new LineData(dataSets);
         departureRateLineChart.setData(lineData);
         departureRateLineChart.notifyDataSetChanged();
     }
 
     //初始化折线
-    private void initLineDataSet(LineDataSet lineDataSet) {
+    private void initLineDataSet(LineDataSet lineDataSet, String color) {
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        lineDataSet.setColor(Color.parseColor("#4472c4"));
+        lineDataSet.setColor(Color.parseColor(color));
         lineDataSet.setLineWidth(1f);
-        lineDataSet.setCircleColor(Color.parseColor("#4472c4"));
+        lineDataSet.setCircleColor(Color.parseColor(color));
         lineDataSet.setCircleRadius(1f);
         lineDataSet.setDrawCircles(false);
         lineDataSet.setDrawCircleHole(false);    //设置曲线值的圆点是实心还是空心
         lineDataSet.setValueTextSize(20f);
-        lineDataSet.setValueTextColor(Color.parseColor("#4472c4"));
+        lineDataSet.setValueTextColor(Color.parseColor(color));
         lineDataSet.setDrawFilled(false);
         lineDataSet.setFormLineWidth(1f);
         lineDataSet.setFormSize(15.f);

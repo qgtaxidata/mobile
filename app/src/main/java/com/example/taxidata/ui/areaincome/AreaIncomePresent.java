@@ -44,6 +44,7 @@ public class AreaIncomePresent implements AreaIncomeContract.AreaIncomePresent {
                 e.printStackTrace();
                 Logger.d(e.getMessage());
                 view.hideLoadingView();
+                StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,"异常！请重试。");
             }
 
             @Override

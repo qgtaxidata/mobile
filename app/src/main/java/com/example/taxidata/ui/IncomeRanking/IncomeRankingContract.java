@@ -16,6 +16,8 @@ public interface IncomeRankingContract {
 
     interface IncomeRankingView extends BaseView {
         void showIncomeList(List<IncomeRankingInfo.DataBean> list);
+        void showLoadingView();
+        void hideLoadingView();
     }
 
     interface IncomeRankingModel extends BaseModel {

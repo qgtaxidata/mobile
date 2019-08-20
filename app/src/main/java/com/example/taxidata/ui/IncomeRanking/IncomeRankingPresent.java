@@ -34,6 +34,7 @@ public class IncomeRankingPresent implements IncomeRankingContract.IncomeRanking
                     Logger.d(incomeRankingInfo.getData());
                     view.showIncomeList(incomeRankingInfo.getData());
                 }else {
+                    view.hideLoadingView();
                     StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,incomeRankingInfo.getMsg());
                 }
             }
@@ -42,6 +43,8 @@ public class IncomeRankingPresent implements IncomeRankingContract.IncomeRanking
             public void onError(Throwable e) {
                 e.printStackTrace();
                 Logger.d(e.getMessage());
+                view.hideLoadingView();
+                StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,"异常！请重试。");
             }
 
             @Override
@@ -61,13 +64,21 @@ public class IncomeRankingPresent implements IncomeRankingContract.IncomeRanking
 
             @Override
             public void onNext(DriverConditionInfo driverConditionInfo) {
-                final DriverConditionDialog driverConditionDialog = new DriverConditionDialog(context, R.style.dialog,driverConditionInfo.getData(), rank, driverID, income);
-                driverConditionDialog.show();
+                if(driverConditionInfo.getCode() == 1&&driverConditionInfo.getData()!=null){
+                    final DriverConditionDialog driverConditionDialog = new DriverConditionDialog(context, R.style.dialog,driverConditionInfo.getData(), rank, driverID, income);
+                    driverConditionDialog.show();
+                }else {
+                    view.hideLoadingView();
+                    StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,driverConditionInfo.getMsg());
+                }
+
             }
 
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
+                view.hideLoadingView();
+                StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,"异常！请重试。");
             }
 
             @Override
