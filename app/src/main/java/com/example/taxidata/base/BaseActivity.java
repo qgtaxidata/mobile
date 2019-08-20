@@ -2,18 +2,27 @@ package com.example.taxidata.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.taxidata.application.TaxiApp;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Objects;
 
 public class BaseActivity extends AppCompatActivity {
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     /**
      * 事件分发
@@ -61,8 +70,5 @@ public class BaseActivity extends AppCompatActivity {
             Objects.requireNonNull(im).hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-
-
-
 
 }

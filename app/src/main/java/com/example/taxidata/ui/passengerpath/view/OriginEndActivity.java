@@ -30,6 +30,7 @@ import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.example.taxidata.R;
 import com.example.taxidata.adapter.HistoryAdapter;
+import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.common.MakerFactory;
 import com.example.taxidata.ui.passengerpath.contract.OriginEndShowContract;
 import com.example.taxidata.ui.passengerpath.enity.EndInfo;
@@ -55,7 +56,7 @@ import java.util.concurrent.locks.Lock;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OriginEndActivity extends AppCompatActivity implements OriginEndShowContract.OriginEndShowView, OnItemSwipeListener {
+public class OriginEndActivity extends BaseActivity implements OriginEndShowContract.OriginEndShowView, OnItemSwipeListener {
 
     private OriginEndShowContract.OriginEndShowPresent present;
     private List<String> historyList = new ArrayList<>();
@@ -313,8 +314,6 @@ public class OriginEndActivity extends AppCompatActivity implements OriginEndSho
         nowInputInfo.setEndLat(info.getLat());
         nowInputInfo.setEndLng(info.getLng());
         if (isOriginHaveContent) {
-            //TODO 数据库存储历史记录
-            //TODO 画图
             handleOriginEnd();
         }
     }

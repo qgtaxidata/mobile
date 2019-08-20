@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.taxidata.R;
+import com.example.taxidata.application.TaxiApp;
 
 public class StatusToast {
     public static StatusToast myToast;
@@ -31,7 +32,7 @@ public class StatusToast {
         ImageView imageView = view.findViewById(R.id.imv_toast);
         textView.setText(str);
         imageView.setImageResource(id);
-        toast = new Toast(context);
+        toast = new Toast(TaxiApp.getContext());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(view);

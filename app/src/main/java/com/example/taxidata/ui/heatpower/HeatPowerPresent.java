@@ -127,7 +127,6 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                             Log.d(TAG, "对Complete事件作出响应");
                             //轮询结束，清空热力图，并显示显示热力图的按钮
                             heatPowerView.hideHeatPower();
-                            heatPowerView.showError();
                         }
                     });
         }

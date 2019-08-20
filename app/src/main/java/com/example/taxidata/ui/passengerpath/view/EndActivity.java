@@ -23,6 +23,7 @@ import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.example.taxidata.R;
 import com.example.taxidata.adapter.HistoryAdapter;
+import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.ui.passengerpath.contract.EndContract;
 import com.example.taxidata.ui.passengerpath.enity.EndInfo;
 import com.example.taxidata.ui.passengerpath.present.EndPresent;
@@ -38,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EndActivity extends AppCompatActivity implements EndContract.EndView,Inputtips.InputtipsListener, OnItemSwipeListener {
+public class EndActivity extends BaseActivity implements EndContract.EndView,Inputtips.InputtipsListener, OnItemSwipeListener {
 
     @BindView(R.id.ibtn_end_path_search_back)
     ImageButton backIBtn;

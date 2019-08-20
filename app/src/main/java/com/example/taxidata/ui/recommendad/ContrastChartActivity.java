@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.example.taxidata.R;
+import com.example.taxidata.base.BaseActivity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -23,7 +24,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContrastChartActivity extends AppCompatActivity {
+public class ContrastChartActivity extends BaseActivity {
 
     private BarChart barChart;
 
@@ -33,30 +34,6 @@ public class ContrastChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contrast_chart);
         barChart = findViewById(R.id.bc_ad_recommend);
         initBarChart();
-
-/*        AdInfo.DataBean data1 = new AdInfo.DataBean();
-        data1.setBoardFlow(20);
-        data1.setBoradRate(0.55);
-        AdInfo.DataBean data2 = new AdInfo.DataBean();
-        data2.setBoradRate(0.1);
-        data2.setBoardFlow(40);
-        AdInfo.DataBean data3 = new AdInfo.DataBean();
-        data3.setBoradRate(0.1);
-        data3.setBoardFlow(40);
-        AdInfo.DataBean data4 = new AdInfo.DataBean();
-        data4.setBoradRate(0.1);
-        data4.setBoardFlow(40);
-        AdInfo.DataBean data5 = new AdInfo.DataBean();
-        data5.setBoradRate(0.1);
-        data5.setBoardFlow(40);
-        List<AdInfo.DataBean> dataBeans = new ArrayList<>();
-        dataBeans.add(data1);
-        dataBeans.add(data2);
-        dataBeans.add(data3);
-        dataBeans.add(data4);
-        dataBeans.add(data5);
-        refreshChart(dataBeans);*/
-
         EventBus.getDefault().register(this);
     }
 
@@ -105,9 +82,9 @@ public class ContrastChartActivity extends AppCompatActivity {
             barChart.notifyDataSetChanged();
         } else {
             flowSet = new BarDataSet(boardFlow,"车流量");
-            flowSet.setColor(Color.RED);
+            flowSet.setColor(Color.parseColor("#f7f79c"));
             rateSet = new BarDataSet(boardRate,"抵达率");
-            rateSet.setColor(Color.BLUE);
+            rateSet.setColor(Color.parseColor("#a5e7ff"));
 
             BarData barData = new BarData(flowSet,rateSet);
             barData.setValueTextSize(10f);
@@ -116,10 +93,14 @@ public class ContrastChartActivity extends AppCompatActivity {
             barChart.setData(barData);
         }
 
+        int valueY = max / 10 * 10 + 10;
         //Y轴的设置
         YAxis leftY = barChart.getAxisLeft();
-        leftY.setAxisMaximum(max + 10);
+        leftY.setAxisMaximum(valueY);
         leftY.setAxisMinimum(0f);
+        YAxis rightY = barChart.getAxisRight();
+        rightY.setAxisMinimum(0f);
+        rightY.setAxisMaximum(valueY);
         XAxis xAxis = barChart.getXAxis();
         xAxis.setValueFormatter(new ContrastFormatter());;
 
@@ -128,9 +109,6 @@ public class ContrastChartActivity extends AppCompatActivity {
     }
 
     private void initBarChart() {
-        Description description = new Description();
-        description.setText("对比图表");
-
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
         barChart.getDescription().setEnabled(false);
@@ -150,7 +128,7 @@ public class ContrastChartActivity extends AppCompatActivity {
 
         //Y轴的设置
         YAxis leftY = barChart.getAxisLeft();
-        leftY.setLabelCount(8, false);
+        leftY.setLabelCount(10, false);
         leftY.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         leftY.setSpaceTop(15f);
         leftY.setAxisMaximum(20f);
@@ -159,7 +137,7 @@ public class ContrastChartActivity extends AppCompatActivity {
         rightY.setAxisMinimum(0f);
         rightY.setAxisMaximum(1f);
         rightY.setDrawGridLines(false);
-        rightY.setLabelCount(5, false);
+        rightY.setLabelCount(10, false);
         rightY.setSpaceTop(15f);
 
         //设置y的value

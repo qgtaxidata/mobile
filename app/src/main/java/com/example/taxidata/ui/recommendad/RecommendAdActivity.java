@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.taxidata.R;
+import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
@@ -26,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RecommendAdActivity extends AppCompatActivity implements RecommendAdContract.RecommendAdView {
+public class RecommendAdActivity extends BaseActivity implements RecommendAdContract.RecommendAdView {
 
     @BindView(R.id.dsv_ad_day_style)
     DropDownSelectView adDayStyleDsv;

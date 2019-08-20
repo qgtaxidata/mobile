@@ -24,6 +24,7 @@ import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.example.taxidata.R;
 import com.example.taxidata.adapter.HistoryAdapter;
+import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.ui.passengerpath.contract.OriginContract;
 import com.example.taxidata.ui.passengerpath.enity.OriginInfo;
 import com.example.taxidata.ui.passengerpath.present.OriginPresent;
@@ -38,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OriginActivity extends AppCompatActivity implements OriginContract.OriginView,Inputtips.InputtipsListener, OnItemSwipeListener {
+public class OriginActivity extends BaseActivity implements OriginContract.OriginView,Inputtips.InputtipsListener, OnItemSwipeListener {
 
     @BindView(R.id.ibtn_origin_path_search_back)
     ImageButton backIbtn;
