@@ -45,9 +45,9 @@ public class ChooseTaxiDialog extends Dialog {
         super(context);
     }
 
-    public ChooseTaxiDialog(@NonNull Context context, int themeResId, List<TaxiInfo.DataBean> taxiList) {
+    public ChooseTaxiDialog(@NonNull Context context, int themeResId,TaxiInfo taxiInfo) {
         super(context, themeResId);
-        taxiInfoList.addAll(taxiList);
+        taxiInfoList.addAll(taxiInfo.getData());
     }
 
     @Override

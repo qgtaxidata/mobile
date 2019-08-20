@@ -24,6 +24,8 @@ import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.bean.TaxiPathInfo;
 import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.constant.Area;
+import com.example.taxidata.util.ACache;
+import com.example.taxidata.widget.ChooseTaxiDialog;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.example.taxidata.widget.StrongStengthTimerPicker;
@@ -76,6 +78,8 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     private int flag = 1;   //实时为1，历史为2
     private List<TaxiInfo.DataBean> taxiList = new ArrayList<>();
     ArrayList<String> areaList = new ArrayList<>();
+    private int selectedArea = 5;
+    private String selectedTime = null;
 
 
     @Override
@@ -205,7 +209,16 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
                     taxiPathPresent.getTaxiInfo(this, areaId, taxiPathTimePicker.getTime());
                 }else {
                     //历史
-                    taxiPathPresent.getTaxiInfo(this, areaId, taxiPathTimePicker.getHistoryTime());
+                    if(selectedTime!=null&& selectedTime.equals(taxiPathTimePicker.getHistoryTime()) && selectedArea==areaId ){
+                        //未改变选择的时间和区域则不发送请求
+                        ACache aCache = ACache.get(this);
+                        final ChooseTaxiDialog chooseTaxiDialog = new ChooseTaxiDialog(this, R.style.dialog, (TaxiInfo)aCache.getAsObject("taxi_number"));
+                        chooseTaxiDialog.show();
+                    }else {
+                        taxiPathPresent.getTaxiInfo(this, areaId, taxiPathTimePicker.getHistoryTime());
+                        selectedTime = taxiPathTimePicker.getHistoryTime();
+                        selectedArea = areaId;
+                    }
                 }
                 break;
             case R.id.taxi_path_history_tv:
