@@ -20,6 +20,7 @@ public class TaxiDemandPresent implements TaxiDemandContract.TaxiDemandPresent {
 
     @Override
     public void getTaxiDemandInfo(Context context, int areaId, String time) {
+        view.showLoadingView();
         if(model!=null) {
             model.getTaxiDemandInfo(areaId, time).subscribe(new Observer<TaxiDemandInfo>() {
                 @Override
@@ -33,6 +34,7 @@ public class TaxiDemandPresent implements TaxiDemandContract.TaxiDemandPresent {
                     if(taxiDemandInfo.getCode()== 1&& taxiDemandInfo.getData() != null){
                         view.showChart(taxiDemandInfo.getData());
                     }else {
+                        view.hideLoadingView();
                         StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,taxiDemandInfo.getMsg());
                     }
                 }
@@ -42,11 +44,12 @@ public class TaxiDemandPresent implements TaxiDemandContract.TaxiDemandPresent {
                     Log.d("error", time);
                     e.printStackTrace();
                     Logger.d(e.getMessage());
+                    view.hideLoadingView();
                 }
 
                 @Override
                 public void onComplete() {
-
+                    view.hideLoadingView();
                 }
             });
         }

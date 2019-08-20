@@ -3,11 +3,11 @@ package com.example.taxidata.ui.TaxiPath;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
-
 import com.example.taxidata.R;
 import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.bean.TaxiPathInfo;
+import com.example.taxidata.util.ACache;
 import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.ChooseTaxiDialog;
 import com.example.taxidata.widget.StatusToast;
@@ -44,8 +44,11 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                     Log.d("TaxiPathPresent",taxiInfo.getCode()+"");
                     if(taxiInfo.getData() !=null){
                         //初始化dialog并弹出
-                        final ChooseTaxiDialog chooseTaxiDialog = new ChooseTaxiDialog(context, R.style.dialog, taxiInfo.getData());
+                        final ChooseTaxiDialog chooseTaxiDialog = new ChooseTaxiDialog(context, R.style.dialog, taxiInfo);
                         chooseTaxiDialog.show();
+                        //储存返回的车牌号数据
+                        ACache aCache = ACache.get(context);
+                        aCache.put("taxi_number",taxiInfo);
                     } else {
                         StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "数据为空！请重试。");
                     }

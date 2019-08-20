@@ -15,6 +15,8 @@ public interface TaxiDemandContract {
 
     interface TaxiDemandView extends BaseView{
         void showChart(TaxiDemandInfo.DataBean  dataBeans);
+        void showLoadingView();
+        void hideLoadingView();
     }
 
     interface TaxiDemandModel extends BaseModel{

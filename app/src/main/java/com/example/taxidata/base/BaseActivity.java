@@ -19,13 +19,9 @@ import java.util.Objects;
 
 public class BaseActivity extends AppCompatActivity {
 
-    RefWatcher refWatcher;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        refWatcher = TaxiApp.getRefWatcher(this);
-        refWatcher.watch(this);
     }
 
     /**

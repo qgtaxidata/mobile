@@ -40,7 +40,7 @@ public class TaxiInfo implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * longitude : null
          * latitude : null

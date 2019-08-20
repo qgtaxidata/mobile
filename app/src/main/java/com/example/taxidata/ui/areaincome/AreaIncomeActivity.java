@@ -13,6 +13,7 @@ import com.example.taxidata.bean.AreaIncomeInfo;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.DropDownSelectView;
+import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -56,6 +57,7 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
     LineChart areaIncomeLineChart;
 
     private AreaIncomeContract.AreaIncomePresent present;
+    private SimpleLoadingDialog loading;
     ArrayList<String> areaList = new ArrayList<>();
     ArrayList<String> timeList = new ArrayList<>();
     private int areaId = 5;
@@ -218,5 +220,20 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         lineDataSet.setDrawFilled(false);
         lineDataSet.setFormLineWidth(1f);
         lineDataSet.setFormSize(15.f);
+    }
+
+    //加载loading界面
+    @Override
+    public void showLoadingView() {
+        //初始化loading界面
+        loading = new SimpleLoadingDialog(this,"图表正在绘制中！",R.drawable.dialog_image_loading);
+        loading.show();
+    }
+    //取消loading界面
+    @Override
+    public void hideLoadingView() {
+        if(loading!=null){
+            loading.dismiss();
+        }
     }
 }

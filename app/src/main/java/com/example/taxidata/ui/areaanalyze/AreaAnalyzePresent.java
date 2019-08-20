@@ -17,6 +17,7 @@ public class AreaAnalyzePresent implements AreaAnalyzeContract.AreaAnalyzePresen
 
     @Override
     public void getAreaAnalyzeInfo(Context context, int area, String date) {
+        view.showLoadingView();
         model.getAreaAnalyzeInfo(area, date).subscribe(new Observer<AreaAnalyzeInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -35,11 +36,12 @@ public class AreaAnalyzePresent implements AreaAnalyzeContract.AreaAnalyzePresen
             public void onError(Throwable e) {
                 e.printStackTrace();
                 Logger.d(e.getMessage());
+                view.hideLoadingView();
             }
 
             @Override
             public void onComplete() {
-
+                view.hideLoadingView();
             }
         });
     }

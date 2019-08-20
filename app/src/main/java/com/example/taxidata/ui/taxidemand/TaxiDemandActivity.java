@@ -16,6 +16,7 @@ import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.bean.TaxiDemandInfo;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.widget.DropDownSelectView;
+import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -59,7 +60,7 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
     LineChart taxiDemandAnalyzeLineChart;
 
     private TaxiDemandContract.TaxiDemandPresent present;
-    private TaxiDemandInfo.DataBean dataBean;
+    private SimpleLoadingDialog loading;
     ArrayList<String> areaList = new ArrayList<>();
     private int areaId = 5;
     private String currentTime;
@@ -195,5 +196,20 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
         lineDataSet.setDrawFilled(false);
         lineDataSet.setFormLineWidth(1f);
         lineDataSet.setFormSize(15.f);
+    }
+
+    //加载loading界面
+    @Override
+    public void showLoadingView() {
+        //初始化loading界面
+        loading = new SimpleLoadingDialog(this,"图表正在绘制中！",R.drawable.dialog_image_loading);
+        loading.show();
+    }
+    //取消loading界面
+    @Override
+    public void hideLoadingView() {
+        if(loading!=null){
+            loading.dismiss();
+        }
     }
 }
