@@ -186,13 +186,13 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
     //初始化折线
     private void initLineDataSet(LineDataSet lineDataSet) {
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        lineDataSet.setColor(Color.parseColor("#51b46d"));
+        lineDataSet.setColor(Color.parseColor("#4472c4"));
         lineDataSet.setLineWidth(1f);
-        lineDataSet.setCircleColor(Color.parseColor("#51b46d"));
+        lineDataSet.setCircleColor(Color.parseColor("#4472c4"));
         lineDataSet.setCircleRadius(1f);
         lineDataSet.setDrawCircleHole(false);    //设置曲线值的圆点是实心还是空心
         lineDataSet.setValueTextSize(20f);
-        lineDataSet.setValueTextColor(Color.parseColor("#51b46d"));
+        lineDataSet.setValueTextColor(Color.parseColor("#4472c4"));
         lineDataSet.setDrawFilled(false);
         lineDataSet.setFormLineWidth(1f);
         lineDataSet.setFormSize(15.f);
