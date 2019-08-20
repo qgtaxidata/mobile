@@ -271,7 +271,7 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     @Override
     public void hideLoadingView() {
         if(loading!=null){
-            loading.cancel();
+            loading.dismiss();
         }
     }
 
