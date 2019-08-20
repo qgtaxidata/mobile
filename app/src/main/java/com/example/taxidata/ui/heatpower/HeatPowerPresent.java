@@ -9,6 +9,7 @@ import com.example.taxidata.R;
 import com.example.taxidata.application.TaxiApp;
 import com.example.taxidata.bean.HeatPointInfo;
 import com.example.taxidata.common.SharedPreferencesManager;
+import com.example.taxidata.net.RepeatTask;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.StatusBar;
 import com.example.taxidata.widget.StatusToast;
@@ -28,6 +29,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     private HeatPowerContract.HeatPowerView heatPowerView;
     private static final String TAG = "HeatPowerPresent";
     private static final int DEFAULT_POLLING_TIME = 3;
+    private RepeatTask task;
     /**
      * 轮询间隔时间
      */
@@ -37,7 +39,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     /**
      * 是否暂停轮询，默认为false，即不暂停轮询
      */
-    private boolean isPaused = false;
+    private volatile boolean isPaused = false;
 
     public HeatPowerPresent(StatusBar statusBar,Button hideButton){
         heatPowerModel = new HeatPowerModel();
@@ -47,89 +49,32 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
 
     @Override
     public void showRealTimeHeatPower(int area) {
-        if (heatPowerModel != null){
-            //不暂停轮询
-            isPaused = false;
-            //每3秒轮询一次
-            heatPowerView.showHideButton();
-            Observable.interval(pollingTime,TimeUnit.SECONDS)
-                    .doOnNext(new Consumer<Long>() {
-                        @Override
-                        public void accept(Long aLong)throws Exception{
-                            //TaxiApp.getAppNowTime()获得当前时间
-                            Log.d(TAG,"appNowTime" + TaxiApp.getAppNowTime());
-                            heatPowerModel.requestHeatPoint(area, TaxiApp.getAppNowTime())
-                                    .subscribe(new Observer<HeatPointInfo>() {
-                                        @Override
-                                        public void onSubscribe(Disposable d) {
+        task = new RepeatTask(new RepeatTask.RepeatCallBackListener() {
+            @Override
+            public void onUpData(HeatPointInfo info) {
+                if (info.getCode() == 1){
+                    List<WeightedLatLng> weightedLatLngs = getWeightedLatLng(info);
+                    heatPowerView.showHeatPower(weightedLatLngs);
+                } else {
+                    //显示错误信息
+                    String errorMessage = info.getMsg();
+                    ToastUtil.showShortToastBottom(errorMessage);
+                }
+            }
 
-                                        }
+            @Override
+            public void onFail(Exception e) {
+                e.printStackTrace();
+                heatPowerView.hideHeatPower();
+            }
 
-                                        @Override
-                                        public void onNext(HeatPointInfo heatPointInfo) {
-                                            if (heatPointInfo.getCode() == 1){
-                                                List<WeightedLatLng> weightedLatLngs = getWeightedLatLng(heatPointInfo);
-                                                heatPowerView.showHeatPower(weightedLatLngs);
-                                            } else {
-                                                //显示错误信息
-                                                String errorMessage = heatPointInfo.getMsg();
-                                                ToastUtil.showShortToastBottom(errorMessage);
-                                                //暂停轮询
-                                                pause();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onError(Throwable e) {
-                                            Log.d(TAG,"异常:" + e.getMessage());
-                                            e.printStackTrace();
-                                            //轮询结束，清空热力图，并显示显示热力图的按钮
-                                            heatPowerView.hideHeatPower();
-                                            //停止轮询
-                                            pause();
-                                        }
-
-                                        @Override
-                                        public void onComplete() {
-                                            Log.d(TAG,"onComplete");
-                                            //已暂停，清空热力图
-                                            if (isPaused){
-                                                //轮询结束，清空热力图，并显示显示热力图的按钮
-                                                heatPowerView.hideHeatPower();
-                                            }
-                                        }
-                                    });
-                        }
-                    })
-                    .takeUntil(stopPredicat -> isPaused)
-                    .subscribe(new Observer<Long>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onNext(Long aLong) {
-                            Log.d(TAG,"第" + aLong + "轮询");
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.d(TAG, "对Error事件作出响应");
-                            e.printStackTrace();
-                            //出现异常，清空热力图，并显示显示热力图按钮
-                            heatPowerView.hideHeatPower();
-                            heatPowerView.showError();
-                        }
-
-                        @Override
-                        public void onComplete() {
-                            Log.d(TAG, "对Complete事件作出响应");
-                            //轮询结束，清空热力图，并显示显示热力图的按钮
-                            heatPowerView.hideHeatPower();
-                        }
-                    });
-        }
+            @Override
+            public void onFinsh() {
+                heatPowerView.hideHeatPower();
+            }
+        });
+        //开启轮询
+        task.execute(area);
     }
 
     @Override
@@ -228,7 +173,9 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
      */
     @Override
     public void pause(){
-        isPaused = true;
+        if (task != null) {
+            task.pause();
+        }
     }
 
     private List<WeightedLatLng> getWeightedLatLng(HeatPointInfo heatPointInfo){
