@@ -15,8 +15,10 @@ import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.DropDownSelectView;
+import com.example.taxidata.widget.SimpleLoadingDialog;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,7 @@ public class RoadQualityActivity extends BaseActivity implements RoadQualityCont
     ViewPager roadQualityVp;
 
     private RoadQualityContract.RoadQualityPresent present;
+    private SimpleLoadingDialog loading;
     private List<Fragment> roadQualityList = new ArrayList<>();
     ArrayList<String> areaList = new ArrayList<>();
     ArrayList<String> timeList = new ArrayList<>();
@@ -121,18 +124,18 @@ public class RoadQualityActivity extends BaseActivity implements RoadQualityCont
     }
 
     private void initTimeList(){
-        timeList.add("2007年02月04日");
-        timeList.add("2007年02月05日");
-        timeList.add("2007年02月06日");
-        timeList.add("2007年02月07日");
-        timeList.add("2007年02月08日");
-        timeList.add("2007年02月09日");
-        timeList.add("2007年02月10日");
-        timeList.add("2007年02月11日");
-        timeList.add("2007年02月12日");
-        timeList.add("2007年02月13日");
-        timeList.add("2007年02月14日");
-        timeList.add("2007年02月15日");
+        timeList.add("2017年02月04日");
+        timeList.add("2017年02月05日");
+        timeList.add("2017年02月06日");
+        timeList.add("2017年02月07日");
+        timeList.add("2017年02月08日");
+        timeList.add("2017年02月09日");
+        timeList.add("2017年02月10日");
+        timeList.add("2017年02月11日");
+        timeList.add("2017年02月12日");
+        timeList.add("2017年02月13日");
+        timeList.add("2017年02月14日");
+        timeList.add("2017年02月15日");
         roadQualityTimeSelectView.setItemsData(timeList, 2);
     }
 
@@ -140,5 +143,19 @@ public class RoadQualityActivity extends BaseActivity implements RoadQualityCont
     protected void onDestroy() {
         super.onDestroy();
         present.detachView();
+    }
+    //加载loading界面
+    @Override
+    public void showLoadingView() {
+        //初始化loading界面
+        loading = new SimpleLoadingDialog(this,"图表正在绘制中！",R.drawable.dialog_image_loading);
+        loading.show();
+    }
+    //取消loading界面
+    @Override
+    public void hideLoadingView() {
+        if(loading!=null){
+            loading.dismiss();
+        }
     }
 }

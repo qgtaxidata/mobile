@@ -96,8 +96,6 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         //将时间选择器设置为不可点击且开始计时（实时状态）
         taxiPathTimePicker.startTimer();
         taxiPathTimePicker.setTimeStatusBarClick(null);
-        //初始化loading界面
-        loading = new SimpleLoadingDialog(this,"路径正在绘制中！",R.drawable.dialog_image_loading);
         //初始化区域选择框
         initAreaList();
         //得到地图实例
@@ -283,10 +281,9 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     //加载loading界面
     @Override
     public void showLoadingView() {
-        if(loading!=null) {
-            Log.d(TAG, "loading");
-            loading.show();
-        }
+        //初始化loading界面
+        loading = new SimpleLoadingDialog(this,"路径正在绘制中！",R.drawable.dialog_image_loading);
+        loading.show();
     }
     //取消loading界面
     @Override

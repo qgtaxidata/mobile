@@ -46,7 +46,7 @@ public class TaxiPathModel implements TaxiPathContract.TaxiPathModel {
         getTaxiPathInfo.setLicenseplateno(licenseplateno);
         String json = GsonUtil.GsonString(getTaxiPathInfo);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),json);
-        return PathRetrofitManager.getInstance()
+        return RetrofitManager.getInstance()
                 .getHttpService()
                 .getCurrentTaxiPathInfo(body)
                 .subscribeOn(Schedulers.io())

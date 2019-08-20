@@ -13,6 +13,8 @@ public interface AreaAnalyzeContract {
 
     interface AreaAnalyzeView extends BaseView {
         void sendData(AreaAnalyzeInfo.DataBean dataBean);
+        void showLoadingView();
+        void hideLoadingView();
     }
 
     interface AreaAnalyzeModel extends BaseModel {

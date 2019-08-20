@@ -14,6 +14,8 @@ import io.reactivex.Observable;
 public interface RoadQualityContract {
 
     interface RoadQualityView extends BaseView {
+        void showLoadingView();
+        void hideLoadingView();
     }
 
     interface RoadQualityModel extends BaseModel {

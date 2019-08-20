@@ -17,6 +17,7 @@ import com.example.taxidata.bean.AreaAnalyzeInfo;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.DropDownSelectView;
+import com.example.taxidata.widget.SimpleLoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Logger;
@@ -54,6 +55,7 @@ public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeCont
     Button areaAnalyzeBtnRefreshList;
 
     private AreaAnalyzeContract.AreaAnalyzePresent present;
+    private SimpleLoadingDialog loading;
     private List<Fragment> areaAnalyzeList = new ArrayList<>();
     ArrayList<String> areaList = new ArrayList<>();
     ArrayList<String> timeList = new ArrayList<>();
@@ -157,5 +159,20 @@ public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeCont
     protected void onDestroy() {
         super.onDestroy();
         present.detachView();
+    }
+
+    //加载loading界面
+    @Override
+    public void showLoadingView() {
+        //初始化loading界面
+        loading = new SimpleLoadingDialog(this,"图表正在绘制中！",R.drawable.dialog_image_loading);
+        loading.show();
+    }
+    //取消loading界面
+    @Override
+    public void hideLoadingView() {
+        if(loading!=null){
+            loading.dismiss();
+        }
     }
 }

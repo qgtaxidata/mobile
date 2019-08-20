@@ -17,6 +17,8 @@ import io.reactivex.Observable;
 public interface AreaIncomeContract {
     interface AreaIncomeView extends BaseView {
         void showChart(AreaIncomeInfo.DataBean dataBean);
+        void showLoadingView();
+        void hideLoadingView();
     }
 
     interface AreaIncomeModel extends BaseModel {

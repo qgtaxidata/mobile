@@ -22,11 +22,11 @@ public class PathRetrofitManager {
     private static PathRetrofitManager pathRetrofitManager;
     private Retrofit retrofit;
     private HttpService service;
-    public final static HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
 
     private PathRetrofitManager(){
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .cookieJar(new CookieJar() {
+                    public  HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
                     @Override
                     public void saveFromResponse(@NotNull HttpUrl httpUrl, @NotNull List<Cookie> list) {
                         cookieStore.put(httpUrl.host(),list);

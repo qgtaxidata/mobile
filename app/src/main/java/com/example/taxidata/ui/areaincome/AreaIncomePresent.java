@@ -19,6 +19,7 @@ public class AreaIncomePresent implements AreaIncomeContract.AreaIncomePresent {
 
     @Override
     public void getAreaIncomeInfo(Context context, int area, String date) {
+        view.showLoadingView();
         Log.d("P",date);
         model.getAreaIncomeInfo(area, date).subscribe(new Observer<AreaIncomeInfo>() {
             @Override
@@ -32,6 +33,7 @@ public class AreaIncomePresent implements AreaIncomeContract.AreaIncomePresent {
                 if(areaIncomeInfo.getCode()== 1){
                     view.showChart(areaIncomeInfo.getData());
                 }else {
+                    view.hideLoadingView();
                     StatusToast.getMyToast().ToastShow(TaxiApp.getContext(),null, R.mipmap.ic_sad,areaIncomeInfo.getMsg());
                 }
             }
@@ -41,11 +43,12 @@ public class AreaIncomePresent implements AreaIncomeContract.AreaIncomePresent {
                 Log.d("error",date);
                 e.printStackTrace();
                 Logger.d(e.getMessage());
+                view.hideLoadingView();
             }
 
             @Override
             public void onComplete() {
-
+                view.hideLoadingView();
             }
         });
     }
