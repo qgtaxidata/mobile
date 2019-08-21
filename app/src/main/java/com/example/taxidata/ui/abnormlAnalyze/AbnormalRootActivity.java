@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.taxidata.R;
+import com.example.taxidata.widget.DisableScrollViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class AbnormalRootActivity extends AppCompatActivity {
     @BindView(R.id.tl_abnormal)
     TabLayout tlAbnormal;
     @BindView(R.id.vp_abnormal)
-    ViewPager vpAbnormal;
+    DisableScrollViewPager vpAbnormal;
     List<Fragment> fragmentList;
     VpAdapter vpAdapter;
     @Override
@@ -46,7 +47,7 @@ public class AbnormalRootActivity extends AppCompatActivity {
         vpAdapter = new VpAdapter(getSupportFragmentManager() ,fragmentList);
         vpAbnormal.setAdapter(vpAdapter);
         tlAbnormal.setupWithViewPager(vpAbnormal);
-        //手动添加标题 ,必须在setupwidthViewPager之后,否则不行
+        //手动添加Tab标题 ,必须在setupwidthViewPager之后,否则不行
         if(tlAbnormal != null) {
             tlAbnormal.getTabAt(0).setText("异常分析");
             tlAbnormal.getTabAt(1).setText("异常分布");

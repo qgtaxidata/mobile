@@ -12,9 +12,13 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.orhanobut.logger.Logger;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +59,6 @@ public class LineChartUtil {
         dataSet.setHighlightEnabled(true);
         dataSet.setValueTextColor(R.color.black_color); //数值显示的颜色
         dataSet.setValueTextSize(10f);     //数值显示的大小
-
         List<ILineDataSet> lineDataSets = new ArrayList<>();
         lineDataSets.add(dataSet);
         //构建一个LineData  将dataSets放入
@@ -106,7 +109,26 @@ public class LineChartUtil {
         dataSet2.setHighlightEnabled(true);
         dataSet2.setValueTextColor(R.color.black_color);
         dataSet2.setValueTextSize(11f);
-
+        dataSet1.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                Logger.d("value 值" + value);
+                float f = value;
+                BigDecimal b = new BigDecimal(f);
+                float f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+                return String.valueOf(f1).concat("%");
+            }
+        });
+        dataSet2.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                Logger.d("value 值" + value);
+                float f = value;
+                BigDecimal b = new BigDecimal(f);
+                float f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+                return String.valueOf(f1).concat("%");
+            }
+        });
         //构建一个类型为LineDataSet的ArrayList 用来存放所有 y的LineDataSet   他是构建最终加入LineChart数据集所需要的参数
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
@@ -163,7 +185,7 @@ public class LineChartUtil {
         axisLeft.setAxisMinimum(0f);
         axisLeft.setLabelCount(10 ,false);
         axisLeft.setTextColor(Color.GRAY); //字体颜色
-        axisLeft.setTextSize(10f); //字体大小
+        axisLeft.setTextSize(15f); //字体大小
         axisLeft.setGridColor(Color.GRAY); //网格线颜色
 
         axisRight.setDrawAxisLine(false);

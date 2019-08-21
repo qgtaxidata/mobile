@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.orhanobut.logger.Logger;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -61,8 +62,6 @@ public class AbnormalDistributionFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         initViews();
-
-        Logger.d("onStart  碎片2");
     }
 
     public void initViews() {
@@ -98,9 +97,9 @@ public class AbnormalDistributionFragment extends BaseFragment {
             abnormalData[i] = carsBeanInfo.getAbnormal().get(index).getDistribution().get(i) * 100;
         }
         //设置折线的名称
-        LineChartUtil.setLineNameOne("正常车");
-        LineChartUtil.setLineNameTwo("异常车");
-        //创建一条折线的图表
+        LineChartUtil.setLineNameOne("正常车(单位:%)");
+        LineChartUtil.setLineNameTwo("异常车(单位:%)");
+        //创建两条折线的图表(一条正常 ，一条异常)
         LineData lineData = LineChartUtil.initDoubleLineChart(getContext() ,chartSummary ,numX ,datasNormal,abnormalData);
         LineChartUtil.initDataStyle(chartSummary ,lineData ,getContext());
     }
@@ -120,7 +119,9 @@ public class AbnormalDistributionFragment extends BaseFragment {
             //正常车的数据初始化
             datasNormal = new float[carsBeanInfo.getNormal_distribution().size()] ;
             for(int i = 0 ; i < carsBeanInfo.getNormal_distribution().size() ; i++) {
-                datasNormal[i] = carsBeanInfo.getNormal_distribution().get(i) * 100;
+
+                float f = carsBeanInfo.getNormal_distribution().get(i) * 100;
+                datasNormal[i] =  f;
             }
             //车牌列表初始化
             for (int j = 0 ; j < carsBeanInfo.getAbnormal().size() ; j++) {
