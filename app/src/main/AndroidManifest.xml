@@ -56,7 +56,8 @@
             android:launchMode="standard">
         </activity>
         <activity android:name=".ui.TaxiPath.TaxiPathActivity" />
-        <activity android:name=".ChartText.BarChartActivity" >
+
+        <activity android:name=".ui.abnormlAnalyze.AbnormalRootActivity">
         </activity>
         <meta-data
             android:name="com.amap.api.v2.apikey"
