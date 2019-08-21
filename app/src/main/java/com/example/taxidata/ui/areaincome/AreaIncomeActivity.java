@@ -154,10 +154,10 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         areaIncomeLineChart.setDragEnabled(true);  //禁止缩放
         areaIncomeLineChart.setScaleEnabled(true);  //禁止推动
         areaIncomeLineChart.setDrawBorders(false);    //设置四周是否有边框
-        areaIncomeLineChart.setBackgroundColor(Color.WHITE);
+        areaIncomeLineChart.setBackgroundColor(Color.parseColor("#e5e5e5"));
         areaIncomeLineChart.getAxisRight().setEnabled(false);   //不显示右侧y轴
         areaIncomeLineChart.getDescription().setEnabled(false);
-        areaIncomeLineChart.getLegend().setEnabled(false);   //不显示图例
+        //areaIncomeLineChart.getLegend().setEnabled(false);   //不显示图例
         //x轴的相关设置
         xAxis = areaIncomeLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置

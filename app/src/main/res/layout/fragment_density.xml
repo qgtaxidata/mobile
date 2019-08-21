@@ -3,16 +3,25 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_departure_rate">
+    android:background="@drawable/bg_passager_frequency">
 
     <TextView
+        android:id="@+id/density_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
         android:layout_gravity="center"
-        android:text="拥挤度"
-        android:textSize="24sp"
+        android:text="车辆密度"
+        android:textSize="18sp"
         android:textColor="@color/black_color"
         android:textStyle="normal"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/density_line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/search_out_bg" />
 
 </LinearLayout>

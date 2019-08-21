@@ -9,23 +9,24 @@
 
     <ImageView
         android:id="@+id/iv_search_back"
-        android:layout_width="wrap_content"
+        android:layout_width="12dp"
         android:layout_height="wrap_content"
         android:src="@mipmap/ui_hotspot_search_return"
-        android:layout_marginStart="@dimen/dp_15"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"/>
 
     <LinearLayout
-        android:layout_width="310dp"
-        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
         android:background="@drawable/shape_layout__radius_search"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
-        android:layout_marginStart="25dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="15dp">
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center">
@@ -52,13 +53,15 @@
                     android:marqueeRepeatLimit="marquee_forever"
                     android:background="@null"
                     android:layout_marginStart="10dp"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:text="点击此处设置您的起点"/>
             </LinearLayout>
 
             <View
-                android:layout_width="220dp"
+                android:layout_width="match_parent"
                 android:layout_height="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center_horizontal"
@@ -84,7 +87,7 @@
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:layout_marginStart="10dp"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:hint="点击此处设置您的终点"/>
             </LinearLayout>
 

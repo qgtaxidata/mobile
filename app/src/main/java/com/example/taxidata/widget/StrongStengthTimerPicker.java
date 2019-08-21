@@ -27,6 +27,7 @@ import com.example.taxidata.util.StringUtil;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -357,12 +358,10 @@ public class StrongStengthTimerPicker extends FrameLayout {
         configTv.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
-                if(isHistory()){
                     //为标题栏设置时间
-                    setTimeStausTime(getChineseTime());
+                    setTimeStatusTime(getChineseTime());
                     //隐藏具体时间选择器
                     hideDetailTimerPicker();
-                }
             }
         });
         cancelTv.setOnClickListener(new OnMultiClickListener() {
@@ -386,7 +385,7 @@ public class StrongStengthTimerPicker extends FrameLayout {
      * 设置时间状态栏内的时间
      * @param time
      */
-    private void setTimeStausTime(String time){
+    private void setTimeStatusTime(String time){
         calendarTv.setText(time);
     }
 
@@ -427,13 +426,18 @@ public class StrongStengthTimerPicker extends FrameLayout {
     }
 
     public boolean isHistory(){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
-        long selected = 0;
+        //设置时间格式
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long selectedTime=0;
         try {
-            selected = format.parse(getTime()+":00").getTime();
-        } catch (ParseException e) {
+            selectedTime = format.parse(getHistoryTime()).getTime();
+            Log.d("wx","try"+selectedTime);
+        }catch (Exception e){
             e.printStackTrace();
         }
-        return TaxiApp.getMillionTime()>=selected;
+        //获取app当前时间
+        long appNowTime = TaxiApp.getMillionTime();
+        return appNowTime >= selectedTime;
     }
+
 }
