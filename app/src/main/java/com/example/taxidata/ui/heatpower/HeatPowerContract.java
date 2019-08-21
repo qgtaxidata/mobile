@@ -73,6 +73,12 @@ public interface HeatPowerContract {
          * 暂停轮询
          */
         void pause();
+
+        /**
+         * 获得线程队列的长度
+         * @return int
+         */
+        int getTaskQueue();
     }
 
     interface HeatPowerModel extends BaseModel{

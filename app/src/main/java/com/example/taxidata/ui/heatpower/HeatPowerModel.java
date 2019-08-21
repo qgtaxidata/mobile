@@ -17,7 +17,7 @@ public class HeatPowerModel implements HeatPowerContract.HeatPowerModel {
         Log.d("HeatPowerModel",time);
         return RetrofitManager.getInstance()
                 .getHttpService()
-                .getHeatPoint(area,time)
+                .getObservableHeatPoint(area,time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

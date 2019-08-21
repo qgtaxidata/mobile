@@ -37,6 +37,7 @@ import com.example.taxidata.constant.MyCharacter;
 import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.ui.IncomeRanking.IncomeRankingActivity;
 import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
+import com.example.taxidata.ui.abnormlAnalyze.AbnormalRootActivity;
 import com.example.taxidata.ui.areaanalyze.AreaAnalyzeActivity;
 import com.example.taxidata.ui.areaincome.AreaIncomeActivity;
 import com.example.taxidata.ui.heatpower.HeatPowerContract;
@@ -91,7 +92,7 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
     /**
      * 缩放比例
      */
-    private static final int ZOOM = 14;
+    private static final int ZOOM = 11;
 
     private static final int CONST_INDEX_HEAT_POWER = 4;
 
@@ -317,7 +318,9 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
     @Override
     public void hideHeatPower() {
         clearMap();
-        showHideHeatPowerBtn.setText("显示");
+        if (heatPowerPresent.getTaskQueue() == 0) {
+            showHideHeatPowerBtn.setText("显示");
+        }
     }
 
     @Override
@@ -548,7 +551,8 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
      */
     private void moveToAnyWhere(LatLng latLng) {
         CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, ZOOM, 0, 0));
-        homepageAMap.moveCamera(update);
+        /*homepageAMap.moveCamera(update);*/
+        homepageAMap.animateCamera(update);
     }
 
     /**
@@ -559,6 +563,7 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
         heatpowerAreaDsv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                heatPowerPresent.pause();
                 //取出地区地址
                 String adress = areaList.get(position);
                 //取出地区编号
@@ -681,6 +686,7 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
                         break;
                     case 3:
                         //出租车异常
+                        startActivity(new Intent(HomePageActivity.this , AbnormalRootActivity.class));
                         break;
                     case 4:
                         //热力图模式
