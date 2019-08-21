@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:textStyle="normal"
-            android:textSize="@dimen/dp_12"
+            android:textSize="14sp"
             android:text="2018年09月11日 12:12"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"

@@ -92,7 +92,7 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
     /**
      * 缩放比例
      */
-    private static final int ZOOM = 14;
+    private static final int ZOOM = 11;
 
     private static final int CONST_INDEX_HEAT_POWER = 4;
 
@@ -318,7 +318,9 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
     @Override
     public void hideHeatPower() {
         clearMap();
-        showHideHeatPowerBtn.setText("显示");
+        if (heatPowerPresent.getTaskQueue() == 0) {
+            showHideHeatPowerBtn.setText("显示");
+        }
     }
 
     @Override
@@ -549,7 +551,8 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
      */
     private void moveToAnyWhere(LatLng latLng) {
         CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, ZOOM, 0, 0));
-        homepageAMap.moveCamera(update);
+        /*homepageAMap.moveCamera(update);*/
+        homepageAMap.animateCamera(update);
     }
 
     /**

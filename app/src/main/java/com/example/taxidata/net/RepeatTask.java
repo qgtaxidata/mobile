@@ -87,7 +87,7 @@ public class RepeatTask extends AsyncTask<Integer, HeatPointInfo,Integer> {
      * @param repeatTime
      */
     public void setRepeatTime(int repeatTime) {
-        this.repeatTime = repeatTime;
+        this.repeatTime = repeatTime * 1000;
     }
 
     /**

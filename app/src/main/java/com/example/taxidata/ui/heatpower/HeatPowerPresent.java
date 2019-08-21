@@ -14,8 +14,10 @@ import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.StatusBar;
 import com.example.taxidata.widget.StatusToast;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -29,7 +31,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
     private HeatPowerContract.HeatPowerView heatPowerView;
     private static final String TAG = "HeatPowerPresent";
     private static final int DEFAULT_POLLING_TIME = 3;
-    private RepeatTask task;
+    private Queue<RepeatTask> taskQueue = new ArrayDeque<>();
     /**
      * 轮询间隔时间
      */
@@ -49,7 +51,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
 
     @Override
     public void showRealTimeHeatPower(int area) {
-        task = new RepeatTask(new RepeatTask.RepeatCallBackListener() {
+        RepeatTask task = new RepeatTask(new RepeatTask.RepeatCallBackListener() {
             @Override
             public void onUpData(HeatPointInfo info) {
                 if (info.getCode() == 1){
@@ -73,6 +75,14 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                 heatPowerView.hideHeatPower();
             }
         });
+
+        //清除队列中的所有线程
+        RepeatTask taskHead = null;
+        while (taskQueue.size() != 0) {
+            taskHead = taskQueue.remove();
+            taskHead.pause();
+        }
+        taskQueue.offer(task);
         task.setRepeatTime(pollingTime);
         //开启轮询
         task.execute(area);
@@ -174,6 +184,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
      */
     @Override
     public void pause(){
+        RepeatTask task = taskQueue.poll();
         if (task != null) {
             task.pause();
         }
@@ -213,5 +224,10 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
      */
     public static int getPollingTime(){
         return pollingTime;
+    }
+
+    @Override
+    public int getTaskQueue() {
+        return taskQueue.size();
     }
 }

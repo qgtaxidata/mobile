@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.taxidata.base.BaseModel;
 import com.example.taxidata.base.BasePresent;
 import com.example.taxidata.base.BaseView;
+import com.example.taxidata.bean.AreaAnalyzeInfo;
 import com.example.taxidata.bean.RoadQualityInfo;
 import com.example.taxidata.bean.TaxiDemandInfo;
 import com.example.taxidata.ui.taxidemand.TaxiDemandContract;
@@ -14,6 +15,7 @@ import io.reactivex.Observable;
 public interface RoadQualityContract {
 
     interface RoadQualityView extends BaseView {
+        void sendData(RoadQualityInfo.DataBean dataBean);
         void showLoadingView();
         void hideLoadingView();
     }

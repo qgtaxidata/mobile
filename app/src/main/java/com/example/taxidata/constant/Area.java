@@ -34,18 +34,30 @@ public class Area {
     public static final Map<Integer, LatLng> area_latlng = new HashMap<>();
 
     static {
-        area_latlng.put(0,new LatLng(23.288599488362266,113.45954429542138));
-        area_latlng.put(1,new LatLng(23.43218732,113.19940912));
+        //全广州
+        area_latlng.put(0,new LatLng(23.132566,113.265531));
+        //花都区
+        area_latlng.put(1,new LatLng(23.404165,113.220218f));
+        //南沙区
         area_latlng.put(2,new LatLng(22.78044,113.43394305));
-        area_latlng.put(3,new LatLng(23.31281514,113.70209783));
-        area_latlng.put(4,new LatLng(23.66454649,113.65496719));
-        area_latlng.put(5,new LatLng(22.98870841,113.35197868));
-        area_latlng.put(6,new LatLng(23.25219659,113.35965507));
-        area_latlng.put(7,new LatLng(23.24833281,113.51925272));
-        area_latlng.put(8,new LatLng(23.11450399,113.23963628));
-        area_latlng.put(9,new LatLng(23.08432539,113.32485985));
-        area_latlng.put(10,new LatLng(23.17422639,113.35974371));
-        area_latlng.put(11,new LatLng(23.1443424,113.27409338 ));
+        //增城区
+        area_latlng.put(3,new LatLng(23.261141,113.81086));
+        //从化区
+        area_latlng.put(4,new LatLng(23.548852,113.586605));
+        //番禺区
+        area_latlng.put(5,new LatLng(22.937244,113.384129));
+        //白云区
+        area_latlng.put(6,new LatLng(23.15729,113.273289));
+        //黄埔区
+        area_latlng.put(7,new LatLng(23.106402,113.459749));
+        //荔湾区
+        area_latlng.put(8,new LatLng(23.125981,113.244261));
+        //海珠区
+        area_latlng.put(9,new LatLng(23.083801,113.317388));
+        //天河区
+        area_latlng.put(10,new LatLng(23.12468,113.3612));
+        //越秀区
+        area_latlng.put(11,new LatLng(23.128524,113.266841 ));
     }
 
     public static final String GUANG_ZHOU = "全广州";

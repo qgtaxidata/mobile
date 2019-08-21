@@ -113,7 +113,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
         if(model != null){
             flag = false;
             n = 0;
-            Observable.interval(10, TimeUnit.SECONDS)
+            Observable.interval(0,10, TimeUnit.SECONDS)
                     .doOnNext(new Consumer<Long>() {
                         @Override
                         public void accept(Long aLong) throws Exception {

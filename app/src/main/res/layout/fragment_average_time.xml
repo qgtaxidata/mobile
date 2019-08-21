@@ -3,17 +3,25 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_passager_frequency">
+    android:background="@drawable/bg_departure_rate">
 
     <TextView
+        android:id="@+id/average_time_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
         android:layout_gravity="center"
-        android:text="车流量"
-        android:textSize="24sp"
+        android:text="平均速度"
+        android:textSize="18sp"
         android:textColor="@color/black_color"
         android:textStyle="normal"/>
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/average_time_line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/search_out_bg" />
 
 </LinearLayout>

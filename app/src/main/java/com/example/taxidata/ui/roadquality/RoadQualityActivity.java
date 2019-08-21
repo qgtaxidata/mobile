@@ -1,9 +1,9 @@
 package com.example.taxidata.ui.roadquality;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -12,13 +12,15 @@ import com.example.taxidata.adapter.AreaAnalyzeTransformer;
 import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.adapter.ViewPagerAdapter;
 import com.example.taxidata.base.BaseActivity;
+import com.example.taxidata.bean.RoadQualityInfo;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,9 +100,9 @@ public class RoadQualityActivity extends BaseActivity implements RoadQualityCont
     }
 
     private void setViewPager(ViewPager viewPager) {
-        roadQualityList.add(new CongestionDegreeFragment());      //添加拥挤度碎片
-        roadQualityList.add(new TrafficFlowFragment());    //添加车流量碎片
-        roadQualityList.add(new SpeedFragment());     //添加车速碎片
+        roadQualityList.add(new AverageTimeFragment());      //添加平均速度碎片
+        roadQualityList.add(new DensityFragment());    //添加车辆密度碎片
+        roadQualityList.add(new FlowFragment());     //添加车流量碎片
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), roadQualityList);
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new AreaAnalyzeTransformer());
@@ -157,5 +159,14 @@ public class RoadQualityActivity extends BaseActivity implements RoadQualityCont
         if(loading!=null){
             loading.dismiss();
         }
+    }
+
+
+    @Override
+    public void sendData(RoadQualityInfo.DataBean dataBean) {
+        Log.d("RoadQualityActivity", "data");
+        EventBus.getDefault().post(dataBean.getAverage_time());   //平均速度
+        EventBus.getDefault().post(dataBean.getDensity());       //车辆密度
+        EventBus.getDefault().post(dataBean.getFlow());         //车流量
     }
 }
