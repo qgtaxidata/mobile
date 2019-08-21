@@ -97,8 +97,8 @@ public class RecommendAdActivity extends BaseActivity implements RecommendAdCont
         dayStyle.put("工作日",1);
         dayStyle.put("休息日",2);
         timeStyle.put("不限",0);
-        timeStyle.put("工作日",1);
-        timeStyle.put("休息日",2);
+        timeStyle.put("白天",1);
+        timeStyle.put("黑夜",2);
         areaStyle.put("花都区",1);
         areaStyle.put("南沙区",2);
         areaStyle.put("增城区",3);
