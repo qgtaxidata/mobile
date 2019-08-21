@@ -36,12 +36,12 @@
         android:layout_below="@id/select_area_abnormal_analyze"
         android:textSize="20sp"
         android:textColor="#4d4d4d"
-        android:layout_marginTop="35dp"/>
+        android:layout_marginTop="30dp"/>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart_abnormal_analyze_summary"
         android:layout_width="match_parent"
-        android:layout_height="270dp"
+        android:layout_height="290dp"
         android:layout_below="@id/tv_abnormal_analyze_summary"
          />
     <TextView
@@ -55,10 +55,10 @@
         android:layout_marginTop="5dp"
         android:layout_below="@id/chart_abnormal_analyze_summary"
         />
-    <com.github.mikephil.charting.charts.LineChart
+    <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart_abnormal_detail"
         android:layout_width="match_parent"
-        android:layout_height="270dp"
+        android:layout_height="285dp"
         android:layout_below="@id/tv_abnormal_detail"
         />
 
