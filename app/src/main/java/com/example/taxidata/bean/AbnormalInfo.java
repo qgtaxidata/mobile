@@ -146,8 +146,8 @@ public class AbnormalInfo {
                  */
 
                 private int area;
-                private double abnormal;
-                private double normal;
+                private float abnormal;
+                private float normal;
 
                 public int getArea() {
                     return area;
@@ -157,33 +157,33 @@ public class AbnormalInfo {
                     this.area = area;
                 }
 
-                public double getAbnormal() {
+                public float getAbnormal() {
                     return abnormal;
                 }
 
-                public void setAbnormal(double abnormal) {
+                public void setAbnormal(float abnormal) {
                     this.abnormal = abnormal;
                 }
 
-                public double getNormal() {
+                public float getNormal() {
                     return normal;
                 }
 
-                public void setNormal(double normal) {
+                public void setNormal(float normal) {
                     this.normal = normal;
                 }
             }
         }
 
         public static class CarsBean {
-            private List<Double> normal_distribution;
+            private List<Float> normal_distribution;
             private List<AbnormalBean> abnormal;
 
-            public List<Double> getNormal_distribution() {
+            public List<Float> getNormal_distribution() {
                 return normal_distribution;
             }
 
-            public void setNormal_distribution(List<Double> normal_distribution) {
+            public void setNormal_distribution(List<Float> normal_distribution) {
                 this.normal_distribution = normal_distribution;
             }
 
@@ -202,7 +202,7 @@ public class AbnormalInfo {
                  */
 
                 private String license;
-                private List<Double> distribution;
+                private List<Float> distribution;
 
                 public String getLicense() {
                     return license;
@@ -212,11 +212,11 @@ public class AbnormalInfo {
                     this.license = license;
                 }
 
-                public List<Double> getDistribution() {
+                public List<Float> getDistribution() {
                     return distribution;
                 }
 
-                public void setDistribution(List<Double> distribution) {
+                public void setDistribution(List<Float> distribution) {
                     this.distribution = distribution;
                 }
             }

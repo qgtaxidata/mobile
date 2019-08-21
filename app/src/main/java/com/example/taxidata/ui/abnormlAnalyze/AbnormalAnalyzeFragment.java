@@ -14,7 +14,14 @@ import androidx.annotation.Nullable;
 import com.example.taxidata.R;
 import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.base.BaseFragment;
+import com.example.taxidata.bean.AbnormalInfo;
+import com.example.taxidata.common.eventbus.BaseEvent;
+import com.example.taxidata.common.eventbus.EventFactory;
 import com.example.taxidata.constant.Area;
+import com.example.taxidata.net.RetrofitManager;
+import com.example.taxidata.util.EventBusUtils;
+import com.example.taxidata.util.GsonUtil;
+import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.github.mikephil.charting.animation.Easing;
@@ -43,6 +50,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.example.taxidata.constant.Area.BAI_YUN;
 import static com.example.taxidata.constant.Area.CONG_HUA;
@@ -81,8 +92,9 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
     SimpleLoadingDialog loading;
     private XAxis xAxis;
     private YAxis yAxis;
-    private int areaId = 0 ;
-
+    private AbnormalInfo abnormalInfo;
+    private SimpleLoadingDialog loadingDialog;
+    private int selectIndex = 0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,25 +105,80 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        initData();
+    }
+
     private void initViews() {
+        loadingDialog = new SimpleLoadingDialog(getContext(), "正在加载服务器数据", R.drawable.dialog_image_loading);
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initChartSummary(new int[]{1,2});
-                initBarChart();
+                float areaAbnormal = abnormalInfo.getData().getPies().getPie().get(selectIndex).getAbnormal() * 100;
+                float areaNormal = abnormalInfo.getData().getPies().getPie().get(selectIndex).getNormal() * 100;
+                initChartSummary(new float[]{areaAbnormal , areaNormal});
             }
         });
         selectViewArea.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                areaId = Area.area.get(areaList.get(position));
-                tvSummary.setText(areaList.get(position)+"异常车辆分布");
+                //将全局变量 所选的 index 变为 当前位置的序号
+                selectIndex = position;
+                tvSummary.setText(areaList.get(position).concat("异常车辆分布"));
             }
         });
 
     }
 
-    private void initChartSummary(int[] dataArray) {
+    /**
+     * 加载页面所需的所有数据
+     *只请求一次
+     */
+    private void  initData() {
+        showLoadingDialog();
+        //简单请求数据
+        RetrofitManager.getInstance()
+                .getHttpService()
+                .getAbnormalinfo()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<AbnormalInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(AbnormalInfo info) {
+                        cancelLoadingDialong();
+                        abnormalInfo = info;
+                        Logger.d(GsonUtil.GsonString(abnormalInfo));
+                        //给另外一个碎片发送异常车辆信息
+                        BaseEvent baseEvent = EventFactory.getInstance();
+                        baseEvent.type = "异常车辆信息";
+                        baseEvent.object = abnormalInfo.getData().getCars();
+                        EventBusUtils.postSticky(baseEvent);
+                        //获取到网络数据后，加载下面的柱状图
+                        initBarChart(abnormalInfo);
+                        //获取到网络数据后，自动加载上面的饼状图
+                        selectIndex = 0;
+                        float areaAbnormal = abnormalInfo.getData().getPies().getPie().get(selectIndex).getAbnormal() * 100;
+                        float areaNormal = abnormalInfo.getData().getPies().getPie().get(selectIndex).getNormal() * 100;
+                        initChartSummary(new float[]{areaNormal , areaAbnormal});
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtil.showLongToastBottom("出错了，原因 :"+ e.getMessage());
+                        cancelLoadingDialong();
+                    }
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+    private void initChartSummary(float[] dataArray) {
         chartSummary.setUsePercentValues(true);
         chartSummary.getDescription().setEnabled(false);
         chartSummary.setExtraOffsets(5, 10, 5, 5);
@@ -165,7 +232,7 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
      * @param
      * @return
      */
-    private void  initPieData (int[] dataArray) {
+    private void  initPieData (float[] dataArray) {
         ArrayList<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry((float) dataArray[0] ,"正常") );
         entries.add(new PieEntry((float) dataArray[1] ,"异常") );
@@ -194,7 +261,7 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
         chartSummary.invalidate();
     }
 
-    public void initBarChart() {
+    public void initBarChart(AbnormalInfo info) {
         chartDetail.setDrawBarShadow(false);
         chartDetail.setDrawValueAboveBar(true);
         chartDetail.getDescription().setEnabled(false);
@@ -221,15 +288,18 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
         yAxis.setAxisMaximum(1200f);
         //取消右方y轴显示
         chartDetail.getAxisRight().setEnabled(false);
-        initBarChartData();
+        //取消图例的显示
+        Legend legend = chartDetail.getLegend();
+        legend.setEnabled(false);
+        initBarChartData(info);
     }
 
-    public void initBarChartData() {
+    public void initBarChartData(AbnormalInfo info) {
         List<BarEntry> Vals = new ArrayList<>();
-        //假数据
-        Vals.add(new BarEntry(1f,200f));
-        Vals.add(new BarEntry(3f,450f));
-        Vals.add(new BarEntry(11f,600f));
+        //将数据装填在柱状图所需的数据里
+        for(int i = 0 ; i < info.getData().getBar().getX().size() ; i++) {
+            Vals.add(new BarEntry(info.getData().getBar().getX().get(i) , info.getData().getBar().getY().get(i))) ;
+        }
         BarDataSet barDataSet;
         barDataSet = new BarDataSet(Vals,"区域异常车辆数量");
         ArrayList<Integer> colors = new ArrayList<>();
@@ -246,6 +316,16 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
         chartDetail.setData(barData);
         chartDetail.animateXY(1400 , 1400);
         chartDetail.invalidate();
+    }
+
+    public void showLoadingDialog() {
+
+        loadingDialog.show();
+    }
+
+    public void cancelLoadingDialong() {
+
+        loadingDialog.dismiss();
     }
 
 }

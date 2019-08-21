@@ -40,7 +40,7 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart_abnormal_distribution_summary"
         android:layout_width="match_parent"
-        android:layout_height="270dp"
+        android:layout_height="350dp"
         android:layout_below="@id/tv_abnormal_distribution_summary"
         />
 
