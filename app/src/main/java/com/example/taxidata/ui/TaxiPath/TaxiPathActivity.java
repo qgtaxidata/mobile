@@ -80,6 +80,9 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     ArrayList<String> areaList = new ArrayList<>();
     private int selectedArea = 5;
     private String selectedTime = null;
+    private String colors[]=new String[]{"#FF0033","#66cc33","#336699"};
+    private int colorNum;
+
 
 
     @Override
@@ -142,10 +145,21 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
             historyLatLngs.add(new LatLng(info.getLatitude(), info.getLongitude()));
             Log.d(TAG, info.getLatitude()+"和"+info.getLongitude());
         }
-        taxiPathAMap.addPolyline(new PolylineOptions()
-                .addAll(historyLatLngs)
-                .width(10)
-                .color(Color.parseColor("#51b46d")));
+        //更换路线颜色
+        if(colorNum<colors.length){
+            taxiPathAMap.addPolyline(new PolylineOptions()
+                    .addAll(historyLatLngs)
+                    .width(16)
+                    .color(Color.parseColor(colors[colorNum])));
+            colorNum++;
+        }else {
+            colorNum=0;
+            taxiPathAMap.addPolyline(new PolylineOptions()
+                    .addAll(historyLatLngs)
+                    .width(16)
+                    .color(Color.parseColor(colors[colorNum])));
+        }
+
         //显示清除路径按钮
         taxiPathClearBtn.setVisibility(View.VISIBLE);
     }
@@ -166,10 +180,10 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         SharedPreferencesManager.getManager().save("latitude",listInfo.get(listInfo.size()-1).getLatitude());
         SharedPreferencesManager.getManager().save("longitude",listInfo.get(listInfo.size()-1).getLongitude());
         //路线的绘制
-        taxiPathAMap.addPolyline(new PolylineOptions()
-                .addAll(currentLatLngs)
-                .width(10)
-                .color(Color.parseColor("#51b46d")));
+            taxiPathAMap.addPolyline(new PolylineOptions()
+                    .addAll(currentLatLngs)
+                    .width(16)
+                    .color(Color.parseColor("#FF0033")));
         //显示清除路径按钮
         taxiPathClearBtn.setVisibility(View.VISIBLE);
 
@@ -223,6 +237,8 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
                 flag = 2;
                 //清除地图的路径
                 taxiPathAMap.clear();
+                //将清除按钮隐藏
+                taxiPathClearBtn.setVisibility(View.GONE);
                 //停止轮询
                 taxiPathPresent.setFlag(true);
                 //改变布局
@@ -242,6 +258,8 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
                 flag = 1;
                 //清除地图的路径
                 taxiPathAMap.clear();
+                //将清除按钮隐藏
+                taxiPathClearBtn.setVisibility(View.GONE);
                 //停止轮询
                 taxiPathPresent.setFlag(true);
                 //改变布局

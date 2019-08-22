@@ -8,11 +8,11 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="10dp"
         app:cardElevation = "10dp"
         app:cardBackgroundColor="#FFFF"
         app:cardCornerRadius="5dp"
@@ -20,42 +20,41 @@
         <RelativeLayout
             android:id="@+id/rl_intput_end_passenger"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="60dp">
 
             <ImageButton
                 android:id="@+id/ibtn_end_path_search_back"
-                android:layout_marginTop="27dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:layout_width="10dp"
+                android:layout_height="22dp"
                 android:layout_marginStart="20dp"
                 android:background="@mipmap/ui_hotspot_search_return"
                 />
             <EditText
                 android:id="@+id/et_end_path_search"
                 android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_marginStart="10dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="13dp"
                 android:layout_toRightOf="@id/ibtn_end_path_search_back"
-                android:layout_alignBottom="@id/ibtn_end_path_search_back"
                 android:layout_toLeftOf="@id/btn_end_search"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:singleLine="true"
                 android:inputType="text"
                 android:background="@null"
                 android:hint="请输入地点"
-
                 />
+
             <Button
                 android:id="@+id/btn_end_search"
-                android:layout_width="90dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:hint="搜索"
                 android:textColorHint="#FFFFFF"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:background="@drawable/shape_button_radius_search"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
@@ -65,10 +64,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         app:cardElevation = "5dp"
         app:cardCornerRadius="5dp"
         app:cardBackgroundColor="#FFFF"
