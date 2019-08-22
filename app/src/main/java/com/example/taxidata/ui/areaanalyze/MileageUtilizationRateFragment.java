@@ -74,7 +74,7 @@ public class MileageUtilizationRateFragment extends BaseFragment {
         //设置图例
         Legend legend = mileageUtilizationRateLineChart.getLegend();
         legend.setEnabled(true);
-        legend.setTextSize(14);
+        legend.setTextSize(12);
         legend.setFormSize(10);
         //x轴的相关设置
         xAxis = mileageUtilizationRateLineChart.getXAxis();
@@ -93,6 +93,7 @@ public class MileageUtilizationRateFragment extends BaseFragment {
         yAxis.setDrawGridLines(true);      //显示y轴的网格线
         yAxis.enableGridDashedLine(10f, 10f, 0f);   //并设置为破折线
         yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(100f);
         yAxis.setDrawAxisLine(true);
         yAxis.setTextColor(Color.BLACK);
         yAxis.setAxisLineColor(Color.BLACK);
@@ -116,8 +117,8 @@ public class MileageUtilizationRateFragment extends BaseFragment {
             forecastValues.add(new Entry(i+mileageUtilizationBean.getY().get(0).size(), mileageUtilizationBean.getY().get(1).get(i)));
         }
         //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "出车率分析(单位：%)");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "出车率预测(单位：%)");
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值(单位：%)");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值(单位：%)");
         initLineDataSet(analyzeLineDataSet,"#4472c4");
         initLineDataSet(forecastLineDataSet, "#ed7d31");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

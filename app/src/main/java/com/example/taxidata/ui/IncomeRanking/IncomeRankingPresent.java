@@ -22,6 +22,7 @@ public class IncomeRankingPresent implements IncomeRankingContract.IncomeRanking
 
     @Override
     public void getIncomeRankingInfo(Context context, int area, String date) {
+        view.showLoadingView();
         model.getIncomeRankingInfo(area, date).subscribe(new Observer<IncomeRankingInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -49,13 +50,14 @@ public class IncomeRankingPresent implements IncomeRankingContract.IncomeRanking
 
             @Override
             public void onComplete() {
-
+                view.hideLoadingView();
             }
         });
     }
 
     @Override
     public void getDriverConditionInfo(Context context, int area, String date, String driverID, int rank, double income) {
+        view.showLoadingView();
         model.getDriverConditionInfo(area, date, driverID).subscribe(new Observer<DriverConditionInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -83,7 +85,7 @@ public class IncomeRankingPresent implements IncomeRankingContract.IncomeRanking
 
             @Override
             public void onComplete() {
-
+                view.hideLoadingView();
             }
         });
     }
