@@ -33,4 +33,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!--设置Tablayout字体大小-->
+    <style name="TabLayoutTextSize">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>
