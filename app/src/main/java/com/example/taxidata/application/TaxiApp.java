@@ -51,9 +51,9 @@ public class TaxiApp extends Application {
         initAppTime();
         //LeakCanary 监控者
         refWatcher =  LeakCanary.install(this);
-//        if (isMainProcess()) {
-//            OpenInstall.init(this);
-//        }
+        if (isMainProcess()) {
+            OpenInstall.init(this);
+        }
     }
 
     public static Context getContext(){
