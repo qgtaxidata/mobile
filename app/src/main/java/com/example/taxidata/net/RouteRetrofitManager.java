@@ -1,6 +1,5 @@
 package com.example.taxidata.net;
 
-
 import android.util.Log;
 
 import com.example.taxidata.common.SharedPreferencesManager;
@@ -22,24 +21,26 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * 线程安全的单例类,用于请求网络
+ * @author: ODM
+ * @date: 2019/8/22
  */
-public class RetrofitManager {
-    private static RetrofitManager retrofitManager;
+public class RouteRetrofitManager  {
+
+    private static RouteRetrofitManager retrofitManager;
     private Retrofit retrofit;
     private HttpService service;
-    public static int DEFAULT_TIME_OUT = 8;
+    public static int DEFAULT_TIME_OUT = 20;
     /**
      * 超时时间，默认为8秒
      */
-    private static int timeoutTime = SharedPreferencesManager.getManager().getInt(SharedPreferencesManager.CONST_TIME_OUT,DEFAULT_TIME_OUT);
+    private static int timeoutTime = DEFAULT_TIME_OUT;
     /**
      * 服务器ip地址
      */
     private static String baseUrl = Api.CONST_BASE_URL;
     public final static HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
 
-    private RetrofitManager(){
+    private RouteRetrofitManager(){
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .cookieJar(new CookieJar() {
                     @Override
@@ -72,11 +73,11 @@ public class RetrofitManager {
      * 获取网络管理的manager
      * @return 该单例类
      */
-    public static RetrofitManager getInstance(){
+    public static RouteRetrofitManager getInstance(){
         if(retrofitManager == null){
             synchronized (Object.class){
                 if(retrofitManager == null){
-                    retrofitManager = new RetrofitManager();
+                    retrofitManager = new RouteRetrofitManager();
                 }
             }
         }
@@ -91,18 +92,6 @@ public class RetrofitManager {
         return service;
     }
 
-    /**
-     * 重新设置服务器和超时时间
-     * @param timeout 超时时间
-     * @param url 服务器地址
-     */
-    public static void setTimeoutAndUrl(int timeout,String url){
-        timeoutTime = timeout;
-        Log.d("RetorfitManager","" + timeoutTime);
-        baseUrl = url;
-        //重新生成service
-        retrofitManager = new RetrofitManager();
-    }
 
     public static int getTimeoutTime(){
         return timeoutTime;

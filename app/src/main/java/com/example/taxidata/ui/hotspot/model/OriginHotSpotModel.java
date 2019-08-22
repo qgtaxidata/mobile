@@ -15,6 +15,7 @@ import com.example.taxidata.bean.HotSpotRouteInfo;
 import com.example.taxidata.bean.HotSpotRouteRequest;
 import com.example.taxidata.common.GreenDaoManager;
 import com.example.taxidata.net.RetrofitManager;
+import com.example.taxidata.net.RouteRetrofitManager;
 import com.example.taxidata.ui.hotspot.contract.OriginHotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.OriginHotSpotPresenter;
 import com.example.taxidata.ui.passengerpath.enity.PathInfo;
@@ -85,8 +86,7 @@ public class OriginHotSpotModel implements OriginHotSpotContract.OriginHotSpotMo
         double lngOrigin = request.getLonOrigin();
         double latEnd = request.getLatDestination();
         double lngEnd = request.getLonDestination();
-
-        return RetrofitManager.getInstance()
+        return RouteRetrofitManager.getInstance()
                 .getHttpService()
                 .getPath(lngOrigin,latOrigin,lngEnd,latEnd)
                 .subscribeOn(Schedulers.io())
