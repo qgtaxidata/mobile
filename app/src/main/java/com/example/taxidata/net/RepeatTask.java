@@ -56,6 +56,9 @@ public class RepeatTask extends AsyncTask<Integer, HeatPointInfo,Integer> {
                     break;
                 }
                 body = service.execute();
+                if (!body.isSuccessful()) {
+                    throw new Exception("timeout");
+                }
                 //热力图信息
                 if (isPause) {
                     break;
