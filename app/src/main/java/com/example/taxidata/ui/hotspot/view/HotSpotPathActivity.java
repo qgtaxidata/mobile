@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ import com.example.taxidata.constant.EventBusType;
 import com.example.taxidata.ui.passengerpath.enity.PathInfo;
 import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.GsonUtil;
+import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.MarqueeTextView;
 import com.example.taxidata.widget.PlanInfoCard;
 import com.github.clans.fab.FloatingActionButton;
@@ -58,7 +60,7 @@ public class HotSpotPathActivity extends BaseActivity {
     View linearLayoutOne;
     View linearLayoutTwo;
     View linearLayoutThree;
-    RelativeLayout layoutOrigin;
+    LinearLayout layoutOrigin;
     TextView tvPlanOne;
     TextView tvPlanTwo;
     TextView tvPlanThree;
@@ -94,7 +96,7 @@ public class HotSpotPathActivity extends BaseActivity {
         if (isRegisterEventBus()) {
             EventBusUtils.register(this);
         }
-        Log.e(TAG, "onCreate!!");
+
     }
 
     @Override
@@ -253,8 +255,6 @@ public class HotSpotPathActivity extends BaseActivity {
      * @param lat the lat
      */
     public void showHotSpot(double lng, double lat) {
-
-        Logger.d("打标记：经度: " + lng + "： 纬度" + lat);
         LatLng latLngHot = new LatLng(lat, lng);
         MarkerOptions markerOptions = new MarkerOptions().position(latLngHot)
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ui_hotspot_endpoint)));
@@ -343,7 +343,6 @@ public class HotSpotPathActivity extends BaseActivity {
      */
     public void drawLines(PathInfo routeInfo, int index) {
         List<PathInfo.DataBean.RouteBean> routeBeanList = routeInfo.getData().get(index).getRoute();
-        Logger.d("方案：" + index + " 点集合大小为： " + routeBeanList.size());
         //画线前，先将原有的点的集合清空
         latLngs.clear();
         for (PathInfo.DataBean.RouteBean point : routeBeanList) {
@@ -368,7 +367,7 @@ public class HotSpotPathActivity extends BaseActivity {
             tvFarTwo.setText(String.valueOf(info.getData().get(1).getDistance()).concat("公里"));
             tvFarThree.setText(String.valueOf(info.getData().get(2).getDistance()).concat("公里"));
         } else {
-            Logger.d("方案卡片初始化失败");
+            ToastUtil.showLongToastBottom("界面初始化失败");
         }
     }
 
@@ -395,7 +394,6 @@ public class HotSpotPathActivity extends BaseActivity {
      */
     public void clearMap() {
         if (pathMap != null) {
-            Logger.d("清空地图");
             pathMap.clear();
         }
     }

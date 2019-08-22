@@ -105,7 +105,6 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         initAreaList();
         initViews();
-        Logger.d("onCreateView");
         //防止home返回后再次请求
         initData();
         return view;
