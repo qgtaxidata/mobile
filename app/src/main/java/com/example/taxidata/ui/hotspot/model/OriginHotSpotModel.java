@@ -85,7 +85,7 @@ public class OriginHotSpotModel implements OriginHotSpotContract.OriginHotSpotMo
         double lngOrigin = request.getLonOrigin();
         double latEnd = request.getLatDestination();
         double lngEnd = request.getLonDestination();
-        Logger.d("M 层发送 热点路径 请求"+latOrigin+" "+lngOrigin+" "+latEnd+ "  "+ lngEnd);
+
         return RetrofitManager.getInstance()
                 .getHttpService()
                 .getPath(lngOrigin,latOrigin,lngEnd,latEnd)
@@ -117,7 +117,6 @@ public class OriginHotSpotModel implements OriginHotSpotContract.OriginHotSpotMo
             HotSpotOrigin origin = new HotSpotOrigin();
             origin.setHotSpotOriginHistory(historyOriginString);
             originDaoSession.insert(origin);
-            Log.e(TAG, "saveHotSpoyOriginHistory: 存储了热点--起点历史" + historyOriginString );
         }
     }
 

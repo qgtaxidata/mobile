@@ -1,10 +1,12 @@
 package com.example.taxidata.application;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 
 import com.example.taxidata.common.GreenDaoManager;
 import com.example.taxidata.common.SharedPreferencesManager;
+import com.fm.openinstall.OpenInstall;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
@@ -49,6 +51,9 @@ public class TaxiApp extends Application {
         initAppTime();
         //LeakCanary 监控者
         refWatcher =  LeakCanary.install(this);
+//        if (isMainProcess()) {
+//            OpenInstall.init(this);
+//        }
     }
 
     public static Context getContext(){
@@ -144,5 +149,16 @@ public class TaxiApp extends Application {
     public static RefWatcher getRefWatcher(Context context) {
         TaxiApp application = (TaxiApp) context.getApplicationContext();
         return application.refWatcher;
+    }
+
+    public boolean isMainProcess() {
+        int pid = android.os.Process.myPid();
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager.getRunningAppProcesses()) {
+            if (appProcess.pid == pid) {
+                return getApplicationInfo().packageName.equals(appProcess.processName);
+            }
+        }
+        return false;
     }
 }
