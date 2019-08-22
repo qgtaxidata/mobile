@@ -16,6 +16,7 @@ import com.example.taxidata.R;
 import com.example.taxidata.base.BaseFragment;
 import com.example.taxidata.bean.AreaAnalyzeInfo;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -68,10 +69,13 @@ public class MileageUtilizationRateFragment extends BaseFragment {
         mileageUtilizationRateLineChart.setDragEnabled(true);  //禁止缩放
         mileageUtilizationRateLineChart.setScaleEnabled(true);  //禁止推动
         mileageUtilizationRateLineChart.setDrawBorders(false);    //设置四周是否有边框
-        mileageUtilizationRateLineChart.setBackgroundColor(Color.WHITE);
         mileageUtilizationRateLineChart.getAxisRight().setEnabled(false);   //不显示右侧y轴
         mileageUtilizationRateLineChart.getDescription().setEnabled(false);
-        mileageUtilizationRateLineChart.getLegend().setEnabled(false);   //不显示图例
+        //设置图例
+        Legend legend = mileageUtilizationRateLineChart.getLegend();
+        legend.setEnabled(true);
+        legend.setTextSize(14);
+        legend.setFormSize(10);
         //x轴的相关设置
         xAxis = mileageUtilizationRateLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置
@@ -112,8 +116,8 @@ public class MileageUtilizationRateFragment extends BaseFragment {
             forecastValues.add(new Entry(i+mileageUtilizationBean.getY().get(0).size(), mileageUtilizationBean.getY().get(1).get(i)));
         }
         //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "出车率分析");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "出车率预测");
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "出车率分析(单位：%)");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "出车率预测(单位：%)");
         initLineDataSet(analyzeLineDataSet,"#4472c4");
         initLineDataSet(forecastLineDataSet, "#ed7d31");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

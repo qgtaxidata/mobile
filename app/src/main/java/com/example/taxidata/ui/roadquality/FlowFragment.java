@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.taxidata.R;
 import com.example.taxidata.bean.RoadQualityInfo;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -59,10 +60,13 @@ public class FlowFragment extends Fragment {
         flowLineChart.setDragEnabled(true);  //禁止缩放
         flowLineChart.setScaleEnabled(true);  //禁止推动
         flowLineChart.setDrawBorders(false);    //设置四周是否有边框
-        flowLineChart.setBackgroundColor(Color.WHITE);
         flowLineChart.getAxisRight().setEnabled(false);   //不显示右侧y轴
         flowLineChart.getDescription().setEnabled(false);
-        flowLineChart.getLegend().setEnabled(false);   //不显示图例
+        //设置图例
+        Legend legend = flowLineChart.getLegend();
+        legend.setEnabled(true);
+        legend.setTextSize(14);
+        legend.setFormSize(10);
         //x轴的相关设置
         xAxis = flowLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置

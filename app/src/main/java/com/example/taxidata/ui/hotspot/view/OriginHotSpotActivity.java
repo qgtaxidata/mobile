@@ -302,9 +302,17 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
 
     @Override
     public void requestFailed(int failCode) {
-        if(failCode == 0) {
+        if(failCode == StatusManager.FAIL_CODE_WRONG_ADDRESS) {
             cancelLoadingDialong();
             ToastUtil.showLongToastBottom("服务器无法正确识别此地址，请稍后重试");
+        }
+        if(failCode == StatusManager.FAIL_CONNECT_DATA) {
+            cancelLoadingDialong();
+            ToastUtil.showLongToastBottom("向服务器请求数据出错，请您检查网络");
+        }
+        if(failCode == StatusManager.FAIL_CODE_NONE_DATA) {
+            cancelLoadingDialong();
+            ToastUtil.showLongToastBottom("服务器出现异常，暂时无法获取数据");
         }
     }
 }

@@ -12,8 +12,6 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.taxidata.application.TaxiApp;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Objects;
 

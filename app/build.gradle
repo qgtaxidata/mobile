@@ -19,6 +19,12 @@ android {
     signingConfigs {
         debug {
             storeFile file("/debug.keystore")
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        release {
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
     }
     buildTypes {
@@ -91,5 +97,6 @@ dependencies {
     //内存泄漏检测
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
-
+    releaseImplementation  'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation  'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 }

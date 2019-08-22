@@ -128,10 +128,14 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
         taxiDemandAnalyzeLineChart.setDragEnabled(false);  //禁止缩放
         taxiDemandAnalyzeLineChart.setScaleEnabled(false);  //禁止推动
         taxiDemandAnalyzeLineChart.setDrawBorders(false);    //设置四周是否有边框
-        taxiDemandAnalyzeLineChart.setBackgroundColor(Color.WHITE);
         taxiDemandAnalyzeLineChart.getAxisRight().setEnabled(false);   //不显示右侧y轴
         taxiDemandAnalyzeLineChart.getDescription().setEnabled(false);
-        taxiDemandAnalyzeLineChart.getLegend().setEnabled(false);   //不显示图例
+        taxiDemandAnalyzeLineChart.getLegend().setEnabled(false);
+        //设置图例
+        Legend legend = taxiDemandAnalyzeLineChart.getLegend();
+        legend.setEnabled(true);
+        legend.setTextSize(14);
+        legend.setFormSize(10);
         //x轴的相关设置
         xAxis = taxiDemandAnalyzeLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置
@@ -169,7 +173,7 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
             Log.d(""+i, dataBeans.getGraph_data().get(i).getDemand()+"");
         }
         //每个LineDataSet代表一条线
-        LineDataSet lineDataSet = new LineDataSet(values, "");
+        LineDataSet lineDataSet = new LineDataSet(values, "需求量（单位：辆）");
         initLineDataSet(lineDataSet);
         LineData lineData = new LineData(lineDataSet);
         taxiDemandAnalyzeLineChart.setData(lineData);

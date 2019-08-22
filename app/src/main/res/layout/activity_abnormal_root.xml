@@ -11,12 +11,13 @@
       android:id="@+id/tl_abnormal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="@color/blue_color"
-      app:tabTextColor="@color/dialog_white"
-      app:tabIndicatorColor="@color/dialog_white"
+      android:background="@color/dialog_white"
+      app:tabTextAppearance="@style/TabLayoutTextSize"
+      app:tabTextColor="@color/blue_color"
+      app:tabIndicatorColor="@color/blue_color"
       app:tabGravity="fill"
       app:tabMode="fixed"
-      app:tabIndicatorHeight="3dp"
+      app:tabIndicatorHeight="4dp"
       >
       <com.google.android.material.tabs.TabItem
           android:layout_width="wrap_content"
