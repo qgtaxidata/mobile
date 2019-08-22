@@ -71,7 +71,7 @@ public class AverageTimeFragment extends Fragment {
         //设置图例
         Legend legend = averageTimeLineChart.getLegend();
         legend.setEnabled(true);
-        legend.setTextSize(14);
+        legend.setTextSize(12);
         legend.setFormSize(10);
         //x轴的相关设置
         xAxis = averageTimeLineChart.getXAxis();
@@ -113,8 +113,8 @@ public class AverageTimeFragment extends Fragment {
             forecastValues.add(new Entry(i+averageTimeBean.getY().get(0).size(), averageTimeBean.getY().get(1).get(i)));
         }
         //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "平均速度分析(单位：m/s)");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "平均速度预测(单位：m/s)");
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值(单位：m/s)");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值(单位：m/s)");
         initLineDataSet(analyzeLineDataSet,"#4472c4");
         initLineDataSet(forecastLineDataSet, "#ed7d31");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

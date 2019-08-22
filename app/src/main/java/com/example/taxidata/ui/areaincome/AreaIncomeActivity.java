@@ -160,7 +160,7 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         //设置图例
         Legend legend = areaIncomeLineChart.getLegend();
         legend.setEnabled(true);
-        legend.setTextSize(14);
+        legend.setTextSize(12);
         legend.setFormSize(10);
         //x轴的相关设置
         xAxis = areaIncomeLineChart.getXAxis();
@@ -202,8 +202,8 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
             forecastValues.add(new Entry(i+dataBean.getImcome().getY().get(0).size(), dataBean.getImcome().getY().get(1).get(i)));
         }
         //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "收入分析");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "收入预测");
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值");
         initLineDataSet(analyzeLineDataSet,"#4472c4");
         initLineDataSet(forecastLineDataSet, "#ed7d31");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

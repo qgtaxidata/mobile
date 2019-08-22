@@ -65,7 +65,7 @@ public class FlowFragment extends Fragment {
         //设置图例
         Legend legend = flowLineChart.getLegend();
         legend.setEnabled(true);
-        legend.setTextSize(14);
+        legend.setTextSize(12);
         legend.setFormSize(10);
         //x轴的相关设置
         xAxis = flowLineChart.getXAxis();
@@ -107,8 +107,8 @@ public class FlowFragment extends Fragment {
             forecastValues.add(new Entry(i+flowBean.getY().get(0).size(), flowBean.getY().get(1).get(i)));
         }
         //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "平均速度分析");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "平均速度预测");
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值");
         initLineDataSet(analyzeLineDataSet,"#4472c4");
         initLineDataSet(forecastLineDataSet, "#ed7d31");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

@@ -71,7 +71,7 @@ public class DensityFragment extends Fragment {
         //设置图例
         Legend legend = densityLineChart.getLegend();
         legend.setEnabled(true);
-        legend.setTextSize(14);
+        legend.setTextSize(12);
         legend.setFormSize(10);
         //x轴的相关设置
         xAxis = densityLineChart.getXAxis();
@@ -113,8 +113,8 @@ public class DensityFragment extends Fragment {
             forecastValues.add(new Entry(i + densityBean.getY().get(0).size(), densityBean.getY().get(1).get(i)));
         }
         //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "车辆密度分析");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "车辆密度预测");
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值");
         initLineDataSet(analyzeLineDataSet, "#4472c4");
         initLineDataSet(forecastLineDataSet, "#ed7d31");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
