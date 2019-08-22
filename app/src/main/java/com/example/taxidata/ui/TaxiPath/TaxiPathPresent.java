@@ -32,6 +32,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
     public void getTaxiInfo(Context context,int area, String time) {
         Logger.d(time);
         Logger.d(area);
+        view.showLoadingView();
         if(model != null){
             model.getTaxiInfo(area, time).subscribe(new Observer<TaxiInfo>() {
                 @Override
@@ -51,6 +52,7 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                         ACache aCache = ACache.get(context);
                         aCache.put("taxi_number",taxiInfo);
                     } else {
+                        view.hideLoadingView();
                         StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, taxiInfo.getMsg());
                     }
                 }
@@ -58,10 +60,12 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                 public void onError(Throwable e) {
                     e.printStackTrace();
                     Logger.d(e.getMessage());
+                    view.hideLoadingView();
                     StatusToast.getMyToast().ToastShow(context,null, R.mipmap.ic_sad, "异常！请重试。");
                 }
                 @Override
                 public void onComplete() {
+                    view.hideLoadingView();
                 }
             });
         }
