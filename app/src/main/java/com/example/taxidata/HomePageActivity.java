@@ -49,6 +49,7 @@ import com.example.taxidata.ui.roadquality.RoadQualityActivity;
 import com.example.taxidata.ui.setup.SetUpActivity;
 import com.example.taxidata.ui.taxidemand.TaxiDemandActivity;
 import com.example.taxidata.util.EventBusUtils;
+import com.example.taxidata.util.LimitClickUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.MyTimerPicker;
 import com.example.taxidata.widget.StatusBar;
@@ -425,6 +426,9 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
         showHideHeatPowerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (LimitClickUtil.isQuick(1000)) {
+                    return;
+                }
                 if (heatPowerPresent != null) {
                     if (showHideHeatPowerBtn.getText().toString().equals("隐藏")) {
                         //退出热力图模式
@@ -563,6 +567,14 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
         heatpowerAreaDsv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                if (LimitClickUtil.isQuick(1000)) {
+                    if (heatPowerStb.getStatus() == StatusBar.REALTIME) {
+                        heatPowerPresent.pause();
+                    }else {
+                        hideHeatPower();
+                    }
+                    return;
+                }
                 heatPowerPresent.pause();
                 //取出地区地址
                 String adress = areaList.get(position);
@@ -584,6 +596,10 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
         algorithmDsv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                if (LimitClickUtil.isQuick(1000)) {
+                    hideHeatPower();
+                    return;
+                }
                 //取出算法名称
                 String algorithmName = algorithmList.get(position);
                 //取出算法代号
@@ -762,5 +778,10 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
                         }
                     });
         }
+    }
+
+    @Override
+    public void mapClear() {
+        homepageAMap.clear();
     }
 }

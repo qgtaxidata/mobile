@@ -129,11 +129,7 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
         taxiPathMap.onDestroy();
     }
 
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        taxiPathMap.onResume();
-    }
+
 
     //显示出租车历史路径
     @Override
