@@ -167,6 +167,7 @@ public class RecommendAdActivity extends BaseActivity implements RecommendAdCont
 
     @OnClick({R.id.btn_ad_config_refresh, R.id.ll_ad_one, R.id.ll_ad_two, R.id.ll_ad_three, R.id.ll_ad_four, R.id.ll_ad_five, R.id.btn_ad_create_chart})
     public void onViewClicked(View view) {
+        // TODO 是否需要限制按钮，有待测试
         String pre = "广东省广州市" + adAreaDsv.getSlectedArea();
         switch (view.getId()) {
             case R.id.btn_ad_config_refresh:
