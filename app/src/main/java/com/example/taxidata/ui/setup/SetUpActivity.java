@@ -208,8 +208,6 @@ public class SetUpActivity extends BaseActivity {
         initDataList();
         //初始化滑动组件
         initRecyclerview();
-
-        // TODO url的本地存储
     }
 
     /**
@@ -221,7 +219,7 @@ public class SetUpActivity extends BaseActivity {
             if (i == 0) {
                 mDayList.add("");
             } else if (i != MyTimerPicker.CONST_DAY_COUNT) {
-                if (i <= 4) {
+                if (i <= 5) {
                     mDayList.add("0" + (i + 4));
                 } else {
                     mDayList.add(i + 4 + "");
