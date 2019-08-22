@@ -134,7 +134,8 @@ public class DensityFragment extends Fragment {
         lineDataSet.setCircleRadius(1f);
         lineDataSet.setDrawCircles(false);
         lineDataSet.setDrawCircleHole(false);    //设置曲线值的圆点是实心还是空心
-        lineDataSet.setValueTextSize(20f);
+        lineDataSet.setValueTextSize(16f);
+        lineDataSet.setDrawValues(false);
         lineDataSet.setValueTextColor(Color.parseColor(color));
         lineDataSet.setDrawFilled(false);
         lineDataSet.setFormLineWidth(1f);

@@ -126,7 +126,6 @@ public class RoadQualityActivity extends BaseActivity implements RoadQualityCont
     }
 
     private void initTimeList(){
-        timeList.add("2017年02月04日");
         timeList.add("2017年02月05日");
         timeList.add("2017年02月06日");
         timeList.add("2017年02月07日");

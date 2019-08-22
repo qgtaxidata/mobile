@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -58,7 +59,7 @@ public class HotSpotPathActivity extends BaseActivity {
     View linearLayoutOne;
     View linearLayoutTwo;
     View linearLayoutThree;
-    RelativeLayout layoutOrigin;
+    LinearLayout layoutOrigin;
     TextView tvPlanOne;
     TextView tvPlanTwo;
     TextView tvPlanThree;

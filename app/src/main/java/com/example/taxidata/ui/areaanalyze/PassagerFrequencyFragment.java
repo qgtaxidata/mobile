@@ -114,8 +114,8 @@ public class PassagerFrequencyFragment extends BaseFragment {
             forecastValues.add(new Entry(i+pickUpFreqBean.getY().get(0).size(), pickUpFreqBean.getY().get(1).get(i)));
         }
         //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值(单位：%)");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值(单位：%)");
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值(单位：人次)");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值(单位：人次)");
         initLineDataSet(analyzeLineDataSet,"#4472c4");
         initLineDataSet(forecastLineDataSet, "#ed7d31");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

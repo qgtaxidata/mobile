@@ -152,6 +152,12 @@ public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeCont
         timeList.add("2017年02月13日");
         timeList.add("2017年02月14日");
         timeList.add("2017年02月15日");
+        timeList.add("2017年02月16日");
+        timeList.add("2017年02月17日");
+        timeList.add("2017年02月18日");
+        timeList.add("2017年02月19日");
+        timeList.add("2017年02月20日");
+        timeList.add("2017年02月21日");
         areaAnalyzeTimeSelectView.setItemsData(timeList, 2);
     }
 

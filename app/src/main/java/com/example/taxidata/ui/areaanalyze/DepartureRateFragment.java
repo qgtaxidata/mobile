@@ -92,6 +92,7 @@ public class DepartureRateFragment extends BaseFragment {
         yAxis.setDrawGridLines(true);      //显示y轴的网格线
         yAxis.enableGridDashedLine(10f, 10f, 0f);   //并设置为破折线
         yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(100f);
         yAxis.setDrawAxisLine(true);
         yAxis.setTextColor(Color.BLACK);
         yAxis.setAxisLineColor(Color.BLACK);

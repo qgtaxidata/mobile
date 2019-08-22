@@ -191,11 +191,13 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
     private void initLineDataSet(LineDataSet lineDataSet) {
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         lineDataSet.setColor(Color.parseColor("#4472c4"));
-        lineDataSet.setLineWidth(1f);
+        lineDataSet.setLineWidth(2f);
         lineDataSet.setCircleColor(Color.parseColor("#4472c4"));
-        lineDataSet.setCircleRadius(1f);
-        lineDataSet.setDrawCircleHole(false);    //设置曲线值的圆点是实心还是空心
-        lineDataSet.setValueTextSize(20f);
+        lineDataSet.setCircleRadius(3f);
+        lineDataSet.setCircleColorHole(Color.WHITE);
+        lineDataSet.setCircleHoleRadius(1.5f);
+        lineDataSet.setDrawCircleHole(true);    //设置曲线值的圆点是实心还是空心
+        lineDataSet.setValueTextSize(16f);
         lineDataSet.setValueTextColor(Color.parseColor("#4472c4"));
         lineDataSet.setDrawFilled(false);
         lineDataSet.setFormLineWidth(1f);

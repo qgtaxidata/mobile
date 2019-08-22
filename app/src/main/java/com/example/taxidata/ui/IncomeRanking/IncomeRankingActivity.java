@@ -129,8 +129,6 @@ public class IncomeRankingActivity extends BaseActivity implements IncomeRanking
 
     //初始化时间popupWindow
     private void initTimeList(){
-        timeList.add("2017年02月03日");
-        timeList.add("2017年02月04日");
         timeList.add("2017年02月05日");
         timeList.add("2017年02月06日");
         timeList.add("2017年02月07日");
