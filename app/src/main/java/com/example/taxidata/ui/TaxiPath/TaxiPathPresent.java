@@ -157,6 +157,9 @@ public class TaxiPathPresent implements TaxiPathContract.TaxiPathPresent{
                                         @Override
                                         public void onComplete() {
                                             Log.d("p","complete");
+                                            if(flag){
+                                                view.clearMap();
+                                            }
                                         }
                                     });
                         }

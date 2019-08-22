@@ -83,7 +83,11 @@ public class SimpleLoadingDialog extends Dialog {
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
             // 屏蔽返回键
-            return mCancelable;
+            if (mCancelable) {
+                dismiss();
+            }else {
+                return mCancelable;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
