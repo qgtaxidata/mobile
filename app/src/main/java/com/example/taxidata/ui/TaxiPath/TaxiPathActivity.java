@@ -22,6 +22,7 @@ import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.bean.GetTaxiPathInfo;
 import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.bean.TaxiPathInfo;
+import com.example.taxidata.common.OnMultiClickListener;
 import com.example.taxidata.common.SharedPreferencesManager;
 import com.example.taxidata.constant.Area;
 import com.example.taxidata.util.ACache;
@@ -301,7 +302,7 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
     @Override
     public void showLoadingView() {
         //初始化loading界面
-        loading = new SimpleLoadingDialog(this,"路径正在绘制中！",R.drawable.dialog_image_loading);
+        loading = new SimpleLoadingDialog(this,"数据正在加载中！",R.drawable.dialog_image_loading);
         loading.show();
     }
     //取消loading界面

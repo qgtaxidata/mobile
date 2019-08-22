@@ -149,7 +149,7 @@ public class RoadQualityActivity extends BaseActivity implements RoadQualityCont
     @Override
     public void showLoadingView() {
         //初始化loading界面
-        loading = new SimpleLoadingDialog(this,"图表正在绘制中！",R.drawable.dialog_image_loading);
+        loading = new SimpleLoadingDialog(this,"数据正在加载中！",R.drawable.dialog_image_loading);
         loading.show();
     }
     //取消loading界面

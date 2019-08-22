@@ -17,6 +17,7 @@ import com.example.taxidata.bean.GetTaxiPathInfo;
 import com.example.taxidata.bean.TaxiInfo;
 import com.example.taxidata.adapter.OnItemClickListener;
 import com.example.taxidata.bean.TaxiPathInfo;
+import com.example.taxidata.ui.TaxiPath.TaxiPathActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -36,10 +37,13 @@ public class ChooseTaxiDialog extends Dialog {
     Button chooseTaxiSure;
 
     private TaxiOnClickListener listener;
+    private Context mContext;
     private TaxiChooseAdapter adapter;
     private List<TaxiInfo.DataBean> taxiInfoList = new ArrayList<>();
     GetTaxiPathInfo pathInfo = new GetTaxiPathInfo();
     private int currentNum = -1;
+    private String time ;
+    private String licenseplateno;
 
     public ChooseTaxiDialog(@NonNull Context context) {
         super(context);
@@ -47,6 +51,7 @@ public class ChooseTaxiDialog extends Dialog {
 
     public ChooseTaxiDialog(@NonNull Context context, int themeResId,TaxiInfo taxiInfo) {
         super(context, themeResId);
+        mContext = context;
         taxiInfoList.addAll(taxiInfo.getData());
     }
 
@@ -65,8 +70,12 @@ public class ChooseTaxiDialog extends Dialog {
                 cancel();
                 break;
             case R.id.choose_taxi_sure:
-                EventBus.getDefault().post(pathInfo);
-                dismiss();
+                if(pathInfo.getTime()!=null&&pathInfo.getLicenseplateno()!=null){
+                    EventBus.getDefault().post(pathInfo);
+                    dismiss();
+                }else {
+                    StatusToast.getMyToast().ToastShow(mContext,null,R.mipmap.ic_sad,"请选择车牌号。");
+                }
                 break;
         }
     }
@@ -105,8 +114,8 @@ public class ChooseTaxiDialog extends Dialog {
                     currentNum = position;
                 }
                 adapter.notifyDataSetChanged();
-                String licenseplateno = taxiInfoList.get(position).getLicenseplateno();
-                String time = taxiInfoList.get(position).getTime();
+                licenseplateno = taxiInfoList.get(position).getLicenseplateno();
+                time = taxiInfoList.get(position).getTime();
                 pathInfo.setTime(time);
                 pathInfo.setLicenseplateno(licenseplateno);
                 adapter.notifyDataSetChanged();
