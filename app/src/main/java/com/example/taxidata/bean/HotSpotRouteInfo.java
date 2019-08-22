@@ -45,7 +45,7 @@ public class HotSpotRouteInfo {
     public static class DataBean {
 
         private int time;
-        private int distance;
+        private double distance;
         private List<RouteBean> route;
 
         public int getTime() {
@@ -56,7 +56,7 @@ public class HotSpotRouteInfo {
             this.time = time;
         }
 
-        public int getDistance() {
+        public double getDistance() {
             return distance;
         }
 

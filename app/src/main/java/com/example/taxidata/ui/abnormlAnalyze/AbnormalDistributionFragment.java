@@ -77,7 +77,6 @@ public class AbnormalDistributionFragment extends BaseFragment {
          selectViewArea.setOnItemClickListener(new OnItemClickListener() {
              @Override
              public void onItemClick(int position) {
-                 Logger.d("用户点击了这辆车" + carNumberList.get(position) );
                  selectIndex = position;
              }
          });

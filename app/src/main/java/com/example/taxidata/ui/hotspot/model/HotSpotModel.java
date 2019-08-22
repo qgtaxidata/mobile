@@ -19,6 +19,7 @@ import com.example.taxidata.bean.HotSpotOrigin;
 import com.example.taxidata.bean.HotSpotRequestInfo;
 import com.example.taxidata.common.GreenDaoManager;
 import com.example.taxidata.common.StatusManager;
+import com.example.taxidata.constant.Api;
 import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
@@ -57,12 +58,9 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
 
     @Override
    public   Observable<HotSpotCallBackInfo>  requestHotSpotInfo(double longitude, double latitude, String time) {
-//        time = TaxiApp.getAppNowTime();
-        time = "2017-02-03 12:00:00";
-        Logger.d("当前时间为:"+time);
+        time = TaxiApp.getAppNowTime();
         HotSpotRequestInfo info = new HotSpotRequestInfo(longitude ,latitude ,time);
         String hotSpotRequestJson = GsonUtil.GsonString(info);
-        Log.e(TAG, "requestHotSpotInfo: " + hotSpotRequestJson );
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),hotSpotRequestJson);
         return RetrofitManager.getInstance()
                             .getHttpService()

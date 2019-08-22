@@ -254,7 +254,7 @@
             android:textSize="12sp"
             android:textColor="#4c93fd"
             android:paddingLeft="5dp"
-            android:text="192.168.1.101:8080"
+            android:text="192.168.31.179:8080"
             />
 
         <LinearLayout
