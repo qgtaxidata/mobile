@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.taxidata.R;
 import com.example.taxidata.bean.RoadQualityInfo;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -65,10 +66,13 @@ public class DensityFragment extends Fragment {
         densityLineChart.setDragEnabled(true);  //禁止缩放
         densityLineChart.setScaleEnabled(true);  //禁止推动
         densityLineChart.setDrawBorders(false);    //设置四周是否有边框
-        densityLineChart.setBackgroundColor(Color.WHITE);
         densityLineChart.getAxisRight().setEnabled(false);   //不显示右侧y轴
         densityLineChart.getDescription().setEnabled(false);
-        densityLineChart.getLegend().setEnabled(false);   //不显示图例
+        //设置图例
+        Legend legend = densityLineChart.getLegend();
+        legend.setEnabled(true);
+        legend.setTextSize(14);
+        legend.setFormSize(10);
         //x轴的相关设置
         xAxis = densityLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置

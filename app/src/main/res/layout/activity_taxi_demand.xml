@@ -16,7 +16,7 @@
             android:id="@+id/taxi_demand_analyze_area_select_view"
             android:layout_width="77dp"
             android:layout_height="30dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="35dp"
             android:text="番禺区"
             />
 
@@ -25,7 +25,7 @@
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="35dp"
             android:background="@drawable/shape_button_radius_search"
             android:text="刷新"
             android:textSize="16sp"
@@ -46,20 +46,11 @@
             android:textColor="@color/black_color"
             android:text="番禺区需求分析及预测"
             />
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp"
-    android:background="@drawable/search_out_bg">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/taxi_demand_analyze_line_chart"
         android:layout_width="match_parent"
         android:layout_height="280dp"
-        android:layout_margin="15dp"
-        android:background="@drawable/search_out_bg" />
-</RelativeLayout>
-
+        android:layout_margin="10dp"/>
 
 </LinearLayout>

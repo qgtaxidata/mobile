@@ -20,8 +20,6 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/average_time_line_chart"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/search_out_bg" />
+        android:layout_height="250dp" />
 
 </LinearLayout>

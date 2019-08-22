@@ -15,6 +15,7 @@ import com.example.taxidata.util.TimeChangeUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -154,10 +155,13 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         areaIncomeLineChart.setDragEnabled(true);  //禁止缩放
         areaIncomeLineChart.setScaleEnabled(true);  //禁止推动
         areaIncomeLineChart.setDrawBorders(false);    //设置四周是否有边框
-        areaIncomeLineChart.setBackgroundColor(Color.parseColor("#e5e5e5"));
         areaIncomeLineChart.getAxisRight().setEnabled(false);   //不显示右侧y轴
         areaIncomeLineChart.getDescription().setEnabled(false);
-        //areaIncomeLineChart.getLegend().setEnabled(false);   //不显示图例
+        //设置图例
+        Legend legend = areaIncomeLineChart.getLegend();
+        legend.setEnabled(true);
+        legend.setTextSize(14);
+        legend.setFormSize(10);
         //x轴的相关设置
         xAxis = areaIncomeLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置

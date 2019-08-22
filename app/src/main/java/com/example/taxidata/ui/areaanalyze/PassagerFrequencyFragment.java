@@ -16,6 +16,7 @@ import com.example.taxidata.R;
 import com.example.taxidata.base.BaseFragment;
 import com.example.taxidata.bean.AreaAnalyzeInfo;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -67,10 +68,13 @@ public class PassagerFrequencyFragment extends BaseFragment {
         passagerFrequencyLineChart.setDragEnabled(true);  //禁止缩放
         passagerFrequencyLineChart.setScaleEnabled(true);  //禁止推动
         passagerFrequencyLineChart.setDrawBorders(false);    //设置四周是否有边框
-        passagerFrequencyLineChart.setBackgroundColor(Color.WHITE);
         passagerFrequencyLineChart.getAxisRight().setEnabled(false);   //不显示右侧y轴
         passagerFrequencyLineChart.getDescription().setEnabled(false);
-        passagerFrequencyLineChart.getLegend().setEnabled(false);   //不显示图例
+        //设置图例
+        Legend legend = passagerFrequencyLineChart.getLegend();
+        legend.setEnabled(true);
+        legend.setTextSize(14);
+        legend.setFormSize(10);
         //x轴的相关设置
         xAxis = passagerFrequencyLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置
@@ -110,8 +114,8 @@ public class PassagerFrequencyFragment extends BaseFragment {
             forecastValues.add(new Entry(i+pickUpFreqBean.getY().get(0).size(), pickUpFreqBean.getY().get(1).get(i)));
         }
         //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "出车率分析");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "出车率预测");
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "出车率分析(单位：%)");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "出车率预测(单位：%)");
         initLineDataSet(analyzeLineDataSet,"#4472c4");
         initLineDataSet(forecastLineDataSet, "#ed7d31");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

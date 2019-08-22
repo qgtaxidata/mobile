@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@drawable/item_selector_wave"
     android:layout_width="match_parent"
-    android:layout_height="66dp">
+    android:layout_height="60dp">
 
     <RelativeLayout
         android:id="@+id/rl_image_recommand"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentStart="true">
+        android:layout_width="50dp"
+        android:layout_height="match_parent">
 
         <ImageView
             android:id = "@+id/iv_hotspot_recommand"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="15dp"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginBottom="22dp"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ui_hotspot_placeholder"/>
     </RelativeLayout>
 
-<RelativeLayout
+<LinearLayout
     android:id="@+id/rl_text_recommand"
     android:layout_toEndOf="@id/rl_image_recommand"
     android:visibility="visible"
     android:layout_width="match_parent"
-    android:layout_height="70dp">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_hotspot_location"
@@ -38,7 +36,7 @@
         android:layout_marginTop="5dp"
         android:text="我是经度，我是维度"
         android:textColor="#4c93fd"
-        android:textSize="20sp"
+        android:textSize="16sp"
         />
 
     <TextView
@@ -49,10 +47,10 @@
         android:layout_alignStart= "@id/tv_hotspot_location"
         android:text="我是热度"
         android:textColor="#4d4d4d"
-        android:textSize="18sp"
+        android:textSize="15sp"
         />
 
-</RelativeLayout>
+</LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

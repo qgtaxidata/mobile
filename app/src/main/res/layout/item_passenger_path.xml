@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_passenger_path"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@drawable/item_selector_wave"
     android:layout_width="match_parent"
-    android:layout_height="66dp">
+    android:layout_height="60dp">
 
     <ImageView
         android:id = "@+id/iv_passenger"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="15dp"
-        android:layout_centerVertical="true"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:layout_marginBottom="22dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/ui_hotspot_history"/>
 
     <TextView
         android:id="@+id/tv_passenger_path"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
-        android:layout_alignBottom="@id/iv_passenger"
-        android:layout_toRightOf="@id/iv_passenger"
+        android:textSize="16sp"
+        android:layout_gravity="center"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
@@ -31,4 +29,4 @@
         android:text="我是一条热点历史记录"
         />
 
-</RelativeLayout>
+</LinearLayout>
