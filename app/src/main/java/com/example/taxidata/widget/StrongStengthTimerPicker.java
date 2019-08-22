@@ -83,10 +83,10 @@ public class StrongStengthTimerPicker extends FrameLayout {
             if (i == 0) {
                 mDayList.add("");
             }else if (i != CONST_DAY_COUNT){
-                if (i <= 6){
-                    mDayList.add("0" + (i + 3));
+                if (i <= 4){
+                    mDayList.add("0" + (i + 4));
                 }else {
-                    mDayList.add(i + 3 + "");
+                    mDayList.add(i + 4 + "");
                 }
             }else {
                 mDayList.add("");

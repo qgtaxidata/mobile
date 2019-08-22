@@ -186,7 +186,7 @@ public class SetUpActivity extends BaseActivity {
     /**
      * 轮询间隔时间，默认为2秒
      */
-    private int pollingTime = 2;
+    private int pollingTime = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,10 +221,10 @@ public class SetUpActivity extends BaseActivity {
             if (i == 0) {
                 mDayList.add("");
             } else if (i != MyTimerPicker.CONST_DAY_COUNT) {
-                if (i <= 6) {
-                    mDayList.add("0" + (i + 3));
+                if (i <= 4) {
+                    mDayList.add("0" + (i + 4));
                 } else {
-                    mDayList.add(i + 3 + "");
+                    mDayList.add(i + 4 + "");
                 }
             } else {
                 mDayList.add("");
