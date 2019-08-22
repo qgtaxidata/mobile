@@ -455,10 +455,12 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
                 Log.d(TAG, heatpowerAreaDsv.getSlectedArea());
                 if (chooseTimeTp.isNoSelectedTime()) {
                     StatusToast.getMyToast().ToastShow(this,null,R.mipmap.ic_sad,"请选择时间");
+                    showHideHeatPowerBtn.setText("显示");
                     return;
                 }
                 if (!chooseTimeTp.isHistory()) {
                     StatusToast.getMyToast().ToastShow(this,null,R.mipmap.ic_sad,"这不是历史时间");
+                    showHideHeatPowerBtn.setText("显示");
                     return;
                 }
                 heatPowerPresent.showHistoryHeatPower(Area.area.get(heatpowerAreaDsv.getSlectedArea()), chooseTimeTp.getTime() + ":00");
@@ -469,10 +471,12 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
             case 2:
                 if (chooseTimeTp.isNoSelectedTime()) {
                     StatusToast.getMyToast().ToastShow(this,null,R.mipmap.ic_sad,"请选择时间");
+                    showHideHeatPowerBtn.setText("显示");
                     return;
                 }
                 if (!chooseTimeTp.isFeature()) {
                     StatusToast.getMyToast().ToastShow(this,null,R.mipmap.ic_sad,"这不是未来时间");
+                    showHideHeatPowerBtn.setText("显示");
                     return;
                 }
                 heatPowerPresent.showFeatureHeatPower(Area.area.get(heatpowerAreaDsv.getSlectedArea()),
