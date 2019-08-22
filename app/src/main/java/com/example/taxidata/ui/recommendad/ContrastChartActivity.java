@@ -86,7 +86,7 @@ public class ContrastChartActivity extends BaseActivity {
             barChart.getData().notifyDataChanged();
             barChart.notifyDataSetChanged();
         } else {
-            flowSet = new BarDataSet(boardFlow,"车流量(量)");
+            flowSet = new BarDataSet(boardFlow,"车流量(辆)");
             flowSet.setColor(Color.parseColor("#f7f79c"));
             rateSet = new BarDataSet(boardRate,"抵达率(%)");
             rateSet.setColor(Color.parseColor("#a5e7ff"));
