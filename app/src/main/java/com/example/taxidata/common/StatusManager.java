@@ -14,4 +14,8 @@ public class StatusManager {
 
     public static final int FAIL_CODE_WRONG_ADDRESS = 1;
 
+    public static final int FAIL_CONNECT_DATA = 3;
+
+
+
 }

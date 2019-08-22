@@ -279,7 +279,7 @@ public class OriginEndActivity extends BaseActivity implements OriginEndShowCont
         for (LatLng temp : paths) {
             Log.d("showRoad","latitude:" + temp.latitude + "lng:" + temp.longitude);
         }
-        pathMap.addPolyline(new PolylineOptions().addAll(paths).width(10).color(Color.parseColor("#51B46D")));
+        pathMap.addPolyline(new PolylineOptions().addAll(paths).width(10).color(Color.BLUE));
     }
 
     @Override

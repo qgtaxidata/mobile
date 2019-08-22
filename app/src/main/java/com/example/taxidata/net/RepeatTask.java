@@ -35,15 +35,27 @@ public class RepeatTask extends AsyncTask<Integer, HeatPointInfo,Integer> {
             if (isPause) {
                 break;
             }
-            //获取网络连接
-            service = RetrofitManager.getInstance().getHttpService().getHeatPoint(integers[0], TaxiApp.getAppNowTime());
             try {
+                //获取网络连接
+                service = RetrofitManager.getInstance().getHttpService().getHeatPoint(integers[0], TaxiApp.getAppNowTime());
                 //发送请求
+                if (isPause) {
+                    break;
+                }
                 body = service.execute();
                 //热力图信息
+                if (isPause) {
+                    break;
+                }
                 HeatPointInfo info = body.body();
+                if (isPause) {
+                    break;
+                }
                 //更新热力图
                 publishProgress(info);
+                if (isPause) {
+                    break;
+                }
             }catch (Exception e) {
                 e.printStackTrace();
                 if (listener != null) {
@@ -56,6 +68,9 @@ public class RepeatTask extends AsyncTask<Integer, HeatPointInfo,Integer> {
                 Thread.sleep(repeatTime);
             }catch (Exception e) {
                 Log.d(TAG,e.getMessage());
+            }
+            if (isPause) {
+                break;
             }
         }
         return ON_FINISH;

@@ -95,11 +95,12 @@ public class LineChartUtil {
         dataSet1.setCircleColor(Color.rgb(89, 194, 230));// 圆形折点的颜色
         dataSet1.setHighLightColor(Color.GREEN); // 高亮的线的颜色
         dataSet1.setHighlightEnabled(true);
+        //折线数字，默认不显示
+        dataSet1.setDrawValues(false);
         dataSet1.setValueTextColor(R.color.black_color); //数值显示的颜色
         dataSet1.setValueTextSize(11f);     //数值显示的大小
 
         LineDataSet dataSet2 = new LineDataSet(yValues2, lineName2);
-
         //用y轴的集合来设置参数
         dataSet2.setLineWidth(2f);
         dataSet2.setCircleSize(2f);
@@ -107,22 +108,24 @@ public class LineChartUtil {
         dataSet2.setCircleColor(Color.rgb(252, 76, 122));
         dataSet2.setHighLightColor(Color.GREEN);
         dataSet2.setHighlightEnabled(true);
+        //折线数字，默认不显示
+        dataSet2.setDrawValues(false);
         dataSet2.setValueTextColor(R.color.black_color);
         dataSet2.setValueTextSize(11f);
+        //强制以浮点数两位小数+%显示
         dataSet1.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                Logger.d("value 值" + value);
                 float f = value;
                 BigDecimal b = new BigDecimal(f);
                 float f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
                 return String.valueOf(f1).concat("%");
             }
         });
+        //强制以浮点数两位小数+%显示
         dataSet2.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                Logger.d("value 值" + value);
                 float f = value;
                 BigDecimal b = new BigDecimal(f);
                 float f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
@@ -147,7 +150,6 @@ public class LineChartUtil {
 //        MyMakerView mv = new MyMakerView(context, R.layout.item_mark_layout);
 //        mLineChart.setMarkerView(mv);
         lineChart.setDrawBorders(false); //在折线图上添加边框
-        //lineChart.setDescription("时间/数据"); //数据描述
         lineChart.getDescription().setEnabled(false);
         lineChart.setDrawGridBackground(false); //表格颜色
         lineChart.setGridBackgroundColor(Color.GRAY & 0x70FFFFFF); //表格的颜色，设置一个透明度

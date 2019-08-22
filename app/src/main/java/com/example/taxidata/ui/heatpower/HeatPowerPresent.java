@@ -184,6 +184,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
      */
     @Override
     public void pause(){
+        heatPowerView.mapClear();
         RepeatTask task = taskQueue.poll();
         if (task != null) {
             task.pause();

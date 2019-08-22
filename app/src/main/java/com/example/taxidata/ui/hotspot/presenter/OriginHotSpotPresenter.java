@@ -35,7 +35,6 @@ import io.reactivex.disposables.Disposable;
  */
 public class OriginHotSpotPresenter implements OriginHotSpotContract.OriginHotSpotPresenter ,GeocodeSearch.OnGeocodeSearchListener  {
 
-//    private OriginHotSpotModel originHotSpotModel;
     private OriginHotSpotContract.OriginHotSpotModel mModel;
     private OriginHotSpotContract.OriginHotSpotView  mView;
     private static final String TAG = "OriginHotSpotPresenter";
@@ -51,7 +50,7 @@ public class OriginHotSpotPresenter implements OriginHotSpotContract.OriginHotSp
 
     @Override
     public void getRouteData(HotSpotRouteRequest request) {
-        Logger.d("P 层 向 M层 请求数据");
+
         mModel.requestRouteData(routeRequest)
                 .subscribe(new Observer<PathInfo>() {
                 @Override
@@ -64,23 +63,18 @@ public class OriginHotSpotPresenter implements OriginHotSpotContract.OriginHotSp
                         if (pathInfo.getCode() == 1) {
                             mView.requestSuccess(pathInfo);
                         } else {
-                            StatusToast.getMyToast().ToastShow(TaxiApp.getContext(), null, R.mipmap.ic_sad, pathInfo.getMsg());
+                            mView.requestFailed(StatusManager.FAIL_CODE_NONE_DATA);
+//                            StatusToast.getMyToast().ToastShow(TaxiApp.getContext(), null, R.mipmap.ic_sad, pathInfo.getMsg());
                         }
                     } else {
-                        ToastUtil.showLongToastBottom("服务器出现异常,请重新选择");
+                        mView.requestFailed(StatusManager.FAIL_CODE_NONE_DATA);
                     }
                 }
                 @Override
                 public void onError(Throwable e) {
-                    e.printStackTrace();
-                    Logger.d("热点路径请求出错。。");
-                    String fakeJson = "{\"code\":1,\"data\":[{\"distance\":30,\"route\":[{\"lat\":22.98518138200364,\"lng\":113.35485108537304},{\"lat\":23.427348283487405,\"lng\":113.60881831645261},{\"lat\":23.083167964816138,\"lng\":113.22967956725822},{\"lat\":23.12343575347576,\"lng\":113.29521107768714},{\"lat\":23.402886409368595,\"lng\":113.05677893622983}],\"time\":30},{\"distance\":30,\"route\":[{\"lat\":22.98518138200364,\"lng\":113.35485108537304},{\"lat\":23.427348283487405,\"lng\":113.60881831645261},{\"lat\":23.083167964816138,\"lng\":113.22967956725822},{\"lat\":22.6359230445728,\"lng\":113.58888500999923},{\"lat\":23.410866799777054,\"lng\":113.22176051211754},{\"lat\":23.156956786984896,\"lng\":113.45617091918334},{\"lat\":23.402886409368595,\"lng\":113.05677893622983}],\"time\":30},{\"distance\":30,\"route\":[{\"lat\":22.98518138200364,\"lng\":113.35485108537304},{\"lat\":23.427348283487405,\"lng\":113.60881831645261},{\"lat\":23.083167964816138,\"lng\":113.22967956725822},{\"lat\":23.12343575347576,\"lng\":113.29521107768714},{\"lat\":23.08303074892986,\"lng\":113.23164749634579},{\"lat\":23.085251183627626,\"lng\":113.35078366915705},{\"lat\":23.402886409368595,\"lng\":113.05677893622983}],\"time\":30}],\"msg\":\"success\"}";
-                    PathInfo pathInfo =  GsonUtil.GsonToBean(fakeJson ,PathInfo.class);
-                    if(pathInfo != null) {
-                        //传入假数据
-                        mView.requestSuccess(pathInfo);
-                    }
-                    ToastUtil.showLongToastBottom("请求热点-起点路径数据出错，请检查网络");
+                    Logger.d("热点路径请求出错,原因："+e.getMessage());
+
+                    mView.requestFailed(StatusManager.FAIL_CONNECT_DATA);
                 }
                 @Override
                 public void onComplete() {
@@ -148,19 +142,16 @@ public class OriginHotSpotPresenter implements OriginHotSpotContract.OriginHotSp
                     routeRequest.setLatOrigin(inputLatitude);
                     routeRequest.setLonOrigin(inputLongitude);
                 } else {
-                    Logger.d("routeRequest 为空");
+                    Logger.d("请求对象 为空");
                 }
-                Log.e(TAG, "起点:longtitude : " + routeRequest.getLonOrigin() + " 起点  latitude:  " +routeRequest.getLatOrigin()
-                        +"  终点:longitute: "+routeRequest.getLonOrigin() + "    终点:latitute:  "+ routeRequest.getLatDestination());
                 //将转换好的 坐标请求对象 打包发送给 M层 给服务器
                 getRouteData(routeRequest);
             } else {
                 ToastUtil.showShortToastBottom("您输入的地址有误,系统无法识别,请重新输入");
             }
         } else {
-            Logger.d("geocodeResult 对象为空");
             //查询地址可能有误，回调让用户重新选择
-            mView.requestFailed(0);
+            mView.requestFailed(StatusManager.FAIL_CODE_WRONG_ADDRESS);
         }
     }
 

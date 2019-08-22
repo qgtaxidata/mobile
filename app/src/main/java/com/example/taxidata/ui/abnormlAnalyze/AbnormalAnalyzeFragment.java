@@ -88,7 +88,7 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
     BarChart chartDetail;
     @BindView(R.id.chart_abnormal_analyze_summary)
     PieChart chartSummary;
-    private static String[] colors1 = {"#ffbb86", "#F37997", "#4c93fd", "#AA99ED", "#79D2FF", "#49C9C9","#BBBBBB"};
+    private static String[] colors1 = {"#51b46d", "#F37997", "#4c93fd", "#AA99ED", "#79D2FF", "#49C9C9","#BBBBBB"};
     ArrayList<String> areaList = new ArrayList<>();
     SimpleLoadingDialog loading;
     private XAxis xAxis;
@@ -158,7 +158,6 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
                     public void onNext(AbnormalInfo info) {
                         cancelLoadingDialong();
                         abnormalInfo = info;
-                        Logger.d(GsonUtil.GsonString(abnormalInfo));
                         //给另外一个碎片发送异常车辆信息
                         BaseEvent baseEvent = EventFactory.getInstance();
                         baseEvent.type = "异常车辆信息";
@@ -965,7 +964,6 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
      */
     private void  initPieData (float[] dataArray) {
         ArrayList<PieEntry> entries = new ArrayList<>();
-        Logger.d("dataArray[0]"+dataArray[0]+"dataArray[1] :" +dataArray[1]);
         entries.add(new PieEntry((float) dataArray[0] ,"正常") );
         entries.add(new PieEntry((float) dataArray[1] ,"异常") );
         PieDataSet dataSet = new PieDataSet(entries ,"");
