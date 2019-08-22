@@ -37,7 +37,7 @@ public class AdInfo {
         private double boardLon;
         private double boardLat;
         private int boardFlow;
-        private double boradRate;
+        private float boradRate;
 
         public double getBoardLon() {
             return boardLon;
@@ -63,11 +63,11 @@ public class AdInfo {
             this.boardFlow = boardFlow;
         }
 
-        public double getBoradRate() {
+        public float getBoradRate() {
             return boradRate;
         }
 
-        public void setBoradRate(double boradRate) {
+        public void setBoradRate(float boradRate) {
             this.boradRate = boradRate;
         }
     }
