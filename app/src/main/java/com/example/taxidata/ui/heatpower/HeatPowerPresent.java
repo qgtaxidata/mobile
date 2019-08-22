@@ -57,10 +57,12 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                 if (info.getCode() == 1){
                     List<WeightedLatLng> weightedLatLngs = getWeightedLatLng(info);
                     heatPowerView.showHeatPower(weightedLatLngs);
+                    heatPowerView.hideLoading();
                 } else {
                     //显示错误信息
                     String errorMessage = info.getMsg();
                     ToastUtil.showShortToastBottom(errorMessage);
+                    heatPowerView.hideLoading();
                 }
             }
 
@@ -68,11 +70,17 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
             public void onFail(Exception e) {
                 e.printStackTrace();
                 heatPowerView.hideHeatPower();
+                heatPowerView.hideLoading();
             }
 
             @Override
             public void onFinsh() {
                 heatPowerView.hideHeatPower();
+            }
+
+            @Override
+            public void onFirst() {
+                heatPowerView.showLoading();
             }
         });
 
@@ -90,6 +98,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
 
     @Override
     public void showHistoryHeatPower(int area, String time) {
+        heatPowerView.showLoading();
         heatPowerModel.requestHeatPoint(area,time)
                 .subscribe(new Observer<HeatPointInfo>() {
                     @Override
@@ -111,6 +120,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                     public void onError(Throwable e) {
                         heatPowerView.showError();
                         heatPowerView.hideHeatPower();
+                        heatPowerView.hideLoading();
                         heatPowerView.showError();
                     }
 
@@ -123,12 +133,14 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                         if (hideButton.getText().toString().equals("显示")){
                             heatPowerView.hideHeatPower();
                         }
+                        heatPowerView.hideLoading();
                     }
                 });
     }
 
     @Override
     public void showFeatureHeatPower(int area, String featureTime, int algorithm) {
+        heatPowerView.showLoading();
         heatPowerModel.requestFeatureHeatPoint(area,TaxiApp.getAppNowTime(),featureTime,algorithm)
                 .subscribe(new Observer<HeatPointInfo>() {
                     @Override
@@ -153,6 +165,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                         //异常则清除热力图
                         heatPowerView.hideHeatPower();
                         heatPowerView.showError();
+                        heatPowerView.hideLoading();
                     }
 
                     @Override
@@ -163,6 +176,7 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
                         if (hideButton.getText().toString().equals("显示")){
                             heatPowerView.hideHeatPower();
                         }
+                        heatPowerView.hideLoading();
                     }
                 });
 
