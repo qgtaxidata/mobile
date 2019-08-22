@@ -44,6 +44,11 @@ public interface HeatPowerContract {
          * 展示错误信息
          */
         void showError();
+
+        /**
+         * 清理地图
+         */
+        void mapClear();
     }
 
     interface HeatPowerPresent extends BasePresent<HeatPowerView> {

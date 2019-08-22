@@ -763,4 +763,9 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
                     });
         }
     }
+
+    @Override
+    public void mapClear() {
+        homepageAMap.clear();
+    }
 }
