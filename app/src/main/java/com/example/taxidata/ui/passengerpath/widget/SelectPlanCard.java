@@ -100,28 +100,28 @@ public class SelectPlanCard extends LinearLayout {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_path_plane_one:
-                clearLastStatus();
-                setBlueOne();
-                status = PLAN_ONE;
                 if (listener != null) {
                     listener.select(0);
                 }
+                clearLastStatus();
+                setBlueOne();
+                status = PLAN_ONE;
                 break;
             case R.id.ll_path_plane_two:
-                clearLastStatus();
-                setBlueTwo();
-                status = PLAN_TWO;
                 if (listener != null) {
                     listener.select(1);
                 }
+                clearLastStatus();
+                setBlueTwo();
+                status = PLAN_TWO;
                 break;
             case R.id.ll_path_plan_three:
-                clearLastStatus();
-                setBlueThree();
-                status = PLAN_THREE;
                 if (listener != null) {
                     listener.select(2);
                 }
+                clearLastStatus();
+                setBlueThree();
+                status = PLAN_THREE;
                 break;
             default:
         }

@@ -35,7 +35,7 @@ public class PathInfo {
     public static class DataBean {
 
         private int time;
-        private int distance;
+        private double distance;
         private List<RouteBean> route;
 
         public int getTime() {
@@ -46,11 +46,11 @@ public class PathInfo {
             this.time = time;
         }
 
-        public int getDistance() {
+        public double getDistance() {
             return distance;
         }
 
-        public void setDistance(int distance) {
+        public void setDistance(double distance) {
             this.distance = distance;
         }
 
