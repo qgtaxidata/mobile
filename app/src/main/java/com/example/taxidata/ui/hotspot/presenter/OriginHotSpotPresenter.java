@@ -16,6 +16,8 @@ import com.example.taxidata.bean.HotSpotOrigin;
 import com.example.taxidata.bean.HotSpotRouteInfo;
 import com.example.taxidata.bean.HotSpotRouteRequest;
 import com.example.taxidata.common.StatusManager;
+import com.example.taxidata.net.RetrofitManager;
+import com.example.taxidata.net.RouteRetrofitManager;
 import com.example.taxidata.ui.hotspot.contract.OriginHotSpotContract;
 import com.example.taxidata.ui.hotspot.model.OriginHotSpotModel;
 import com.example.taxidata.ui.passengerpath.enity.PathInfo;
@@ -73,7 +75,7 @@ public class OriginHotSpotPresenter implements OriginHotSpotContract.OriginHotSp
                 @Override
                 public void onError(Throwable e) {
                     Logger.d("热点路径请求出错,原因："+e.getMessage());
-
+                    e.printStackTrace();
                     mView.requestFailed(StatusManager.FAIL_CONNECT_DATA);
                 }
                 @Override

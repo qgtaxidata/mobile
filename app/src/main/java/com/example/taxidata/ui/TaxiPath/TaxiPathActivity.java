@@ -28,6 +28,7 @@ import com.example.taxidata.util.ACache;
 import com.example.taxidata.widget.ChooseTaxiDialog;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
+import com.example.taxidata.widget.StatusToast;
 import com.example.taxidata.widget.StrongStengthTimerPicker;
 import com.example.taxidata.widget.TimePickClickedListener;
 import org.greenrobot.eventbus.EventBus;
@@ -217,15 +218,19 @@ public class TaxiPathActivity extends BaseActivity implements TaxiPathContract.T
                     taxiPathPresent.getTaxiInfo(this, areaId, taxiPathTimePicker.getTime());
                 }else {
                     //历史
-                    if(selectedTime!=null&& selectedTime.equals(taxiPathTimePicker.getHistoryTime()) && selectedArea==areaId ){
-                        //未改变选择的时间和区域则不发送请求
-                        ACache aCache = ACache.get(this);
-                        final ChooseTaxiDialog chooseTaxiDialog = new ChooseTaxiDialog(this, R.style.dialog, (TaxiInfo)aCache.getAsObject("taxi_number"));
-                        chooseTaxiDialog.show();
-                    }else {
-                        taxiPathPresent.getTaxiInfo(this, areaId, taxiPathTimePicker.getHistoryTime());
-                        selectedTime = taxiPathTimePicker.getHistoryTime();
-                        selectedArea = areaId;
+                    if(taxiPathTimePicker.isHistory()){
+                        if(selectedTime!=null&& selectedTime.equals(taxiPathTimePicker.getHistoryTime()) && selectedArea==areaId ){
+                            //未改变选择的时间和区域则不发送请求
+                            ACache aCache = ACache.get(this);
+                            final ChooseTaxiDialog chooseTaxiDialog = new ChooseTaxiDialog(this, R.style.dialog, (TaxiInfo)aCache.getAsObject("taxi_number"));
+                            chooseTaxiDialog.show();
+                        }else {
+                            taxiPathPresent.getTaxiInfo(this, areaId, taxiPathTimePicker.getHistoryTime());
+                            selectedTime = taxiPathTimePicker.getHistoryTime();
+                            selectedArea = areaId;
+                        }
+                    }else{
+                        StatusToast.getMyToast().ToastShow(this, null, R.mipmap.ic_sad, "请选择历史时间。");
                     }
                 }
                 break;

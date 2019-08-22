@@ -348,8 +348,10 @@ public class HotSpotPathActivity extends BaseActivity {
         for (PathInfo.DataBean.RouteBean point : routeBeanList) {
             latLngs.add(new LatLng(point.getLat(), point.getLng()));
         }
-        Polyline polyline = pathMap.addPolyline(new PolylineOptions().
-                addAll(latLngs).width(15).color(getResources().getColor(R.color.blue_color)));
+        PolylineOptions options = new PolylineOptions();
+        options.addAll(latLngs).width(15).color(getResources().getColor(R.color.blue_color))
+                .setUseTexture(true);
+        Polyline polyline = pathMap.addPolyline(options);
     }
 
     /**

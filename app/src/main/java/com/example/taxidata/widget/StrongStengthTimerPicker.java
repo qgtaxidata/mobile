@@ -425,13 +425,16 @@ public class StrongStengthTimerPicker extends FrameLayout {
         return getTime() + ":00";
     }
 
+    /**
+     * 用户选择的时间是否是历史时间
+     * @return boolean
+     */
     public boolean isHistory(){
         //设置时间格式
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long selectedTime=0;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+        long selectedTime = 99999999;
         try {
-            selectedTime = format.parse(getHistoryTime()).getTime();
-            Log.d("wx","try"+selectedTime);
+            selectedTime = format.parse(getTime() + ":00").getTime();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -439,5 +442,6 @@ public class StrongStengthTimerPicker extends FrameLayout {
         long appNowTime = TaxiApp.getMillionTime();
         return appNowTime >= selectedTime;
     }
+
 
 }

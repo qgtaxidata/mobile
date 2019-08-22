@@ -58,7 +58,8 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
 
     @Override
    public   Observable<HotSpotCallBackInfo>  requestHotSpotInfo(double longitude, double latitude, String time) {
-        time = TaxiApp.getAppNowTime();
+//        time = TaxiApp.getAppNowTime();
+        time = "2017-02-01 17:30:29";
         HotSpotRequestInfo info = new HotSpotRequestInfo(longitude ,latitude ,time);
         String hotSpotRequestJson = GsonUtil.GsonString(info);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),hotSpotRequestJson);
