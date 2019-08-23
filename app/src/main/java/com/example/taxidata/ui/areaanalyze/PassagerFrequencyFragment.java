@@ -64,6 +64,41 @@ public class PassagerFrequencyFragment extends BaseFragment {
         passagerFrequencyLineChart.clear();
         Logger.d(pickUpFreqBean.getType());
         //图表初始化
+        initChart();
+        //设置标题
+        passagerFrequencyTitle.setText(pickUpFreqBean.getType());
+        Log.d("show", pickUpFreqBean.getType());
+        //添加x轴数据
+        List<String> xList = new ArrayList<>();
+        xList.addAll(pickUpFreqBean.getX().get(0));
+        xList.addAll(pickUpFreqBean.getX().get(1));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
+        //添加y轴的分析数据
+        ArrayList<Entry> analyzeValues = new ArrayList<>();
+        for (int i = 0; i <pickUpFreqBean.getY().get(0).size(); i++) {
+            analyzeValues.add(new Entry(i, pickUpFreqBean.getY().get(0).get(i)));
+        }
+        //添加y轴的预测数据
+        ArrayList<Entry> forecastValues = new ArrayList<>();
+        forecastValues.add(new Entry(pickUpFreqBean.getY().get(0).size()-1, pickUpFreqBean.getY().get(0).get(pickUpFreqBean.getY().get(0).size()-1)));
+        for (int i =0 ;pickUpFreqBean.getY().get(0).size()+i <pickUpFreqBean.getY().get(0).size()+pickUpFreqBean.getY().get(1).size(); i++) {
+            forecastValues.add(new Entry(i+pickUpFreqBean.getY().get(0).size(), pickUpFreqBean.getY().get(1).get(i)));
+        }
+        //每个LineDataSet代表一条线
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值(单位：人次)");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值(单位：人次)");
+        initLineDataSet(analyzeLineDataSet,"#4472c4");
+        initLineDataSet(forecastLineDataSet, "#ed7d31");
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(analyzeLineDataSet);
+        dataSets.add(forecastLineDataSet);
+        LineData lineData = new LineData(dataSets);
+        passagerFrequencyLineChart.setData(lineData);
+        passagerFrequencyLineChart.notifyDataSetChanged();
+    }
+
+    //初始化图表
+    private void initChart(){
         passagerFrequencyLineChart.setDrawGridBackground(false);
         passagerFrequencyLineChart.setDragEnabled(true);  //禁止缩放
         passagerFrequencyLineChart.setScaleEnabled(true);  //禁止推动
@@ -95,35 +130,6 @@ public class PassagerFrequencyFragment extends BaseFragment {
         yAxis.setDrawAxisLine(true);
         yAxis.setTextColor(Color.BLACK);
         yAxis.setAxisLineColor(Color.BLACK);
-        //设置标题
-        passagerFrequencyTitle.setText(pickUpFreqBean.getType());
-        Log.d("show", pickUpFreqBean.getType());
-        //添加x轴数据
-        List<String> xList = new ArrayList<>();
-        xList.addAll(pickUpFreqBean.getX().get(0));
-        xList.addAll(pickUpFreqBean.getX().get(1));
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
-        //添加y轴的分析数据
-        ArrayList<Entry> analyzeValues = new ArrayList<>();
-        for (int i = 0; i <pickUpFreqBean.getY().get(0).size(); i++) {
-            analyzeValues.add(new Entry(i, pickUpFreqBean.getY().get(0).get(i)));
-        }
-        //添加y轴的预测数据
-        ArrayList<Entry> forecastValues = new ArrayList<>();
-        for (int i =0 ;pickUpFreqBean.getY().get(0).size()+i <pickUpFreqBean.getY().get(0).size()+pickUpFreqBean.getY().get(1).size(); i++) {
-            forecastValues.add(new Entry(i+pickUpFreqBean.getY().get(0).size(), pickUpFreqBean.getY().get(1).get(i)));
-        }
-        //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值(单位：人次)");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值(单位：人次)");
-        initLineDataSet(analyzeLineDataSet,"#4472c4");
-        initLineDataSet(forecastLineDataSet, "#ed7d31");
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(analyzeLineDataSet);
-        dataSets.add(forecastLineDataSet);
-        LineData lineData = new LineData(dataSets);
-        passagerFrequencyLineChart.setData(lineData);
-        passagerFrequencyLineChart.notifyDataSetChanged();
     }
 
     //初始化折线

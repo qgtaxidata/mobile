@@ -63,7 +63,41 @@ public class MileageUtilizationRateFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showMileageUtilizationRateChart(AreaAnalyzeInfo.DataBean.MileageUtilizationBean mileageUtilizationBean) {
         mileageUtilizationRateLineChart.clear();
-        Logger.d(mileageUtilizationBean.getType());
+        initChart();
+        //设置标题
+        mileageUtilizationRateTitle.setText(mileageUtilizationBean.getType());
+        Log.d("show", mileageUtilizationBean.getType());
+        //添加x轴数据
+        List<String> xList = new ArrayList<>();
+        xList.addAll(mileageUtilizationBean.getX().get(0));
+        xList.addAll(mileageUtilizationBean.getX().get(1));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
+        //添加y轴的分析数据
+        ArrayList<Entry> analyzeValues = new ArrayList<>();
+        for (int i = 0; i <mileageUtilizationBean.getY().get(0).size(); i++) {
+            analyzeValues.add(new Entry(i, mileageUtilizationBean.getY().get(0).get(i)));
+        }
+        //添加y轴的预测数据
+        ArrayList<Entry> forecastValues = new ArrayList<>();
+        forecastValues.add(new Entry(mileageUtilizationBean.getY().get(0).size()-1, mileageUtilizationBean.getY().get(0).get(mileageUtilizationBean.getY().get(0).size()-1)));
+        for (int i =0 ;mileageUtilizationBean.getY().get(0).size()+i <mileageUtilizationBean.getY().get(0).size()+mileageUtilizationBean.getY().get(1).size(); i++) {
+            forecastValues.add(new Entry(i+mileageUtilizationBean.getY().get(0).size(), mileageUtilizationBean.getY().get(1).get(i)));
+        }
+        //每个LineDataSet代表一条线
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值(单位：%)");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值(单位：%)");
+        initLineDataSet(analyzeLineDataSet,"#4472c4");
+        initLineDataSet(forecastLineDataSet, "#ed7d31");
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(analyzeLineDataSet);
+        dataSets.add(forecastLineDataSet);
+        LineData lineData = new LineData(dataSets);
+        mileageUtilizationRateLineChart.setData(lineData);
+        mileageUtilizationRateLineChart.notifyDataSetChanged();
+    }
+
+    //初始化图表
+    private void initChart(){
         //图表初始化
         mileageUtilizationRateLineChart.setDrawGridBackground(false);
         mileageUtilizationRateLineChart.setDragEnabled(true);  //禁止缩放
@@ -97,36 +131,6 @@ public class MileageUtilizationRateFragment extends BaseFragment {
         yAxis.setDrawAxisLine(true);
         yAxis.setTextColor(Color.BLACK);
         yAxis.setAxisLineColor(Color.BLACK);
-        Log.d("show", "wx");
-        //设置标题
-        mileageUtilizationRateTitle.setText(mileageUtilizationBean.getType());
-        Log.d("show", mileageUtilizationBean.getType());
-        //添加x轴数据
-        List<String> xList = new ArrayList<>();
-        xList.addAll(mileageUtilizationBean.getX().get(0));
-        xList.addAll(mileageUtilizationBean.getX().get(1));
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
-        //添加y轴的分析数据
-        ArrayList<Entry> analyzeValues = new ArrayList<>();
-        for (int i = 0; i <mileageUtilizationBean.getY().get(0).size(); i++) {
-            analyzeValues.add(new Entry(i, mileageUtilizationBean.getY().get(0).get(i)));
-        }
-        //添加y轴的预测数据
-        ArrayList<Entry> forecastValues = new ArrayList<>();
-        for (int i =0 ;mileageUtilizationBean.getY().get(0).size()+i <mileageUtilizationBean.getY().get(0).size()+mileageUtilizationBean.getY().get(1).size(); i++) {
-            forecastValues.add(new Entry(i+mileageUtilizationBean.getY().get(0).size(), mileageUtilizationBean.getY().get(1).get(i)));
-        }
-        //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值(单位：%)");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值(单位：%)");
-        initLineDataSet(analyzeLineDataSet,"#4472c4");
-        initLineDataSet(forecastLineDataSet, "#ed7d31");
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(analyzeLineDataSet);
-        dataSets.add(forecastLineDataSet);
-        LineData lineData = new LineData(dataSets);
-        mileageUtilizationRateLineChart.setData(lineData);
-        mileageUtilizationRateLineChart.notifyDataSetChanged();
     }
 
     //初始化折线

@@ -60,8 +60,43 @@ public class AverageTimeFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showAverageTimeChart(RoadQualityInfo.DataBean.AverageTimeBean averageTimeBean){
         averageTimeLineChart.clear();
-        Logger.d(averageTimeBean.getType());
         //图表初始化
+        initChart();
+        //设置标题
+        averageTimeTitle.setText(averageTimeBean.getType());
+        Log.d("show", averageTimeBean.getType());
+        //添加x轴数据
+        List<String> xList = new ArrayList<>();
+        xList.addAll(averageTimeBean.getX().get(0));
+        xList.addAll(averageTimeBean.getX().get(1));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
+        //添加分析数据
+        ArrayList<Entry> analyzeValues = new ArrayList<>();
+        for (int i = 0; i <averageTimeBean.getY().get(0).size(); i++) {
+            analyzeValues.add(new Entry(i, averageTimeBean.getY().get(0).get(i)));
+        }
+        //添加预测数据
+        ArrayList<Entry> forecastValues = new ArrayList<>();
+        forecastValues.add(new Entry(averageTimeBean.getY().get(0).size()-1, averageTimeBean.getY().get(0).get(averageTimeBean.getY().get(0).size()-1)));
+        for (int i =0 ;averageTimeBean.getY().get(0).size()+i <averageTimeBean.getY().get(0).size()+averageTimeBean.getY().get(1).size(); i++) {
+            forecastValues.add(new Entry(i+averageTimeBean.getY().get(0).size(), averageTimeBean.getY().get(1).get(i)));
+        }
+        //每个LineDataSet代表一条线
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值(单位：m/s)");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值(单位：m/s)");
+        initLineDataSet(analyzeLineDataSet,"#4472c4");
+        initLineDataSet(forecastLineDataSet, "#ed7d31");
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(analyzeLineDataSet);
+        dataSets.add(forecastLineDataSet);
+        LineData lineData = new LineData(dataSets);
+        averageTimeLineChart.setData(lineData);
+        averageTimeLineChart.notifyDataSetChanged();
+    }
+
+
+    //初始化图表
+    private void initChart(){
         averageTimeLineChart.setDrawGridBackground(false);
         averageTimeLineChart.setDragEnabled(true);  //禁止缩放
         averageTimeLineChart.setScaleEnabled(true);  //禁止推动
@@ -93,36 +128,6 @@ public class AverageTimeFragment extends Fragment {
         yAxis.setDrawAxisLine(true);
         yAxis.setTextColor(Color.BLACK);
         yAxis.setAxisLineColor(Color.BLACK);
-        Log.d("show", "wx");
-        //设置标题
-        averageTimeTitle.setText(averageTimeBean.getType());
-        Log.d("show", averageTimeBean.getType());
-        //添加x轴数据
-        List<String> xList = new ArrayList<>();
-        xList.addAll(averageTimeBean.getX().get(0));
-        xList.addAll(averageTimeBean.getX().get(1));
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
-        //添加分析数据
-        ArrayList<Entry> analyzeValues = new ArrayList<>();
-        for (int i = 0; i <averageTimeBean.getY().get(0).size(); i++) {
-            analyzeValues.add(new Entry(i, averageTimeBean.getY().get(0).get(i)));
-        }
-        //添加预测数据
-        ArrayList<Entry> forecastValues = new ArrayList<>();
-        for (int i =0 ;averageTimeBean.getY().get(0).size()+i <averageTimeBean.getY().get(0).size()+averageTimeBean.getY().get(1).size(); i++) {
-            forecastValues.add(new Entry(i+averageTimeBean.getY().get(0).size(), averageTimeBean.getY().get(1).get(i)));
-        }
-        //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值(单位：m/s)");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值(单位：m/s)");
-        initLineDataSet(analyzeLineDataSet,"#4472c4");
-        initLineDataSet(forecastLineDataSet, "#ed7d31");
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(analyzeLineDataSet);
-        dataSets.add(forecastLineDataSet);
-        LineData lineData = new LineData(dataSets);
-        averageTimeLineChart.setData(lineData);
-        averageTimeLineChart.notifyDataSetChanged();
     }
 
     //初始化折线
