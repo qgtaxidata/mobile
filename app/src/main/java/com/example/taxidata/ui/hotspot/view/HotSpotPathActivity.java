@@ -16,6 +16,7 @@ import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
@@ -348,9 +349,12 @@ public class HotSpotPathActivity extends BaseActivity {
         for (PathInfo.DataBean.RouteBean point : routeBeanList) {
             latLngs.add(new LatLng(point.getLat(), point.getLng()));
         }
+        //获取有纹理的线段配置
         PolylineOptions options = new PolylineOptions();
-        options.addAll(latLngs).width(15).color(getResources().getColor(R.color.blue_color))
-                .setUseTexture(true);
+//        options.addAll(latLngs).width(15).color(getResources().getColor(R.color.blue_color))
+//                .setUseTexture(true);
+        options.addAll(latLngs).setCustomTexture(BitmapDescriptorFactory.fromResource(R.drawable.icon_road_blue_arrow))
+                .width(20f);
         Polyline polyline = pathMap.addPolyline(options);
     }
 
@@ -361,7 +365,6 @@ public class HotSpotPathActivity extends BaseActivity {
      */
     public void initPlanCard(PathInfo info) {
         if (info != null) {
-            Logger.d(GsonUtil.GsonString(info));
             tvTimeOne.setText(String.valueOf(info.getData().get(0).getTime()).concat("分钟"));
             tvTimeTwo.setText(String.valueOf(info.getData().get(1).getTime()).concat("分钟"));
             tvTimeThree.setText(String.valueOf(info.getData().get(2).getTime()).concat("分钟"));
@@ -399,6 +402,7 @@ public class HotSpotPathActivity extends BaseActivity {
             pathMap.clear();
         }
     }
+
 
 }
 
