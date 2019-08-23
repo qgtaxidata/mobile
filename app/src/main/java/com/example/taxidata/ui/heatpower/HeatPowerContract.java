@@ -49,6 +49,16 @@ public interface HeatPowerContract {
          * 清理地图
          */
         void mapClear();
+
+        /**
+         * 显示loading界面
+         */
+        void showLoading();
+
+        /**
+         * 隐藏loading界面
+         */
+        void hideLoading();
     }
 
     interface HeatPowerPresent extends BasePresent<HeatPowerView> {

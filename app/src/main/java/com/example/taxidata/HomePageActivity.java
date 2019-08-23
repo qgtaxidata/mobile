@@ -52,6 +52,7 @@ import com.example.taxidata.util.EventBusUtils;
 import com.example.taxidata.util.LimitClickUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.MyTimerPicker;
+import com.example.taxidata.widget.SimpleLoadingDialog;
 import com.example.taxidata.widget.StatusBar;
 import com.example.taxidata.widget.StatusToast;
 import com.nightonke.boommenu.BoomButtons.BoomButton;
@@ -131,6 +132,8 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
     DropDownSelectView algorithmDsv;
     @BindView(R.id.buttom_menu_homepage)
     BoomMenuButton buttonMenu;
+
+    private SimpleLoadingDialog dialog;
 
     /*------------------------------------present相关-----------------------------------------------*/
 
@@ -787,5 +790,22 @@ public class HomePageActivity extends BaseActivity implements AMap.OnCameraChang
     @Override
     public void mapClear() {
         homepageAMap.clear();
+    }
+
+    @Override
+    public void showLoading() {
+        if (dialog == null) {
+            dialog = new SimpleLoadingDialog(this,"加载中",R.drawable.dialog_image_loading);
+        }
+        dialog.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        if (dialog != null) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
     }
 }

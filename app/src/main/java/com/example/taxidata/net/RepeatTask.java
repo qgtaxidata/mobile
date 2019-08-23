@@ -23,8 +23,21 @@ public class RepeatTask extends AsyncTask<Integer, HeatPointInfo,Integer> {
 
     private int repeatTime = 3000;
 
+    private boolean isFirst = true;
+
     public RepeatTask(RepeatCallBackListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        if (isFirst) {
+            isFirst = false;
+            if (listener != null) {
+                listener.onFirst();
+            }
+        }
     }
 
     @Override
@@ -43,6 +56,9 @@ public class RepeatTask extends AsyncTask<Integer, HeatPointInfo,Integer> {
                     break;
                 }
                 body = service.execute();
+                if (!body.isSuccessful()) {
+                    throw new Exception("timeout");
+                }
                 //热力图信息
                 if (isPause) {
                     break;
@@ -130,5 +146,10 @@ public class RepeatTask extends AsyncTask<Integer, HeatPointInfo,Integer> {
          * 轮询结束
          */
         void onFinsh();
+
+        /**
+         * 第一次加载热力图
+         */
+        void onFirst();
     }
 }

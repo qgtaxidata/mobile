@@ -29,7 +29,7 @@ public class RouteRetrofitManager  {
     private static RouteRetrofitManager retrofitManager;
     private Retrofit retrofit;
     private HttpService service;
-    public static int DEFAULT_TIME_OUT = 20;
+    public static int DEFAULT_TIME_OUT = 30;
     /**
      * 超时时间，默认为8秒
      */

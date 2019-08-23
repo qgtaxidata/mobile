@@ -69,6 +69,7 @@ public class OriginHotSpotPresenter implements OriginHotSpotContract.OriginHotSp
 //                            StatusToast.getMyToast().ToastShow(TaxiApp.getContext(), null, R.mipmap.ic_sad, pathInfo.getMsg());
                         }
                     } else {
+                        Logger.d("路线规划数据返回空数组");
                         mView.requestFailed(StatusManager.FAIL_CODE_NONE_DATA);
                     }
                 }
