@@ -60,8 +60,42 @@ public class DensityFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showDensityChart(RoadQualityInfo.DataBean.DensityBean densityBean) {
         densityLineChart.clear();
-        Logger.d(densityBean.getType());
         //图表初始化
+        initChart();
+        //设置标题
+        densityTitle.setText(densityBean.getType());
+        Log.d("show", densityBean.getType());
+        //添加x轴数据
+        List<String> xList = new ArrayList<>();
+        xList.addAll(densityBean.getX().get(0));
+        xList.addAll(densityBean.getX().get(1));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
+        //添加分析数据
+        ArrayList<Entry> analyzeValues = new ArrayList<>();
+        for (int i = 0; i < densityBean.getY().get(0).size(); i++) {
+            analyzeValues.add(new Entry(i, densityBean.getY().get(0).get(i)));
+        }
+        //添加预测数据
+        ArrayList<Entry> forecastValues = new ArrayList<>();
+        forecastValues.add(new Entry(densityBean.getY().get(0).size()-1, densityBean.getY().get(0).get(densityBean.getY().get(0).size()-1)));
+        for (int i = 0; densityBean.getY().get(0).size() + i < densityBean.getY().get(0).size() + densityBean.getY().get(1).size(); i++) {
+            forecastValues.add(new Entry(i + densityBean.getY().get(0).size(), densityBean.getY().get(1).get(i)));
+        }
+        //每个LineDataSet代表一条线
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值");
+        initLineDataSet(analyzeLineDataSet, "#4472c4");
+        initLineDataSet(forecastLineDataSet, "#ed7d31");
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(analyzeLineDataSet);
+        dataSets.add(forecastLineDataSet);
+        LineData lineData = new LineData(dataSets);
+        densityLineChart.setData(lineData);
+        densityLineChart.notifyDataSetChanged();
+    }
+
+    //初始化图表
+    private void initChart(){
         densityLineChart.setDrawGridBackground(false);
         densityLineChart.setDragEnabled(true);  //禁止缩放
         densityLineChart.setScaleEnabled(true);  //禁止推动
@@ -93,36 +127,6 @@ public class DensityFragment extends Fragment {
         yAxis.setDrawAxisLine(true);
         yAxis.setTextColor(Color.BLACK);
         yAxis.setAxisLineColor(Color.BLACK);
-        Log.d("show", "wx");
-        //设置标题
-        densityTitle.setText(densityBean.getType());
-        Log.d("show", densityBean.getType());
-        //添加x轴数据
-        List<String> xList = new ArrayList<>();
-        xList.addAll(densityBean.getX().get(0));
-        xList.addAll(densityBean.getX().get(1));
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
-        //添加分析数据
-        ArrayList<Entry> analyzeValues = new ArrayList<>();
-        for (int i = 0; i < densityBean.getY().get(0).size(); i++) {
-            analyzeValues.add(new Entry(i, densityBean.getY().get(0).get(i)));
-        }
-        //添加预测数据
-        ArrayList<Entry> forecastValues = new ArrayList<>();
-        for (int i = 0; densityBean.getY().get(0).size() + i < densityBean.getY().get(0).size() + densityBean.getY().get(1).size(); i++) {
-            forecastValues.add(new Entry(i + densityBean.getY().get(0).size(), densityBean.getY().get(1).get(i)));
-        }
-        //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值");
-        initLineDataSet(analyzeLineDataSet, "#4472c4");
-        initLineDataSet(forecastLineDataSet, "#ed7d31");
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(analyzeLineDataSet);
-        dataSets.add(forecastLineDataSet);
-        LineData lineData = new LineData(dataSets);
-        densityLineChart.setData(lineData);
-        densityLineChart.notifyDataSetChanged();
     }
 
     //初始化折线

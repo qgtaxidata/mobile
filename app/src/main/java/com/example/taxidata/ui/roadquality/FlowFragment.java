@@ -54,8 +54,48 @@ public class FlowFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showFlowChart(RoadQualityInfo.DataBean.FlowBean flowBean){
         flowLineChart.clear();
-        Logger.d(flowBean.getType());
         //图表初始化
+        initChart();
+        //设置标题
+        flowTitle.setText(flowBean.getType());
+        Log.d("show", flowBean.getType());
+        //添加x轴数据
+        List<String> xList = new ArrayList<>();
+        xList.addAll(flowBean.getX().get(0));
+        xList.addAll(flowBean.getX().get(1));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
+        //添加分析数据
+        ArrayList<Entry> analyzeValues = new ArrayList<>();
+        for (int i = 0; i <flowBean.getY().get(0).size(); i++) {
+            analyzeValues.add(new Entry(i, flowBean.getY().get(0).get(i)));
+        }
+        //添加预测数据
+        ArrayList<Entry> forecastValues = new ArrayList<>();
+        forecastValues.add(new Entry(flowBean.getY().get(0).size()-1, flowBean.getY().get(0).get(flowBean.getY().get(0).size()-1)));
+        for (int i =0 ;flowBean.getY().get(0).size()+i <flowBean.getY().get(0).size()+flowBean.getY().get(1).size(); i++) {
+            forecastValues.add(new Entry(i+flowBean.getY().get(0).size(), flowBean.getY().get(1).get(i)));
+        }
+        //每个LineDataSet代表一条线
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值");
+        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值");
+        initLineDataSet(analyzeLineDataSet,"#4472c4");
+        initLineDataSet(forecastLineDataSet, "#ed7d31");
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(analyzeLineDataSet);
+        dataSets.add(forecastLineDataSet);
+        LineData lineData = new LineData(dataSets);
+        flowLineChart.setData(lineData);
+        flowLineChart.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    //初始化图表
+    private void initChart(){
         flowLineChart.setDrawGridBackground(false);
         flowLineChart.setDragEnabled(true);  //禁止缩放
         flowLineChart.setScaleEnabled(true);  //禁止推动
@@ -87,42 +127,6 @@ public class FlowFragment extends Fragment {
         yAxis.setDrawAxisLine(true);
         yAxis.setTextColor(Color.BLACK);
         yAxis.setAxisLineColor(Color.BLACK);
-        Log.d("show", "wx");
-        //设置标题
-        flowTitle.setText(flowBean.getType());
-        Log.d("show", flowBean.getType());
-        //添加x轴数据
-        List<String> xList = new ArrayList<>();
-        xList.addAll(flowBean.getX().get(0));
-        xList.addAll(flowBean.getX().get(1));
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xList));
-        //添加分析数据
-        ArrayList<Entry> analyzeValues = new ArrayList<>();
-        for (int i = 0; i <flowBean.getY().get(0).size(); i++) {
-            analyzeValues.add(new Entry(i, flowBean.getY().get(0).get(i)));
-        }
-        //添加预测数据
-        ArrayList<Entry> forecastValues = new ArrayList<>();
-        for (int i =0 ;flowBean.getY().get(0).size()+i <flowBean.getY().get(0).size()+flowBean.getY().get(1).size(); i++) {
-            forecastValues.add(new Entry(i+flowBean.getY().get(0).size(), flowBean.getY().get(1).get(i)));
-        }
-        //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值");
-        LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值");
-        initLineDataSet(analyzeLineDataSet,"#4472c4");
-        initLineDataSet(forecastLineDataSet, "#ed7d31");
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(analyzeLineDataSet);
-        dataSets.add(forecastLineDataSet);
-        LineData lineData = new LineData(dataSets);
-        flowLineChart.setData(lineData);
-        flowLineChart.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
     }
 
     //初始化折线
