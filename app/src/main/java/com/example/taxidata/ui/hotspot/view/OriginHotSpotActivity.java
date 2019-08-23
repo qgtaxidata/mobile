@@ -274,6 +274,8 @@ public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpot
             LatLng latLng = (LatLng) baseEvent.object;
             routeRequest.setLonDestination(latLng.longitude);
             routeRequest.setLatDestination(latLng.latitude);
+            StatusManager.hotSpotLat = latLng.latitude;
+            StatusManager.hotSpotLng = latLng.longitude;
             Log.e(TAG,"接收用户选择的热点（"+latLng.longitude+","+latLng.latitude+") ,准备选择 起点");
         }
     }

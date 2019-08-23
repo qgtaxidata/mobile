@@ -174,9 +174,11 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
                     public void onError(Throwable e) {
                         ToastUtil.showLongToastBottom("出错了，原因 :"+ e.getMessage());
                         cancelLoadingDialong();
+
                     }
                     @Override
                     public void onComplete() {
+
                     }
                 });
     }
