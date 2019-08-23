@@ -346,6 +346,7 @@ public class SetUpActivity extends BaseActivity {
     public void setTimeout() {
         String timeout = getCenterHolder(chooseTimeoutRv).timeTv.getText().toString();
         this.timeout = Integer.valueOf(timeout);
+        Log.d("SetUpActivity",timeout + "");
         timeoutTv.setText(timeout + "秒");
     }
 
@@ -362,7 +363,8 @@ public class SetUpActivity extends BaseActivity {
      * @return TimeAdapter.ViewHolder
      */
     public TimeAdapter.ViewHolder getCenterHolder(RecyclerView rv) {
-        View v = rv.getChildAt(1);
+        int count = rv.getChildCount();
+        View v = rv.getChildAt(count / 2);
         TimeAdapter.ViewHolder holder = (TimeAdapter.ViewHolder) rv.getChildViewHolder(v);
         return holder;
     }
