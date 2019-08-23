@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.taxidata.R;
 import com.example.taxidata.base.BaseActivity;
+import com.example.taxidata.util.LimitClickUtil;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
@@ -167,7 +168,9 @@ public class RecommendAdActivity extends BaseActivity implements RecommendAdCont
 
     @OnClick({R.id.btn_ad_config_refresh, R.id.ll_ad_one, R.id.ll_ad_two, R.id.ll_ad_three, R.id.ll_ad_four, R.id.ll_ad_five, R.id.btn_ad_create_chart})
     public void onViewClicked(View view) {
-        // TODO 是否需要限制按钮，有待测试
+        if (LimitClickUtil.isQuick(1000)) {
+            return;
+        }
         String pre = "广东省广州市" + adAreaDsv.getSlectedArea();
         switch (view.getId()) {
             case R.id.btn_ad_config_refresh:
@@ -210,7 +213,7 @@ public class RecommendAdActivity extends BaseActivity implements RecommendAdCont
                     Intent intent = new Intent(RecommendAdActivity.this,ContrastChartActivity.class);
                     startActivity(intent);
                 }else {
-                    StatusToast.getMyToast().ToastShow(RecommendAdActivity.this,null,R.mipmap.ic_sad,"生成图表失败");
+                    StatusToast.getMyToast().ToastShow(RecommendAdActivity.this,null,R.mipmap.ic_sad,"请填入完整信息");
                 }
                 break;
             default:

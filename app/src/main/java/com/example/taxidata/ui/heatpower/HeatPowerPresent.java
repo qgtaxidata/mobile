@@ -68,23 +68,29 @@ public class HeatPowerPresent implements HeatPowerContract.HeatPowerPresent {
 
             @Override
             public void onFail(Exception e) {
-                e.printStackTrace();
-                heatPowerView.showError();
-                //异常则从队列中移除
-                RepeatTask repeat = taskQueue.remove();
-                repeat.pause();
-                heatPowerView.hideHeatPower();
-                heatPowerView.hideLoading();
+                if (heatPowerView != null) {
+                    e.printStackTrace();
+                    heatPowerView.showError();
+                    //异常则从队列中移除
+                    RepeatTask repeat = taskQueue.remove();
+                    repeat.pause();
+                    heatPowerView.hideHeatPower();
+                    heatPowerView.hideLoading();
+                }
             }
 
             @Override
             public void onFinsh() {
-                heatPowerView.hideHeatPower();
+                if (heatPowerView != null) {
+                    heatPowerView.hideHeatPower();
+                }
             }
 
             @Override
             public void onFirst() {
-                heatPowerView.showLoading();
+                if (heatPowerView != null) {
+                    heatPowerView.showLoading();
+                }
             }
         });
 
