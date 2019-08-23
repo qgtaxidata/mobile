@@ -34,8 +34,8 @@ public class BaseFragment extends Fragment implements  BaseView {
         if (isRegisterEventBus()) {
             EventBusUtils.unregister(this);
         }
-        RefWatcher refWatcher = TaxiApp.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = TaxiApp.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     /**

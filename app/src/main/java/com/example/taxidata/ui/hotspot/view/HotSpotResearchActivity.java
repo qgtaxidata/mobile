@@ -247,7 +247,6 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //Todo：带着 选中的 热点的信息，去到 中间页面
-                Logger.d("你点击了热点列表的第" + position + "项");
                 mPresenter.convertToAddressName(recommandAdapter.getItem(position), geocodeSearch);
             }
         });

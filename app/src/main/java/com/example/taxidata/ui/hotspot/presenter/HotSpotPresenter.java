@@ -78,7 +78,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                         @Override
                         public void onNext(HotSpotCallBackInfo hotSpotCallBackInfo) {
                             //Todo 获取了返回的callback对象后,解析获取列表
-                            if (hotSpotCallBackInfo.getCode() == 1  ) {
+                            if (hotSpotCallBackInfo.getCode() == 1 && hotSpotCallBackInfo.getData() != null ) {
                                 if(hotSpotCallBackInfo.getData().size() > 0) {
                                     hotSpotRecommandInfoList.clear();
                                     hotSpotRecommandInfoList.addAll(hotSpotCallBackInfo.getData());
@@ -93,15 +93,17 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
                         }
                         @Override
                         public void onError(Throwable e) {
-                            //假数据--度过服务器关掉的时光
                             hotSpotRecommandInfoList.clear();
                             e.printStackTrace();
-                            mHotSpotView.showHotSpot(hotSpotRecommandInfoList);
-                            ToastUtil.showShortToastBottom("抱歉，网络似乎出现了异常 :(");
+                            mHotSpotView.requestFailed(StatusManager.FAIL_CODE_NONE_DATA);
+                            ToastUtil.showShortToastBottom("抱歉，网络似乎出现了异常 :("+e.getMessage());
                         }
 
                         @Override
                         public void onComplete() {
+                            if (hotSpotRecommandInfoList.size() == 0){
+                                mHotSpotView.requestFailed(StatusManager.FAIL_CODE_NONE_DATA);
+                            }
                             Log.d(TAG, "onComplete: 热点请求P层请求回调收工");
                         }
                     });

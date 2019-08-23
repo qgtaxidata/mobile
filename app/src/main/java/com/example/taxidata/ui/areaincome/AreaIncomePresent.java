@@ -30,7 +30,7 @@ public class AreaIncomePresent implements AreaIncomeContract.AreaIncomePresent {
             @Override
             public void onNext(AreaIncomeInfo areaIncomeInfo) {
                 Log.d("next", date);
-                if(areaIncomeInfo.getCode()== 1){
+                if(areaIncomeInfo.getCode()== 1&&areaIncomeInfo.getData()!=null){
                     view.showChart(areaIncomeInfo.getData());
                 }else {
                     view.hideLoadingView();

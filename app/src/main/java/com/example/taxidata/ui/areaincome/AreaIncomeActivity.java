@@ -76,7 +76,7 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         present.attachView(this);
         initAreaList();
         initTimeList();
-        initChart();
+        getChartInfo();
         //获取用户选择的区域
         areaIncomeAreaSelectView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -143,46 +143,14 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
     }
 
     //初始化图表(默认显示番禺区和2017年02月05号的数据)
-    private void initChart() {
+    private void getChartInfo() {
         present.getAreaIncomeInfo(AreaIncomeActivity.this, areaId, date);
     }
 
     @Override
     public void showChart(AreaIncomeInfo.DataBean dataBean) {
         areaIncomeLineChart.clear();
-        //图表初始化
-        areaIncomeLineChart.setDrawGridBackground(false);
-        areaIncomeLineChart.setDragEnabled(true);  //禁止缩放
-        areaIncomeLineChart.setScaleEnabled(true);  //禁止推动
-        areaIncomeLineChart.setDrawBorders(false);    //设置四周是否有边框
-        areaIncomeLineChart.getAxisRight().setEnabled(false);   //不显示右侧y轴
-        areaIncomeLineChart.getDescription().setEnabled(false);
-        //设置图例
-        Legend legend = areaIncomeLineChart.getLegend();
-        legend.setEnabled(true);
-        legend.setTextSize(12);
-        legend.setFormSize(10);
-        //x轴的相关设置
-        xAxis = areaIncomeLineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置
-        xAxis.setAxisMinimum(0f);
-        xAxis.setAxisLineWidth(1f);
-        xAxis.setTextColor(Color.BLACK);
-        xAxis.setAxisLineColor(Color.BLACK);
-        xAxis.setGranularity(1f);
-        xAxis.setDrawGridLines(false);   //去掉x轴的网格线
-        xAxis.setLabelCount(7);   //设置x轴刻度数量
-        //Y轴的相关设置
-        yAxis = areaIncomeLineChart.getAxisLeft();
-        yAxis.removeAllLimitLines();
-        yAxis.setAxisLineWidth(1f);
-        yAxis.setDrawGridLines(true);      //显示y轴的网格线
-        yAxis.enableGridDashedLine(10f, 10f, 0f);   //并设置为破折线
-        yAxis.setAxisMinimum(0f);
-        yAxis.setDrawAxisLine(true);
-        yAxis.setTextColor(Color.BLACK);
-        yAxis.setAxisLineColor(Color.BLACK);
-        Log.d("show", "wx");
+        initChart();
         //设置标题
         areaIncomeTitleTv.setText(dataBean.getTitle());
         Log.d("show", dataBean.getTitle());
@@ -198,6 +166,7 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         }
         //添加预测数据
         ArrayList<Entry> forecastValues = new ArrayList<>();
+        forecastValues.add(new Entry(dataBean.getImcome().getY().get(0).size()-1,dataBean.getImcome().getY().get(0).get(dataBean.getImcome().getY().get(0).size()-1)));
         for (int i =0 ;dataBean.getImcome().getY().get(0).size()+i <dataBean.getImcome().getY().get(1).size()+dataBean.getImcome().getY().get(0).size(); i++) {
             forecastValues.add(new Entry(i+dataBean.getImcome().getY().get(0).size(), dataBean.getImcome().getY().get(1).get(i)));
         }
@@ -249,5 +218,40 @@ public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContra
         if(loading!=null){
             loading.dismiss();
         }
+    }
+
+    private void initChart(){
+        //图表初始化
+        areaIncomeLineChart.setDrawGridBackground(false);
+        areaIncomeLineChart.setDragEnabled(true);  //禁止缩放
+        areaIncomeLineChart.setScaleEnabled(true);  //禁止推动
+        areaIncomeLineChart.setDrawBorders(false);    //设置四周是否有边框
+        areaIncomeLineChart.getAxisRight().setEnabled(false);   //不显示右侧y轴
+        areaIncomeLineChart.getDescription().setEnabled(false);
+        //设置图例
+        Legend legend = areaIncomeLineChart.getLegend();
+        legend.setEnabled(true);
+        legend.setTextSize(12);
+        legend.setFormSize(10);
+        //x轴的相关设置
+        xAxis = areaIncomeLineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //x轴显示位置
+        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisLineWidth(1f);
+        xAxis.setTextColor(Color.BLACK);
+        xAxis.setAxisLineColor(Color.BLACK);
+        xAxis.setGranularity(1f);
+        xAxis.setDrawGridLines(false);   //去掉x轴的网格线
+        xAxis.setLabelCount(7);   //设置x轴刻度数量
+        //Y轴的相关设置
+        yAxis = areaIncomeLineChart.getAxisLeft();
+        yAxis.removeAllLimitLines();
+        yAxis.setAxisLineWidth(1f);
+        yAxis.setDrawGridLines(true);      //显示y轴的网格线
+        yAxis.enableGridDashedLine(10f, 10f, 0f);   //并设置为破折线
+        yAxis.setAxisMinimum(0f);
+        yAxis.setDrawAxisLine(true);
+        yAxis.setTextColor(Color.BLACK);
+        yAxis.setAxisLineColor(Color.BLACK);
     }
 }

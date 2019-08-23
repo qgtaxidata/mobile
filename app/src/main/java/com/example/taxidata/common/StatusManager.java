@@ -16,6 +16,8 @@ public class StatusManager {
 
     public static final int FAIL_CONNECT_DATA = 3;
 
+    public  static  double hotSpotLat;
 
+    public static  double hotSpotLng;
 
 }

@@ -49,11 +49,11 @@ public class TaxiApp extends Application {
         Logger.addLogAdapter(new AndroidLogAdapter());
         initGreenDao();
         initAppTime();
-        //LeakCanary 监控者
-        refWatcher =  LeakCanary.install(this);
-        if (isMainProcess()) {
-            OpenInstall.init(this);
-        }
+//        //LeakCanary 监控者
+//        refWatcher =  LeakCanary.install(this);
+//        if (isMainProcess()) {
+//            OpenInstall.init(this);
+//        }
     }
 
     public static Context getContext(){
