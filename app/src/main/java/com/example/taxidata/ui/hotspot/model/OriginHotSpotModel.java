@@ -146,7 +146,4 @@ public class OriginHotSpotModel implements OriginHotSpotContract.OriginHotSpotMo
         }
     }
 
-
-
-
 }

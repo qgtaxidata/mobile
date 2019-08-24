@@ -183,7 +183,7 @@ public class LineChartUtil {
         YAxis axisLeft = lineChart.getAxisLeft(); //y轴左边标示
         YAxis axisRight = lineChart.getAxisRight(); //y轴右边标示
         //将y轴坐标系分成了 0 - 100 十份
-        axisLeft.setAxisMaximum(100f);
+        axisLeft.setAxisMaximum(50f);
         axisLeft.setAxisMinimum(0f);
         axisLeft.setLabelCount(10 ,false);
         axisLeft.setTextColor(Color.GRAY); //字体颜色

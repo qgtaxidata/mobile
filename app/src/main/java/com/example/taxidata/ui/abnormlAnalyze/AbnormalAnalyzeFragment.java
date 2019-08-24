@@ -288,12 +288,12 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
         xAxis.setValueFormatter(new IndexAxisValueFormatter(str));
         xAxis.setTextSize(8f);
         yAxis = chartDetail.getAxisLeft();
-        yAxis.setLabelCount(6, false);
+        yAxis.setLabelCount(5, false);
         yAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         yAxis.setSpaceTop(20f);
         //这个替换setStartAtZero(true)
         yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(1200f);
+        yAxis.setAxisMaximum(500f);
         //取消右方y轴显示
         chartDetail.getAxisRight().setEnabled(false);
         //取消图例的显示
@@ -317,8 +317,14 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         dataSets.add(barDataSet);
         BarData barData = new BarData(dataSets);
-        barData.setValueTextColor(R.color.qmui_config_color_red);
-        barData.setValueTextSize(10f);
+        barData.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                int data = (int) value;
+                return String.valueOf(data);
+            }
+        });
+        barData.setValueTextSize(12f);
         barData.setBarWidth(0.5f);
         //设置数据
         chartDetail.setData(barData);
