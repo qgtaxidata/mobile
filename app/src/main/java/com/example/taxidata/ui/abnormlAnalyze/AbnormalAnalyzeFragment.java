@@ -257,6 +257,7 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
                 String str = p + "%";
                 if (value == 0) {
                     str = "";
+                    chartSummary.setEntryLabelTextSize(0f);
                 }
                 return str;
             }

@@ -183,13 +183,13 @@ public class LineChartUtil {
         YAxis axisLeft = lineChart.getAxisLeft(); //y轴左边标示
         YAxis axisRight = lineChart.getAxisRight(); //y轴右边标示
         //将y轴坐标系分成了 0 - 100 十份
-        axisLeft.setAxisMaximum(50f);
+        axisLeft.setAxisMaximum(16f);
         axisLeft.setAxisMinimum(0f);
-        axisLeft.setLabelCount(10 ,false);
+        axisLeft.setLabelCount(8 ,false);
         axisLeft.setTextColor(Color.GRAY); //字体颜色
         axisLeft.setTextSize(15f); //字体大小
         axisLeft.setGridColor(Color.GRAY); //网格线颜色
-
+        axisLeft.setXOffset(0.3f);
         axisRight.setDrawAxisLine(false);
         axisRight.setDrawGridLines(false);
         axisRight.setDrawLabels(false);
