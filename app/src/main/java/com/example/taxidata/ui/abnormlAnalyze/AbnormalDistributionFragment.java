@@ -36,7 +36,6 @@ import butterknife.Unbinder;
  */
 public class AbnormalDistributionFragment extends BaseFragment {
 
-
     Unbinder unbinder;
     @BindView(R.id.btn_refresh_abnormal_analyze)
     Button btnRefresh;
@@ -96,8 +95,8 @@ public class AbnormalDistributionFragment extends BaseFragment {
             abnormalData[i] = carsBeanInfo.getAbnormal().get(index).getDistribution().get(i) * 100;
         }
         //设置折线的名称
-        LineChartUtil.setLineNameOne("正常车(单位:%)");
-        LineChartUtil.setLineNameTwo("异常车(单位:%)");
+        LineChartUtil.setLineNameOne("正常车辆规律分布(单位:%)");
+        LineChartUtil.setLineNameTwo("异常车辆规律分布(单位:%)");
         //创建两条折线的图表(一条正常 ，一条异常)
         LineData lineData = LineChartUtil.initDoubleLineChart(getContext() ,chartSummary ,numX ,datasNormal,abnormalData);
         LineChartUtil.initDataStyle(chartSummary ,lineData ,getContext());

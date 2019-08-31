@@ -44,4 +44,14 @@
         android:layout_below="@id/tv_abnormal_distribution_summary"
         />
 
+    <TextView
+        android:id="@+id/tv_chart_explain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="规律分布: 指该车辆在此刻载客的概率"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/chart_abnormal_distribution_summary"
+        android:textSize="11sp"
+        />
+
 </RelativeLayout>

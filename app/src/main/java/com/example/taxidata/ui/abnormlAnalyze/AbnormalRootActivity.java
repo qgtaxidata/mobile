@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.taxidata.R;
+import com.example.taxidata.base.BaseActivity;
 import com.example.taxidata.widget.DisableScrollViewPager;
 import com.google.android.material.tabs.TabLayout;
 
@@ -23,7 +24,7 @@ import butterknife.ButterKnife;
  * @author: ODM
  * @date: 2019/8/20
  */
-public class AbnormalRootActivity extends AppCompatActivity {
+public class AbnormalRootActivity extends BaseActivity {
 
     private static final String TAG = "AbnormalRootActivity";
     @BindView(R.id.tl_abnormal)
@@ -53,7 +54,6 @@ public class AbnormalRootActivity extends AppCompatActivity {
             tlAbnormal.getTabAt(1).setText("异常分布");
         }
     }
-
 
     /**
      * view pager adapter

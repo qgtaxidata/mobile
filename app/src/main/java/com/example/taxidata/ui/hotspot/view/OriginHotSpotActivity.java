@@ -56,7 +56,6 @@ import butterknife.ButterKnife;
 
 public class OriginHotSpotActivity extends BaseActivity implements OriginHotSpotContract.OriginHotSpotView {
 
-
     private static final String TAG = "HotSpotOriginActivity";
     @BindView(R.id.imagebutton_hotspot_origin_back)
     ImageButton imagebuttonBack;

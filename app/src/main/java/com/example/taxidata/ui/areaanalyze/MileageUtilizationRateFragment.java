@@ -43,7 +43,6 @@ public class MileageUtilizationRateFragment extends BaseFragment {
     private TextView mileageUtilizationRateTitle;
     private LineChart mileageUtilizationRateLineChart;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

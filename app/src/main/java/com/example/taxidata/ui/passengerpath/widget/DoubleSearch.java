@@ -17,7 +17,6 @@ import butterknife.OnClick;
 
 public class DoubleSearch extends LinearLayout {
 
-
     @BindView(R.id.iv_search_back)
     ImageView backIv;
     @BindView(R.id.tv_search_origin)

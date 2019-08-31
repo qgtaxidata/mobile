@@ -3,8 +3,6 @@ package com.example.taxidata.bean;
 import java.util.List;
 
 public class AreaIncomeInfo {
-
-
     /**
      * msg : success
      * code : 1

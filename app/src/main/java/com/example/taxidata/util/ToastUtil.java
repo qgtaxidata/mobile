@@ -7,7 +7,6 @@ import com.example.taxidata.application.TaxiApp;
 
 public class ToastUtil {
 
-
     //触发多少次Toast调用，都只会持续一次Toast显示的时长
     private static Toast toast;
 

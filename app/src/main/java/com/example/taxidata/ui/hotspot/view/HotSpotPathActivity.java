@@ -353,8 +353,15 @@ public class HotSpotPathActivity extends BaseActivity {
         PolylineOptions options = new PolylineOptions();
 //        options.addAll(latLngs).width(15).color(getResources().getColor(R.color.blue_color))
 //                .setUseTexture(true);
-        options.addAll(latLngs).setCustomTexture(BitmapDescriptorFactory.fromResource(R.drawable.icon_road_blue_arrow))
+        options.addAll(latLngs)
                 .width(20f);
+        if(index == 0) {
+            options.setCustomTexture(BitmapDescriptorFactory.fromResource(R.drawable.icon_road_blue_arrow));
+        } else if(index == 1) {
+            options.setCustomTexture(BitmapDescriptorFactory.fromResource(R.drawable.icon_road_red_arrow));
+        } else if(index == 2) {
+            options.setCustomTexture(BitmapDescriptorFactory.fromResource(R.drawable.icon_road_green_arrow));
+        }
         Polyline polyline = pathMap.addPolyline(options);
     }
 

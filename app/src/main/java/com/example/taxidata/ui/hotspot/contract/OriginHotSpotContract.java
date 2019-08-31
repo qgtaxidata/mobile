@@ -30,7 +30,6 @@ public interface OriginHotSpotContract {
      */
     interface OriginHotSpotModel  extends BaseModel {
 
-
         /**
          * Request route data observable.
          *
@@ -66,7 +65,6 @@ public interface OriginHotSpotContract {
          * @param hotSpotOrigin the hot spot origin
          */
          void removeOriginHistory(HotSpotOrigin hotSpotOrigin) ;
-
 
     }
 
@@ -105,7 +103,6 @@ public interface OriginHotSpotContract {
      */
     interface OriginHotSpotPresenter extends BasePresent<OriginHotSpotView> {
 
-
         /**
          * Gets 路径 data.
          *
@@ -134,7 +131,6 @@ public interface OriginHotSpotContract {
          */
          void getHintList(String keyword) ;
 
-
         /**
          * 将地址转换成坐标
          *
@@ -150,7 +146,6 @@ public interface OriginHotSpotContract {
          * @param hintList the hint list
          */
          void getHintListSuccess(List<HotSpotHint> hintList);
-
 
         /**
          * Remove origin history.

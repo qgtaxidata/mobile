@@ -139,11 +139,12 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             @Override
             public void afterTextChanged(Editable s) {
                 intputString = s.toString();
-                if (!"".equals(intputString) && etSearch.isFocused() && !isHintIng) {
+                if (!"".equals(intputString) && etSearch.isFocused() && ! isHintIng) {
                     //当前输入框有内容,将输入的内容发送请求获取提示列表
                     mPresenter.getHintList(s.toString());
                 } else {
                     //当前输入框没有内容,则显示历史消息记录
+                    Logger.d("输入框没有内容，显示历史列表");
                     showHistorySearchList(mPresenter.getHistorySearchList());
 
                 }
@@ -247,6 +248,7 @@ public class HotSpotResearchActivity extends BaseActivity implements HotSpotCont
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //Todo：带着 选中的 热点的信息，去到 中间页面
+                Logger.d("点击了第"+ position+"项热点啊");
                 mPresenter.convertToAddressName(recommandAdapter.getItem(position), geocodeSearch);
             }
         });

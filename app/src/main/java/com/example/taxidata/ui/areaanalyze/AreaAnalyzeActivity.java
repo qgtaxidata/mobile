@@ -62,7 +62,6 @@ public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeCont
     private int areaId = 5;
     private String date = "2017-02-05";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +98,6 @@ public class AreaAnalyzeActivity extends BaseActivity implements AreaAnalyzeCont
             }
         });
     }
-
 
     private void setViewPager(ViewPager viewPager) {
         areaAnalyzeList.add(new DepartureRateFragment());      //添加出车率碎片

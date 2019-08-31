@@ -25,6 +25,16 @@
         android:layout_toStartOf="@id/btn_refresh_abnormal_analyze"
         android:layout_alignBottom="@id/btn_refresh_abnormal_analyze"
         />
+    <TextView
+        android:id="@+id/tv_select_remind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请选择区域"
+        android:textSize="18sp"
+        android:layout_toLeftOf="@id/select_area_abnormal_analyze"
+        android:layout_marginEnd="15sp"
+        android:layout_alignBottom="@id/select_area_abnormal_analyze"
+        />
 
     <TextView
         android:id="@+id/tv_abnormal_analyze_summary"
@@ -57,8 +67,8 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart_abnormal_detail"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="10dp"
         android:layout_below="@id/tv_abnormal_detail"
         />
