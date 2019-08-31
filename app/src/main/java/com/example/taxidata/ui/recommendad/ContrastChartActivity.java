@@ -73,11 +73,18 @@ public class ContrastChartActivity extends BaseActivity {
         for (int i = 0; i < dataList.size(); i++) {
             AdInfo.DataBean temp = dataList.get(i);
             boardFlow.add(new BarEntry(i,temp.getBoardFlow()));
-            boardRate.add(new BarEntry(i,temp.getBoradRate() * 100));
             Log.d("ContrastChartActivity",temp.getBoradRate() + "");
             if (max < temp.getBoardFlow()) {
                 max = temp.getBoardFlow();
             }
+        }
+
+        final float valueY = max / 10 * 10 + 10 > 100 ? max / 10 * 10 + 10 : 100;
+
+        for (int i = 0; i < dataList.size(); i++) {
+            AdInfo.DataBean temp = dataList.get(i);
+            boardRate.add(new BarEntry(i,temp.getBoradRate() * valueY));
+            Log.d("ContrastChartActivity",temp.getBoradRate() + "");
         }
 
         BarDataSet flowSet,rateSet;
@@ -102,22 +109,24 @@ public class ContrastChartActivity extends BaseActivity {
             barChart.setData(barData);
         }
 
-        int valueY = max / 10 * 10 + 10;
+        /*int valueY = max / 10 * 10 + 10;*/
         //Y轴的设置
         YAxis leftY = barChart.getAxisLeft();
-        if (valueY <= 100) {
+        /*if (valueY <= 100) {
             valueY = 100;
-        }
+        }*/
         leftY.setAxisMaximum(valueY);
         leftY.setAxisMinimum(0.0f);
+        leftY.setLabelCount(10);
         YAxis rightY = barChart.getAxisRight();
         rightY.setAxisMinimum(0f);
-        rightY.setAxisMaximum(valueY);
-        rightY.setEnabled(false);
+        rightY.setAxisMaximum(100);
+        rightY.setLabelCount(12);
+        rightY.setEnabled(true);
         rightY.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return value / value * 100 + "%";
+                return (int)value + "%";
             }
         });
         XAxis xAxis = barChart.getXAxis();
@@ -129,6 +138,13 @@ public class ContrastChartActivity extends BaseActivity {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 return (int)value + "";
+            }
+        });
+
+        rateSet.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return (int)(value / valueY * 100)  + "%";
             }
         });
         barChart.groupBars(0.0f,groupSpace,barSpace);
