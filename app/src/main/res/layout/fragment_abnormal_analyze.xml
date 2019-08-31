@@ -57,8 +57,8 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart_abnormal_detail"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="10dp"
         android:layout_below="@id/tv_abnormal_detail"
         />

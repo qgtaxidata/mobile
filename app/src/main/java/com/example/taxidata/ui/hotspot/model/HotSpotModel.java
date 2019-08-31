@@ -21,6 +21,7 @@ import com.example.taxidata.common.GreenDaoManager;
 import com.example.taxidata.common.StatusManager;
 import com.example.taxidata.constant.Api;
 import com.example.taxidata.net.RetrofitManager;
+import com.example.taxidata.net.RouteRetrofitManager;
 import com.example.taxidata.ui.hotspot.contract.HotSpotContract;
 import com.example.taxidata.ui.hotspot.presenter.HotSpotPresenter;
 import com.example.taxidata.util.GsonUtil;
@@ -63,7 +64,7 @@ public class HotSpotModel implements HotSpotContract.Model , Inputtips.Inputtips
         HotSpotRequestInfo info = new HotSpotRequestInfo(longitude ,latitude ,time);
         String hotSpotRequestJson = GsonUtil.GsonString(info);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),hotSpotRequestJson);
-        return RetrofitManager.getInstance()
+        return RouteRetrofitManager.getInstance()
                             .getHttpService()
                             .getHotSpot(body)
                             .subscribeOn(Schedulers.io())

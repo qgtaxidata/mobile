@@ -207,6 +207,7 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
 
     @Override
     public void  getHotSpotListAgain() {
+        Logger.d("再次调用了获取热点");
         if(hotSpotRecommandInfoList != null && hotSpotRecommandInfoList.size() > 0) {
             mHotSpotView.showHotSpot( hotSpotRecommandInfoList);
         }
