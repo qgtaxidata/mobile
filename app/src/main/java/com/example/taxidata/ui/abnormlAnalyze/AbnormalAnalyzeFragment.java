@@ -17,18 +17,13 @@ import com.example.taxidata.base.BaseFragment;
 import com.example.taxidata.bean.AbnormalInfo;
 import com.example.taxidata.common.eventbus.BaseEvent;
 import com.example.taxidata.common.eventbus.EventFactory;
-import com.example.taxidata.constant.Area;
 import com.example.taxidata.net.RetrofitManager;
 import com.example.taxidata.util.EventBusUtils;
-import com.example.taxidata.util.GsonUtil;
 import com.example.taxidata.util.ToastUtil;
 import com.example.taxidata.widget.DropDownSelectView;
 import com.example.taxidata.widget.SimpleLoadingDialog;
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -43,7 +38,6 @@ import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
-import com.orhanobut.logger.Logger;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -88,9 +82,11 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
     BarChart chartDetail;
     @BindView(R.id.chart_abnormal_analyze_summary)
     PieChart chartSummary;
-    private static String[] colors1 = {"#51b46d", "#F37997", "#4c93fd", "#AA99ED", "#79D2FF", "#49C9C9","#BBBBBB"};
+    private static String[] colors1 = {"#51b46d", "#F37997", "#4c93fd", "#AA99ED", "#79D2FF", "#49C9C9", "#BBBBBB"};
     ArrayList<String> areaList = new ArrayList<>();
     SimpleLoadingDialog loading;
+    @BindView(R.id.tv_select_remind)
+    TextView tvRemind;
     private XAxis xAxis;
     private YAxis yAxis;
     private AbnormalInfo abnormalInfo;
@@ -123,7 +119,7 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
             public void onClick(View v) {
                 float areaAbnormal = abnormalInfo.getData().getPies().getPie().get(selectIndex).getAbnormal() * 100;
                 float areaNormal = abnormalInfo.getData().getPies().getPie().get(selectIndex).getNormal() * 100;
-                initChartSummary(new float[]{ areaNormal ,areaAbnormal});
+                initChartSummary(new float[]{areaNormal, areaAbnormal});
             }
         });
         selectViewArea.setOnItemClickListener(new OnItemClickListener() {
@@ -138,9 +134,9 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
 
     /**
      * 加载页面所需的所有数据
-     *只请求一次
+     * 只请求一次
      */
-    private void  initData() {
+    private void initData() {
         showLoadingDialog();
         //简单请求数据
         RetrofitManager.getInstance()
@@ -168,14 +164,16 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
                         selectIndex = 0;
                         float areaAbnormal = abnormalInfo.getData().getPies().getPie().get(selectIndex).getAbnormal() * 100;
                         float areaNormal = abnormalInfo.getData().getPies().getPie().get(selectIndex).getNormal() * 100;
-                        initChartSummary(new float[]{ areaNormal, areaAbnormal });
+                        initChartSummary(new float[]{areaNormal, areaAbnormal});
                     }
+
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtil.showLongToastBottom("出错了，原因 :"+ e.getMessage());
+                        ToastUtil.showLongToastBottom("出错了，原因 :" + e.getMessage());
                         cancelLoadingDialong();
 
                     }
+
                     @Override
                     public void onComplete() {
 
@@ -237,11 +235,11 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
      * @param
      * @return
      */
-    private void  initPieData (float[] dataArray) {
+    private void initPieData(float[] dataArray) {
         ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry((float) dataArray[0] ,"正常") );
-        entries.add(new PieEntry((float) dataArray[1] ,"异常") );
-        PieDataSet dataSet = new PieDataSet(entries ,"");
+        entries.add(new PieEntry((float) dataArray[0], "正常"));
+        entries.add(new PieEntry((float) dataArray[1], "异常"));
+        PieDataSet dataSet = new PieDataSet(entries, "");
         ArrayList<Integer> colors = new ArrayList<>();
         colors.add(Color.parseColor(colors1[0]));
         colors.add(Color.parseColor(colors1[1]));
@@ -252,7 +250,7 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 //构造方法的字符格式这里如果小数不足2位,会以0补足
                 DecimalFormat decimalFormat = new DecimalFormat(".00");
-               //format 返回的是字符串
+                //format 返回的是字符串
                 String p = decimalFormat.format(value);
                 String str = p + "%";
                 if (value == 0) {
@@ -285,7 +283,7 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
         xAxis.setLabelCount(12);
         xAxis.setAxisMaximum(12f);
         xAxis.setAxisMinimum(0f);
-        String[] str = {"","花都区","南沙区","增城区","从化区","番禺区","白云区","黄浦区","荔湾区","海珠区","天河区","越秀区"};
+        String[] str = {"", "花都区", "南沙区", "增城区", "从化区", "番禺区", "白云区", "黄浦区", "荔湾区", "海珠区", "天河区", "越秀区"};
         xAxis.setValueFormatter(new IndexAxisValueFormatter(str));
         xAxis.setTextSize(8f);
         yAxis = chartDetail.getAxisLeft();
@@ -306,11 +304,11 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
     public void initBarChartData(AbnormalInfo info) {
         List<BarEntry> Vals = new ArrayList<>();
         //将数据装填在柱状图所需的数据里
-        for(int i = 0 ; i < info.getData().getBar().getX().size() ; i++) {
-            Vals.add(new BarEntry(info.getData().getBar().getX().get(i) , info.getData().getBar().getY().get(i))) ;
+        for (int i = 0; i < info.getData().getBar().getX().size(); i++) {
+            Vals.add(new BarEntry(info.getData().getBar().getX().get(i), info.getData().getBar().getY().get(i)));
         }
         BarDataSet barDataSet;
-        barDataSet = new BarDataSet(Vals,"区域异常车辆数量");
+        barDataSet = new BarDataSet(Vals, "区域异常车辆数量");
         ArrayList<Integer> colors = new ArrayList<>();
         colors.add(Color.parseColor(colors1[3]));
         barDataSet.setColors(colors);
@@ -329,7 +327,7 @@ public class AbnormalAnalyzeFragment extends BaseFragment {
         barData.setBarWidth(0.5f);
         //设置数据
         chartDetail.setData(barData);
-        chartDetail.animateXY(1400 , 1400);
+        chartDetail.animateXY(1400, 1400);
         chartDetail.invalidate();
     }
 
