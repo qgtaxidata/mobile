@@ -22,4 +22,23 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="20dp"
+        android:text="出车率:"
+        android:textSize="16sp"
+        android:textColor="@color/black_color"
+        android:textStyle="normal"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="全称为出车时间利用率, 指该区域内车辆载客时间与总时间的比值的平均值。"
+        android:textSize="16sp"
+        android:textColor="@color/black_color"
+        android:textStyle="normal"/>
+
 </LinearLayout>

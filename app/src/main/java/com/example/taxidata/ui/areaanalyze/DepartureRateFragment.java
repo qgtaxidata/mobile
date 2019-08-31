@@ -84,7 +84,7 @@ public class DepartureRateFragment extends BaseFragment {
             forecastValues.add(new Entry(i+timeUtilizationBean.getY().get(0).size(), timeUtilizationBean.getY().get(1).get(i)));
         }
         //每个LineDataSet代表一条线
-        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "分析值(单位：%)");
+        LineDataSet analyzeLineDataSet = new LineDataSet(analyzeValues, "历史值(单位：%)");
         LineDataSet forecastLineDataSet = new LineDataSet(forecastValues, "预测值（单位：%）");
         initLineDataSet(analyzeLineDataSet,"#4472c4");
         initLineDataSet(forecastLineDataSet, "#ed7d31");

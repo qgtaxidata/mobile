@@ -145,7 +145,9 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
         xAxis.setAxisLineColor(Color.BLACK);
         xAxis.setGranularity(1f);
         xAxis.setDrawGridLines(false);   //去掉x轴的网格线
-        xAxis.setLabelCount(3,false);
+        xAxis.setLabelCount(5);
+        xAxis.setTextSize(12f);
+        xAxis.setAvoidFirstLastClipping(true);
         //Y轴的相关设置
         yAxis = taxiDemandAnalyzeLineChart.getAxisLeft();
         yAxis.removeAllLimitLines();
@@ -162,7 +164,7 @@ public class TaxiDemandActivity extends BaseActivity implements TaxiDemandContra
         Log.d("show", dataBeans.getGraph_title());
         List<String> xList = new ArrayList<>();
         //添加数据
-        for (int i = 0 ; i<3; i++){
+        for (int i = 0; i<3; i++){
             xList.add(dataBeans.getGraph_data().get(i).getTitle());
             Log.d("X", dataBeans.getGraph_data().get(i).getTitle());
         }

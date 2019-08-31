@@ -22,5 +22,22 @@
         android:layout_width="match_parent"
         android:layout_height="250dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="20dp"
+        android:text="载客频率:"
+        android:textSize="16sp"
+        android:textColor="@color/black_color"
+        android:textStyle="normal"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="该区域内所有车辆每小时的载客数量。"
+        android:textSize="16sp"
+        android:textColor="@color/black_color"
+        android:textStyle="normal"/>
 
 </LinearLayout>

@@ -53,4 +53,22 @@
         android:layout_height="280dp"
         android:layout_margin="10dp"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="20dp"
+        android:text="区域需求量:"
+        android:textSize="16sp"
+        android:textColor="@color/black_color"
+        android:textStyle="normal"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="指该区域一小时内的总出租车需求量。"
+        android:textSize="16sp"
+        android:textColor="@color/black_color"
+        android:textStyle="normal"/>
+
 </LinearLayout>

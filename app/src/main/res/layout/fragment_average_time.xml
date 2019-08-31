@@ -22,4 +22,22 @@
         android:layout_width="match_parent"
         android:layout_height="250dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="20dp"
+        android:text="道路平均速度:"
+        android:textSize="16sp"
+        android:textColor="@color/black_color"
+        android:textStyle="normal"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="该区域内所有道路上的车辆速度的平均值。"
+        android:textSize="16sp"
+        android:textColor="@color/black_color"
+        android:textStyle="normal"/>
+
 </LinearLayout>
