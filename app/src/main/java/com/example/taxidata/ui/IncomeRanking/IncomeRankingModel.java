@@ -12,11 +12,6 @@ import io.reactivex.schedulers.Schedulers;
 public class IncomeRankingModel implements IncomeRankingContract.IncomeRankingModel {
     @Override
     public Observable<IncomeRankingInfo> getIncomeRankingInfo(int area, String date) {
-//        GetIncomeRankingInfo getIncomeRankingInfo = new GetIncomeRankingInfo();
-//        getIncomeRankingInfo.setArea(area);
-//        getIncomeRankingInfo.setDate(date);
-//        String json = GsonUtil.GsonString(getIncomeRankingInfo);
-//        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),json);
         return RetrofitManager.getInstance()
                 .getHttpService()
                 .getIncomeRankingInfo(area, date)
@@ -26,12 +21,6 @@ public class IncomeRankingModel implements IncomeRankingContract.IncomeRankingMo
 
     @Override
     public Observable<DriverConditionInfo> getDriverConditionInfo(int area, String date, String driverID) {
-//        GetDriverConditionInfo getDriverConditionInfo = new GetDriverConditionInfo();
-//        getDriverConditionInfo.setArea(area);
-//        getDriverConditionInfo.setDate(date);
-//        getDriverConditionInfo.setDriverID(driverID);
-//        String json = GsonUtil.GsonString(getDriverConditionInfo);
-//        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),json);
         return RetrofitManager.getInstance()
                 .getHttpService()
                 .getDriverConditionInfo(area, date, driverID)

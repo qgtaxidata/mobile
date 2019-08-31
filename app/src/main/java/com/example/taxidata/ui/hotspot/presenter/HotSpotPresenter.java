@@ -59,8 +59,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         mHotSpotView = view;
     }
 
-
-
     @Override
     public void detachView() {
         mHotSpotView = null;
@@ -110,7 +108,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
         }
     }
 
-
     @Override
     public List<HotSpotHistorySearch> getHistorySearchList() {
         return mHotSpotModel.getHistorySearchList();
@@ -134,7 +131,6 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
     public void saveHotSpotSearchHistory(String historyHotSpot) {
         mHotSpotModel.saveHotSpotSearchHistory(historyHotSpot);
     }
-
 
     @Override
     public void convertToLocation(String hotSpotAdress, GeocodeSearch geocodeSearch) {
@@ -215,6 +211,4 @@ public class HotSpotPresenter implements HotSpotContract.Presenter,GeocodeSearch
             mHotSpotView.showHotSpot( hotSpotRecommandInfoList);
         }
     }
-
-
 }

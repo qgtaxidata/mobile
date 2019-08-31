@@ -17,7 +17,6 @@ import java.util.Date;
  */
 public class TimePickerUtil implements OnDateSetListener {
 
-
     public static TimePickerDialog mTimeDialogAll ;
     SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     long tenYears = 10L * 365 * 1000 * 60 * 60 * 24L;
@@ -37,7 +36,6 @@ public class TimePickerUtil implements OnDateSetListener {
             String pickTime = getDateToString(millseconds);
             TimeManager.Time = pickTime;
     }
-
 
     /**
      * 展示时间选择器

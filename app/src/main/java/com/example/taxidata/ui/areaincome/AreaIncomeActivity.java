@@ -46,7 +46,6 @@ import static com.example.taxidata.constant.Area.ZENG_CHENG;
 
 public class AreaIncomeActivity extends BaseActivity implements AreaIncomeContract.AreaIncomeView {
 
-
     @BindView(R.id.area_income_area_select_view)
     DropDownSelectView areaIncomeAreaSelectView;
     @BindView(R.id.area_income_time_select_view)

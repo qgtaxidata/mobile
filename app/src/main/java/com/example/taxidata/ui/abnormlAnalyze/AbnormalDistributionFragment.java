@@ -36,7 +36,6 @@ import butterknife.Unbinder;
  */
 public class AbnormalDistributionFragment extends BaseFragment {
 
-
     Unbinder unbinder;
     @BindView(R.id.btn_refresh_abnormal_analyze)
     Button btnRefresh;

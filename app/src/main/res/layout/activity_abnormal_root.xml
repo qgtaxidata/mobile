@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-  <com.google.android.material.tabs.TabLayout
-      android:id="@+id/tl_abnormal"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="@color/dialog_white"
-      app:tabTextAppearance="@style/TabLayoutTextSize"
-      app:tabTextColor="@color/blue_color"
-      app:tabIndicatorColor="@color/blue_color"
-      app:tabGravity="fill"
-      app:tabMode="fixed"
-      app:tabIndicatorHeight="4dp"
-      >
-      <com.google.android.material.tabs.TabItem
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="异常分析"
-          />
-      <com.google.android.material.tabs.TabItem
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="异常分布"
-          />
-  </com.google.android.material.tabs.TabLayout>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_abnormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dialog_white"
+        app:tabTextAppearance="@style/TabLayoutTextSize"
+        app:tabTextColor="@color/blue_color"
+        app:tabIndicatorColor="@color/blue_color"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabIndicatorHeight="4dp"
+        >
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="异常分析"
+            />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="异常分布"
+            />
+    </com.google.android.material.tabs.TabLayout>
 
     <com.example.taxidata.widget.DisableScrollViewPager
         android:id="@+id/vp_abnormal"

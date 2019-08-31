@@ -14,27 +14,22 @@ public class DisableScrollViewPager extends ViewPager {
 
         private boolean noScroll = true;
 
-
        public DisableScrollViewPager(Context context, AttributeSet attrs) {
             super(context, attrs);
         }
-
 
        public DisableScrollViewPager(Context context) {
             super(context);
        }
 
-
        public void setNoScroll(boolean noScroll) {
             this.noScroll = noScroll;
        }
-
 
        @Override
        public void scrollTo(int x, int y) {
             super.scrollTo(x, y);
        }
-
 
        @Override
        public boolean onTouchEvent(MotionEvent arg0) {
@@ -45,7 +40,6 @@ public class DisableScrollViewPager extends ViewPager {
          }
        }
 
-
        @Override
        public boolean onInterceptTouchEvent(MotionEvent arg0) {
         if (noScroll) {
@@ -54,12 +48,10 @@ public class DisableScrollViewPager extends ViewPager {
            return super.onInterceptTouchEvent(arg0);}
        }
 
-
        @Override
        public void setCurrentItem(int item, boolean smoothScroll) {
                 super.setCurrentItem(item, smoothScroll);
         }
-
 
        @Override
        public void setCurrentItem(int item) {

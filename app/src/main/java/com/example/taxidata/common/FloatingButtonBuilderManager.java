@@ -49,7 +49,6 @@ public class FloatingButtonBuilderManager {
 
     private static int titleIndex = 0 ;
 
-
     private static int getImageResource() {
         if (imageResourceIndex >= imageResources.length) {
             imageResourceIndex = 0;
@@ -73,7 +72,6 @@ public class FloatingButtonBuilderManager {
                 .imageRect(new Rect(Util.dp2px(15), Util.dp2px(15), Util.dp2px(45), Util.dp2px(45)) )
                 .textSize(12);
     }
-
 
     private static FloatingButtonBuilderManager ourInstance = new FloatingButtonBuilderManager();
 

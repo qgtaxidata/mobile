@@ -6,9 +6,6 @@ package com.example.taxidata.bean;
  * @date: 2019/8/9
  */
 public class HotSpotRequestInfo {
-
-
-
     //经度
     private double longitude;
     //纬度

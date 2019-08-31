@@ -53,6 +53,5 @@ public class GreenDaoManager {
     public DaoSession getDaoSession() {
         return daoSession;
     }
-
 }
 

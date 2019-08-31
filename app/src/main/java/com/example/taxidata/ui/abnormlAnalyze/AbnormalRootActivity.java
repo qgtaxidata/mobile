@@ -54,7 +54,6 @@ public class AbnormalRootActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * view pager adapter
      */

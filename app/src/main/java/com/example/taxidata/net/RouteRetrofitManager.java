@@ -92,7 +92,6 @@ public class RouteRetrofitManager  {
         return service;
     }
 
-
     public static int getTimeoutTime(){
         return timeoutTime;
     }

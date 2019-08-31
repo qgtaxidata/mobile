@@ -26,7 +26,6 @@ public interface HotSpotContract {
      */
     interface Model extends BaseModel {
 
-
         /**
          * 向服务器请求获取热点推荐坐标
          *
@@ -186,6 +185,4 @@ public interface HotSpotContract {
         void  getHotSpotListAgain();
 
      }
-
-
 }
